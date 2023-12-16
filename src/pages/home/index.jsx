@@ -7,7 +7,7 @@ const HomePage = () => {
   const theme = useTheme();
   return (
     <Box
-      bgColor={theme.colors.black}
+      bgColor="#2E3133"
       height="100vh"
       width="100vw"
       display="flex"
