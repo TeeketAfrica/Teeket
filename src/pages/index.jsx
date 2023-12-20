@@ -1,5 +1,6 @@
 import HomePage from "./home";
-import SigninPage from "./signin";
-import SignupPage from "./signup";
+import LoginPage from "./auth/login";
+import CreateAccountPage from "./auth/create-account";
+import PasswordRecoveryPage from "./auth/password-recovery";
 
-export { HomePage, SigninPage, SignupPage };
+export { HomePage, LoginPage, CreateAccountPage, PasswordRecoveryPage };
