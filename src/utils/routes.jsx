@@ -1,10 +1,16 @@
-import { HomePage, SigninPage, SignupPage } from "../pages";
+import {
+  HomePage,
+  LoginPage,
+  CreateAccountPage,
+  PasswordRecoveryPage,
+} from "../pages";
 
 export const routes = [
   // Landing Page
   { path: "/", element: <HomePage /> },
 
   // Authenticated Pages
-  { path: "/auth/signin", element: <SigninPage /> },
-  { path: "/auth/signup", element: <SignupPage /> },
+  { path: "/auth/login", element: <LoginPage /> },
+  { path: "/auth/create-account", element: <CreateAccountPage /> },
+  { path: "/auth/password-recovery", element: <PasswordRecoveryPage /> },
 ];
