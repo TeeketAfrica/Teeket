@@ -36,7 +36,7 @@ const HomePage = () => {
         gap="8px"
       >
         <Image src={InProgress} alt="In progress" />
-        <Text fontSize="heading.sm" color={theme.colors.gray[100]}>
+        <Text fontSize="2xl" color={theme.colors.gray[100]}>
           In progress
         </Text>
       </Box>
