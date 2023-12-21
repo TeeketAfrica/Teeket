@@ -60,7 +60,7 @@ const AuthLayout = ({ children }) => {
         h="100%"
       >
         <Flex flex="1" placeItems="center">
-          <Box maxW="454px" mx="auto">
+          <Box flex="1" maxW="454px" mx="auto">
             {children}
           </Box>
         </Flex>
