@@ -67,7 +67,7 @@ const AuthLayout = ({ children }) => {
 
         <Box
           display={{ base: 'none', lg: 'block' }}
-          flex="1"
+          w="42%"
           borderRadius="30px"
           overflow="hidden"
           backgroundImage={`url(${
@@ -144,7 +144,7 @@ const AuthLayout = ({ children }) => {
               p={{ md: '30px', xl: '60px' }}
               h="100%"
               alignItems="start"
-              gap={{ md: '106px', lg: '160px' }}
+              gap="120px"
             >
               <Link href="/">
                 <Image src={lightLogo} alt="Logo" />
@@ -180,7 +180,7 @@ const AuthLayout = ({ children }) => {
                 zIndex="-1"
                 left="50%"
                 transform="translateX(-50%)"
-                top="135px"
+                top="110px"
               >
                 <Avatar
                   src={mockTwo}
