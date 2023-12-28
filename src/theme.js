@@ -2,12 +2,14 @@ import { extendTheme } from '@chakra-ui/react';
 
 import Button from './components/ui/Button';
 import Input from './components/ui/Input';
+import Checkbox from './components/ui/Checkbox';
 
 // example theme
 export const theme = extendTheme({
   components: {
     Button,
     Input,
+    Checkbox,
   },
   colors: {
     transparent: 'transparent',

@@ -13,7 +13,7 @@ const inputStyles = {
         borderColor: 'gray.500',
         boxShadow: '0px 0px 1px 4px #CBD1CB',
       },
-      ':invalid': { borderColor: 'red.300' },
+      _invalid: { borderColor: 'red.300' },
     },
   },
   sizes: {},

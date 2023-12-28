@@ -14,8 +14,8 @@ import {
   Button,
 } from '@chakra-ui/react';
 import AuthLayout from '../../../components/auth/AuthLayout';
-import GoogleBtn from '../../../components/auth/GoogleBtn';
 import AuthHeader from '../../../components/auth/AuthHeader';
+import GoogleBtn from '../../../components/auth/GoogleBtn';
 
 import MailIcon from '../../../assets/icon/MailIcon.svg';
 import CloseIcon from '../../../assets/icon/CloseIcon.svg';
@@ -48,7 +48,7 @@ const LoginPage = () => {
             subheadingLink="Sign up"
           />
           <Box>
-            <GoogleBtn />
+            <GoogleBtn title="Login with Google" />
             <Box display="flex" gap={2} alignItems="center" mt={6}>
               <Divider border="1px solid" borderColor={theme.colors.grey100} />
               <Text>Or</Text>
@@ -69,7 +69,7 @@ const LoginPage = () => {
                   </FormLabel>
                   <InputGroup size="lg">
                     <InputRightElement pointerEvents="none">
-                      {formError.invalidEmail ? (
+                      {formError.invalidEmail || errors.email ? (
                         <Image src={CloseIcon} alt="close icon" />
                       ) : (
                         <Image src={MailIcon} alt="mail icon" />
@@ -110,7 +110,7 @@ const LoginPage = () => {
                       cursor="pointer"
                       onClick={() => setViewPassword((prev) => !prev)}
                     >
-                      {formError.incorrectPassword ? (
+                      {formError.incorrectPassword || errors.password ? (
                         <Image src={CloseIcon} alt="close icon" />
                       ) : (
                         <Image src={EyeSlashIcon} alt="eye icon" />

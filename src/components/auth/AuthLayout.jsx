@@ -67,7 +67,8 @@ const AuthLayout = ({ children }) => {
 
         <Box
           display={{ base: 'none', lg: 'block' }}
-          w="42%"
+          w={{ lg: '470px', xl: '560px' }}
+          flexShrink="0"
           borderRadius="30px"
           overflow="hidden"
           backgroundImage={`url(${
