@@ -11,7 +11,6 @@ import {
   InputGroup,
   InputRightElement,
   Checkbox,
-  CheckboxGroup,
   Button,
 } from '@chakra-ui/react';
 
@@ -60,7 +59,7 @@ const CreateAccountPage = () => {
   }, [password]);
 
   const [viewPassword, setViewPassword] = useState(false);
-  const [formError, setFormError] = useState({
+  const [formError] = useState({
     invalidEmail: false,
     incorrectPassword: false,
   });
