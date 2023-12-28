@@ -36,20 +36,6 @@ const LoginPage = () => {
     incorrectPassword: false,
   });
 
-  const InputStyle = {
-    fontSize: 'sm',
-    borderColor: 'gray.400',
-    borderRadius: '6',
-    _hover: {
-      borderColor: 'gray.500',
-    },
-    _focusVisible: {
-      borderColor: 'gray.500',
-      boxShadow: '0px 0px 1px 4px #CBD1CB',
-    },
-    _invalid: { borderColor: 'red.300' },
-  };
-
   const onSubmit = (data) => console.log(data);
 
   return (
@@ -99,7 +85,6 @@ const LoginPage = () => {
                           message: 'Invalid email address',
                         },
                       })}
-                      sx={InputStyle}
                     />
                   </InputGroup>
                   <FormErrorMessage color="red.500">
@@ -137,7 +122,6 @@ const LoginPage = () => {
                       {...register('password', {
                         required: 'This is required',
                       })}
-                      sx={InputStyle}
                     />
                   </InputGroup>
                   <FormErrorMessage color="red.500">
@@ -149,17 +133,7 @@ const LoginPage = () => {
                     )}
                   </FormErrorMessage>
                 </FormControl>
-                <Button
-                  type="submit"
-                  variant="solid"
-                  size="lg"
-                  mt="4"
-                  background="gray.800"
-                  color="white"
-                  _hover={{
-                    background: '#090909',
-                  }}
-                >
+                <Button type="submit" mt="4" size="lg">
                   Submit
                 </Button>
               </Stack>
