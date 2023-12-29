@@ -15,7 +15,7 @@ import {
 import MailIcon from '../../../../assets/icon/MailIcon.svg';
 import CloseIcon from '../../../../assets/icon/CloseIcon.svg';
 
-const PasswordRecoveryForm = () => {
+const PasswordRecoveryForm = ({ onSubmitData }) => {
   const {
     register,
     handleSubmit,
@@ -27,10 +27,8 @@ const PasswordRecoveryForm = () => {
     invalidEmail: false,
   });
 
-  const onSubmit = (data) => console.log(data);
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmitData)}>
       <Stack spacing={4}>
         <FormControl isInvalid={errors.email || formError.invalidEmail}>
           <FormLabel
