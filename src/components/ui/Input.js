@@ -3,7 +3,7 @@ const inputStyles = {
   baseStyle: {
     field: {
       fontSize: 'sm',
-      border: '2px solid',
+      border: '1px solid',
       borderColor: 'gray.400',
       borderRadius: '6',
       _hover: {
@@ -16,7 +16,13 @@ const inputStyles = {
       _invalid: { borderColor: 'red.300' },
     },
   },
-  sizes: {},
+  sizes: {
+    lg: {
+      field: {
+        height: '56px',
+      },
+    },
+  },
   defaultProps: {
     variant: null,
   },

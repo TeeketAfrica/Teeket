@@ -175,7 +175,7 @@ const CreateAccountForm = () => {
           </Box>
         </FormControl>
         <Button type="submit" mt="4" size="lg">
-          Login
+          Sign up
         </Button>
       </Stack>
     </form>
