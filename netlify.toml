@@ -1,0 +1,24 @@
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+
+[[redirects]]
+from = "/auth/login"
+to = "/login.html"
+status = 200
+
+[[redirects]]
+from = "/auth/create-account"
+to = "/createaccount.html"
+status = 200
+
+[[redirects]]
+from = "/auth/password-recovery"
+to = "/passwordrecovery.html"
+status = 200
+
+[[redirects]]
+from = "/auth/password-reset"
+to = "/passwordreset.html"
+status = 200
