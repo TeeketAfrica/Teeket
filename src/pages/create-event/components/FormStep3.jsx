@@ -1,14 +1,11 @@
-import { Box, Button, Heading } from "@chakra-ui/react";
+import FormLayout from './FormLayout';
 
-const FormStep3 = ({ onPrevStep, onNextStep }) => {
+const FormStep3 = () => {
   return (
-    <Box>
-      <Heading as="h1" bgColor="red">
-        Hello Form 3
-      </Heading>
-      <Button onClick={onPrevStep}>Discard</Button>
-      <Button onClick={onNextStep}>Save and continue</Button>
-    </Box>
+    <FormLayout
+      title="Tickets"
+      description="Set how much tickets are to be sold and create the various types of tickets to be used for this event"
+    ></FormLayout>
   );
 };
 

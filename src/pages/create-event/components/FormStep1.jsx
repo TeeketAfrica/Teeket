@@ -1,13 +1,11 @@
-import { Box, Button, Heading } from "@chakra-ui/react";
+import FormLayout from './FormLayout';
 
-const FormStep1 = ({ onNextStep }) => {
+const FormStep1 = () => {
   return (
-    <Box>
-      <Heading as="h1" bgColor="red">
-        Hello Form 1
-      </Heading>
-      <Button onClick={onNextStep}>Save and continue</Button>
-    </Box>
+    <FormLayout
+      title="Basic Info"
+      description="Give your event a name and also add other basic information that will help your attendees know what this event is about"
+    ></FormLayout>
   );
 };
 

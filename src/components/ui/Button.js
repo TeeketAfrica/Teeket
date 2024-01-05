@@ -4,6 +4,10 @@ const buttonStyles = {
     fontWeight: 'semibold', // Normally, it is "semibold"
     textTransform: 'capitalize',
     borderRadius: '8px',
+
+    _disabled: {
+      opacity: 1,
+    },
   },
   // 2. We can add a new button size or extend existing
   sizes: {
@@ -24,6 +28,16 @@ const buttonStyles = {
     primary: {
       bg: 'gray.800',
       color: 'white',
+
+      _disabled: {
+        bg: 'gray.300',
+      },
+
+      _hover: {
+        _disabled: {
+          bg: 'gray.300',
+        },
+      },
     },
 
     accent: {
