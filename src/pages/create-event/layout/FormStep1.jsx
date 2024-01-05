@@ -1,4 +1,4 @@
-import FormLayout from './FormLayout';
+import FormLayout from '../components/FormLayout';
 
 const FormStep1 = () => {
   return (

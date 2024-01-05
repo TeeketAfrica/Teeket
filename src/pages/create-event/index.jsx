@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Layout from './components/Layout';
-import FormStep1 from './components/FormStep1';
-import FormStep2 from './components/FormStep2';
-import FormStep3 from './components/FormStep3';
-import FormStep4 from './components/FormStep4';
+import FormStep1 from './layout/FormStep1';
+import FormStep2 from './layout/FormStep2';
+import FormStep3 from './layout/FormStep3';
+import FormStep4 from './layout/FormStep4';
 
 const VendorPage = () => {
   const [activeStep, setActiveStep] = useState(0);
