@@ -1,14 +1,11 @@
-import { Box, Button, Heading } from "@chakra-ui/react";
+import FormLayout from './FormLayout';
 
-const FormStep2 = ({ onNextStep, onPrevStep }) => {
+const FormStep2 = () => {
   return (
-    <Box>
-      <Heading as="h1" bgColor="red">
-        Hello Form 2
-      </Heading>
-      <Button onClick={onPrevStep}>Discard</Button>
-      <Button onClick={onNextStep}>Save and continue</Button>
-    </Box>
+    <FormLayout
+      title="Nigeria Anime Festival"
+      description="Provide additional context about what this event is about."
+    ></FormLayout>
   );
 };
 

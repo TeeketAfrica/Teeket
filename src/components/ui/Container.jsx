@@ -1,8 +1,8 @@
-import { Box } from "@chakra-ui/react";
+import { Box } from '@chakra-ui/react';
 
-const Container = ({ children }) => {
+const Container = ({ children, heightSize }) => {
   return (
-    <Box maxW="1200px" w="100%" m="auto" py={6} px={5}>
+    <Box maxW="1200px" maxH="100%" h={heightSize} w="100%" mx="auto">
       {children}
     </Box>
   );
