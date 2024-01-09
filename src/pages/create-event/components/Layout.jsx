@@ -98,7 +98,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
               </Text>
               <Box>
                 <Button
-                  type="button"
+                  type="submit"
                   size="sm"
                   isDisabled={activeStepColor !== steps.length - 1}
                   gap={2}
@@ -304,6 +304,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                 },
               }}
               overflowY="auto"
+              padding="2"
             >
               {children}
             </Box>
@@ -334,15 +335,17 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
             >
               Discard
             </Button>
-            {activeStepColor === steps.length - 1 ? (
+            {activeStepColor === steps.length - 1 && (
               <Button
                 leftIcon={<Image src={Rocket} alt="logo" />}
                 size="lg"
                 variant="accent"
+                type="submit"
               >
                 Publish Event
               </Button>
-            ) : (
+            )}
+            {activeStepColor !== steps.length - 1 && (
               <Button size="lg" onClick={() => nextStep()}>
                 Save and continue
               </Button>
