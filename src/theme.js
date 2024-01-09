@@ -3,6 +3,9 @@ import { extendTheme } from '@chakra-ui/react';
 import Button from './components/ui/Button';
 import Input from './components/ui/Input';
 import Checkbox from './components/ui/Checkbox';
+import Progress from './components/ui/Progress';
+import Textarea from './components/ui/Textarea';
+import Radio from './components/ui/Radio';
 
 // example theme
 export const theme = extendTheme({
@@ -10,6 +13,9 @@ export const theme = extendTheme({
     Button,
     Input,
     Checkbox,
+    Progress,
+    Textarea,
+    Radio,
   },
   colors: {
     transparent: 'transparent',

@@ -2,7 +2,6 @@ const buttonStyles = {
   // 1. We can update the base styles
   baseStyle: {
     fontWeight: 'semibold', // Normally, it is "semibold"
-    textTransform: 'capitalize',
     borderRadius: '8px',
 
     _disabled: {
