@@ -1,5 +1,4 @@
-import { useState } from 'react';
-
+import { useRef, useState } from "react";
 import {
   Slide,
   Fade,
@@ -9,46 +8,48 @@ import {
   Image,
   Text,
   Link,
-} from '@chakra-ui/react';
-
-import Logo from '../../../assets/img/brandLogo.png';
-import Avatar from '../../../assets/img/Avatars.png';
-import Preview from '../../../assets/icon/eye.svg';
-import CloseIcon from '../../../assets/icon/CloseButton.svg';
-import Rocket from '../../../assets/icon/rocket-alt.svg';
-import Hamburger from '../../../assets/icon/Hamburger.svg';
-import Ticket from '../../../assets/icon/Ticket.svg';
-import PlusCircle from '../../../assets/icon/PlusCircle.svg';
-import Dashboard from '../../../assets/icon/Dashboard.svg';
-import Settings from '../../../assets/icon/Settings.svg';
-import SignOut from '../../../assets/icon/SignOut.svg';
-import Container from '../../../components/ui/Container';
-import SideNav from './SideNav';
+  useOutsideClick,
+} from "@chakra-ui/react";
+import Logo from "../../../assets/img/brandLogo.png";
+import Avatar from "../../../assets/img/Avatars.png";
+import Preview from "../../../assets/icon/eye.svg";
+import CloseIcon from "../../../assets/icon/CloseButton.svg";
+import Rocket from "../../../assets/icon/rocket-alt.svg";
+import Hamburger from "../../../assets/icon/Hamburger.svg";
+import Ticket from "../../../assets/icon/Ticket.svg";
+import PlusCircle from "../../../assets/icon/PlusCircle.svg";
+import Dashboard from "../../../assets/icon/Dashboard.svg";
+import Settings from "../../../assets/icon/Settings.svg";
+import SignOut from "../../../assets/icon/SignOut.svg";
+import Container from "../../../components/ui/Container";
+import SideNav from "./SideNav";
 
 const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
-  //   const [stepColor, setstepColor] = useState(0);
-
-  //   useEffect(() => {}, [third]);
-
   const [mobileToggle, setMobileToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
+  const ref = useRef();
+
+  useOutsideClick({
+    ref: ref,
+    handler: () => setMenuToggle(false),
+  });
 
   const steps = [
     {
       stepNumber: 1,
-      stepInfo: 'Basic info',
+      stepInfo: "Basic info",
     },
     {
       stepNumber: 2,
-      stepInfo: 'Event details',
+      stepInfo: "Event details",
     },
     {
       stepNumber: 3,
-      stepInfo: 'Tickets',
+      stepInfo: "Tickets",
     },
     {
       stepNumber: 4,
-      stepInfo: 'Publish event',
+      stepInfo: "Publish event",
     },
   ];
 
@@ -59,11 +60,12 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
       flexDirection="column"
       w="100%"
       h="100vh"
-      overflow={{ base: 'visible', lg: 'hidden' }}
+      overflow={{ base: "visible", lg: "hidden" }}
       isolation="isolate"
     >
       <Box
         position="fixed"
+        zIndex={20}
         top="0"
         right="0"
         left="0"
@@ -90,7 +92,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                 gap={2}
               >
                 <Image src={Preview} alt="logo" />
-                <Text as="span" display={{ base: 'none', lg: 'inline' }}>
+                <Text as="span" display={{ base: "none", lg: "inline" }}>
                   Preview event
                 </Text>
               </Text>
@@ -102,7 +104,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                   gap={2}
                 >
                   <Image src={Rocket} alt="logo" />
-                  <Text display={{ base: 'none', lg: 'inline' }}>
+                  <Text display={{ base: "none", lg: "inline" }}>
                     Publish Event
                   </Text>
                 </Button>
@@ -114,7 +116,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                 >
                   <Image src={Avatar} alt="logo" />
                 </Box>
-                <Fade in={menuToggle}>
+                <Fade ref={ref} in={menuToggle}>
                   <Box
                     position="absolute"
                     right="0"
@@ -145,7 +147,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                         display="flex"
                         gap="3"
                         py="2"
-                        _hover={{ textDecoration: 'none' }}
+                        _hover={{ textDecoration: "none" }}
                       >
                         <Image src={Ticket} alt="icon" />
                         <Text>My tickets</Text>
@@ -162,7 +164,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                         display="flex"
                         gap="3"
                         py="2"
-                        _hover={{ textDecoration: 'none' }}
+                        _hover={{ textDecoration: "none" }}
                       >
                         <Image src={PlusCircle} alt="icon" />
                         <Text>Create events</Text>
@@ -172,7 +174,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                         display="flex"
                         gap="3"
                         py="2"
-                        _hover={{ textDecoration: 'none' }}
+                        _hover={{ textDecoration: "none" }}
                       >
                         <Image src={Dashboard} alt="icon" />
                         <Text>Dashboard</Text>
@@ -184,7 +186,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                         display="flex"
                         gap="3"
                         py="2"
-                        _hover={{ textDecoration: 'none' }}
+                        _hover={{ textDecoration: "none" }}
                       >
                         <Image src={Settings} alt="icon" />
                         <Text>Account Settings</Text>
@@ -210,23 +212,23 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
         display="flex"
         alignItems="center"
         backgroundColor="gray.100"
-        h={{ base: '72px', lg: '100px' }}
-        borderBottom={{ base: '1px solid', lg: 'none' }}
+        h={{ base: "72px", lg: "100px" }}
+        borderBottom={{ base: "1px solid", lg: "none" }}
         borderColor="gray.300"
         px={6}
-        zIndex="-1"
+        zIndex="10"
       >
         <Container>
           <Heading
             as="h1"
-            display={{ base: 'none', lg: 'block' }}
+            display={{ base: "none", lg: "block" }}
             fontSize="6xl"
             fontWeight={700}
             color="gray.800"
           >
             Event creation
           </Heading>
-          <Box display={{ base: 'flex', lg: 'none' }} gap={6}>
+          <Box display={{ base: "flex", lg: "none" }} gap={6}>
             <Box onClick={() => setMobileToggle(true)}>
               <Image src={Hamburger} alt="Icon" />
             </Box>
@@ -234,7 +236,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
               {steps.map((step, i) => (
                 <Text
                   key={step.stepInfo}
-                  display={activeStepColor + 1 === i + 1 ? 'flex' : 'none'}
+                  display={activeStepColor + 1 === i + 1 ? "flex" : "none"}
                   gap={2}
                 >
                   <Text as="span" fontSize="sm" color="gray.500">
@@ -257,13 +259,13 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
 
       <Box
         p={6}
-        marginTop={{ base: '160px', lg: '188px' }}
+        marginTop={{ base: "160px", lg: "188px" }}
         flex="1"
-        overflow={{ base: 'visible', lg: 'hidden' }}
+        overflow={{ base: "visible", lg: "hidden" }}
       >
         <Container heightSize="100%">
-          <Box display="flex" h="100%" gap={{ base: '0', lg: 8 }}>
-            <Box display={{ base: 'block', lg: 'none' }}>
+          <Box display="flex" h="100%" gap={{ base: "0", lg: 8 }}>
+            <Box display={{ base: "block", lg: "none" }}>
               <Slide direction="left" in={mobileToggle} style={{ zIndex: 10 }}>
                 <SideNav
                   activeStep={activeStepColor}
@@ -286,7 +288,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                 </SideNav>
               </Slide>
             </Box>
-            <Box display={{ base: 'none', lg: 'block' }} w="286px">
+            <Box display={{ base: "none", lg: "block" }} w="286px">
               <SideNav
                 activeStep={activeStepColor}
                 height="100%"
@@ -295,9 +297,10 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
             </Box>
             <Box
               w="100%"
+              px={5}
               css={{
-                '&::-webkit-scrollbar': {
-                  width: '0',
+                "&::-webkit-scrollbar": {
+                  width: "0",
                 },
               }}
               overflowY="auto"
@@ -325,7 +328,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
             alignItems="center"
           >
             <Button
-              display={activeStepColor > 0 ? 'inline-flex' : 'none'}
+              display={activeStepColor > 0 ? "inline-flex" : "none"}
               variant="secondary"
               size="lg"
               onClick={() => prevStep()}
