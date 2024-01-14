@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider } from "react-hook-form";
 
-import Layout from './components/Layout';
-import FormStep1 from './layout/FormStep1';
-import FormStep2 from './layout/FormStep2';
-import FormStep3 from './layout/FormStep3';
-import FormStep4 from './layout/FormStep4';
+import Layout from "./components/Layout";
+import FormStep1 from "./layout/FormStep1";
+import FormStep2 from "./layout/FormStep2";
+import FormStep3 from "./layout/FormStep3";
+import PublishEvent from "./layout/PublishEvent";
 
 const VendorPage = () => {
   const methods = useForm();
@@ -37,7 +37,7 @@ const VendorPage = () => {
   };
 
   const onSubmit = (data) => {
-    console.log('Final form data:', data);
+    console.log("Final form data:", data);
     // Add logic for submitting data to the server or performing other finalization steps
   };
 
@@ -50,7 +50,7 @@ const VendorPage = () => {
       case 2:
         return <FormStep3 />;
       case 3:
-        return <FormStep4 />;
+        return <PublishEvent />;
       default:
         return null;
     }
