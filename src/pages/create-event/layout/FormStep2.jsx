@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useFormContext, Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import {
   Stack,
@@ -16,6 +16,7 @@ import {
   RadioGroup,
   InputLeftElement,
   InputGroup,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 
 import FormLayout from '../components/FormLayout';
@@ -24,7 +25,12 @@ import Refresh from '../../../assets/icon/Refresh.svg';
 import Map from '../../../assets/icon/Map.svg';
 
 const FormStep2 = () => {
-  const { control, register } = useFormContext();
+  // const { control, register } = useFormContext();
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useForm();
   const [image, setImage] = useState(null);
 
   return (
@@ -32,7 +38,7 @@ const FormStep2 = () => {
       title="Nigeria Anime Festival"
       description="Provide additional context about what this event is about."
     >
-      <Box display="flex" flexDirection="column" gap="8">
+      <Stack maxW="600px" flexDirection="column" gap="8">
         {image ? (
           <Box>
             <Box
@@ -62,36 +68,48 @@ const FormStep2 = () => {
         ) : (
           <ImageUpload handleSetImage={setImage} />
         )}
-        <Box display="flex" flexDirection="column" gap="8">
-          <FormControl>
-            <FormLabel fontWeight="semibold" color="black" margin="0">
+        <Stack flexDirection="column" gap="8">
+          <FormControl isInvalid={errors.eventDescription}>
+            <FormLabel
+              htmlFor="eventDescription"
+              fontWeight="semibold"
+              color="black"
+              margin="0"
+            >
               About the event
             </FormLabel>
-            <Text htmlFor="description" fontWeight="normal" color="gray.500">
+            <Text fontWeight="normal" color="gray.500">
               Give a detailed description on what this event is about
             </Text>
             <Textarea
-              id="description"
-              name="description"
-              {...register('description', {
-                required: 'This is required',
+              id="eventDescription"
+              name="eventDescription"
+              {...register('eventDescription', {
+                required: 'Please input a description for the event',
               })}
               placeholder="Tell us about the event"
               size="sm"
               rows="7"
               marginTop="4"
             />
+            <FormErrorMessage>
+              {errors.eventDescription && errors.eventDescription.message}
+            </FormErrorMessage>
           </FormControl>
 
           <Box>
-            <FormControl>
+            <FormControl isInvalid={errors.eventHost}>
               <FormLabel fontWeight="semibold" color="black">
                 How will this event be hosted
               </FormLabel>
               <Controller
-                name="event"
+                name="eventHost"
+                defaultValue=""
                 control={control}
-                rules={{ required: 'Please select a gender' }}
+                rules={{
+                  required:
+                    'Please specify if the event will be hosted online or physical',
+                }}
                 render={({ field }) => (
                   <>
                     <RadioGroup {...field} marginTop="4">
@@ -112,9 +130,9 @@ const FormStep2 = () => {
 
                     <Box marginTop="4">
                       {field.value === 'online' && (
-                        <FormControl>
+                        <FormControl isInvalid={errors.eventLocation}>
                           <FormLabel
-                            htmlFor="location"
+                            htmlFor="eventLocation"
                             fontSize="sm"
                             fontWeight="medium"
                             color="gray.800"
@@ -123,20 +141,26 @@ const FormStep2 = () => {
                           </FormLabel>
 
                           <Input
-                            id="location"
+                            name="eventLocation"
+                            id="eventLocation"
                             type="text"
-                            {...register('location', {
-                              required: 'This is required',
+                            {...register('eventLocation', {
+                              required:
+                                'Please input a valid event link, such as a Zoom link.',
                             })}
                             placeholder="Event url"
                             size="lg"
                           />
+                          <FormErrorMessage>
+                            {errors.eventLocation &&
+                              errors.eventLocation.message}
+                          </FormErrorMessage>
                         </FormControl>
                       )}
                       {field.value === 'physical' && (
-                        <FormControl>
+                        <FormControl isInvalid={errors.eventLocation}>
                           <FormLabel
-                            htmlFor="location"
+                            htmlFor="eventLocation"
                             fontSize="sm"
                             fontWeight="medium"
                             color="gray.800"
@@ -150,24 +174,33 @@ const FormStep2 = () => {
                             </InputLeftElement>
 
                             <Input
-                              id="location"
+                              id="eventLocation"
+                              name="eventLocation"
                               type="text"
-                              {...register('location', {
-                                required: 'This is required',
+                              {...register('eventLocation', {
+                                required:
+                                  'Please input an address for the event',
                               })}
                               placeholder="address"
                             />
                           </InputGroup>
+                          <FormErrorMessage>
+                            {errors.eventLocation &&
+                              errors.eventLocation.message}
+                          </FormErrorMessage>
                         </FormControl>
                       )}
                     </Box>
                   </>
                 )}
               />
+              <FormErrorMessage>
+                {errors.eventHost && errors.eventHost.message}
+              </FormErrorMessage>
             </FormControl>
           </Box>
-        </Box>
-      </Box>
+        </Stack>
+      </Stack>
     </FormLayout>
   );
 };

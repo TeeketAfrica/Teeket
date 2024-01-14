@@ -5,23 +5,25 @@ import {
   Heading,
   Image,
   Radio,
+  VStack,
+  RadioGroup,
   Stack,
   Text,
-} from "@chakra-ui/react";
-import FormLayout from "../components/FormLayout";
-import BannerImage from "../../../assets/img/BannerImage.png";
-import Map from "../../../assets/icon/Map.svg";
-import Clock from "../../../assets/icon/clock.svg";
-import Calendar from "../../../assets/icon/calendar-alt.svg";
-import TicketNumber from "../../../assets/icon/TicketNumber.svg";
-import TicketPrice from "../../../assets/icon/TicketPrice.svg";
-import { useForm } from "react-hook-form";
+} from '@chakra-ui/react';
+import FormLayout from '../components/FormLayout';
+import BannerImage from '../../../assets/img/BannerImage.png';
+import Map from '../../../assets/icon/Map.svg';
+import Clock from '../../../assets/icon/clock.svg';
+import Calendar from '../../../assets/icon/calendar-alt.svg';
+import TicketNumber from '../../../assets/icon/TicketNumber.svg';
+import TicketPrice from '../../../assets/icon/TicketPrice.svg';
+import { useForm, Controller } from 'react-hook-form';
 
 const PublishEvent = () => {
   const {
+    control,
     handleSubmit,
-    register,
-    // formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm();
 
   function onSubmit(values) {
@@ -175,45 +177,43 @@ const PublishEvent = () => {
             </Box>
             <Box maxW="600px" w="100%">
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Stack direction="column" spacing={6}>
-                  <FormControl>
-                    <Stack direction="row" spacing={3} alignItems="flex-start">
-                      <Radio
-                        {...register("publishOption")}
-                        value="publishLive"
-                        size="lg"
-                      />
-                      <Box>
-                        <Heading fontSize="md" fontWeight="medium">
-                          Publish event live
-                        </Heading>
-                        <Text color="gray.600" fontSize="sm">
-                          This will place your event publicly for all to see and
-                          start purchasing tickets.
-                        </Text>
-                      </Box>
-                    </Stack>
-                  </FormControl>
-                  <FormControl>
-                    <Stack direction="row" spacing={3}>
-                      <Radio
-                        {...register("publishOption")}
-                        value="publishDraft"
-                        size="lg"
-                      />
-                      <Box>
-                        <Heading fontSize="md" fontWeight="medium">
-                          Publish event to draft
-                        </Heading>
-                        <Text color="gray.600" fontSize="sm">
-                          This will not be public and you will be able to review
-                          the event from your dashboard to make any changes
-                          before going live again.
-                        </Text>
-                      </Box>
-                    </Stack>
-                  </FormControl>
-                </Stack>
+                <FormControl isInvalid={errors.publishLive}>
+                  <Controller
+                    name="publishLive"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <RadioGroup {...field} marginTop="4">
+                        <VStack
+                          alignItems="flex-start"
+                          color="gray.800"
+                          fontWeight="medium"
+                          gap="6"
+                        >
+                          <Radio value="eventLive" size="lg">
+                            <Heading fontSize="md" fontWeight="medium">
+                              Publish event live
+                            </Heading>
+                            <Text color="gray.600" fontSize="sm">
+                              This will place your event publicly for all to see
+                              and start purchasing tickets.
+                            </Text>
+                          </Radio>
+                          <Radio value="eventDraft" size="lg">
+                            <Heading fontSize="md" fontWeight="medium">
+                              Publish event to draft
+                            </Heading>
+                            <Text color="gray.600" fontSize="sm">
+                              This will not be public and you will be able to
+                              review the event from your dashboard to make any
+                              changes before going live again.
+                            </Text>
+                          </Radio>
+                        </VStack>
+                      </RadioGroup>
+                    )}
+                  />
+                </FormControl>
               </form>
             </Box>
           </Stack>

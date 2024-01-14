@@ -20,6 +20,8 @@ const radioStyles = {
           bg: 'green.400',
         },
       },
+
+      _invalid: { borderColor: 'red.300' },
     },
   },
   variants: {
@@ -30,9 +32,15 @@ const radioStyles = {
         borderColor: 'gray.300',
         borderRadius: '8',
 
+        _hover: {
+          borderColor: 'gray.500',
+        },
+
         _checked: {
           borderColor: 'green.800',
         },
+
+        _invalid: { borderColor: 'red.300' },
       },
     },
   },

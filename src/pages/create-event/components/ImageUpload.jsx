@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import {
+  VStack,
   FormErrorMessage,
   FormLabel,
   FormControl,
@@ -10,17 +11,17 @@ import {
   Divider,
   AbsoluteCenter,
   Button,
-  Progress,
+  // Progress,
   ListItem,
   UnorderedList,
 } from '@chakra-ui/react';
 
 import { getImageDimensions, isValidImage } from '../../../utils/utils';
 
-import Document from '../../../assets/icon/Document.svg';
-import FileUploadStatus from '../../../assets/icon/FileUploadStatus.svg';
+// import Document from '../../../assets/icon/Document.svg';
+// import FileUploadStatus from '../../../assets/icon/FileUploadStatus.svg';
+// import Reload from '../../../assets/icon/Reload.svg';
 import CloudUpload from '../../../assets/icon/CloudUpload.svg';
-import Reload from '../../../assets/icon/Reload.svg';
 
 const ImageUpload = ({ handleSetImage }) => {
   const { register } = useForm();
@@ -102,10 +103,7 @@ const ImageUpload = ({ handleSetImage }) => {
       <Text marginBottom="2" color="gray.600">
         Upload a banner image
       </Text>
-      <Box
-        display="flex"
-        flexDir="column"
-        alignItems="center"
+      <VStack
         justifyContent="center"
         h="264px"
         w="100%"
@@ -117,20 +115,13 @@ const ImageUpload = ({ handleSetImage }) => {
         onDragOver={preventDefault}
       >
         <FormLabel htmlFor="upload" m="0" cursor="pointer">
-          <Box
-            display="flex"
+          <VStack
             flexDirection="column"
             justifyContent="center"
-            alignItems="center"
             gap="5"
             w="100%"
           >
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-            >
+            <VStack justifyContent="center">
               <Box
                 display="inline-flex"
                 alignItems="center"
@@ -161,7 +152,7 @@ const ImageUpload = ({ handleSetImage }) => {
                   SVG, PNG, JPG or GIF (max. 800x400px)
                 </Text>
               </Box>
-            </Box>
+            </VStack>
             <Box position="relative" w="100%">
               <Divider />
               <AbsoluteCenter bg="white" px="4">
@@ -173,13 +164,10 @@ const ImageUpload = ({ handleSetImage }) => {
                 Browse files
               </FormLabel>
             </Button>
-          </Box>
+          </VStack>
         </FormLabel>
-        {/* <Box
-          display="flex"
-          alignItems="center"
+        {/* <VStack
           justifyContent="center"
-          flexDirection="column"
           backgroundColor="gray.200"
           width="100%"
           height="100%"
@@ -220,13 +208,7 @@ const ImageUpload = ({ handleSetImage }) => {
             </Text>
           </>
           <>
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-              marginBottom="2"
-            >
+            <VStack justifyContent="center" marginBottom="2">
               <Image src={FileUploadStatus} alt="icon" />
 
               <Box textAlign="center">
@@ -253,10 +235,10 @@ const ImageUpload = ({ handleSetImage }) => {
                   Try again
                 </Button>
               </Box>
-            </Box>
+            </VStack>
           </>
-        </Box> */}
-      </Box>
+        </VStack> */}
+      </VStack>
       <Input
         id="upload"
         type="file"

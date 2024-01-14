@@ -11,7 +11,7 @@ const textareaStyles = {
       borderColor: 'gray.800',
       boxShadow: '0px 0px 0px 4px #E7ECE7',
     },
-    _invalid: { borderColor: 'red.500' },
+    _invalid: { borderColor: 'red.300' },
   },
   sizes: {},
   defaultProps: {
