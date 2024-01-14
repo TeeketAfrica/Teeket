@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useState } from "react";
 
+<<<<<<< HEAD
 import Layout from './components/Layout';
 import FormStep1 from './layout/FormStep1';
 import FormStep2 from './layout/FormStep2';
 import FormStep3 from './layout/FormStep3';
 import FormStep4 from './layout/FormStep4';
+=======
+import { useForm, FormProvider } from "react-hook-form";
+
+import Layout from "./components/Layout";
+import FormStep1 from "./layout/FormStep1";
+import FormStep2 from "./layout/FormStep2";
+import FormStep3 from "./layout/FormStep3";
+import PublishEvent from "./layout/PublishEvent";
+>>>>>>> dev
 
 const VendorPage = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -21,6 +31,15 @@ const VendorPage = () => {
 
   const handlePrevStep = () => {
     setActiveStep((prevStep) => prevStep - 1);
+<<<<<<< HEAD
+=======
+    reset();
+  };
+
+  const onSubmit = (data) => {
+    console.log("Final form data:", data);
+    // Add logic for submitting data to the server or performing other finalization steps
+>>>>>>> dev
   };
 
   const renderFormSteps = () => {
@@ -32,7 +51,7 @@ const VendorPage = () => {
       case 2:
         return <FormStep3 />;
       case 3:
-        return <FormStep4 />;
+        return <PublishEvent />;
       default:
         return null;
     }

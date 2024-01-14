@@ -28,6 +28,7 @@ export const theme = extendTheme({
     border: 'rgba(255, 255, 255, 0.30)',
     grey100: '#F0F2F5',
     error500: '#CB1A14',
+    textSuccess: '#06CC06',
     gray: {
       100: '#FFFFFF',
       200: '#F7FAF7',
