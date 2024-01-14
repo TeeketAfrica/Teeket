@@ -346,7 +346,12 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
               </Button>
             )}
             {activeStepColor !== steps.length - 1 && (
-              <Button size="lg" onClick={() => nextStep()}>
+              <Button
+                size="lg"
+                onClick={() => {
+                  nextStep();
+                }}
+              >
                 Save and continue
               </Button>
             )}
