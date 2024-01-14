@@ -6,6 +6,8 @@ import Checkbox from './components/ui/Checkbox';
 import Progress from './components/ui/Progress';
 import Textarea from './components/ui/Textarea';
 import Radio from './components/ui/Radio';
+import NumberInput from './components/ui/NumberInput';
+import Select from './components/ui/Select';
 
 // example theme
 export const theme = extendTheme({
@@ -16,6 +18,8 @@ export const theme = extendTheme({
     Progress,
     Textarea,
     Radio,
+    NumberInput,
+    Select,
   },
   colors: {
     transparent: 'transparent',

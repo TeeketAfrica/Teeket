@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useFormContext, Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import {
   Stack,
@@ -16,6 +16,7 @@ import {
   RadioGroup,
   InputLeftElement,
   InputGroup,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 
 import FormLayout from '../components/FormLayout';
@@ -24,7 +25,12 @@ import Refresh from '../../../assets/icon/Refresh.svg';
 import Map from '../../../assets/icon/Map.svg';
 
 const FormStep2 = () => {
-  const { control, register } = useFormContext();
+  // const { control, register } = useFormContext();
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useForm();
   const [image, setImage] = useState(null);
 
   return (
@@ -32,142 +38,171 @@ const FormStep2 = () => {
       title="Nigeria Anime Festival"
       description="Provide additional context about what this event is about."
     >
-      <Box display="flex" flexDirection="column" gap="8">
-        {image ? (
-          <Box>
-            <Box
-              h="264px"
-              w="600px"
-              borderRadius="12px"
-              overflow="hidden"
-              mb="2"
-            >
-              <Image
-                src={image}
-                alt="event banner"
-                objectFit="cover"
-                w="100%"
-                h="100%"
-              />
+      <form method="POST">
+        <Stack maxW="600px" flexDirection="column" gap="8">
+          {image ? (
+            <Box>
+              <Box
+                h="264px"
+                w="600px"
+                borderRadius="12px"
+                overflow="hidden"
+                mb="2"
+              >
+                <Image
+                  src={image}
+                  alt="event banner"
+                  objectFit="cover"
+                  w="100%"
+                  h="100%"
+                />
+              </Box>
+              <Button
+                onClick={() => setImage(null)}
+                leftIcon={<Image src={Refresh} alt="icon" />}
+                variant="secondary"
+                size="sm"
+              >
+                Change Image
+              </Button>
             </Box>
-            <Button
-              onClick={() => setImage(null)}
-              leftIcon={<Image src={Refresh} alt="icon" />}
-              variant="secondary"
-              size="sm"
-            >
-              Change Image
-            </Button>
-          </Box>
-        ) : (
-          <ImageUpload handleSetImage={setImage} />
-        )}
-        <Box display="flex" flexDirection="column" gap="8">
-          <FormControl>
-            <FormLabel fontWeight="semibold" color="black" margin="0">
-              About the event
-            </FormLabel>
-            <Text htmlFor="description" fontWeight="normal" color="gray.500">
-              Give a detailed description on what this event is about
-            </Text>
-            <Textarea
-              id="description"
-              name="description"
-              {...register('description', {
-                required: 'This is required',
-              })}
-              placeholder="Tell us about the event"
-              size="sm"
-              rows="7"
-              marginTop="4"
-            />
-          </FormControl>
-
-          <Box>
-            <FormControl>
-              <FormLabel fontWeight="semibold" color="black">
-                How will this event be hosted
+          ) : (
+            <ImageUpload handleSetImage={setImage} />
+          )}
+          <Stack flexDirection="column" gap="8">
+            <FormControl isInvalid={errors.eventDescription}>
+              <FormLabel
+                htmlFor="eventDescription"
+                fontWeight="semibold"
+                color="black"
+                margin="0"
+              >
+                About the event
               </FormLabel>
-              <Controller
-                name="event"
-                control={control}
-                rules={{ required: 'Please select a gender' }}
-                render={({ field }) => (
-                  <>
-                    <RadioGroup {...field} marginTop="4">
-                      <Stack
-                        direction="row"
-                        color="gray.800"
-                        fontWeight="medium"
-                        flexWrap="wrap"
-                      >
-                        <Radio value="online" size="lg" variant="border">
-                          Online event
-                        </Radio>
-                        <Radio value="physical" size="lg" variant="border">
-                          Physical event
-                        </Radio>
-                      </Stack>
-                    </RadioGroup>
+              <Text fontWeight="normal" color="gray.500">
+                Give a detailed description on what this event is about
+              </Text>
+              <Textarea
+                id="eventDescription"
+                name="eventDescription"
+                {...register('eventDescription', {
+                  required: 'Please input a description for the event',
+                })}
+                placeholder="Tell us about the event"
+                size="sm"
+                rows="7"
+                marginTop="4"
+              />
+              <FormErrorMessage>
+                {errors.eventDescription && errors.eventDescription.message}
+              </FormErrorMessage>
+            </FormControl>
 
-                    <Box marginTop="4">
-                      {field.value === 'online' && (
-                        <FormControl>
-                          <FormLabel
-                            htmlFor="location"
-                            fontSize="sm"
-                            fontWeight="medium"
-                            color="gray.800"
-                          >
-                            Online event link
-                          </FormLabel>
+            <Box>
+              <FormControl isInvalid={errors.eventHost}>
+                <FormLabel fontWeight="semibold" color="black">
+                  How will this event be hosted
+                </FormLabel>
+                <Controller
+                  name="eventHost"
+                  defaultValue=""
+                  control={control}
+                  rules={{
+                    required:
+                      'Please specify if the event will be hosted online or physical',
+                  }}
+                  render={({ field }) => (
+                    <>
+                      <RadioGroup {...field} marginTop="4">
+                        <Stack
+                          direction="row"
+                          color="gray.800"
+                          fontWeight="medium"
+                          flexWrap="wrap"
+                        >
+                          <Radio value="online" size="lg" variant="border">
+                            Online event
+                          </Radio>
+                          <Radio value="physical" size="lg" variant="border">
+                            Physical event
+                          </Radio>
+                        </Stack>
+                      </RadioGroup>
 
-                          <Input
-                            id="location"
-                            type="text"
-                            {...register('location', {
-                              required: 'This is required',
-                            })}
-                            placeholder="Event url"
-                            size="lg"
-                          />
-                        </FormControl>
-                      )}
-                      {field.value === 'physical' && (
-                        <FormControl>
-                          <FormLabel
-                            htmlFor="location"
-                            fontSize="sm"
-                            fontWeight="medium"
-                            color="gray.800"
-                          >
-                            Event location
-                          </FormLabel>
-
-                          <InputGroup size="lg">
-                            <InputLeftElement pointerEvents="none">
-                              <Image src={Map} alt="icon" />
-                            </InputLeftElement>
+                      <Box marginTop="4">
+                        {field.value === 'online' && (
+                          <FormControl isInvalid={errors.eventLocation}>
+                            <FormLabel
+                              htmlFor="eventLocation"
+                              fontSize="sm"
+                              fontWeight="medium"
+                              color="gray.800"
+                            >
+                              Online event link
+                            </FormLabel>
 
                             <Input
-                              id="location"
+                              name="eventLocation"
+                              id="eventLocation"
                               type="text"
-                              {...register('location', {
-                                required: 'This is required',
+                              {...register('eventLocation', {
+                                required:
+                                  'Please input a valid event link, such as a Zoom link.',
                               })}
-                              placeholder="address"
+                              placeholder="Event url"
+                              size="lg"
                             />
-                          </InputGroup>
-                        </FormControl>
-                      )}
-                    </Box>
-                  </>
-                )}
-              />
-            </FormControl>
-          </Box>
-        </Box>
-      </Box>
+                            <FormErrorMessage>
+                              {errors.eventLocation &&
+                                errors.eventLocation.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                        )}
+                        {field.value === 'physical' && (
+                          <FormControl isInvalid={errors.eventLocation}>
+                            <FormLabel
+                              htmlFor="eventLocation"
+                              fontSize="sm"
+                              fontWeight="medium"
+                              color="gray.800"
+                            >
+                              Event location
+                            </FormLabel>
+
+                            <InputGroup size="lg">
+                              <InputLeftElement pointerEvents="none">
+                                <Image src={Map} alt="icon" />
+                              </InputLeftElement>
+
+                              <Input
+                                id="eventLocation"
+                                name="eventLocation"
+                                type="text"
+                                {...register('eventLocation', {
+                                  required:
+                                    'Please input an address for the event',
+                                })}
+                                placeholder="address"
+                              />
+                            </InputGroup>
+                            <FormErrorMessage>
+                              {errors.eventLocation &&
+                                errors.eventLocation.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                        )}
+                      </Box>
+                    </>
+                  )}
+                />
+                <FormErrorMessage>
+                  {errors.eventHost && errors.eventHost.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Box>
+          </Stack>
+        </Stack>
+      </form>
     </FormLayout>
   );
 };

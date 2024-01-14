@@ -1,8 +1,8 @@
-import FormLayout from "../components/FormLayout";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Stack, Text } from "@chakra-ui/layout";
-import DownIcon from "../../../assets/icon/DownIcon.jsx";
+import FormLayout from '../components/FormLayout';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Stack, Text } from '@chakra-ui/layout';
+import DownIcon from '../../../assets/icon/DownIcon.jsx';
 import {
   FormErrorMessage,
   FormLabel,
@@ -13,26 +13,14 @@ import {
   Select,
   Divider,
   Heading,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 const FormStep1 = () => {
   const {
     register,
-    handleSubmit,
     watch,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      eventTitle: "",
-      eventOrganizer: "",
-      eventType: "",
-      eventTag: [],
-      invalidEventStartDate: "",
-      invalidEventStartTime: "",
-      invalidEventEndDate: "",
-      invalidEventEndTime: "",
-    },
-  });
+  } = useForm();
   // const [tag, setTag] = useState("");
   // const [eventTag, setEventTag] = useState([]);
 
@@ -47,23 +35,21 @@ const FormStep1 = () => {
     invalidEventEndTime: false,
   });
 
-  const eventTitle = watch("eventTitle");
+  const eventTitle = watch('eventTitle');
   // const eventOrganizer = watch('eventOrganizer');
   // const eventType = watch('eventType');
   // const eventIndustry = watch('eventOrganizer');
-  const eventTag = watch("eventTag", []);
+  const eventTag = watch('eventTag', []);
   // const eventStartDate = watch('eventStartDate');
   // const eventStartTime = watch('eventStartTime');
   // const eventEndDate = watch('eventEndDate');
   // const eventEndTime = watch('eventEndTime');
 
   const eventOptions = [
-    { value: "celebration", label: "Celebration" },
-    { value: "party", label: "Party" },
-    { value: "naming", label: "Naming" },
+    { value: 'celebration', label: 'Celebration' },
+    { value: 'party', label: 'Party' },
+    { value: 'naming', label: 'Naming' },
   ];
-
-  const onSubmit = (data) => console.log(data);
 
   // const handleKeyDown = (event) => {
   //   console.log("tag:", tag);
@@ -79,7 +65,7 @@ const FormStep1 = () => {
       title="Basic Info"
       description="Give your event a name and also add other basic information that will help your attendees know what this event is about"
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form method="POST">
         <Stack spacing={4}>
           <Box maxW="600px" w="100%">
             <Stack spacing={4}>
@@ -100,21 +86,21 @@ const FormStep1 = () => {
                     id="eventTitle"
                     placeholder="Give a clear title for the event you are creating"
                     type="text"
+                    defaultValue=""
                     maxLength={100}
-                    {...register("eventTitle", {
-                      required: "This is required",
+                    {...register('eventTitle', {
+                      required: 'You need to put in an event title',
                     })}
                   />
                 </InputGroup>
                 <FormErrorMessage color="red.500">
                   {errors.eventTitle && errors.eventTitle.message}
-                  {formError.invalidEventTitle && !errors.eventTitle && (
-                    <Text as="span">Event title is not valid</Text>
-                  )}
                 </FormErrorMessage>
-                <Text mt={2} as="span" fontSize="sm" color="gray.600">
-                  {eventTitle.length}/100 characters
-                </Text>
+                {!errors.eventTitle && (
+                  <Text mt={2} as="span" fontSize="sm" color="gray.600">
+                    {eventTitle ? eventTitle.length : '0'}/100 characters
+                  </Text>
+                )}
               </FormControl>
 
               {/* ORGANIZERS */}
@@ -136,8 +122,9 @@ const FormStep1 = () => {
                     placeholder="Who is organizing this event?"
                     id="eventOrganizer"
                     type="text"
-                    {...register("eventOrganizer", {
-                      required: "This is required",
+                    defaultValue=""
+                    {...register('eventOrganizer', {
+                      required: 'Please input an event organizer',
                     })}
                   />
                 </InputGroup>
@@ -153,7 +140,7 @@ const FormStep1 = () => {
               {/* TYPE OF EVENT AND INDUSTRY */}
               <Box
                 display="flex"
-                flexDirection={{ base: "column", md: "row" }}
+                flexDirection={{ base: 'column', md: 'row' }}
                 gap={4}
               >
                 <FormControl
@@ -173,8 +160,9 @@ const FormStep1 = () => {
                       icon={<DownIcon />}
                       placeholder="Choose a type e.g. Celebration"
                       id="eventType"
-                      {...register("eventType", {
-                        required: "This is required",
+                      defaultValue=""
+                      {...register('eventType', {
+                        required: 'Please select an event type',
                       })}
                     >
                       {eventOptions.map((option) => (
@@ -193,29 +181,37 @@ const FormStep1 = () => {
                 </FormControl>
                 <FormControl
                   isInvalid={
-                    errors.eventOrganizer || formError.invalidEventOrganizer
+                    errors.eventIndustry || formError.invalidEventOrganizer
                   }
                 >
                   <FormLabel
-                    htmlFor="eventOrganizer"
+                    htmlFor="eventIndustry"
                     fontSize="sm"
                     fontWeight="medium"
                     color="gray.800"
                   >
-                    Organizer
+                    Industry
                   </FormLabel>
                   <InputGroup size="lg">
-                    <Input
-                      placeholder="Who is organizing this event?"
-                      id="eventOrganizer"
-                      type="text"
-                      {...register("eventOrganizer", {
-                        required: "This is required",
+                    <Select
+                      size="lg"
+                      icon={<DownIcon />}
+                      placeholder="Choose an industry e.g. Anime"
+                      id="eventIndustry"
+                      defaultValue=""
+                      {...register('eventIndustry', {
+                        required: 'Please select an event industry',
                       })}
-                    />
+                    >
+                      {eventOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </Select>
                   </InputGroup>
                   <FormErrorMessage color="red.500">
-                    {errors.eventOrganizer && errors.eventOrganizer.message}
+                    {errors.eventIndustry && errors.eventIndustry.message}
                     {formError.invalidEventOrganizer &&
                       !errors.eventOrganizer && (
                         <Text as="span">Input an event organizer</Text>
@@ -249,11 +245,13 @@ const FormStep1 = () => {
                     placeholder="Type a tag and press enter"
                     id="eventTag"
                     type="text"
-                    {...register("eventTag", {
-                      required: "This is required",
+                    defaultValue=""
+                    {...register('eventTag', {
+                      required: 'This is required',
                     })}
                   />
                 </InputGroup>
+                <Text>{eventTag}</Text>
                 <FormErrorMessage color="red.500">
                   {errors.eventTag && errors.eventTag.message}
                   {formError.invalidTag && !errors.eventTag && (
@@ -261,7 +259,7 @@ const FormStep1 = () => {
                   )}
                 </FormErrorMessage>
                 <Text mt={2} as="span" fontSize="sm" color="gray.600">
-                  {eventTag.length}/5 tags
+                  {eventTag ? eventTag.length : '0'}/5 tags
                 </Text>
               </FormControl>
             </Stack>
@@ -287,7 +285,7 @@ const FormStep1 = () => {
               {/* START DATE AND TIME */}
               <Box
                 display="flex"
-                flexDirection={{ base: "column", md: "row" }}
+                flexDirection={{ base: 'column', md: 'row' }}
                 gap={4}
               >
                 <FormControl
@@ -307,8 +305,9 @@ const FormStep1 = () => {
                     <Input
                       id="eventStartDate"
                       type="date"
-                      {...register("eventStartDate", {
-                        required: "This is required",
+                      defaultValue=""
+                      {...register('eventStartDate', {
+                        required: 'This is required',
                       })}
                     />
                   </InputGroup>
@@ -338,8 +337,9 @@ const FormStep1 = () => {
                       placeholder="Who is organizing this event?"
                       id="eventStartTime"
                       type="time"
-                      {...register("eventStartTime", {
-                        required: "This is required",
+                      defaultValue=""
+                      {...register('eventStartTime', {
+                        required: 'This is required',
                       })}
                     />
                   </InputGroup>
@@ -356,7 +356,7 @@ const FormStep1 = () => {
               {/* END DATE AND TIME */}
               <Box
                 display="flex"
-                flexDirection={{ base: "column", md: "row" }}
+                flexDirection={{ base: 'column', md: 'row' }}
                 gap={4}
                 mb={1}
               >
@@ -377,8 +377,9 @@ const FormStep1 = () => {
                     <Input
                       id="eventEndDate"
                       type="date"
-                      {...register("eventEndDate", {
-                        required: "This is required",
+                      defaultValue=""
+                      {...register('eventEndDate', {
+                        required: 'This is required',
                       })}
                     />
                   </InputGroup>
@@ -407,8 +408,9 @@ const FormStep1 = () => {
                       placeholder="Who is organizing this event?"
                       id="eventEndTime"
                       type="time"
-                      {...register("eventEndTime", {
-                        required: "This is required",
+                      defaultValue=""
+                      {...register('eventEndTime', {
+                        required: 'This is required',
                       })}
                     />
                   </InputGroup>
