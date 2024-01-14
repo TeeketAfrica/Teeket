@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import {
   Slide,
   Image,
-  Box,
+  // Box,
   FormControl,
   FormLabel,
   FormErrorMessage,
@@ -23,10 +23,10 @@ import {
 } from '@chakra-ui/react';
 
 import FormLayout from '../components/FormLayout';
-import Ticket from '../components/Ticket';
+// import Ticket from '../components/Ticket';
 import TicketModal from '../components/TicketModal';
 
-import PlusIcon from '../../../assets/icon/Plus.svg';
+// import PlusIcon from '../../../assets/icon/Plus.svg';
 import PlusLightIcon from '../../../assets/icon/Plus-light.svg';
 import Notebook from '../../../assets/icon/Notebook.svg';
 import DownArrowIcon from '../../../assets/icon/DownArrow.svg';
@@ -41,7 +41,7 @@ const FormStep3 = () => {
   } = useForm();
 
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [ticketleft, setTicketLeft] = useState(1);
+  const [setTicketLeft] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   let selectedTickets = watch('selectedTickets');

@@ -11,17 +11,17 @@ import {
   Divider,
   AbsoluteCenter,
   Button,
-  Progress,
+  // Progress,
   ListItem,
   UnorderedList,
 } from '@chakra-ui/react';
 
 import { getImageDimensions, isValidImage } from '../../../utils/utils';
 
-import Document from '../../../assets/icon/Document.svg';
-import FileUploadStatus from '../../../assets/icon/FileUploadStatus.svg';
+// import Document from '../../../assets/icon/Document.svg';
+// import FileUploadStatus from '../../../assets/icon/FileUploadStatus.svg';
+// import Reload from '../../../assets/icon/Reload.svg';
 import CloudUpload from '../../../assets/icon/CloudUpload.svg';
-import Reload from '../../../assets/icon/Reload.svg';
 
 const ImageUpload = ({ handleSetImage }) => {
   const { register } = useForm();
