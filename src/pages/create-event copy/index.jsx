@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import Layout from "./components/Layout";
-import FormStep1 from "./layout/FormStep1";
-import FormStep2 from "./layout/FormStep2";
-import FormStep3 from "./layout/FormStep3";
-import PublishEvent from "./layout/PublishEvent";
+import Layout from './components/Layout';
+import FormStep1 from './layout/FormStep1';
+import FormStep2 from './layout/FormStep2';
+import FormStep3 from './layout/FormStep3';
+import PublishEvent from './layout/PublishEvent';
 
 const VendorPage = () => {
   const [activeStep, setActiveStep] = useState(0);

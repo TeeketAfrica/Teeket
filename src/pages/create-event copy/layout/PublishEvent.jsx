@@ -9,15 +9,15 @@ import {
   RadioGroup,
   Stack,
   Text,
-} from "@chakra-ui/react";
-import FormLayout from "../components/FormLayout";
-import BannerImage from "../../../assets/img/BannerImage.png";
-import Map from "../../../assets/icon/Map.svg";
-import Clock from "../../../assets/icon/clock.svg";
-import Calendar from "../../../assets/icon/calendar-alt.svg";
-import TicketNumber from "../../../assets/icon/TicketNumber.svg";
-import TicketPrice from "../../../assets/icon/TicketPrice.svg";
-import { useForm, Controller } from "react-hook-form";
+} from '@chakra-ui/react';
+import FormLayout from '../components/FormLayout';
+import BannerImage from '../../../assets/img/BannerImage.png';
+import Map from '../../../assets/icon/Map.svg';
+import Clock from '../../../assets/icon/clock.svg';
+import Calendar from '../../../assets/icon/calendar-alt.svg';
+import TicketNumber from '../../../assets/icon/TicketNumber.svg';
+import TicketPrice from '../../../assets/icon/TicketPrice.svg';
+import { useForm, Controller } from 'react-hook-form';
 
 const PublishEvent = () => {
   const {
@@ -26,21 +26,19 @@ const PublishEvent = () => {
     formState: { errors },
   } = useForm();
 
-  function onSubmit() {
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     alert(JSON.stringify(values, null, 2));
-    //     resolve();
-    //   }, 3000);
-    // });
-    console.log("formThree");
+  function onSubmit(values) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        alert(JSON.stringify(values, null, 2));
+        resolve();
+      }, 3000);
+    });
   }
   return (
-    <>
-      <FormLayout
-        title="Publish Your Event"
-        description="Now that you have finished providing all necessary information to get your event out there, you can go ahead and publish it live or publish to your draft"
-      />
+    <FormLayout
+      title="Publish Your Event"
+      description="Now that you have finished providing all necessary information to get your event out there, you can go ahead and publish it live or publish to your draft"
+    >
       <Stack direction="column" spacing={8}>
         <Box border="1px solid" borderColor="gray.300" borderRadius="16px">
           <Stack direction="row">
@@ -221,7 +219,7 @@ const PublishEvent = () => {
           </Stack>
         </Box>
       </Stack>
-    </>
+    </FormLayout>
   );
 };
 
