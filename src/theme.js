@@ -8,6 +8,7 @@ import Textarea from './components/ui/Textarea';
 import Radio from './components/ui/Radio';
 import FormLabel from './components/ui/FormLabel';
 import FormErrorMessage from './components/ui/FormErrorMessage';
+import Select from './components/ui/Select';
 
 // example theme
 export const theme = extendTheme({
@@ -20,6 +21,7 @@ export const theme = extendTheme({
     Progress,
     Textarea,
     Radio,
+    Select,
   },
   colors: {
     transparent: 'transparent',
