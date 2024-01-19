@@ -14,7 +14,7 @@ const LoginForm = () => {
     email: Yup.string()
       .email('Invalid email address')
       .required('Please input your email address'),
-    password: Yup.string().required('Please input your email address'),
+    password: Yup.string().required('Please input your password'),
   });
 
   // Formik initialization
