@@ -63,7 +63,7 @@ const CreateAccountForm = () => {
           size="lg"
           isDisabled={formik.isSubmitting}
         >
-          Submit
+          Sign up
         </Button>
       </Stack>
     </form>
