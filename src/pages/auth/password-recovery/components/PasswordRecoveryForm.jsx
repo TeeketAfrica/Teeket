@@ -1,72 +1,44 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Image } from '@chakra-ui/image';
-import { Stack, Text } from '@chakra-ui/layout';
-import {
-  FormErrorMessage,
-  FormLabel,
-  FormControl,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Button,
-} from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { Stack } from '@chakra-ui/layout';
+import { Button } from '@chakra-ui/react';
 
-import MailIcon from '../../../../assets/icon/MailIcon.svg';
-import CloseIcon from '../../../../assets/icon/CloseIcon.svg';
+import EmailInput from '../../components/EmailInput';
 
 const PasswordRecoveryForm = ({ onSubmitData }) => {
-  const {
-    register,
-    handleSubmit,
-    // watch,
-    formState: { errors },
-  } = useForm();
+  // Validation schema using Yup
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Please input your email address'),
+  });
 
-  const [formError] = useState({
-    invalidEmail: false,
+  // Formik initialization
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      onSubmitData(values);
+    },
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmitData)}>
+    <form onSubmit={formik.handleSubmit}>
       <Stack spacing={4}>
-        <FormControl isInvalid={errors.email || formError.invalidEmail}>
-          <FormLabel
-            htmlFor="email"
-            fontSize="sm"
-            fontWeight="medium"
-            color="gray.800"
-          >
-            Email Address
-          </FormLabel>
-          <InputGroup size="lg">
-            <InputRightElement pointerEvents="none">
-              {formError.invalidEmail || errors.email ? (
-                <Image src={CloseIcon} alt="close icon" />
-              ) : (
-                <Image src={MailIcon} alt="mail icon" />
-              )}
-            </InputRightElement>
-            <Input
-              id="email"
-              type="text"
-              {...register('email', {
-                required: 'This is required',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                  message: 'Not a valid email address',
-                },
-              })}
-            />
-          </InputGroup>
-          <FormErrorMessage color="red.500">
-            {errors.email && errors.email.message}
-            {formError.invalidEmail && !errors.email && (
-              <Text as="span">Not a valid email address</Text>
-            )}
-          </FormErrorMessage>
-        </FormControl>
-        <Button type="submit" mt="4" size="lg">
+        {/* Email Address */}
+        <EmailInput formik={formik} label="email address" inputName="email" />
+
+        {/* Submit button */}
+        <Button
+          type="submit"
+          mt="4"
+          variant="primary"
+          size="lg"
+          isDisabled={formik.isSubmitting}
+        >
           Continue
         </Button>
       </Stack>

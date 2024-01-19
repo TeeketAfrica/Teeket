@@ -1,0 +1,10 @@
+const formLabelStyles = {
+  baseStyle: {
+    fontSize: 'sm',
+    fontWeight: 'medium',
+    color: 'gray.800',
+    textTransform: 'capitalize',
+  },
+};
+
+export default formLabelStyles;
