@@ -3,7 +3,6 @@ const formLabelStyles = {
     fontSize: 'sm',
     fontWeight: 'medium',
     color: 'gray.800',
-    textTransform: 'capitalize',
   },
 };
 
