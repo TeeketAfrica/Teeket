@@ -9,6 +9,7 @@ import Radio from './components/ui/Radio';
 import FormLabel from './components/ui/FormLabel';
 import FormErrorMessage from './components/ui/FormErrorMessage';
 import Select from './components/ui/Select';
+import NumberInput from './components/ui/NumberInput';
 
 // example theme
 export const theme = extendTheme({
@@ -22,6 +23,7 @@ export const theme = extendTheme({
     Textarea,
     Radio,
     Select,
+    NumberInput,
   },
   colors: {
     transparent: 'transparent',
