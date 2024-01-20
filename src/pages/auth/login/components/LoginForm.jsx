@@ -33,10 +33,10 @@ const LoginForm = () => {
     <form onSubmit={formik.handleSubmit}>
       <Stack spacing={4}>
         {/* Email Address */}
-        <EmailInput formik={formik} label="email address" inputName="email" />
+        <EmailInput formik={formik} label="Email address" inputName="email" />
 
         {/* Password */}
-        <PasswordInput formik={formik} label="password" inputName="password" />
+        <PasswordInput formik={formik} label="Password" inputName="password" />
 
         {/* Submit button */}
         <Button

@@ -43,7 +43,7 @@ const PasswordResetForm = ({ onSubmitData }) => {
         {/* Password */}
         <PasswordInput
           formik={formik}
-          label="new password"
+          label="New password"
           inputName="newPassword"
           isCriteriaVisible={true}
         />

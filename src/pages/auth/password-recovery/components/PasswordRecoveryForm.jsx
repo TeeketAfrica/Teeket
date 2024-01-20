@@ -29,7 +29,7 @@ const PasswordRecoveryForm = ({ onSubmitData }) => {
     <form onSubmit={formik.handleSubmit}>
       <Stack spacing={4}>
         {/* Email Address */}
-        <EmailInput formik={formik} label="email address" inputName="email" />
+        <EmailInput formik={formik} label="Email address" inputName="email" />
 
         {/* Submit button */}
         <Button
