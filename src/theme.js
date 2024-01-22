@@ -6,20 +6,24 @@ import Checkbox from './components/ui/Checkbox';
 import Progress from './components/ui/Progress';
 import Textarea from './components/ui/Textarea';
 import Radio from './components/ui/Radio';
-import NumberInput from './components/ui/NumberInput';
+import FormLabel from './components/ui/FormLabel';
+import FormErrorMessage from './components/ui/FormErrorMessage';
 import Select from './components/ui/Select';
+import NumberInput from './components/ui/NumberInput';
 
 // example theme
 export const theme = extendTheme({
   components: {
     Button,
     Input,
+    FormLabel,
+    FormErrorMessage,
     Checkbox,
     Progress,
     Textarea,
     Radio,
-    NumberInput,
     Select,
+    NumberInput,
   },
   colors: {
     transparent: 'transparent',

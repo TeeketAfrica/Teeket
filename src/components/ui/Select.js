@@ -1,5 +1,4 @@
-const inputStyles = {
-  // 1. We can update the base styles
+const selectStyles = {
   baseStyle: {
     field: {
       fontSize: 'sm',
@@ -28,4 +27,4 @@ const inputStyles = {
   },
 };
 
-export default inputStyles;
+export default selectStyles;

@@ -1,14 +1,13 @@
 const buttonStyles = {
-  // 1. We can update the base styles
   baseStyle: {
-    fontWeight: 'semibold', // Normally, it is "semibold"
+    fontWeight: 'semibold',
     borderRadius: '8px',
 
     _disabled: {
       opacity: 1,
     },
   },
-  // 2. We can add a new button size or extend existing
+
   sizes: {
     sm: {
       h: '36px',
@@ -21,9 +20,8 @@ const buttonStyles = {
       px: '16px',
     },
   },
-  // 3. We can add a new visual variant
+
   variants: {
-    // 4. We can override existing variants
     primary: {
       bg: 'gray.800',
       color: 'white',
@@ -50,11 +48,6 @@ const buttonStyles = {
       border: '2px solid',
       borderColor: 'gray.300',
     },
-  },
-  // 6. We can overwrite defaultProps
-  defaultProps: {
-    size: 'md', // default is md
-    variant: 'primary', // default is solid
   },
 };
 

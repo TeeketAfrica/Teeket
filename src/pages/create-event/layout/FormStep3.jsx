@@ -1,14 +1,15 @@
-import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 import {
-  Slide,
   Image,
-  // Box,
+  Box,
   FormControl,
   FormLabel,
   FormErrorMessage,
-  Stack,
   VStack,
+  Stack,
   HStack,
   Radio,
   RadioGroup,
@@ -20,138 +21,189 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import FormLayout from "../components/FormLayout";
-// import Ticket from '../components/Ticket';
-import TicketModal from "../components/TicketModal";
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import {
+  setEventDetail,
+  selectEventDetails,
+} from '../../../features/eventSlice';
 
-// import PlusIcon from '../../../assets/icon/Plus.svg';
-import PlusLightIcon from "../../../assets/icon/Plus-light.svg";
-import Notebook from "../../../assets/icon/Notebook.svg";
-import DownArrowIcon from "../../../assets/icon/DownArrow.svg";
-import UpArrowIcon from "../../../assets/icon/UpArrow.svg";
+import FormLayout from '../components/FormLayout';
+import Ticket from '../components/Ticket';
+import TicketModal from '../components/TicketModal';
+
+import PlusIcon from '../../../assets/icon/Plus.svg';
+import PlusLightIcon from '../../../assets/icon/PlusLight.svg';
+import Notebook from '../../../assets/icon/Notebook.svg';
+import DownArrowIcon from '../../../assets/icon/DownArrow.svg';
+import UpArrowIcon from '../../../assets/icon/UpArrow.svg';
+import CircleCheckIcon from '../../../assets/icon/CircleCheck.svg';
+import InfoTriangleIcon from '../../../assets/icon/InfoTriangle.svg';
 
 const FormStep3 = () => {
-  // const { control } = useFormContext();
-  const {
-    control,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const dispatch = useDispatch();
+
+  const { tickets, totalTicketQuantities, eventEstimatedSoldTicket } =
+    useSelector(selectEventDetails);
+
+  const [isTicketOpen, setIsTicketOpen] = useState({
+    isOpen: false,
+    data: null,
+  });
 
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [setTicketLeft] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  let selectedTickets = watch("selectedTickets");
+  // Formik initialization
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      eventEstimatedSoldTicket: eventEstimatedSoldTicket || '',
+    },
+    validationSchema: Yup.object({
+      eventEstimatedSoldTicket: Yup.string().required(
+        'Please select/input an estimated number of tickets to be sold'
+      ),
+    }),
+  });
 
-  const handleSaveTicket = (value) => {
-    setTicketLeft(selectedTickets - value);
-  };
+  const ticketQuantity =
+    formik.values.eventEstimatedSoldTicket - totalTicketQuantities;
 
-  const onSubmit = () => {
-    console.log("formTwo");
+  const handleInputChange = (fieldName, e) => {
+    const data = { fieldName: fieldName, value: e };
+
+    dispatch(setEventDetail(data));
   };
 
   return (
-    <>
-      <FormLayout
-        title="Tickets"
-        description="Set how much tickets are to be sold and create the various types of tickets to be used for this event"
-      />
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack flexDirection="column" gap="8">
-          <FormControl isInvalid={errors.selectedTickets}>
-            <FormLabel fontSize="lg" fontWeight="semibold" color="black">
-              How many tickets on estimate should be sold?
-            </FormLabel>
-            <Controller
-              name="selectedTickets"
-              control={control}
-              defaultValue=""
-              rules={{
-                required:
-                  "Please select/input an estimated number of tickets to be sold",
-              }}
-              render={({ field }) => (
-                <RadioGroup {...field} marginTop="4">
-                  <HStack color="gray.800" fontWeight="medium" flexWrap="wrap">
-                    <Radio value="25" size="lg" variant="border">
-                      25 Tickets
-                    </Radio>
-                    <Radio value="50" size="lg" variant="border">
-                      50 Tickets
-                    </Radio>
-                    <Radio value="100" size="lg" variant="border">
-                      100 Tickets
-                    </Radio>
-                    <NumberInput
-                      {...field}
-                      min={0}
-                      onFocus={() => setIsInputFocused(true)}
-                      onBlur={() => setIsInputFocused(false)}
-                    >
-                      <NumberInputField
-                        backgroundColor="transparent"
-                        zIndex="2"
-                      />
-                      <NumberInputStepper marginRight="8px" zIndex="3">
-                        <NumberIncrementStepper>
-                          <Image src={UpArrowIcon} alt="up-arrow" />
-                        </NumberIncrementStepper>
-                        <NumberDecrementStepper>
-                          <Image src={DownArrowIcon} alt="down-arrow" />
-                        </NumberDecrementStepper>
-                      </NumberInputStepper>
-                      {!field.value && !isInputFocused && (
-                        <Text
-                          as="span"
-                          position="absolute"
-                          top="45%"
-                          left="1rem"
-                          transform="translateY(-45%)"
-                          color="gray.400"
-                          fontSize="sm"
-                        >
-                          Custom amount
-                        </Text>
-                      )}
-                    </NumberInput>
-                  </HStack>
-                </RadioGroup>
-              )}
-            />
-            <FormErrorMessage color="red.500">
-              {errors.selectedTickets && errors.selectedTickets.message}
-            </FormErrorMessage>
-          </FormControl>
-          <Divider height="1px" backgroundColor="gray.300" />
-          {/* <Box>
-            <HStack justifyContent="space-between">
-              <Text fontSize="lg" fontWeight="semibold" color="black">
-                Build your tickets
-              </Text>
-              {ticketleft > 0 && (
+    <FormLayout
+      title="Tickets"
+      description="Set how much tickets are to be sold and create the various types of tickets to be used for this event"
+    >
+      <Stack flexDirection="column" gap="8">
+        {/* Estimated Tickets */}
+        <FormControl
+          isInvalid={
+            formik.touched.eventEstimatedSoldTicket &&
+            formik.errors.eventEstimatedSoldTicket
+          }
+        >
+          <FormLabel>How many tickets on estimate should be sold?</FormLabel>
+          <RadioGroup
+            name="eventEstimatedSoldTicket"
+            value={formik.values.eventEstimatedSoldTicket}
+            onChange={(value) => {
+              formik.setFieldValue('eventEstimatedSoldTicket', value),
+                handleInputChange('eventEstimatedSoldTicket', value);
+            }}
+            onBlur={() =>
+              formik.setFieldTouched('eventEstimatedSoldTicket', true)
+            }
+            marginTop="4"
+          >
+            <HStack color="gray.800" fontWeight="medium" flexWrap="wrap">
+              <Radio value="25" size="lg" variant="border">
+                25 Tickets
+              </Radio>
+              <Radio value="50" size="lg" variant="border">
+                50 Tickets
+              </Radio>
+              <Radio value="100" size="lg" variant="border">
+                100 Tickets
+              </Radio>
+              <NumberInput
+                min={0}
+                value={formik.values.eventEstimatedSoldTicket}
+                onChange={(valueString, valueNumber) =>
+                  formik.setFieldValue(
+                    'eventEstimatedSoldTicket',
+                    valueNumber || ''
+                  )
+                }
+                onFocus={() => setIsInputFocused(true)}
+                onBlur={() => setIsInputFocused(false)}
+              >
+                <NumberInputField backgroundColor="transparent" zIndex="2" />
+                <NumberInputStepper marginRight="8px" zIndex="3">
+                  <NumberIncrementStepper>
+                    <Image src={UpArrowIcon} alt="up-arrow" />
+                  </NumberIncrementStepper>
+                  <NumberDecrementStepper>
+                    <Image src={DownArrowIcon} alt="down-arrow" />
+                  </NumberDecrementStepper>
+                </NumberInputStepper>
+                {!formik.values.eventEstimatedSoldTicket && !isInputFocused && (
+                  <Text
+                    as="span"
+                    position="absolute"
+                    top="45%"
+                    left="1rem"
+                    transform="translateY(-45%)"
+                    color="gray.400"
+                    fontSize="sm"
+                  >
+                    Custom amount
+                  </Text>
+                )}
+              </NumberInput>
+            </HStack>
+          </RadioGroup>
+          <FormErrorMessage>
+            {formik.touched.eventEstimatedSoldTicket &&
+              formik.errors.eventEstimatedSoldTicket}
+          </FormErrorMessage>
+        </FormControl>
+
+        <Divider height="1px" backgroundColor="gray.300" />
+
+        {tickets.length > 0 ? (
+          <Box>
+            {ticketQuantity > 0 && (
+              <HStack justifyContent="space-between">
+                <Text fontSize="lg" fontWeight="semibold" color="black">
+                  Build your tickets
+                </Text>
                 <Button
                   leftIcon={<Image src={PlusIcon} alt="icon" />}
                   variant="secondary"
                   size="sm"
-                  onClick={() => setIsModalOpen((prev) => !prev)}
+                  onClick={() => setIsTicketOpen({ isOpen: true })}
                 >
                   New ticket
                 </Button>
-              )}
-            </HStack>
+              </HStack>
+            )}
             <HStack gap="6" flexWrap="wrap" marginTop="4">
-              <Ticket count="25" price={50} type="Premium" />
+              {tickets.map((data) => (
+                <Ticket
+                  key={data.id}
+                  data={data}
+                  handleOnclick={setIsTicketOpen}
+                />
+              ))}
             </HStack>
-            <Text fontSize="md" fontWeight="600" color="gray.800" marginTop="8">
-              You have {ticketleft - 1} tickets left to allocate
+            <Text
+              display="inline-flex"
+              gap="3"
+              fontSize="md"
+              fontWeight="600"
+              color="gray.800"
+              marginTop="8"
+            >
+              {ticketQuantity > 0 ? (
+                <Image src={CircleCheckIcon} alt="circle-check" />
+              ) : (
+                <Image src={InfoTriangleIcon} alt="info-triangle" />
+              )}{' '}
+              <Text as="span">
+                You have {ticketQuantity > -1 ? ticketQuantity : 0} tickets left
+                to allocate
+              </Text>
             </Text>
-          </Box> */}
-
+          </Box>
+        ) : (
           <VStack gap="4">
             <VStack>
               <Image src={Notebook} alt="icon" />
@@ -159,31 +211,32 @@ const FormStep3 = () => {
                 Build your various ticket category here
               </Text>
             </VStack>
-            {selectedTickets ? (
+            {formik.values.eventEstimatedSoldTicket ? (
               <Button
                 leftIcon={<Image src={PlusLightIcon} alt="icon" />}
                 size="lg"
-                onClick={() => setIsModalOpen((prev) => !prev)}
+                variant="primary"
+                onClick={() => setIsTicketOpen({ isOpen: true })}
               >
                 New Ticket
               </Button>
             ) : (
               <Text fontSize="lg" fontWeight="semibold" color="gray.800">
-                {" "}
+                {' '}
                 Select the estimated number of tickets to be sold
               </Text>
             )}
           </VStack>
-        </Stack>
-      </form>
-      <Slide direction="right" in={isModalOpen} style={{ zIndex: 999999999 }}>
-        <TicketModal
-          selectedTicket={selectedTickets}
-          onSaveTicket={handleSaveTicket}
-          onRequestClose={setIsModalOpen}
-        />
-      </Slide>
-    </>
+        )}
+      </Stack>
+
+      {/* Ticket Modal */}
+      <TicketModal
+        ticketState={isTicketOpen}
+        onCloseModal={setIsTicketOpen}
+        selectedQuantity={ticketQuantity}
+      />
+    </FormLayout>
   );
 };
 

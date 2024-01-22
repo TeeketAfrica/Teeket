@@ -1,3 +1,5 @@
+import { parse, format } from 'date-fns';
+
 const maskEmail = (email) => {
   const [username, domain] = email.split('@');
   const maskingLength = Math.min(7, username.length);
@@ -30,4 +32,36 @@ const getImageDimensions = (file) => {
   });
 };
 
-export { maskEmail, isValidImage, getImageDimensions };
+const formatDate = (inputDate) => {
+  return format(inputDate, "do MMM',' yyyy");
+};
+
+const convertTimeFormat = (timeString) =>
+  format(parse(timeString, 'HH:mm', new Date()), 'hh:mmaa');
+
+const calculateMinAndMaxPrices = (tickets) => {
+  return tickets.reduce(
+    (result, ticket) => {
+      const price = parseInt(ticket.ticketPrice, 10);
+
+      // Update min and max prices
+      result.minPrice = Math.min(result.minPrice, price);
+      result.maxPrice = Math.max(result.maxPrice, price);
+
+      return result;
+    },
+    {
+      minPrice: Infinity,
+      maxPrice: -Infinity,
+    }
+  );
+};
+
+export {
+  maskEmail,
+  isValidImage,
+  getImageDimensions,
+  formatDate,
+  convertTimeFormat,
+  calculateMinAndMaxPrices,
+};
