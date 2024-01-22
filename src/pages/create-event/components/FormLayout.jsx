@@ -1,8 +1,8 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 
-const FormLayout = ({ children, title, description }) => {
+const FormLayout = ({ title, description }) => {
   return (
-    <Box display="flex" flexDirection="column" gap={8}>
+    <Box display="flex" flexDirection="column" gap={8} mb={6}>
       <Box maxW="600px" display="flex" flexDirection="column" gap={2}>
         <Heading
           as="h5"
@@ -17,7 +17,6 @@ const FormLayout = ({ children, title, description }) => {
           {description}
         </Text>
       </Box>
-      {children}
     </Box>
   );
 };
