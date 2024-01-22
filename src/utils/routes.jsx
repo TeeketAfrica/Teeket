@@ -4,7 +4,7 @@ import {
   CreateAccountPage,
   PasswordRecoveryPage,
   PasswordResetPage,
-  // VendorPage,
+  VendorPage,
 } from '../pages';
 
 export const routes = [
@@ -18,5 +18,5 @@ export const routes = [
   { path: '/auth/password-reset', element: <PasswordResetPage /> },
 
   // Other Pages
-  // { path: "/create-event", element: <VendorPage /> },
+  { path: '/create-event', element: <VendorPage /> },
 ];

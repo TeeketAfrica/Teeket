@@ -1,5 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const sumTicketQuantity = (state) => {
+  const totalQuantity = state.tickets.reduce(
+    (accumulator, { ticketQuantity }) =>
+      accumulator +
+      (isNaN(parseInt(ticketQuantity, 10)) ? 0 : parseInt(ticketQuantity, 10)),
+    0
+  );
+
+  state.totalTicketQuantities = totalQuantity;
+};
+
 const eventSlice = createSlice({
   name: 'event',
   initialState: {
@@ -17,6 +28,7 @@ const eventSlice = createSlice({
     eventHosting: '',
     eventLocation: '',
     eventPlan: '',
+    publishLive: '',
     tickets: [],
     totalTicketQuantities: 0,
   },
@@ -38,48 +50,71 @@ const eventSlice = createSlice({
         eventLocation,
         eventPlan,
         totalTicketQuantities,
+        publishLive,
       } = action.payload;
+      return {
+        ...state,
+        eventTitle: eventTitle ?? '',
+        eventOrganizer: eventOrganizer ?? '',
+        eventType: eventType ?? '',
+        eventIndustry: eventIndustry ?? '',
+        eventTags: eventTags ?? '',
+        eventStartDate: eventStartDate ?? '',
+        eventStartTime: eventStartTime ?? '',
+        eventEndDate: eventEndDate ?? '',
+        eventEndTime: eventEndTime ?? '',
+        eventBannerImage: eventBannerImage ?? '',
+        eventAbout: eventAbout ?? '',
+        eventHosting: eventHosting ?? '',
+        eventLocation: eventLocation ?? '',
+        eventPlan: eventPlan ?? '',
+        totalTicketQuantities: totalTicketQuantities ?? 0,
+        publishLive: publishLive ?? '',
+      };
+    },
 
-      state.eventTitle = eventTitle ?? '';
-      state.eventOrganizer = eventOrganizer ?? '';
-      state.eventType = eventType ?? '';
-      state.eventIndustry = eventIndustry ?? '';
-      state.eventTags = eventTags ?? '';
-      state.eventStartDate = eventStartDate ?? '';
-      state.eventStartTime = eventStartTime ?? '';
-      state.eventEndDate = eventEndDate ?? '';
-      state.eventEndTime = eventEndTime ?? '';
-      state.eventBannerImage = eventBannerImage ?? '';
-      state.eventAbout = eventAbout ?? '';
-      state.eventHosting = eventHosting ?? '';
-      state.eventLocation = eventLocation ?? '';
-      state.eventPlan = eventPlan ?? '';
-      state.totalTicketQuantities = totalTicketQuantities ?? 0;
+    setEventDetail: (state, action) => {
+      const { fieldName, value } = action.payload;
+      state[fieldName] = value;
     },
 
     setTicketDetails: (state, action) => {
       state.tickets.push({
-        id: state.tickets.length + 1 * new Date(),
+        id: state.tickets.length + 1 * Date.now(),
         ...action.payload,
       });
+
+      sumTicketQuantity(state);
     },
 
-    updateTicketDetails: (state, id, data) => {
-      const existingTicketIndex = state.tickets.findIndex(
-        (ticket) => ticket.id === id
+    updateTicketDetails: (state, action) => {
+      const { id, ...updatedFields } = action.payload;
+
+      state.tickets = state.tickets.map((ticket) =>
+        ticket.id === id ? { ...ticket, ...updatedFields } : ticket
       );
 
-      if (existingTicketIndex !== -1) {
-        state.tickets[existingTicketIndex] = {
-          ...state.tickets[existingTicketIndex],
-          ...data,
-        };
-      }
+      sumTicketQuantity(state);
+    },
+
+    deleteTicket: (state, action) => {
+      const ticketIdToDelete = action.payload;
+
+      state.tickets = state.tickets.filter(
+        (ticket) => ticket.id !== ticketIdToDelete
+      );
+
+      sumTicketQuantity(state);
     },
   },
 });
 
-export const { setEventDetails, setTicketDetails, updateTicketDetails } =
-  eventSlice.actions;
+export const {
+  setEventDetails,
+  setEventDetail,
+  setTicketDetails,
+  updateTicketDetails,
+  deleteTicket,
+} = eventSlice.actions;
 export const selectEventDetails = (state) => state.event;
 export default eventSlice.reducer;
