@@ -5,18 +5,35 @@ import {
   PasswordRecoveryPage,
   PasswordResetPage,
   VendorPage,
-} from '../pages';
+  EventsDashboardPage,
+  OverviewDashboardPage,
+  FinancesDashboardPage,
+  OrdersDashboardPage,
+  OrganizationSettingsDashboardPage,
+  HelpAndSupportPage,
+} from "../pages";
 
 export const routes = [
   // Landing Page
-  { path: '/', element: <HomePage /> },
+  { path: "/", element: <HomePage /> },
 
   // Authenticated Pages
-  { path: '/auth/login', element: <LoginPage /> },
-  { path: '/auth/create-account', element: <CreateAccountPage /> },
-  { path: '/auth/password-recovery', element: <PasswordRecoveryPage /> },
-  { path: '/auth/password-reset', element: <PasswordResetPage /> },
+  { path: "/auth/login", element: <LoginPage /> },
+  { path: "/auth/create-account", element: <CreateAccountPage /> },
+  { path: "/auth/password-recovery", element: <PasswordRecoveryPage /> },
+  { path: "/auth/password-reset", element: <PasswordResetPage /> },
 
   // Other Pages
-  { path: '/create-event', element: <VendorPage /> },
+  { path: "/create-event", element: <VendorPage /> },
+  { path: "/help-and-support", element: <HelpAndSupportPage /> },
+
+  // Dashboard Pages
+  { path: "/app/overview", element: <OverviewDashboardPage /> },
+  { path: "/app/events", element: <EventsDashboardPage /> },
+  { path: "/app/order", element: <OrdersDashboardPage /> },
+  { path: "/app/finance", element: <FinancesDashboardPage /> },
+  {
+    path: "/app/organization-settings",
+    element: <OrganizationSettingsDashboardPage />,
+  },
 ];

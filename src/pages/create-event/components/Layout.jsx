@@ -162,7 +162,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                         <Text>Create events</Text>
                       </Link>
                       <Link
-                        href=""
+                        href="/app/overview"
                         display="flex"
                         gap="3"
                         py="2"
