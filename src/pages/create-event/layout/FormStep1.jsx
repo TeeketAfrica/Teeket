@@ -1,8 +1,6 @@
-import FormLayout from "../components/FormLayout";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Stack, Text } from "@chakra-ui/layout";
-import DownIcon from "../../../assets/icon/DownIcon.jsx";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 import {
   FormErrorMessage,
   FormLabel,
@@ -13,436 +11,278 @@ import {
   Select,
   Divider,
   Heading,
-} from "@chakra-ui/react";
-import { selectEventDetails } from "../../../features/eventSlice.js";
-import { useSelector, useDispatch } from "react-redux";
+} from '@chakra-ui/react';
+
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import {
+  setEventDetail,
+  selectEventDetails,
+} from '../../../features/eventSlice';
+
+import { Stack, Text } from '@chakra-ui/layout';
+import FormLayout from '../components/FormLayout';
+
+import DownIcon from '../../../assets/icon/DownIcon.jsx';
 
 const FormStep1 = () => {
   const dispatch = useDispatch();
-  const eventDetails = useSelector(selectEventDetails);
-  const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  // const [tag, setTag] = useState("");
-  // const [eventTag, setEventTag] = useState([]);
 
-  const [formError] = useState({
-    invalidEventTitle: false,
-    invalidEventOrganizer: false,
-    invalidEventType: false,
-    invalidTag: false,
-    invalidEventStartDate: false,
-    invalidEventStartTime: false,
-    invalidEventEndDate: false,
-    invalidEventEndTime: false,
+  const {
+    eventTitle,
+    eventOrganizer,
+    eventType,
+    eventIndustry,
+    eventStartDate,
+    eventStartTime,
+    eventEndDate,
+    eventEndTime,
+  } = useSelector(selectEventDetails);
+
+  // Form validation schema
+  const validationSchema = Yup.object({
+    eventTitle: Yup.string().required('Please input an event title'),
+    eventOrganizer: Yup.string().required('Please input an event organizer'),
+    eventType: Yup.string().required('Please select an event type'),
+    eventIndustry: Yup.string().required('Please select an event industry'),
+    eventStartDate: Yup.date().required('Please select start date'),
+    eventStartTime: Yup.string().required('Please select start time'),
+    eventEndDate: Yup.date().required('Please select end date'),
+    eventEndTime: Yup.string().required('Please select end time'),
   });
 
-  const eventTitle = watch("eventTitle");
-  // const eventOrganizer = watch('eventOrganizer');
-  // const eventType = watch('eventType');
-  // const eventIndustry = watch('eventOrganizer');
-  const eventTag = watch("eventTag", []);
-  // const eventStartDate = watch('eventStartDate');
-  // const eventStartTime = watch('eventStartTime');
-  // const eventEndDate = watch('eventEndDate');
-  // const eventEndTime = watch('eventEndTime');
+  // Formik initialization
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      eventTitle: eventTitle || '',
+      eventOrganizer: eventOrganizer || '',
+      eventType: eventType || '',
+      eventIndustry: eventIndustry || '',
+      eventStartDate: eventStartDate || '',
+      eventStartTime: eventStartTime || '',
+      eventEndDate: eventEndDate || '',
+      eventEndTime: eventEndTime || '',
+    },
+    validationSchema: validationSchema,
+  });
 
+  // Event Options
   const eventOptions = [
-    { value: "celebration", label: "Celebration" },
-    { value: "party", label: "Party" },
-    { value: "naming", label: "Naming" },
+    { value: 'celebration', label: 'Celebration' },
+    { value: 'party', label: 'Party' },
+    { value: 'naming', label: 'Naming' },
   ];
 
-  // const handleKeyDown = (event) => {
-  //   console.log("tag:", tag);
-  //   console.log("eventTag:", eventTag);
-  //   if (event.key === "Enter" && tag.trim() !== "") {
-  //     setEventTag((prevTags) => [...prevTags, tag]);
-  //     setTag("");
-  //   }
-  // };
+  const handleInputChange = (fieldName, e) => {
+    formik.handleChange(e);
+    const data = { fieldName: fieldName, value: e.target.value };
 
-  const onSubmit = () => {
-    console.log("formOne");
+    dispatch(setEventDetail(data));
+  };
+
+  const renderFormControl = (
+    name,
+    label,
+    type,
+    placeholder,
+    options = null,
+    characterLength = false
+  ) => {
+    const isSelect = type === 'select';
+
+    return (
+      <FormControl
+        isInvalid={formik.touched[name] && formik.errors[name]}
+        key={name}
+      >
+        <FormLabel htmlFor={name}>{label}</FormLabel>
+        <InputGroup size="lg">
+          {isSelect ? (
+            <Select
+              size="lg"
+              icon={<DownIcon />}
+              placeholder={placeholder}
+              id={name}
+              name={name}
+              value={formik.values[name]}
+              onChange={(e) => handleInputChange(name, e)}
+              onFocus={() => formik.setFieldTouched(name, false)}
+              onBlur={() => formik.setFieldTouched(name, true)}
+            >
+              {options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            <Input
+              id={name}
+              name={name}
+              type={type}
+              placeholder={placeholder}
+              value={formik.values[name]}
+              onChange={(e) => handleInputChange(name, e)}
+              onFocus={() => formik.setFieldTouched(name, false)}
+              onBlur={() => formik.setFieldTouched(name, true)}
+            />
+          )}
+        </InputGroup>
+        {characterLength && (
+          <Text mt={2} as="span" fontSize="sm" color="gray.600">
+            {formik.values[name].length}/100 characters
+          </Text>
+        )}
+        <FormErrorMessage>
+          {formik.touched[name] && formik.errors[name] && formik.errors[name]}
+        </FormErrorMessage>
+      </FormControl>
+    );
   };
 
   return (
-    <>
-      <FormLayout
-        title="Basic Info"
-        description="Give your event a name and also add other basic information that will help your attendees know what this event is about"
-      />
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={4}>
-          <Box maxW="600px" w="100%">
-            <Stack spacing={4}>
-              {/* EVENT TITLE */}
-              <FormControl
-                isInvalid={errors.eventTitle || formError.invalidEventTitle}
-              >
-                <FormLabel
-                  htmlFor="eventTitle"
-                  fontSize="sm"
-                  fontWeight="medium"
-                  color="gray.800"
-                >
-                  Event title
-                </FormLabel>
-                <InputGroup size="lg">
-                  <Input
-                    id="eventTitle"
-                    placeholder="Give a clear title for the event you are creating"
-                    type="text"
-                    maxLength={100}
-                    {...register("eventTitle", {
-                      required: "You need to put in an event title",
-                    })}
-                    defaultValue={eventDetails.eventTitle}
-                    onChange={(e) =>
-                      dispatch({ ...eventDetails, eventTitle: e.target.value })
-                    }
-                  />
-                </InputGroup>
-                <FormErrorMessage color="red.500">
-                  {errors.eventTitle && errors.eventTitle.message}
-                </FormErrorMessage>
-                {!errors.eventTitle && (
-                  <Text mt={2} as="span" fontSize="sm" color="gray.600">
-                    {eventTitle ? eventTitle.length : "0"}/100 characters
-                  </Text>
-                )}
-              </FormControl>
+    <FormLayout
+      title="Basic Info"
+      description="Give your event a name and also add other basic information that will help your attendees know what this event is about"
+    >
+      <Stack spacing={4}>
+        <Box maxW="600px" w="100%">
+          <Stack spacing={4}>
+            {[
+              {
+                name: 'eventTitle',
+                label: 'Event title',
+                type: 'text',
+                placeholder:
+                  'Give a clear title for the event you are creating',
+                characterLength: true,
+              },
+              {
+                name: 'eventOrganizer',
+                label: 'Organizer',
+                type: 'text',
+                placeholder: 'Who is organizing this event?',
+              },
+            ].map(
+              ({ name, label, type, placeholder, options, characterLength }) =>
+                renderFormControl(
+                  name,
+                  label,
+                  type,
+                  placeholder,
+                  options,
+                  characterLength
+                )
+            )}
+            <Box
+              display="flex"
+              flexDirection={{ base: 'column', md: 'row' }}
+              gap={4}
+            >
+              {[
+                {
+                  name: 'eventType',
+                  label: 'Type of event',
+                  type: 'select',
+                  options: eventOptions,
+                  placeholder: 'Choose a type e.g. Celebration',
+                },
+                {
+                  name: 'eventIndustry',
+                  label: 'Industry',
+                  type: 'select',
+                  options: eventOptions,
+                  placeholder: 'Choose an industry e.g. Anime',
+                },
+              ].map(({ name, label, type, placeholder, options }) =>
+                renderFormControl(name, label, type, placeholder, options)
+              )}
+            </Box>
+          </Stack>
+        </Box>
 
-              {/* ORGANIZERS */}
-              <FormControl
-                isInvalid={
-                  errors.eventOrganizer || formError.invalidEventOrganizer
-                }
-              >
-                <FormLabel
-                  htmlFor="eventOrganizer"
-                  fontSize="sm"
-                  fontWeight="medium"
-                  color="gray.800"
-                >
-                  Organizer
-                </FormLabel>
-                <InputGroup size="lg">
-                  <Input
-                    placeholder="Who is organizing this event?"
-                    id="eventOrganizer"
-                    type="text"
-                    defaultValue=""
-                    {...register("eventOrganizer", {
-                      required: "Please input an event organizer",
-                    })}
-                  />
-                </InputGroup>
-                <FormErrorMessage color="red.500">
-                  {errors.eventOrganizer && errors.eventOrganizer.message}
-                  {formError.invalidEventOrganizer &&
-                    !errors.eventOrganizer && (
-                      <Text as="span">Input an event organizer</Text>
-                    )}
-                </FormErrorMessage>
-              </FormControl>
+        <Divider border="1px solid" borderColor="gray.300" />
 
-              {/* TYPE OF EVENT AND INDUSTRY */}
-              <Box
-                display="flex"
-                flexDirection={{ base: "column", md: "row" }}
-                gap={4}
-              >
-                <FormControl
-                  isInvalid={errors.eventType || formError.invalidEventType}
-                >
-                  <FormLabel
-                    htmlFor="eventType"
-                    fontSize="sm"
-                    fontWeight="medium"
-                    color="gray.800"
-                  >
-                    Type of event
-                  </FormLabel>
-                  <InputGroup size="lg">
-                    <Select
-                      size="lg"
-                      icon={<DownIcon />}
-                      placeholder="Choose a type e.g. Celebration"
-                      id="eventType"
-                      defaultValue=""
-                      {...register("eventType", {
-                        required: "Please select an event type",
-                      })}
-                    >
-                      {eventOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </Select>
-                  </InputGroup>
-                  <FormErrorMessage color="red.500">
-                    {errors.eventType && errors.eventType.message}
-                    {formError.invalidEventType && !errors.eventType && (
-                      <Text as="span">Input an event organizer</Text>
-                    )}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  isInvalid={
-                    errors.eventIndustry || formError.invalidEventOrganizer
-                  }
-                >
-                  <FormLabel
-                    htmlFor="eventIndustry"
-                    fontSize="sm"
-                    fontWeight="medium"
-                    color="gray.800"
-                  >
-                    Industry
-                  </FormLabel>
-                  <InputGroup size="lg">
-                    <Select
-                      size="lg"
-                      icon={<DownIcon />}
-                      placeholder="Choose an industry e.g. Anime"
-                      id="eventIndustry"
-                      defaultValue=""
-                      {...register("eventIndustry", {
-                        required: "Please select an event industry",
-                      })}
-                    >
-                      {eventOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </Select>
-                  </InputGroup>
-                  <FormErrorMessage color="red.500">
-                    {errors.eventIndustry && errors.eventIndustry.message}
-                    {formError.invalidEventOrganizer &&
-                      !errors.eventOrganizer && (
-                        <Text as="span">Input an event organizer</Text>
-                      )}
-                  </FormErrorMessage>
-                </FormControl>
-              </Box>
-            </Stack>
-          </Box>
+        {/* Tags */}
+        <Box maxW="600px" w="100%">
+          <Stack spacing={4}>
+            <Heading as="h3" color="black" fontSize="lg" fontWeight="semibold">
+              Tags
+            </Heading>
 
-          <Divider border="1px solid" borderColor="gray.300" />
+            {renderFormControl(
+              'eventTag',
+              'Tags',
+              'text',
+              'Type a tag and press enter'
+            )}
+          </Stack>
+        </Box>
 
-          {/* TAGS */}
-          <Box maxW="600px" w="100%">
-            <Stack spacing={4}>
-              <Heading
-                as="h3"
-                color="black"
-                fontSize="lg"
-                fontWeight="semibold"
-              >
-                Tags
-              </Heading>
+        <Divider border="1px solid" borderColor="gray.300" />
 
-              <FormControl isInvalid={errors.eventTag || formError.invalidTag}>
-                <FormLabel htmlFor="eventTag" color="gray.600">
-                  Tags will help make it much easier to find your event.
-                </FormLabel>
-                <InputGroup size="lg">
-                  <Input
-                    placeholder="Type a tag and press enter"
-                    id="eventTag"
-                    type="text"
-                    defaultValue=""
-                    {...register("eventTag", {
-                      required: "This is required",
-                    })}
-                  />
-                </InputGroup>
-                <Text>{eventTag}</Text>
-                <FormErrorMessage color="red.500">
-                  {errors.eventTag && errors.eventTag.message}
-                  {formError.invalidTag && !errors.eventTag && (
-                    <Text as="span">Input an event tag</Text>
-                  )}
-                </FormErrorMessage>
-                <Text mt={2} as="span" fontSize="sm" color="gray.600">
-                  {eventTag ? eventTag.length : "0"}/5 tags
-                </Text>
-              </FormControl>
-            </Stack>
-          </Box>
+        {/* Date and Time */}
+        <Box maxW="600px" w="100%">
+          <Stack spacing={4}>
+            <Heading as="h3" color="black" fontSize="lg" fontWeight="semibold">
+              Date and time
+            </Heading>
+            <Text color="gray.600">
+              Tags will help make it much easier to find your event.
+            </Text>
 
-          <Divider border="1px solid" borderColor="gray.300" />
+            {/* Start Date and Tine */}
+            <Box
+              display="flex"
+              flexDirection={{ base: 'column', md: 'row' }}
+              gap={4}
+            >
+              {[
+                {
+                  name: 'eventStartDate',
+                  label: 'Start date',
+                  type: 'date',
+                },
+                {
+                  name: 'eventStartTime',
+                  label: 'Start time',
+                  type: 'time',
+                },
+              ].map(({ name, label, type }) =>
+                renderFormControl(name, label, type)
+              )}
+            </Box>
 
-          {/* DATE AND TIME */}
-          <Box maxW="600px" w="100%">
-            <Stack spacing={4}>
-              <Heading
-                as="h3"
-                color="black"
-                fontSize="lg"
-                fontWeight="semibold"
-              >
-                Date and time
-              </Heading>
-              <Text color="gray.600">
-                Tags will help make it much easier to find your event.
-              </Text>
-
-              {/* START DATE AND TIME */}
-              <Box
-                display="flex"
-                flexDirection={{ base: "column", md: "row" }}
-                gap={4}
-              >
-                <FormControl
-                  isInvalid={
-                    errors.eventStartDate || formError.invalidEventStartDate
-                  }
-                >
-                  <FormLabel
-                    htmlFor="eventStartDate"
-                    fontSize="sm"
-                    fontWeight="medium"
-                    color="gray.800"
-                  >
-                    Start date
-                  </FormLabel>
-                  <InputGroup size="lg">
-                    <Input
-                      id="eventStartDate"
-                      type="date"
-                      defaultValue=""
-                      {...register("eventStartDate", {
-                        required: "This is required",
-                      })}
-                    />
-                  </InputGroup>
-                  <FormErrorMessage color="red.500">
-                    {errors.eventStartDate && errors.eventStartDate.message}
-                    {formError.invalidEventStartDate &&
-                      !errors.eventStartDate && (
-                        <Text as="span">Insert a start date</Text>
-                      )}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  isInvalid={
-                    errors.eventStartTime || formError.invalidEventStartTime
-                  }
-                >
-                  <FormLabel
-                    htmlFor="eventStartTime"
-                    fontSize="sm"
-                    fontWeight="medium"
-                    color="gray.800"
-                  >
-                    Start time
-                  </FormLabel>
-                  <InputGroup size="lg">
-                    <Input
-                      placeholder="Who is organizing this event?"
-                      id="eventStartTime"
-                      type="time"
-                      defaultValue=""
-                      {...register("eventStartTime", {
-                        required: "This is required",
-                      })}
-                    />
-                  </InputGroup>
-                  <FormErrorMessage color="red.500">
-                    {errors.eventStartTime && errors.eventStartTime.message}
-                    {formError.invalidEventStartTime &&
-                      !errors.eventStartTime && (
-                        <Text as="span">Input a start time</Text>
-                      )}
-                  </FormErrorMessage>
-                </FormControl>
-              </Box>
-
-              {/* END DATE AND TIME */}
-              <Box
-                display="flex"
-                flexDirection={{ base: "column", md: "row" }}
-                gap={4}
-                mb={1}
-              >
-                <FormControl
-                  isInvalid={
-                    errors.eventEndDate || formError.invalidEventEndDate
-                  }
-                >
-                  <FormLabel
-                    htmlFor="eventEndDate"
-                    fontSize="sm"
-                    fontWeight="medium"
-                    color="gray.800"
-                  >
-                    End date
-                  </FormLabel>
-                  <InputGroup size="lg">
-                    <Input
-                      id="eventEndDate"
-                      type="date"
-                      defaultValue=""
-                      {...register("eventEndDate", {
-                        required: "This is required",
-                      })}
-                    />
-                  </InputGroup>
-                  <FormErrorMessage color="red.500">
-                    {errors.eventEndDate && errors.eventEndDate.message}
-                    {formError.invalidEventEndDate && !errors.eventEndDate && (
-                      <Text as="span">Insert an end date</Text>
-                    )}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  isInvalid={
-                    errors.eventEndTime || formError.invalidEventEndTime
-                  }
-                >
-                  <FormLabel
-                    htmlFor="eventEndTime"
-                    fontSize="sm"
-                    fontWeight="medium"
-                    color="gray.800"
-                  >
-                    End time
-                  </FormLabel>
-                  <InputGroup size="lg">
-                    <Input
-                      placeholder="Who is organizing this event?"
-                      id="eventEndTime"
-                      type="time"
-                      defaultValue=""
-                      {...register("eventEndTime", {
-                        required: "This is required",
-                      })}
-                    />
-                  </InputGroup>
-                  <FormErrorMessage color="red.500">
-                    {errors.eventEndTime && errors.eventEndTime.message}
-                    {formError.invalidEventEndTime && !errors.eventEndTime && (
-                      <Text as="span">Input end time</Text>
-                    )}
-                  </FormErrorMessage>
-                </FormControl>
-              </Box>
-              <Text color="blue.400" fontWeight="semibold" fontSize="sm">
-                Event start date and time will be displayed
-              </Text>
-            </Stack>
-          </Box>
-        </Stack>
-      </form>
-    </>
+            {/* End Date and Time */}
+            <Box
+              display="flex"
+              flexDirection={{ base: 'column', md: 'row' }}
+              gap={4}
+              mb={1}
+            >
+              {[
+                {
+                  name: 'eventEndDate',
+                  label: 'End date',
+                  type: 'date',
+                },
+                {
+                  name: 'eventEndTime',
+                  label: 'End time',
+                  type: 'time',
+                },
+              ].map(({ name, label, type }) =>
+                renderFormControl(name, label, type)
+              )}
+            </Box>
+            <Text color="blue.400" fontWeight="semibold" fontSize="sm">
+              Event start date and time will be displayed
+            </Text>
+          </Stack>
+        </Box>
+      </Stack>
+    </FormLayout>
   );
 };
 

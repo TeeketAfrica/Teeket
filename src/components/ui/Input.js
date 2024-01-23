@@ -1,5 +1,4 @@
 const inputStyles = {
-  // 1. We can update the base styles
   baseStyle: {
     field: {
       fontSize: "sm",

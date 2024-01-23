@@ -2,7 +2,7 @@ import { Box, Button, Text, Image } from '@chakra-ui/react';
 
 import Illustration from '../../../assets/icon/Illustration.svg';
 
-const Ticket = ({ count, type, price }) => {
+const Ticket = ({ data, handleOnclick }) => {
   return (
     <Box>
       <Box
@@ -20,7 +20,12 @@ const Ticket = ({ count, type, price }) => {
         boxShadow=" 0px 20px 60px 0px rgba(255, 255, 255, 0.25) inset"
       >
         <Box display="flex" flexDirection="column" gap="6">
-          <Button width="fit-content" size="sm" variant="secondary">
+          <Button
+            width="fit-content"
+            size="sm"
+            variant="secondary"
+            onClick={() => handleOnclick({ isOpen: true, data: data })}
+          >
             Manage
           </Button>
           <Box>
@@ -29,10 +34,10 @@ const Ticket = ({ count, type, price }) => {
               fontWeight="semibold"
               color="rgba(255, 255, 255, 0.75)"
             >
-              {count} {type} tickets
+              {data.ticketQuantity} {data.ticketName} tickets
             </Text>
             <Text fontSize="5xl" fontWeight="bold">
-              ${price}
+              ${data.ticketPrice}
             </Text>
           </Box>
         </Box>

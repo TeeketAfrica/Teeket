@@ -8,18 +8,22 @@ import Textarea from "./components/ui/Textarea";
 import Radio from "./components/ui/Radio";
 import NumberInput from "./components/ui/NumberInput";
 import Select from "./components/ui/Select";
+import FormLabel from "./components/ui/FormLabel";
+import FormErrorMessage from "./components/ui/FormErrorMessage";
 
 // example theme
 export const theme = extendTheme({
   components: {
     Button,
     Input,
+    FormLabel,
+    FormErrorMessage,
     Checkbox,
     Progress,
     Textarea,
     Radio,
-    NumberInput,
     Select,
+    NumberInput,
   },
   colors: {
     transparent: "transparent",
