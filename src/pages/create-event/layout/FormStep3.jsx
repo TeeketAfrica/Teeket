@@ -49,7 +49,7 @@ const FormStep3 = () => {
     useSelector(selectEventDetails);
 
   const [isTicketOpen, setIsTicketOpen] = useState({
-    isOpen: false,
+    isModalOpen: false,
     data: null,
   });
 
@@ -169,7 +169,7 @@ const FormStep3 = () => {
                   leftIcon={<Image src={PlusIcon} alt="icon" />}
                   variant="secondary"
                   size="sm"
-                  onClick={() => setIsTicketOpen({ isOpen: true })}
+                  onClick={() => setIsTicketOpen({ isModalOpen: true })}
                 >
                   New ticket
                 </Button>
@@ -216,7 +216,7 @@ const FormStep3 = () => {
                 leftIcon={<Image src={PlusLightIcon} alt="icon" />}
                 size="lg"
                 variant="primary"
-                onClick={() => setIsTicketOpen({ isOpen: true })}
+                onClick={() => setIsTicketOpen({ isModalOpen: true })}
               >
                 New Ticket
               </Button>
