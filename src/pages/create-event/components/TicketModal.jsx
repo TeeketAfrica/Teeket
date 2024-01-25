@@ -83,9 +83,12 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
   };
 
   const handleSaveTicketDetails = () => {
-    dispatch(setTicketDetails(formik.values));
-    formik.resetForm();
-    onCloseModal({ isModalOpen: false });
+    if (formik.isValid) {
+      dispatch(setTicketDetails(formik.values));
+
+      formik.resetForm();
+      onCloseModal({ isModalOpen: false });
+    }
   };
 
   const handleUpdateTicketDetails = (id) => {
@@ -99,10 +102,11 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
   const handleDeleteTicket = (id) => {
     if (data) {
       dispatch(deleteTicket(id));
+
+      formik.resetForm();
+      onClose();
+      onCloseModal({ isModalOpen: false });
     }
-    formik.resetForm();
-    onClose();
-    onCloseModal({ isModalOpen: false });
   };
 
   return (
