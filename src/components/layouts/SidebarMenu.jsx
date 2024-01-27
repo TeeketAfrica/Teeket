@@ -15,6 +15,7 @@ import DarkEventsIcon from "../../assets/icon/darkloudspeaker.svg";
 import OrderIcon from "../../assets/icon/receipt.svg";
 import FinanceIcon from "../../assets/icon/money.svg";
 import DarkFinanceIcon from "../../assets/icon/darkmoney.svg";
+import DarkOrderIcon from "../../assets/icon/DarkOrderIcon.svg";
 import Settings from "../../assets/icon/sidebarsettings.svg";
 import Help from "../../assets/icon/question-circle.svg";
 import SignOut from "../../assets/icon/sign-out.svg";
@@ -52,7 +53,7 @@ const SidebarMenu = () => {
             />
             <SidebarOptions
               icon={OrderIcon}
-              darkIcon={DarkFinanceIcon}
+              darkIcon={DarkOrderIcon}
               title="Order"
               link="/app/order"
             />
