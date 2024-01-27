@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
 import {
   Image,
@@ -42,11 +40,10 @@ import UpArrowIcon from '../../../assets/icon/UpArrow.svg';
 import CircleCheckIcon from '../../../assets/icon/CircleCheck.svg';
 import InfoTriangleIcon from '../../../assets/icon/InfoTriangle.svg';
 
-const FormStep3 = () => {
+const FormStep3 = ({ formik }) => {
   const dispatch = useDispatch();
 
-  const { tickets, totalTicketQuantities, eventEstimatedSoldTicket } =
-    useSelector(selectEventDetails);
+  const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
 
   const [isTicketOpen, setIsTicketOpen] = useState({
     isModalOpen: false,
@@ -54,19 +51,6 @@ const FormStep3 = () => {
   });
 
   const [isInputFocused, setIsInputFocused] = useState(false);
-
-  // Formik initialization
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      eventEstimatedSoldTicket: eventEstimatedSoldTicket || '',
-    },
-    validationSchema: Yup.object({
-      eventEstimatedSoldTicket: Yup.string().required(
-        'Please select/input an estimated number of tickets to be sold'
-      ),
-    }),
-  });
 
   const ticketQuantity =
     formik.values.eventEstimatedSoldTicket - totalTicketQuantities;

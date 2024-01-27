@@ -1,6 +1,3 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
 import {
   Box,
   Divider,
@@ -37,11 +34,10 @@ import Calendar from '../../../assets/icon/calendar-alt.svg';
 import TicketNumber from '../../../assets/icon/TicketNumber.svg';
 import TicketPrice from '../../../assets/icon/TicketPrice.svg';
 
-const PublishEvent = () => {
+const PublishEvent = ({ formik }) => {
   const dispatch = useDispatch();
 
   const {
-    publishLive,
     eventOrganizer,
     eventTitle,
     eventAbout,
@@ -53,17 +49,6 @@ const PublishEvent = () => {
     tickets,
     totalTicketQuantities,
   } = useSelector(selectEventDetails);
-
-  // Formik initialization
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      publishLive: publishLive || '',
-    },
-    validationSchema: Yup.object({
-      publishLive: Yup.string().required('Please select publish or draft'),
-    }),
-  });
 
   const handleInputChange = (fieldName, e) => {
     const data = { fieldName: fieldName, value: e };
@@ -231,6 +216,7 @@ const PublishEvent = () => {
           </Stack>
         </Box>
         <Divider border="1px solid" borderColor="gray.300" />
+
         <Box>
           <Stack direction="column" spacing={6}>
             <Box>
