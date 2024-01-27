@@ -1,6 +1,3 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
 import {
   FormErrorMessage,
   FormLabel,
@@ -14,58 +11,15 @@ import {
 } from '@chakra-ui/react';
 
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import {
-  setEventDetail,
-  selectEventDetails,
-} from '../../../features/eventSlice';
+import { setEventDetail } from '../../../features/eventSlice';
 
 import { Stack, Text } from '@chakra-ui/layout';
 import FormLayout from '../components/FormLayout';
 
 import DownIcon from '../../../assets/icon/DownIcon.jsx';
 
-const FormStep1 = () => {
+const FormStep1 = ({ formik }) => {
   const dispatch = useDispatch();
-
-  const {
-    eventTitle,
-    eventOrganizer,
-    eventType,
-    eventIndustry,
-    eventStartDate,
-    eventStartTime,
-    eventEndDate,
-    eventEndTime,
-  } = useSelector(selectEventDetails);
-
-  // Form validation schema
-  const validationSchema = Yup.object({
-    eventTitle: Yup.string().required('Please input an event title'),
-    eventOrganizer: Yup.string().required('Please input an event organizer'),
-    eventType: Yup.string().required('Please select an event type'),
-    eventIndustry: Yup.string().required('Please select an event industry'),
-    eventStartDate: Yup.date().required('Please select start date'),
-    eventStartTime: Yup.string().required('Please select start time'),
-    eventEndDate: Yup.date().required('Please select end date'),
-    eventEndTime: Yup.string().required('Please select end time'),
-  });
-
-  // Formik initialization
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      eventTitle: eventTitle || '',
-      eventOrganizer: eventOrganizer || '',
-      eventType: eventType || '',
-      eventIndustry: eventIndustry || '',
-      eventStartDate: eventStartDate || '',
-      eventStartTime: eventStartTime || '',
-      eventEndDate: eventEndDate || '',
-      eventEndTime: eventEndTime || '',
-    },
-    validationSchema: validationSchema,
-  });
 
   // Event Options
   const eventOptions = [

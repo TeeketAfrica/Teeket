@@ -7,6 +7,12 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
   HStack,
   Radio,
   RadioGroup,
@@ -19,6 +25,7 @@ import {
   Input,
   Button,
 } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 
 import { useDispatch } from 'react-redux';
 import {
@@ -35,7 +42,8 @@ import MultiplyIcon from '../../../assets/icon/Multiply.svg';
 
 const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
   const dispatch = useDispatch();
-  const { isOpen, data } = ticketState;
+  const { isModalOpen, data } = ticketState;
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const ticketQuantity = data
     ? selectedQuantity + data.ticketQuantity
@@ -71,13 +79,16 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
 
   const handlerOnClose = () => {
     formik.resetForm();
-    onCloseModal({ isOpen: false });
+    onCloseModal({ isModalOpen: false });
   };
 
   const handleSaveTicketDetails = () => {
-    dispatch(setTicketDetails(formik.values));
-    formik.resetForm();
-    onCloseModal({ isOpen: false });
+    if (formik.isValid) {
+      dispatch(setTicketDetails(formik.values));
+
+      formik.resetForm();
+      onCloseModal({ isModalOpen: false });
+    }
   };
 
   const handleUpdateTicketDetails = (id) => {
@@ -85,19 +96,21 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
       dispatch(updateTicketDetails({ id, ...formik.values }));
     }
     formik.resetForm();
-    onCloseModal({ isOpen: false });
+    onCloseModal({ isModalOpen: false });
   };
 
   const handleDeleteTicket = (id) => {
     if (data) {
       dispatch(deleteTicket(id));
+
+      formik.resetForm();
+      onClose();
+      onCloseModal({ isModalOpen: false });
     }
-    formik.resetForm();
-    onCloseModal({ isOpen: false });
   };
 
   return (
-    <Slide in={isOpen} direction="right" style={{ zIndex: '999999' }}>
+    <Slide in={isModalOpen} direction="right" style={{ zIndex: '999999' }}>
       <Box
         maxW="567px"
         width="100%"
@@ -273,10 +286,11 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
 
           {data && (
             <Button
-              onClick={() => handleDeleteTicket(data.id)}
+              onClick={onOpen}
               leftIcon={<Image src={TrashIcon} alt="icon" />}
               variant="ghost"
               color="red.400"
+              size="sm"
               width="fit-content"
             >
               Delete this ticket
@@ -317,6 +331,32 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           )}
         </Box>
       </Box>
+
+      {/* Delete Ticket Modal */}
+      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay bg="rgba(20, 23, 20, 0.5)" />
+        <ModalContent>
+          <ModalHeader>Are you absolutely sure?</ModalHeader>
+          <ModalBody>
+            <Text>
+              This action cannot be undone. This will permanently delete this
+              ticket
+            </Text>
+          </ModalBody>
+          <ModalFooter gap="2">
+            <Button onClick={onClose} variant="secondary" size="sm">
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => handleDeleteTicket(data.id)}
+            >
+              Continue
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Slide>
   );
 };

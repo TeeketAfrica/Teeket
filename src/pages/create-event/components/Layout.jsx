@@ -24,7 +24,13 @@ import SignOut from "../../../assets/icon/SignOut.svg";
 import Container from "../../../components/ui/Container";
 import SideNav from "./SideNav";
 
-const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
+const Layout = ({
+  children,
+  activeStepColor,
+  nextStep,
+  prevStep,
+  publishEvent,
+}) => {
   const [mobileToggle, setMobileToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
   const ref = useRef();
@@ -332,7 +338,7 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
                 leftIcon={<Image src={Rocket} alt="rocket" />}
                 size="lg"
                 variant="accent"
-                type="submit"
+                onClick={publishEvent}
               >
                 Publish Event
               </Button>
@@ -340,10 +346,9 @@ const Layout = ({ children, activeStepColor, nextStep, prevStep }) => {
             {activeStepColor !== steps.length - 1 && (
               <Button
                 variant="primary"
+                type="submit"
                 size="lg"
-                onClick={() => {
-                  nextStep();
-                }}
+                onClick={nextStep}
               >
                 Save and continue
               </Button>

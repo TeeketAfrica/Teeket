@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
 import {
   Stack,
@@ -22,11 +20,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import {
-  setEventDetail,
-  selectEventDetails,
-} from '../../../features/eventSlice';
+import { setEventDetail } from '../../../features/eventSlice';
 
 import FormLayout from '../components/FormLayout';
 import ImageUpload from '../components/ImageUpload';
@@ -34,46 +28,10 @@ import ImageUpload from '../components/ImageUpload';
 import Refresh from '../../../assets/icon/Refresh.svg';
 import Map from '../../../assets/icon/Map.svg';
 
-const FormStep2 = () => {
+const FormStep2 = ({ formik }) => {
   const dispatch = useDispatch();
 
-  const { eventAbout, eventHosting, eventLocation } =
-    useSelector(selectEventDetails);
-
   const [image, setImage] = useState(null);
-
-  // Form validation schema
-  const validationSchema = Yup.object({
-    eventAbout: Yup.string().required(
-      'Please provide a description for the event'
-    ),
-    eventHosting: Yup.string().required(
-      'Please specify if the event will be hosted online or physical'
-    ),
-    eventLocation: Yup.string().when(
-      ['eventHosting'],
-      (eventHosting, schema) => {
-        if (eventHosting === 'online') {
-          return schema.required(
-            'Please input a valid event link, such as a Zoom link.'
-          );
-        } else {
-          return schema.required('Please input an address for the event');
-        }
-      }
-    ),
-  });
-
-  // Formik initialization
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      eventAbout: eventAbout || '',
-      eventHosting: eventHosting || '',
-      eventLocation: eventLocation || '',
-    },
-    validationSchema: validationSchema,
-  });
 
   const handleInputChange = (fieldName, e) => {
     let data;

@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
 import {
   Image,
@@ -42,31 +40,17 @@ import UpArrowIcon from '../../../assets/icon/UpArrow.svg';
 import CircleCheckIcon from '../../../assets/icon/CircleCheck.svg';
 import InfoTriangleIcon from '../../../assets/icon/InfoTriangle.svg';
 
-const FormStep3 = () => {
+const FormStep3 = ({ formik }) => {
   const dispatch = useDispatch();
 
-  const { tickets, totalTicketQuantities, eventEstimatedSoldTicket } =
-    useSelector(selectEventDetails);
+  const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
 
   const [isTicketOpen, setIsTicketOpen] = useState({
-    isOpen: false,
+    isModalOpen: false,
     data: null,
   });
 
   const [isInputFocused, setIsInputFocused] = useState(false);
-
-  // Formik initialization
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      eventEstimatedSoldTicket: eventEstimatedSoldTicket || '',
-    },
-    validationSchema: Yup.object({
-      eventEstimatedSoldTicket: Yup.string().required(
-        'Please select/input an estimated number of tickets to be sold'
-      ),
-    }),
-  });
 
   const ticketQuantity =
     formik.values.eventEstimatedSoldTicket - totalTicketQuantities;
@@ -169,7 +153,7 @@ const FormStep3 = () => {
                   leftIcon={<Image src={PlusIcon} alt="icon" />}
                   variant="secondary"
                   size="sm"
-                  onClick={() => setIsTicketOpen({ isOpen: true })}
+                  onClick={() => setIsTicketOpen({ isModalOpen: true })}
                 >
                   New ticket
                 </Button>
@@ -216,7 +200,7 @@ const FormStep3 = () => {
                 leftIcon={<Image src={PlusLightIcon} alt="icon" />}
                 size="lg"
                 variant="primary"
-                onClick={() => setIsTicketOpen({ isOpen: true })}
+                onClick={() => setIsTicketOpen({ isModalOpen: true })}
               >
                 New Ticket
               </Button>

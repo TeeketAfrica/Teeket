@@ -48,6 +48,11 @@ const buttonStyles = {
       border: '2px solid',
       borderColor: 'gray.300',
     },
+
+    danger: {
+      bg: 'red.400',
+      color: 'white',
+    },
   },
 };
 

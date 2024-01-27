@@ -24,7 +24,7 @@ const Ticket = ({ data, handleOnclick }) => {
             width="fit-content"
             size="sm"
             variant="secondary"
-            onClick={() => handleOnclick({ isOpen: true, data: data })}
+            onClick={() => handleOnclick({ isModalOpen: true, data: data })}
           >
             Manage
           </Button>
