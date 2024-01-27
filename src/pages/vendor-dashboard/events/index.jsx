@@ -3,6 +3,7 @@ import DashboardLayout from "../../../components/layouts/DashboardLayout";
 import DashboardPageHeaders from "../../../components/layouts/DashboardPageHeaders";
 import Export from "../../../assets/icon/Export.svg";
 import AddEvent from "../../../assets/icon/AddEvent.svg";
+import EventTable from "./components/EventTable";
 
 const EventsDashboardPage = () => {
   return (
@@ -13,7 +14,6 @@ const EventsDashboardPage = () => {
         direction={["column", "row"]}
         justifyContent="space-between"
         w="100%"
-        spacing="24px"
         alignItems="flex-start"
         pb={6}
         px={8}
@@ -33,6 +33,7 @@ const EventsDashboardPage = () => {
           </Button>
         </HStack>
       </Stack>
+      <EventTable />
     </DashboardLayout>
   );
 };

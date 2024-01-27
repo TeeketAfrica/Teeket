@@ -1,7 +1,8 @@
 import { Image } from "@chakra-ui/image";
-import { Box, Heading, Text } from "@chakra-ui/layout";
+import { Box, Heading, Text, VStack } from "@chakra-ui/layout";
 import { useTheme } from "@chakra-ui/system";
 import InProgress from "../../assets/icon/InProgress.svg";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const theme = useTheme();
@@ -40,6 +41,10 @@ const HomePage = () => {
           In progress
         </Text>
       </Box>
+      <VStack spacing={6} color="white" mt={6}>
+        <Link to="/auth/login">Login</Link>
+        <Link to="/create-event">Create event</Link>
+      </VStack>
     </Box>
   );
 };
