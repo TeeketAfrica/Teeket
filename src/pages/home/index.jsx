@@ -3,6 +3,7 @@ import { Box, Heading, Text, VStack } from "@chakra-ui/layout";
 import { useTheme } from "@chakra-ui/system";
 import InProgress from "../../assets/icon/InProgress.svg";
 import { Link } from "react-router-dom";
+import Container from "../../components/ui/Container";
 
 const HomePage = () => {
   const theme = useTheme();
@@ -19,7 +20,7 @@ const HomePage = () => {
       <Heading
         as="h1"
         textAlign="center"
-        fontSize="150px" // USE 'heading.2xl' to test font, I just made it big for now
+        fontSize={["75px", "150px"]} // USE 'heading.2xl' to test font, I just made it big for now
         fontWeight="black"
         fontFamily="heading"
         color={theme.colors.gray[100]}
