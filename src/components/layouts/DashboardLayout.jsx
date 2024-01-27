@@ -9,7 +9,7 @@ const DashboardLayout = ({ children }) => {
         <SidebarMenu />
         <Box w="100%">
           <DashboardHeader />
-          <Box py={6} pb={10} px={8}>
+          <Box py={6} pb={10}>
             {children}
           </Box>
         </Box>
