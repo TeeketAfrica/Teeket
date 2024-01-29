@@ -84,7 +84,13 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
 
   const handleSaveTicketDetails = () => {
     if (formik.isValid) {
-      dispatch(setTicketDetails(formik.values));
+      const { values } = formik;
+      const ticketType = values.ticketType;
+      const updatedValues = {
+        ...values,
+        ticketPrice: ticketType === 'free' ? 0 : values.ticketPrice,
+      };
+      dispatch(setTicketDetails(updatedValues));
 
       formik.resetForm();
       onCloseModal({ isModalOpen: false });
@@ -211,39 +217,43 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl
-            isInvalid={formik.touched.ticketPrice && formik.errors.ticketPrice}
-          >
-            <FormLabel htmlFor="ticketPrice">Ticket price</FormLabel>
+          {formik.values.ticketType !== 'free' && (
+            <FormControl
+              isInvalid={
+                formik.touched.ticketPrice && formik.errors.ticketPrice
+              }
+            >
+              <FormLabel htmlFor="ticketPrice">Ticket price</FormLabel>
 
-            <InputGroup size="lg">
-              <InputRightElement pointerEvents="none">
-                <Image src={PriceIcon} alt="icon" />
-              </InputRightElement>
-              <InputLeftElement pointerEvents="none">
-                <Image src={DollarIcon} alt="icon" />
-              </InputLeftElement>
+              <InputGroup size="lg">
+                <InputRightElement pointerEvents="none">
+                  <Image src={PriceIcon} alt="icon" />
+                </InputRightElement>
+                <InputLeftElement pointerEvents="none">
+                  <Image src={DollarIcon} alt="icon" />
+                </InputLeftElement>
 
-              <Input
-                id="ticketPrice"
-                name="ticketPrice"
-                type="number"
-                placeholder="set ticket price"
-                value={formik.values.ticketPrice}
-                onChange={formik.handleChange}
-                onBlur={() => formik.setFieldTouched('ticketPrice', true)}
-              />
-            </InputGroup>
-            {formik.values.ticketPrice && (
-              <Text fontSize="sm" fontWeight="normal" color="gray.600">
-                Our 2% commission will taken from each tickets sold
-              </Text>
-            )}
+                <Input
+                  id="ticketPrice"
+                  name="ticketPrice"
+                  type="number"
+                  placeholder="set ticket price"
+                  value={formik.values.ticketPrice}
+                  onChange={formik.handleChange}
+                  onBlur={() => formik.setFieldTouched('ticketPrice', true)}
+                />
+              </InputGroup>
+              {formik.values.ticketPrice && (
+                <Text fontSize="sm" fontWeight="normal" color="gray.600">
+                  Our 2% commission will taken from each tickets sold
+                </Text>
+              )}
 
-            <FormErrorMessage>
-              {formik.touched.ticketPrice && formik.errors.ticketPrice}
-            </FormErrorMessage>
-          </FormControl>
+              <FormErrorMessage>
+                {formik.touched.ticketPrice && formik.errors.ticketPrice}
+              </FormErrorMessage>
+            </FormControl>
+          )}
 
           <FormControl
             isInvalid={
