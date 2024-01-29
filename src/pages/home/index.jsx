@@ -3,7 +3,6 @@ import { Box, Heading, Text, VStack } from "@chakra-ui/layout";
 import { useTheme } from "@chakra-ui/system";
 import InProgress from "../../assets/icon/InProgress.svg";
 import { Link } from "react-router-dom";
-import Container from "../../components/ui/Container";
 
 const HomePage = () => {
   const theme = useTheme();

@@ -4,12 +4,12 @@ import SidebarMenu from "./SidebarMenu";
 
 const DashboardLayout = ({ children }) => {
   return (
-    <Box h="100vh">
-      <Stack direction="row" spacing={0}>
+    <Box h="100vh" w="100vw">
+      <Stack h="100vh" w="100%" direction="row" spacing={0}>
         <SidebarMenu />
-        <Box w="100%">
+        <Box h="100vh" w="100%">
           <DashboardHeader />
-          <Box py={6} pb={10}>
+          <Box h="100%" py={6} pb={10} overflowY="scroll">
             {children}
           </Box>
         </Box>
