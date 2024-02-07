@@ -62,12 +62,12 @@ html {
     color: #141714;
   }
 
-  li:first-child {
+  /* li:first-child {
     margin-right: 350px;
   }
   li:last-child {
     margin-left: 350px;
-  }
+  } */
 
   li {
     color: #cbd1cb;

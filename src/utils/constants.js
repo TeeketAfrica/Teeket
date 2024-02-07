@@ -6,6 +6,7 @@ import Img5 from "../assets/img/Avatars-4.png";
 import Img6 from "../assets/img/Avatars-5.png";
 import Img7 from "../assets/img/Avatars-6.png";
 import Img8 from "../assets/img/Avatars-7.png";
+import Avatar from "../assets/img/Avatars.png";
 import ActionBtn from "../assets/icon/ActionBtn.svg";
 
 export const eventFilter = [
@@ -23,7 +24,9 @@ export const eventFilter = [
   },
 ];
 
-export const tableHead = [
+// EVENT PAGE
+
+export const eventTableHead = [
   {
     head: "Company",
   },
@@ -44,9 +47,37 @@ export const tableHead = [
   },
 ];
 
-// export const tableData = [];
+// ORDER PAGE
 
-export const tableData = [
+export const ordersTableHead = [
+  {
+    head: "Order ID",
+  },
+  {
+    head: "Attendee",
+  },
+  {
+    head: "Event",
+  },
+  {
+    head: "Ticket type",
+  },
+  {
+    head: "Ticket cost",
+  },
+  {
+    head: "Created",
+  },
+  {
+    head: "",
+  },
+];
+
+// export const eventTableData = [];
+
+// EVENT PAGE
+
+export const eventTableData = [
   {
     img: Img1,
     eventTitle: "Nigeria Anime Connect",
@@ -310,5 +341,300 @@ export const tableData = [
     dateCreated: "02/01/2024",
     status: "Coming soon",
     action: ActionBtn,
+  },
+];
+
+// ORDER PAGE
+
+// export const ordersTableData = [];
+
+export const ordersTableData = [
+  {
+    orderId: "NA29381",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img1,
+    eventTitle: "Nigeria Anime Connect",
+    eventCategory: "AnimeconNg",
+    ticketType: "Genin",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "OC29381",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img2,
+    eventTitle: "Outdoor Conveyning",
+    eventCategory: "OrgNco",
+    ticketType: "Basic",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "SB39141",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img3,
+    eventTitle: "Syposium brit",
+    eventCategory: "TechlifeStyle",
+    ticketType: "Regular",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "WD91841",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img4,
+    eventTitle: "Wine and Dine Abuja",
+    eventCategory: "Ocenia",
+    ticketType: "Sipper",
+    ticketCost: "$6",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "2W31941",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img5,
+    eventTitle: "247 Worship",
+    eventCategory: "koinonia",
+    ticketType: "Ticket",
+    ticketCost: "Free",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "BP29381",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img6,
+    eventTitle: "Book and Paint Lagos",
+    eventCategory: "Readers club",
+    ticketType: "Ticket",
+    ticketCost: "Free",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "TV49501",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img6,
+    eventTitle: "The view",
+    eventCategory: "NomadGroups",
+    ticketType: "Regular",
+    ticketCost: "$10",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "NA29385",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img6,
+    eventTitle: "Nigeria Anime Connect",
+    eventCategory: "AnimeconNg",
+    ticketType: "Genin",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "2W31941",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img5,
+    eventTitle: "247 Worship",
+    eventCategory: "koinonia",
+    ticketType: "Ticket",
+    ticketCost: "Free",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "BP29381",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img6,
+    eventTitle: "Book and Paint Lagos",
+    eventCategory: "Readers club",
+    ticketType: "Ticket",
+    ticketCost: "Free",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "TV49501",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img6,
+    eventTitle: "The view",
+    eventCategory: "NomadGroups",
+    ticketType: "Regular",
+    ticketCost: "$10",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "NA29385",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img6,
+    eventTitle: "Nigeria Anime Connect",
+    eventCategory: "AnimeconNg",
+    ticketType: "Genin",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "NA29381",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img1,
+    eventTitle: "Nigeria Anime Connect",
+    eventCategory: "AnimeconNg",
+    ticketType: "Genin",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "OC29381",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img2,
+    eventTitle: "Outdoor Conveyning",
+    eventCategory: "OrgNco",
+    ticketType: "Basic",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "SB39141",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img3,
+    eventTitle: "Syposium brit",
+    eventCategory: "TechlifeStyle",
+    ticketType: "Regular",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "WD91841",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img4,
+    eventTitle: "Wine and Dine Abuja",
+    eventCategory: "Ocenia",
+    ticketType: "Sipper",
+    ticketCost: "$6",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "NA29381",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img1,
+    eventTitle: "Nigeria Anime Connect",
+    eventCategory: "AnimeconNg",
+    ticketType: "Genin",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "OC29381",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img2,
+    eventTitle: "Outdoor Conveyning",
+    eventCategory: "OrgNco",
+    ticketType: "Basic",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "SB39141",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img3,
+    eventTitle: "Syposium brit",
+    eventCategory: "TechlifeStyle",
+    ticketType: "Regular",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "WD91841",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img4,
+    eventTitle: "Wine and Dine Abuja",
+    eventCategory: "Ocenia",
+    ticketType: "Sipper",
+    ticketCost: "$6",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "2W31941",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img5,
+    eventTitle: "247 Worship",
+    eventCategory: "koinonia",
+    ticketType: "Ticket",
+    ticketCost: "Free",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "BP29381",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img6,
+    eventTitle: "Book and Paint Lagos",
+    eventCategory: "Readers club",
+    ticketType: "Ticket",
+    ticketCost: "Free",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "TV49501",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img6,
+    eventTitle: "The view",
+    eventCategory: "NomadGroups",
+    ticketType: "Regular",
+    ticketCost: "$10",
+    created: "02/01/2024",
+    action: "More details",
+  },
+  {
+    orderId: "NA29385",
+    attendeeName: "Olivia Rhye",
+    attendeeAvatar: Avatar,
+    img: Img6,
+    eventTitle: "Nigeria Anime Connect",
+    eventCategory: "AnimeconNg",
+    ticketType: "Genin",
+    ticketCost: "$1",
+    created: "02/01/2024",
+    action: "More details",
   },
 ];
