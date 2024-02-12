@@ -40,6 +40,7 @@ import EmptyState from "../../../../components/ui/EmptyState";
 import { Link, useNavigate } from "react-router-dom";
 
 const EventTable = () => {
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
   const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [request] = useState(true);
@@ -99,6 +100,22 @@ const EventTable = () => {
 
   //   const handleFilterByStatus = () => {}
 
+  const handleFilterByStatus = (selectedStatus) => {
+    setSelectedStatusFilter(selectedStatus);
+
+    if (selectedStatus === "All events") {
+      setPaginatedData(eventTableData);
+    } else {
+      const filteredData = eventTableData.filter(
+        (item) => item.status === selectedStatus
+      );
+      setCurrentPage(0);
+      setTotalItems(filteredData.length);
+      setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+      setPaginatedData(filteredData.slice(0, itemsPerPage));
+    }
+  };
+
   return (
     <Box px={8}>
       <Stack
@@ -143,7 +160,10 @@ const EventTable = () => {
               <MenuItem
                 key={i}
                 justifyContent="space-between"
-                onClick={() => setSelectedFilterIndex(i)}
+                onClick={() => {
+                  setSelectedFilterIndex(i);
+                  handleFilterByStatus(filter.filter);
+                }}
               >
                 {filter.filter} {selectedFilterIndex === i && <Check />}
               </MenuItem>

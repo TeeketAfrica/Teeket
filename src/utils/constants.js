@@ -360,6 +360,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "OC29381",
@@ -372,6 +373,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Ongoing",
   },
   {
     orderId: "SB39141",
@@ -384,6 +386,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Ongoing",
   },
   {
     orderId: "WD91841",
@@ -396,6 +399,7 @@ export const ordersTableData = [
     ticketCost: "$6",
     created: "02/01/2024",
     action: "More details",
+    status: "Ongoing",
   },
   {
     orderId: "2W31941",
@@ -408,6 +412,7 @@ export const ordersTableData = [
     ticketCost: "Free",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "BP29381",
@@ -420,6 +425,7 @@ export const ordersTableData = [
     ticketCost: "Free",
     created: "02/01/2024",
     action: "More details",
+    status: "Past event",
   },
   {
     orderId: "TV49501",
@@ -432,6 +438,7 @@ export const ordersTableData = [
     ticketCost: "$10",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "NA29385",
@@ -444,6 +451,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "2W31941",
@@ -456,6 +464,7 @@ export const ordersTableData = [
     ticketCost: "Free",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "BP29381",
@@ -468,6 +477,7 @@ export const ordersTableData = [
     ticketCost: "Free",
     created: "02/01/2024",
     action: "More details",
+    status: "Past event",
   },
   {
     orderId: "TV49501",
@@ -480,6 +490,7 @@ export const ordersTableData = [
     ticketCost: "$10",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "NA29385",
@@ -492,6 +503,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "NA29381",
@@ -504,6 +516,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "OC29381",
@@ -516,6 +529,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Ongoing",
   },
   {
     orderId: "SB39141",
@@ -528,6 +542,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Ongoing",
   },
   {
     orderId: "WD91841",
@@ -540,6 +555,7 @@ export const ordersTableData = [
     ticketCost: "$6",
     created: "02/01/2024",
     action: "More details",
+    status: "Ongoing",
   },
   {
     orderId: "NA29381",
@@ -552,6 +568,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Past event",
   },
   {
     orderId: "OC29381",
@@ -564,6 +581,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "SB39141",
@@ -576,6 +594,7 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "WD91841",
@@ -588,6 +607,7 @@ export const ordersTableData = [
     ticketCost: "$6",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "2W31941",
@@ -600,6 +620,7 @@ export const ordersTableData = [
     ticketCost: "Free",
     created: "02/01/2024",
     action: "More details",
+    status: "Ongoing",
   },
   {
     orderId: "BP29381",
@@ -612,6 +633,7 @@ export const ordersTableData = [
     ticketCost: "Free",
     created: "02/01/2024",
     action: "More details",
+    status: "Past event",
   },
   {
     orderId: "TV49501",
@@ -624,6 +646,7 @@ export const ordersTableData = [
     ticketCost: "$10",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
   {
     orderId: "NA29385",
@@ -636,5 +659,6 @@ export const ordersTableData = [
     ticketCost: "$1",
     created: "02/01/2024",
     action: "More details",
+    status: "Coming soon",
   },
 ];

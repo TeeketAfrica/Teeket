@@ -30,10 +30,16 @@ export const theme = extendTheme({
     black: "#000000",
     white: "#fff",
     border: "rgba(255, 255, 255, 0.30)",
+    border2: "rgba(255, 255, 255, 0.42)",
     grey100: "#F0F2F5",
     error500: "#CB1A14",
     textSuccess: "#06CC06",
     greenSuccess: "#04802E",
+    bgGradient:
+      "linear-gradient(84deg, #141714 44.36%, #141714 66.37%, rgba(20, 23, 20, 0.78) 92.38%)",
+    limeGreen: "#72E572",
+    utilityLight200: "rgba(255, 255, 255, 0.50)",
+    utilityLight100: "rgba(255, 255, 255, 0.10)",
     gray: {
       100: "#FFFFFF",
       200: "#F7FAF7",
