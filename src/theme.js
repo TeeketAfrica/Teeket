@@ -32,6 +32,8 @@ export const theme = extendTheme({
     border: "rgba(255, 255, 255, 0.30)",
     border2: "rgba(255, 255, 255, 0.42)",
     grey100: "#F0F2F5",
+    grey500: "#667085",
+    grey900: "#101828",
     error500: "#CB1A14",
     textSuccess: "#06CC06",
     greenSuccess: "#04802E",
@@ -40,6 +42,7 @@ export const theme = extendTheme({
     limeGreen: "#72E572",
     utilityLight200: "rgba(255, 255, 255, 0.50)",
     utilityLight100: "rgba(255, 255, 255, 0.10)",
+    success700: "#027A48",
     gray: {
       100: "#FFFFFF",
       200: "#F7FAF7",

@@ -40,7 +40,7 @@ import EmptyState from "../../../../components/ui/EmptyState";
 import { Link, useNavigate } from "react-router-dom";
 
 const EventTable = () => {
-  const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
+  const [setSelectedStatusFilter] = useState(null);
   const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [request] = useState(true);
@@ -264,6 +264,7 @@ const EventTable = () => {
                                 ? "green.500"
                                 : "red.400"
                             }
+                            borderRadius={16}
                             py="2px"
                             px={2}
                             fontWeight={500}
