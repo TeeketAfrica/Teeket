@@ -1,9 +1,7 @@
 import { useState } from "react";
 import {
   Box,
-  Divider,
   HStack,
-  IconButton,
   Image,
   Input,
   InputGroup,
@@ -29,8 +27,9 @@ import Check from "../../../../assets/icon/Check";
 import DownIcon from "../../../../assets/icon/DownIcon";
 import Filter from "../../../../assets/icon/Filter";
 import SearchIconEmpty from "../../../../assets/icon/SearchIconEmpty.svg";
-import EventSpeakerEmpty from "../../../../assets/icon/EventSpeakerEmpty.svg";
+import FinanceEmptyState from "../../../../assets/icon/FinanceEmptyState.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
+import SupportIcon from "../../../../assets/icon/SupportIcon.svg";
 import {
   eventFilter,
   eventTableHead,
@@ -39,7 +38,7 @@ import {
   financeTableHistoryHead,
 } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const RevenueTable = () => {
   const [setSelectedStatusFilter] = useState(null);
@@ -338,45 +337,6 @@ const RevenueTable = () => {
                                 {td.status}
                               </Tag>
                             </Td>
-                            <Td>
-                              <Menu>
-                                <MenuButton
-                                  as={IconButton}
-                                  aria-label="Options"
-                                  icon={
-                                    <Image
-                                      cursor="pointer"
-                                      src={td.action}
-                                      alt="more"
-                                    />
-                                  }
-                                  variant="outline"
-                                />
-                                <MenuList>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    <Link to="/create-event">Edit event</Link>
-                                  </MenuItem>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    <Link to="/create-event">View event</Link>
-                                  </MenuItem>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    <Link to="/create-event">
-                                      Duplicate event
-                                    </Link>
-                                  </MenuItem>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    Export attendees list
-                                  </MenuItem>
-                                  <Divider borderColor="grey100" my={3} />
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    Copy link
-                                  </MenuItem>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    Delete event
-                                  </MenuItem>
-                                </MenuList>
-                              </Menu>
-                            </Td>
                           </Tr>
                         ))}
                       </Tbody>
@@ -405,6 +365,9 @@ const RevenueTable = () => {
                       <Tbody fontSize={14}>
                         {financeHistoryTableData.map((td, i) => (
                           <Tr key={i}>
+                            <Td color="gray.600" fontWeight={500}>
+                              {td.id}
+                            </Td>
                             <Td>
                               <HStack spacing={3}>
                                 <Image
@@ -424,32 +387,28 @@ const RevenueTable = () => {
                               </HStack>
                             </Td>
                             <Td color="gray.600" fontWeight={500}>
-                              {td.ticketSold}/{td.ticketTotal}
-                            </Td>
-                            <Td color="gray.600" fontWeight={500}>
                               {td.revenue}
                             </Td>
                             <Td color="gray.600" fontWeight={500}>
-                              {td.dateCreated}
+                              {td.requestDate}
+                            </Td>
+                            <Td color="gray.600" fontWeight={500}>
+                              {td.remittedDate}
                             </Td>
                             <Td>
                               <Tag
                                 bg={
-                                  td.status === "Ongoing event"
+                                  td.status === "Processing"
                                     ? "gray.200"
                                     : td.status === "Remitted"
                                     ? "green.100"
-                                    : td.status === "Due"
-                                    ? "blue.100"
                                     : "red.100"
                                 }
                                 color={
-                                  td.status === "Ongoing event"
+                                  td.status === "Processing"
                                     ? "gray.700"
                                     : td.status === "Remitted"
                                     ? "green.500"
-                                    : td.status === "Due"
-                                    ? "blue.400"
                                     : "red.400"
                                 }
                                 borderRadius={16}
@@ -462,43 +421,14 @@ const RevenueTable = () => {
                               </Tag>
                             </Td>
                             <Td>
-                              <Menu>
-                                <MenuButton
-                                  as={IconButton}
-                                  aria-label="Options"
-                                  icon={
-                                    <Image
-                                      cursor="pointer"
-                                      src={td.action}
-                                      alt="more"
-                                    />
-                                  }
-                                  variant="outline"
+                              <HStack>
+                                <Image
+                                  cursor="pointer"
+                                  src={SupportIcon}
+                                  alt="support"
                                 />
-                                <MenuList>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    <Link to="/create-event">Edit event</Link>
-                                  </MenuItem>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    <Link to="/create-event">View event</Link>
-                                  </MenuItem>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    <Link to="/create-event">
-                                      Duplicate event
-                                    </Link>
-                                  </MenuItem>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    Export attendees list
-                                  </MenuItem>
-                                  <Divider borderColor="grey100" my={3} />
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    Copy link
-                                  </MenuItem>
-                                  <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                    Delete event
-                                  </MenuItem>
-                                </MenuList>
-                              </Menu>
+                                <Text>{td.action}</Text>
+                              </HStack>
                             </Td>
                           </Tr>
                         ))}
@@ -526,12 +456,11 @@ const RevenueTable = () => {
             ) : (
               <EmptyState
                 maxW="350px"
-                icon={EventSpeakerEmpty}
-                title="Start by creating an event"
+                icon={FinanceEmptyState}
+                title="You have gotten no revenue yet"
                 desc={
                   <Text fontSize={14} color="gray.600" textAlign="center">
-                    All events created will live here for you to view and manage
-                    effectively.
+                    All revenue that comes from your event will be shown here.
                   </Text>
                 }
                 outlineBtn="Need help?"

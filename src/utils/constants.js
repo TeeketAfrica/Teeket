@@ -665,6 +665,8 @@ export const ordersTableData = [
 
 // FINANCE TABLEDATA
 
+// export const financeTableData = [];
+
 export const financeTableData = [
   {
     img: Img1,
@@ -675,7 +677,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Ongoing event",
-    action: ActionBtn,
   },
   {
     img: Img2,
@@ -686,7 +687,6 @@ export const financeTableData = [
     revenue: "$50",
     dateCreated: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
   },
   {
     img: Img3,
@@ -697,7 +697,6 @@ export const financeTableData = [
     revenue: "$1000",
     dateCreated: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
   },
   {
     img: Img4,
@@ -708,7 +707,6 @@ export const financeTableData = [
     revenue: "$6000",
     dateCreated: "02/01/2024",
     status: "Ongoing event",
-    action: ActionBtn,
   },
   {
     img: Img5,
@@ -719,7 +717,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
   },
   {
     img: Img6,
@@ -730,7 +727,6 @@ export const financeTableData = [
     revenue: "$3500",
     dateCreated: "02/01/2024",
     status: "Due",
-    action: ActionBtn,
   },
   {
     img: Img7,
@@ -741,7 +737,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Due",
-    action: ActionBtn,
   },
   {
     img: Img8,
@@ -752,7 +747,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Overdue",
-    action: ActionBtn,
   },
   {
     img: Img5,
@@ -763,7 +757,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
   },
   {
     img: Img6,
@@ -774,7 +767,6 @@ export const financeTableData = [
     revenue: "$3500",
     dateCreated: "02/01/2024",
     status: "Due",
-    action: ActionBtn,
   },
   {
     img: Img7,
@@ -785,7 +777,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Due",
-    action: ActionBtn,
   },
   {
     img: Img8,
@@ -796,7 +787,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Overdue",
-    action: ActionBtn,
   },
   {
     img: Img1,
@@ -807,7 +797,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Ongoing event",
-    action: ActionBtn,
   },
   {
     img: Img2,
@@ -818,7 +807,6 @@ export const financeTableData = [
     revenue: "$50",
     dateCreated: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
   },
   {
     img: Img3,
@@ -829,7 +817,6 @@ export const financeTableData = [
     revenue: "$1000",
     dateCreated: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
   },
   {
     img: Img4,
@@ -840,7 +827,6 @@ export const financeTableData = [
     revenue: "$6000",
     dateCreated: "02/01/2024",
     status: "Ongoing event",
-    action: ActionBtn,
   },
   {
     img: Img1,
@@ -851,7 +837,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Ongoing event",
-    action: ActionBtn,
   },
   {
     img: Img2,
@@ -862,7 +847,6 @@ export const financeTableData = [
     revenue: "$50",
     dateCreated: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
   },
   {
     img: Img3,
@@ -873,7 +857,6 @@ export const financeTableData = [
     revenue: "$1000",
     dateCreated: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
   },
   {
     img: Img4,
@@ -884,7 +867,6 @@ export const financeTableData = [
     revenue: "$6000",
     dateCreated: "02/01/2024",
     status: "Ongoing event",
-    action: ActionBtn,
   },
   {
     img: Img5,
@@ -895,7 +877,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
   },
   {
     img: Img6,
@@ -906,7 +887,6 @@ export const financeTableData = [
     revenue: "$3500",
     dateCreated: "02/01/2024",
     status: "Due",
-    action: ActionBtn,
   },
   {
     img: Img7,
@@ -917,7 +897,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Due",
-    action: ActionBtn,
   },
   {
     img: Img8,
@@ -928,7 +907,6 @@ export const financeTableData = [
     revenue: "$0",
     dateCreated: "02/01/2024",
     status: "Overdue",
-    action: ActionBtn,
   },
 ];
 
@@ -960,93 +938,111 @@ export const financeTableHistoryHead = [
 
 // FINANCE HISTORY
 
+// export const financeHistoryTableData = [];
+
 export const financeHistoryTableData = [
   {
+    id: "RR90149",
     img: Img1,
     eventTitle: "Nigeria Anime Connect",
     eventCategory: "AnimeconNg",
     ticketSold: 0,
     ticketTotal: 150,
     revenue: "$0",
-    dateCreated: "02/01/2024",
-    status: "Ongoing event",
-    action: ActionBtn,
+    requestDate: "02/01/2024",
+    remittedDate: "Coming soon",
+    status: "Processing",
+    action: "Support",
   },
   {
+    id: "RR90149",
     img: Img2,
     eventTitle: "Outdoor Conveyning",
     eventCategory: "OrgNco",
     ticketSold: 10,
     ticketTotal: 150,
     revenue: "$50",
-    dateCreated: "02/01/2024",
+    requestDate: "02/01/2024",
+    remittedDate: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
+    action: "Support",
   },
   {
+    id: "RR90149",
     img: Img3,
     eventTitle: "Syposium brit",
     eventCategory: "TechlifeStyle",
     ticketSold: 50,
     ticketTotal: 150,
     revenue: "$1000",
-    dateCreated: "02/01/2024",
+    requestDate: "02/01/2024",
+    remittedDate: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
+    action: "Support",
   },
   {
+    id: "RR90149",
     img: Img4,
     eventTitle: "Wine and Dine Abuja",
     eventCategory: "Ocenia",
     ticketSold: 100,
     ticketTotal: 150,
     revenue: "$6000",
-    dateCreated: "02/01/2024",
-    status: "Ongoing event",
-    action: ActionBtn,
+    requestDate: "02/01/2024",
+    remittedDate: "Coming soon",
+    status: "Processing",
+    action: "Support",
   },
   {
+    id: "RR90149",
     img: Img5,
     eventTitle: "247 Worship",
     eventCategory: "koinonia",
     ticketSold: 0,
     ticketTotal: 150,
     revenue: "$0",
-    dateCreated: "02/01/2024",
+    requestDate: "02/01/2024",
+    remittedDate: "02/01/2024",
     status: "Remitted",
-    action: ActionBtn,
+    action: "Support",
   },
   {
+    id: "RR90149",
     img: Img6,
     eventTitle: "Book and Paint Lagos",
     eventCategory: "Readers club",
     ticketSold: 150,
     ticketTotal: 150,
     revenue: "$3500",
-    dateCreated: "02/01/2024",
-    status: "Due",
-    action: ActionBtn,
+    requestDate: "02/01/2024",
+    remittedDate: "02/01/2024",
+    status: "Remitted",
+    action: "Support",
   },
   {
+    id: "RR90149",
     img: Img7,
     eventTitle: "The view",
     eventCategory: "NomadGroups",
     ticketSold: 0,
     ticketTotal: 150,
     revenue: "$0",
-    dateCreated: "02/01/2024",
-    status: "Due",
-    action: ActionBtn,
+    requestDate: "02/01/2024",
+    remittedDate: "Coming soon",
+    status: "Failed request",
+    action: "Support",
   },
   {
+    id: "RR90149",
     img: Img8,
     eventTitle: "Nigeria Anime Connect",
     eventCategory: "AnimeconNg",
     ticketSold: 0,
     ticketTotal: 150,
     revenue: "$0",
-    dateCreated: "02/01/2024",
-    status: "Overdue",
-    action: ActionBtn,
+    requestDate: "02/01/2024",
+    remittedDate: "---",
+    status: "Processing",
+    action: "Support",
   },
 ];

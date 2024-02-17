@@ -117,7 +117,7 @@ const EventTable = () => {
   };
 
   return (
-    <Box px={8}>
+    <Box px={[4, 8]}>
       <Stack
         direction={["column", "row"]}
         justifyContent="space-between"
@@ -127,7 +127,7 @@ const EventTable = () => {
         pt={8}
         pb={6}
       >
-        <InputGroup w="375px">
+        <InputGroup maxW="375px" w="100%">
           <InputLeftElement pointerEvents="none">
             <Search />
           </InputLeftElement>
@@ -224,7 +224,7 @@ const EventTable = () => {
                     {paginatedData.map((td, i) => (
                       <Tr key={i}>
                         <Td>
-                          <HStack spacing={3}>
+                          <HStack spacing={[2, 3]}>
                             <Image
                               src={td.img}
                               alt={td.eventTitle}
