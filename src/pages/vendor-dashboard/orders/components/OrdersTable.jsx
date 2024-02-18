@@ -1,9 +1,7 @@
 import { useState } from "react";
 import {
   Box,
-  Divider,
   HStack,
-  IconButton,
   Image,
   Input,
   InputGroup,
@@ -22,6 +20,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
 import Search from "../../../../assets/icon/Search";
@@ -29,19 +28,22 @@ import Check from "../../../../assets/icon/Check";
 import DownIcon from "../../../../assets/icon/DownIcon";
 import Filter from "../../../../assets/icon/Filter";
 import SearchIconEmpty from "../../../../assets/icon/SearchIconEmpty.svg";
-import EventSpeakerEmpty from "../../../../assets/icon/EventSpeakerEmpty.svg";
+import OrdersIconEmptyState from "../../../../assets/icon/OrdersIconEmptyState.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
+import MoreDetails from "../../../../assets/icon/MoreDetails.svg";
 import {
   eventFilter,
-  eventTableHead,
-  eventTableData,
+  ordersTableData,
+  ordersTableHead,
 } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import MoreDetailsModal from "./MoreDetailsModal";
 
-const EventTable = () => {
-  const [setSelectedStatusFilter] = useState(null);
+const OrdersTable = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [request] = useState(true);
   const [search, setSearch] = useState("");
@@ -53,9 +55,9 @@ const EventTable = () => {
   const endIndex = startIndex + itemsPerPage;
 
   const [paginatedData, setPaginatedData] = useState(
-    eventTableData.slice(startIndex, endIndex)
+    ordersTableData.slice(startIndex, endIndex)
   );
-  const [totalItems, setTotalItems] = useState(eventTableData.length);
+  const [totalItems, setTotalItems] = useState(ordersTableData.length);
   const [totalPages, setTotalPages] = useState(
     Math.ceil(totalItems / itemsPerPage)
   );
@@ -66,7 +68,7 @@ const EventTable = () => {
     const newStartIndex = selected * itemsPerPage;
     const newEndIndex = newStartIndex + itemsPerPage;
 
-    setPaginatedData(eventTableData.slice(newStartIndex, newEndIndex));
+    setPaginatedData(ordersTableData.slice(newStartIndex, newEndIndex));
     setCurrentPage(selected);
   };
 
@@ -75,7 +77,7 @@ const EventTable = () => {
   const handleSearch = (e) => {
     const searchTerm = e.target.value.toLowerCase();
 
-    const filteredData = eventTableData.filter(
+    const filteredData = ordersTableData.filter(
       (item) =>
         item.eventTitle.toLowerCase().includes(searchTerm) ||
         item.eventCategory.toLowerCase().includes(searchTerm)
@@ -93,27 +95,18 @@ const EventTable = () => {
   const handleClearSearch = () => {
     setSearch("");
     setCurrentPage(0);
-    setPaginatedData(eventTableData.slice(0, itemsPerPage));
-    setTotalItems(eventTableData.length);
-    setTotalPages(Math.ceil(eventTableData.length / itemsPerPage));
+    setPaginatedData(ordersTableData.slice(0, itemsPerPage));
+    setTotalItems(ordersTableData.length);
+    setTotalPages(Math.ceil(ordersTableData.length / itemsPerPage));
   };
 
   //   const handleFilterByStatus = () => {}
 
-  const handleFilterByStatus = (selectedStatus) => {
-    setSelectedStatusFilter(selectedStatus);
+  // HANDLE MORE
 
-    if (selectedStatus === "All events") {
-      setPaginatedData(eventTableData);
-    } else {
-      const filteredData = eventTableData.filter(
-        (item) => item.status === selectedStatus
-      );
-      setCurrentPage(0);
-      setTotalItems(filteredData.length);
-      setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-      setPaginatedData(filteredData.slice(0, itemsPerPage));
-    }
+  const handleMoreDetails = (item) => {
+    setSelectedItem(item);
+    onOpen(); // Open the modal
   };
 
   return (
@@ -160,10 +153,7 @@ const EventTable = () => {
               <MenuItem
                 key={i}
                 justifyContent="space-between"
-                onClick={() => {
-                  setSelectedFilterIndex(i);
-                  handleFilterByStatus(filter.filter);
-                }}
+                onClick={() => setSelectedFilterIndex(i)}
               >
                 {filter.filter} {selectedFilterIndex === i && <Check />}
               </MenuItem>
@@ -192,10 +182,10 @@ const EventTable = () => {
           >
             {(paginatedData.length === 0 && search === "") ||
             (paginatedData.length === 0 && search !== "")
-              ? "No events"
+              ? "No order"
               : search !== ""
-              ? `${paginatedData.length} events`
-              : `${eventTableData.length} events`}
+              ? `${paginatedData.length} orders`
+              : `${ordersTableData.length} orders`}
           </Tag>
         </HStack>
         {request ? (
@@ -205,7 +195,7 @@ const EventTable = () => {
                 <Table variant="simple">
                   <Thead>
                     <Tr bgColor="gray.200">
-                      {eventTableHead.map((th, i) => (
+                      {ordersTableHead.map((th, i) => (
                         <Th
                           textTransform="capitalize"
                           fontSize={12}
@@ -220,11 +210,29 @@ const EventTable = () => {
                       ))}
                     </Tr>
                   </Thead>
-                  <Tbody fontSize={14}>
+                  <Tbody fontSize="sm">
                     {paginatedData.map((td, i) => (
                       <Tr key={i}>
+                        <Td color="gray.600" fontWeight={500}>
+                          {td.orderId}
+                        </Td>
                         <Td>
-                          <HStack spacing={[2, 3]}>
+                          <HStack spacing={3}>
+                            <Image
+                              src={td.attendeeAvatar}
+                              alt={td.attendeeName}
+                              w={10}
+                              h={10}
+                            />
+                            <Box>
+                              <Text fontWeight={500} color="gray.800">
+                                {td.attendeeName}
+                              </Text>
+                            </Box>
+                          </HStack>
+                        </Td>
+                        <Td>
+                          <HStack spacing={3}>
                             <Image
                               src={td.img}
                               alt={td.eventTitle}
@@ -240,75 +248,30 @@ const EventTable = () => {
                           </HStack>
                         </Td>
                         <Td color="gray.600" fontWeight={500}>
-                          {td.ticketSold}/{td.ticketTotal}
+                          {td.ticketType}
                         </Td>
                         <Td color="gray.600" fontWeight={500}>
-                          {td.revenue}
+                          {td.ticketCost}
                         </Td>
                         <Td color="gray.600" fontWeight={500}>
-                          {td.dateCreated}
+                          {td.created}
                         </Td>
                         <Td>
-                          <Tag
-                            bg={
-                              td.status === "Coming soon"
-                                ? "gray.200"
-                                : td.status === "Ongoing"
-                                ? "green.100"
-                                : "red.100"
-                            }
-                            color={
-                              td.status === "Coming soon"
-                                ? "gray.700"
-                                : td.status === "Ongoing"
-                                ? "green.500"
-                                : "red.400"
-                            }
-                            borderRadius={16}
-                            py="2px"
-                            px={2}
-                            fontWeight={500}
-                            fontSize={12}
+                          <HStack
+                            cursor="pointer"
+                            onClick={() => handleMoreDetails(td)}
+                            spacing={3}
                           >
-                            {td.status}
-                          </Tag>
-                        </Td>
-                        <Td>
-                          <Menu>
-                            <MenuButton
-                              as={IconButton}
-                              aria-label="Options"
-                              icon={
-                                <Image
-                                  cursor="pointer"
-                                  src={td.action}
-                                  alt="more"
-                                />
-                              }
-                              variant="outline"
+                            <Image
+                              src={MoreDetails}
+                              alt="more details"
+                              w={5}
+                              h={5}
                             />
-                            <MenuList>
-                              <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                <Link to="/create-event">Edit event</Link>
-                              </MenuItem>
-                              <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                <Link to="/create-event">View event</Link>
-                              </MenuItem>
-                              <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                <Link to="/create-event">Duplicate event</Link>
-                              </MenuItem>
-                              <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                Export attendees list
-                              </MenuItem>
-                              <Divider borderColor="grey100" my={3} />
-                              <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                Copy link
-                              </MenuItem>
-                              <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                Delete event
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
+                            <Text fontWeight={600} color="gray.700">
+                              More details
+                            </Text>
+                          </HStack>
                         </Td>
                       </Tr>
                     ))}
@@ -322,23 +285,23 @@ const EventTable = () => {
                 title="No result"
                 desc={
                   <Text fontSize={14} color="gray.600" textAlign="center">
-                    Your search “{search}” did not match any events. Please try
-                    again or create add a new event.
+                    Your search “{search}” did not match any order. Please try
+                    again.
                   </Text>
                 }
                 outlineBtn="Clear search"
-                primaryBtn="Create event"
+                primaryBtn="Refresh page"
                 outlineOnClick={handleClearSearch}
-                primaryOnClick={() => navigate("/create-event")}
+                primaryOnClick={() => window.location.reload()}
               />
             ) : (
               <EmptyState
                 maxW="350px"
-                icon={EventSpeakerEmpty}
-                title="Start by creating an event"
+                icon={OrdersIconEmptyState}
+                title="No purchases yet on your events"
                 desc={
                   <Text fontSize={14} color="gray.600" textAlign="center">
-                    All events created will live here for you to view and manage
+                    All orders made will live here for you to view and manage
                     effectively.
                   </Text>
                 }
@@ -383,8 +346,13 @@ const EventTable = () => {
           </Box>
         )}
       </Box>
+      <MoreDetailsModal
+        isOpen={isOpen}
+        onClose={onClose}
+        selectedItem={selectedItem}
+      />
     </Box>
   );
 };
 
-export default EventTable;
+export default OrdersTable;

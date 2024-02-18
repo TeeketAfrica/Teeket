@@ -16,7 +16,7 @@ const EventsDashboardPage = () => {
         w="100%"
         alignItems="flex-start"
         pb={6}
-        px={8}
+        px={[4, 8]}
       >
         <DashboardPageHeaders
           pageTitle="Events"
