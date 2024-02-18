@@ -1,4 +1,11 @@
-import { Button, Image, Stack, useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Image,
+  SimpleGrid,
+  Stack,
+  useDisclosure,
+} from "@chakra-ui/react";
 import DashboardLayout from "../../../components/layouts/DashboardLayout";
 import DashboardPageHeaders from "../../../components/layouts/DashboardPageHeaders";
 import Export from "../../../assets/icon/Export.svg";
@@ -19,18 +26,18 @@ const FinancesDashboardPage = () => {
       <Stack
         borderBottom="1px solid"
         borderColor="gray.300"
-        direction={["column", null, null, "row"]}
+        direction={["column", "row"]}
         justifyContent="space-between"
         w="100%"
         alignItems="flex-start"
         pb={6}
-        px={8}
+        px={[4, 8]}
       >
         <DashboardPageHeaders
           pageTitle="Finance"
           subTitle="Get an overview of all event-related revenue"
         />
-        <Stack direction={["column", "row"]} spacing="12px">
+        <HStack spacing="12px">
           <Button variant="secondary" p={2}>
             <Image src={Export} alt="export" mr={2} />
             Export
@@ -38,17 +45,16 @@ const FinancesDashboardPage = () => {
           <Button variant="primary" p={2} onClick={onOpen}>
             $ Request payment
           </Button>
-        </Stack>
+        </HStack>
       </Stack>
-      <Stack
+      <SimpleGrid
+        columns={[1, 2, null, 3]}
         borderBottom="1px solid"
         borderColor="gray.300"
-        direction={["column", null, null, null, "row"]}
-        justifyContent="space-between"
+        spacing={6}
         w="100%"
-        alignItems="flex-start"
         py={6}
-        px={8}
+        px={[4, 8]}
       >
         <RevenueCard
           icon={TotalRevenue}
@@ -70,7 +76,7 @@ const FinancesDashboardPage = () => {
           revenueTitle="Remiited revenue"
           revenueTotal="$40,000"
         />
-      </Stack>
+      </SimpleGrid>
       <RevenueTable />
       <RequestPaymentModal
         isOpen={isOpen}

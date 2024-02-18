@@ -15,9 +15,9 @@ const RevenueCard = ({
       borderColor="gray.300"
       borderRadius={8}
       p={6}
-      maxW={[null, null, null, null, "352px"]}
+      // maxW={[null, null, null, "352px"]}
       w="100%"
-      minH={["auto", null, null, "221px"]}
+      minH={["auto", null, null, "242px", "221px"]}
       h="100%"
       boxShadow="0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.10);"
     >

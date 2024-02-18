@@ -110,7 +110,7 @@ const OrdersTable = () => {
   };
 
   return (
-    <Box px={8}>
+    <Box px={[4, 8]}>
       <Stack
         direction={["column", "row"]}
         justifyContent="space-between"
@@ -120,7 +120,7 @@ const OrdersTable = () => {
         pt={8}
         pb={6}
       >
-        <InputGroup w="375px">
+        <InputGroup maxW="375px" w="100%">
           <InputLeftElement pointerEvents="none">
             <Search />
           </InputLeftElement>

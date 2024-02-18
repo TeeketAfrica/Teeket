@@ -119,9 +119,9 @@ const RevenueTable = () => {
   };
 
   return (
-    <Box px={8}>
+    <Box px={[4, 8]}>
       <Stack
-        direction={["column", "row"]}
+        direction={["column-reverse", null, null, "row"]}
         justifyContent="space-between"
         w="100%"
         spacing="24px"
@@ -164,7 +164,7 @@ const RevenueTable = () => {
           </HStack>
         </Box>
         <HStack spacing={5}>
-          <InputGroup w="375px">
+          <InputGroup maxW="375px" w="100%">
             <InputLeftElement pointerEvents="none">
               <Search />
             </InputLeftElement>
