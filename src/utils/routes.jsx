@@ -11,6 +11,7 @@ import {
   OrdersDashboardPage,
   OrganizationSettingsDashboardPage,
   HelpAndSupportPage,
+  EventsPage,
 } from "../pages";
 
 export const routes = [
@@ -36,4 +37,7 @@ export const routes = [
     path: "/app/organization-settings",
     element: <OrganizationSettingsDashboardPage />,
   },
+
+  // Events Pages
+  { path: "/events", element: <EventsPage /> },
 ];
