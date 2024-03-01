@@ -10,6 +10,9 @@ import NumberInput from "./components/ui/NumberInput";
 import Select from "./components/ui/Select";
 import FormLabel from "./components/ui/FormLabel";
 import FormErrorMessage from "./components/ui/FormErrorMessage";
+import Avatar from "./components/ui/Avatar";
+import Tabs from "./components/ui/Tabs";
+import Switch from "./components/ui/Switch";
 
 // example theme
 export const theme = extendTheme({
@@ -24,6 +27,9 @@ export const theme = extendTheme({
     Radio,
     Select,
     NumberInput,
+    Avatar,
+    Tabs,
+    Switch,
   },
   colors: {
     transparent: "transparent",
