@@ -1,5 +1,6 @@
 import {
   Box,
+  HStack,
   Image,
   Input,
   InputGroup,
@@ -10,12 +11,22 @@ import {
 import Avatar from "../../assets/img/Avatars.png";
 import Search from "../../assets/icon/Search";
 import SearchIcon from "../../assets/icon/SearchIcon.svg";
+import Hamburger from "../../assets/icon/Hamburger.svg";
+import BrandLogo from "../../assets/img/brandLogo.png";
 
-const DashboardHeader = () => {
+const DashboardHeader = ({ onOpen }) => {
   return (
-    <Box py={6} px={8} borderBottom="1px solid" borderColor="gray.300">
-      <Stack direction="row" justifyContent="space-between">
-        <Box maxW="375px" w="100%">
+    <Box
+      py={[3, 6]}
+      px={[3, 8]}
+      borderBottom="1px solid"
+      borderColor="gray.300"
+    >
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Box w="107px" h="29px" display={["block", "none"]}>
+          <Image src={BrandLogo} alt="logo" />
+        </Box>
+        <Box maxW="375px" w="100%" display={["none", "block"]}>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <Search />
@@ -26,7 +37,22 @@ const DashboardHeader = () => {
             </InputRightElement>
           </InputGroup>
         </Box>
-        <Image src={Avatar} alt="Avatar" w="40px" h="40px" />
+        <HStack
+          w="100%"
+          justifyContent="flex-end"
+          alignItems="center"
+          spacing={[3, null, null, null, 5]}
+        >
+          <Image src={Avatar} alt="Avatar" w="40px" h="40px" />
+          <Image
+            src={Hamburger}
+            alt="menu"
+            w="24px"
+            h="24px"
+            onClick={onOpen}
+            display={["block", null, null, null, "none"]}
+          />
+        </HStack>
       </Stack>
     </Box>
   );
