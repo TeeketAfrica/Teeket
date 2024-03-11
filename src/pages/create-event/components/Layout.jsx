@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import {
   Slide,
   Fade,
@@ -9,7 +8,8 @@ import {
   Text,
   Link,
   useOutsideClick,
-} from "@chakra-ui/react";
+} from "@chakra-ui/react";import { useRef, useState } from "react";
+
 import Logo from "../../../assets/img/brandLogo.png";
 import Avatar from "../../../assets/img/Avatars.png";
 import Preview from "../../../assets/icon/eye.svg";

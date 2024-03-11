@@ -6,13 +6,18 @@ import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "./theme.js";
 import store from "./app/store.js";
+import { ModalProvider } from "./context/ModalContext.jsx";
+import ReusableModal from "./components/modal";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ChakraProvider theme={theme}>
-        <App />
-      </ChakraProvider>
-    </Provider>
+    <ModalProvider>
+      <Provider store={store}>
+        <ChakraProvider theme={theme}>
+          <App />
+          <ReusableModal />
+        </ChakraProvider>
+      </Provider>
+    </ModalProvider>
   </React.StrictMode>
 );
