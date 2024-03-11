@@ -10,6 +10,7 @@ import OverviewDashboardPage from "./vendor-dashboard/overview";
 import OrdersDashboardPage from "./vendor-dashboard/orders";
 import OrganizationSettingsDashboardPage from "./vendor-dashboard/organization-settings";
 import HelpAndSupportPage from "./help-and-support";
+import EventsPage from "./events";
 
 export {
   HomePage,
@@ -26,4 +27,7 @@ export {
   OverviewDashboardPage,
   OrdersDashboardPage,
   OrganizationSettingsDashboardPage,
+
+  // EVENTS PAGE
+  EventsPage,
 };
