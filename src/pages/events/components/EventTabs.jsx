@@ -11,6 +11,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Container from "../../../components/ui/Container";
+import AllEvents from "./AllEvents";
+import CuratedEvents from "./CuratedEvents";
+import WatchoutEvents from "./WatchoutEvents";
+import FreeEvents from "./FreeEvents";
+import PaidEvents from "./PaidEvents";
 
 const EventTabs = () => {
   return (
@@ -41,19 +46,19 @@ const EventTabs = () => {
 
               <TabPanels>
                 <TabPanel>
-                  <p>one!</p>
+                  <AllEvents />
                 </TabPanel>
                 <TabPanel>
-                  <p>two!</p>
+                  <CuratedEvents />
                 </TabPanel>
                 <TabPanel>
-                  <p>three!</p>
+                  <WatchoutEvents />
                 </TabPanel>
                 <TabPanel>
-                  <p>four!</p>
+                  <FreeEvents />
                 </TabPanel>
                 <TabPanel>
-                  <p>five!</p>
+                  <PaidEvents />
                 </TabPanel>
               </TabPanels>
             </Box>
