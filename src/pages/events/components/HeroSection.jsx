@@ -16,6 +16,7 @@ import {
 import Container from "../../../components/ui/Container";
 import EventBg from "../../../assets/img/eventsBg.png";
 import DownIcon from "../../../assets/icon/DownIcon";
+import SearchWhite from "../../../assets/icon/SearchWhite";
 
 const HeroSection = () => {
   return (
@@ -101,7 +102,11 @@ const HeroSection = () => {
                             </Menu>
                           </HStack>
                         </Box>
-                        <Button variant="primary" style={{ height: "56px" }}>
+                        <Button
+                          leftIcon={<SearchWhite />}
+                          variant="primary"
+                          style={{ height: "56px" }}
+                        >
                           Search
                         </Button>
                       </HStack>
