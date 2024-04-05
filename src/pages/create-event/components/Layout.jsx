@@ -8,7 +8,8 @@ import {
   Text,
   Link,
   useOutsideClick,
-} from "@chakra-ui/react";import { useRef, useState } from "react";
+} from "@chakra-ui/react";
+import { useRef, useState } from "react";
 
 import Logo from "../../../assets/img/brandLogo.png";
 import Avatar from "../../../assets/img/Avatars.png";
@@ -17,7 +18,7 @@ import CloseIcon from "../../../assets/icon/CloseButton.svg";
 import Rocket from "../../../assets/icon/rocket-alt.svg";
 import Hamburger from "../../../assets/icon/Hamburger.svg";
 import Ticket from "../../../assets/icon/Ticket.svg";
-import PlusCircle from "../../../assets/icon/PlusCircle.svg";
+import PlusCircle from "../../../assets/icon/PlusCircle";
 import Dashboard from "../../../assets/icon/Dashboard.svg";
 import Settings from "../../../assets/icon/Settings.svg";
 import SignOut from "../../../assets/icon/SignOut.svg";
@@ -164,7 +165,7 @@ const Layout = ({
                         py="2"
                         _hover={{ textDecoration: "none" }}
                       >
-                        <Image src={PlusCircle} alt="icon" />
+                        <PlusCircle />
                         <Text>Create events</Text>
                       </Link>
                       <Link
