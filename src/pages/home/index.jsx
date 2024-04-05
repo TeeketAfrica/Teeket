@@ -191,13 +191,16 @@ const HomePage = () => {
       </header>
       <main>
         {/* Browse Events */}
-        <Box paddingBottom={["11", "14"]} paddingTop={["88px", "256px"]}>
+        <Box
+          paddingBottom={{ base: "11", md: "14" }}
+          paddingTop={{ base: "88px", md: "256px" }}
+        >
           <Container padding="16px">
             <Text
               as="h2"
               fontWeight="bold"
-              fontSize={["xl", "6xl"]}
-              lineHeight={["6", "10"]}
+              fontSize={{ base: "xl", md: "6xl" }}
+              lineHeight={{ base: "6", md: "10" }}
               textAlign="center"
               color="gray.800"
               maxWidth="35ch"
@@ -359,14 +362,14 @@ const HomePage = () => {
         </VStack>
 
         {/* Steps */}
-        <Box paddingY={["88px", "14"]}>
+        <Box paddingY={{ base: "88px", md: "14" }}>
           <Container padding={"16px"}>
             <VStack gap="11">
               <Text
                 as="h2"
                 fontWeight="bold"
-                fontSize={["xl", "5xl"]}
-                lineHeight={["6", "44px"]}
+                fontSize={{ base: "xl", md: "5xl" }}
+                lineHeight={{ base: "6", md: "44px" }}
                 color="gray.800"
                 maxWidth="26ch"
                 marginX="auto"
@@ -457,14 +460,14 @@ const HomePage = () => {
         </Box>
 
         {/* Frequently Asked Questions */}
-        <Box backgroundColor="gray.200" py={["11", "13"]}>
+        <Box backgroundColor="gray.200" py={{ base: "11", md: "13" }}>
           <Container padding={"16px"}>
             <VStack gap="5" marginBottom="11" textAlign="center">
               <Text
                 as="h2"
                 fontWeight="bold"
-                fontSize={["xl", "6xl"]}
-                lineHeight={["6", "10"]}
+                fontSize={{ base: "xl", md: "6xl" }}
+                lineHeight={{ base: "6", md: "10" }}
                 color="gray.800"
               >
                 Frequently asked questions
@@ -472,8 +475,8 @@ const HomePage = () => {
               <Text
                 color="gray.600"
                 fontWeight="normal"
-                fontSize={["md", "xl"]}
-                lineHeight={["6", "26px"]}
+                fontSize={{ base: "md", md: "xl" }}
+                lineHeight={{ base: "6", md: "26px" }}
               >
                 Everything you need to know about the product and billing.
               </Text>
@@ -503,9 +506,9 @@ const HomePage = () => {
                               flex="1"
                               textAlign="left"
                               fontWeight="medium"
-                              fontSize={["md", "lg"]}
+                              fontSize={{ base: "md", md: "lg" }}
                               color="gray.800"
-                              lineHeight={["6", "7"]}
+                              lineHeight={{ base: "6", md: "7" }}
                             >
                               {data.question}
                             </Box>
@@ -521,9 +524,9 @@ const HomePage = () => {
                           pb={8}
                           pl={0}
                           fontWeight="normal"
-                          fontSize={["sm", "md"]}
+                          fontSize={{ base: "sm", md: "md" }}
                           color="gray.600"
-                          lineHeight={["5", "6"]}
+                          lineHeight={{ base: "5", md: "6" }}
                         >
                           {data.answer}
                         </AccordionPanel>
@@ -602,44 +605,53 @@ const HomePage = () => {
           backgroundColor="black"
           color="#EAECF0"
           textAlign="center"
-          py={["11", "13"]}
+          py={{ base: "11", md: "13" }}
         >
           <Container padding={"16px"}>
-            <VStack gap={["10", "11"]}>
+            <VStack gap={{ base: "10", md: "11" }}>
               <VStack gap="3">
                 <Text
-                  fontSize={["sm", "md"]}
+                  fontSize={{ base: "sm", md: "md" }}
                   fontWeight="semibold"
-                  lineHeight={["5", "6"]}
+                  lineHeight={{ base: "5", md: "6" }}
                 >
                   Contact us
                 </Text>
                 <Heading
                   as="h3"
-                  pb={["1", "2"]}
+                  pb={{ base: "1", md: "2" }}
                   fontWeight="semibold"
-                  fontSize={["30px", "5xl"]}
-                  lineHeight={["38px", "44px"]}
+                  fontSize={{ base: "30px", md: "5xl" }}
+                  lineHeight={{ base: "38px", md: "44px" }}
                   color="white"
                 >
                   Get in touch
                 </Heading>
                 <Text
                   fontWeight="normal"
-                  fontSize={["lg", "xl"]}
-                  lineHeight={["28px", "30px"]}
+                  fontSize={{ base: "lg", md: "xl" }}
+                  lineHeight={{ base: "28px", md: "30px" }}
                 >
                   Our friendly team is always here to chat.
                 </Text>
               </VStack>
-              <Stack
-                direction={["column", "row"]}
-                rowGap="9"
-                justifyContent="space-between"
+              <Grid
+                templateColumns={{
+                  base: "1fr",
+                  md: "repeat(2, 1fr)",
+                  lg: "repeat(3, 1fr)",
+                }}
+                alignItems="center"
                 width="100%"
+                gap="9"
               >
                 {ContactInfo.map((data) => (
-                  <VStack key={data.type} gap={["4", "5"]} maxWidth="360px">
+                  <VStack
+                    key={data.type}
+                    gap={["4", "5"]}
+                    maxWidth="360px"
+                    marginX="auto"
+                  >
                     <Box
                       p="12px"
                       backgroundColor="gray.600"
@@ -685,7 +697,7 @@ const HomePage = () => {
                     )}
                   </VStack>
                 ))}
-              </Stack>
+              </Grid>
             </VStack>
           </Container>
         </Box>
