@@ -14,7 +14,7 @@ import TwitterIcon from "../../assets/icon/TwitterIcon.svg";
 import InstagramIcon from "../../assets/icon/InstagramIcon.svg";
 import LinkedInIcon from "../../assets/icon/LinkedInIcon.svg";
 
-const Footer = () => {
+const Footer = ({ border = true }) => {
   const socialLinks = [
     {
       img: FacebookIcon,
@@ -40,8 +40,8 @@ const Footer = () => {
 
   return (
     <footer>
-      <Container>
-        <Box py="64px" borderTop="1px solid" borderColor="gray.300">
+      <Container padding="16px">
+        <Box py="64px" borderTop={border && "1px solid"} borderColor="gray.300">
           <Stack
             direction={["column", "row"]}
             justifyContent="space-between"
