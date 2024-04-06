@@ -14,8 +14,10 @@ import BrandLogo from "../../assets/img/brandLogo.png";
 import Avatars from "../../assets/img/Avatars.png";
 import Search from "../../assets/icon/Search";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Header = () => {
+  const [user] = useState(false);
   const menu = [
     {
       link: "Browse events",
@@ -36,11 +38,12 @@ const Header = () => {
             justifyContent="space-between"
             alignItems="center"
             px={5}
+            w="full"
           >
             <Link to="/">
-              <Image src={BrandLogo} alt="logo" />
+              <Image w="full" src={BrandLogo} alt="logo" />
             </Link>
-            <Box maxW="784px" w="100%">
+            <Box maxW="860px" w="full">
               <HStack spacing={6}>
                 <Box maxW="400px" w="100%" display={["none", "block"]}>
                   <InputGroup>
@@ -61,9 +64,31 @@ const Header = () => {
                     </Text>
                   </Link>
                 ))}
-                <Box cursor="pointer">
-                  <Avatar src={Avatars} />
-                </Box>
+                {user ? (
+                  <Box cursor="pointer">
+                    <Avatar src={Avatars} />
+                  </Box>
+                ) : (
+                  <>
+                    <Link to="/auth/login">
+                      <Text fontWeight={600} fontSize={14} color="textSuccess">
+                        Login
+                      </Text>
+                    </Link>
+                    <Link to="/auth/create-account">
+                      <Text
+                        p={2}
+                        borderRadius={16}
+                        bgColor="textSuccess"
+                        color="white"
+                        fontWeight={600}
+                        fontSize={14}
+                      >
+                        Try Teeket
+                      </Text>
+                    </Link>
+                  </>
+                )}
               </HStack>
             </Box>
           </Stack>

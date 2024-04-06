@@ -15,6 +15,7 @@ import {
   Text,
   Heading,
   Link,
+  Center,
 } from "@chakra-ui/react";
 
 import Footer from "../../components/layouts/Footer";
@@ -40,6 +41,7 @@ import Faq3Image from "../../assets/img/faqs_3.webp";
 import StepBackground from "../../assets/img/steps_bg.webp";
 import EventBg from "../../assets/img/eventsBg.png";
 import Masonry from "./components/Masonry";
+import Header from "../../components/layouts/Header";
 
 const HomePage = () => {
   const iconMap = {
@@ -50,149 +52,155 @@ const HomePage = () => {
 
   return (
     <>
-      <header>
-        <Box
-          bgImage={`url(${EventBg})`}
-          bgSize="cover"
-          bgPosition="bottom center"
-          w="100%"
-        >
-          <Container padding="16px">
-            <VStack gap="3" textAlign="center" marginBottom="10">
-              <Text
-                as="h1"
-                fontWeight="semibold"
-                fontStyle="italic"
-                fontSize={{ base: "3xl", md: "8xl" }}
-                lineHeight={{ base: "34px", md: "56px" }}
-                bgGradient="linear(to-r, #06CC06, #C2F2C2)"
-                bgClip="text"
-              >
-                Events{" "}
-                <Text
-                  as="span"
-                  fontStyle="normal"
-                  fontSize={{ md: "7xl" }}
-                  lineHeight={{ md: "10" }}
-                  color="gray.800"
-                >
-                  for everyone. <br /> Browse, create, and share
-                </Text>
-              </Text>
-              <Text
-                fontWeight="normal"
-                fontSize={{ base: "sm", md: "lg" }}
-                lineHeight={{ base: "5", md: "7" }}
-                color="gray.600"
-                maxWidth="54ch"
-                marginX="auto"
-              >
-                Say goodbye to event planning stress. Browse countless options,
-                create events with ease, and manage everything in one place.{" "}
-              </Text>
-            </VStack>
-            <HStack justifyContent="center" marginBottom="8" width="100%">
-              <Button variant="primary" size="lg">
-                <Link href="/" _hover={{ textDecoration: "none" }}>
-                  Create events
-                </Link>
-              </Button>
-              <Button variant="secondary" size="lg">
-                <Link href="/" _hover={{ textDecoration: "none" }}>
-                  Browse events
-                </Link>
-              </Button>
-            </HStack>
-            <Box
-              position="relative"
-              width="100%"
-              height="100%"
-              overflow="hidden"
-            >
-              <Box
-                position="absolute"
-                width="211px"
-                height="567px"
-                top="-50px"
-                left="-100px"
-                backgroundColor="white"
-                filter="blur(26px)"
-                zIndex={4}
-              />
-              <Box
-                overflowX="auto"
-                overflowY="hidden"
-                css={{
-                  msOverflowStyle: "none",
-                  scrollbarWidth: "none",
-                }}
-              >
-                <HStack
-                  width={{ base: "700px", md: "1216px" }}
-                  height="100%"
-                  gap="7"
-                  justifyContent="center"
-                  alignItems="flex-end"
-                >
-                  <Masonry
-                    imageName="masonry_8"
-                    height={{ base: "102px", md: "260px" }}
-                    marginBottom="34px"
-                  />
-                  <VStack gap={{ base: "8px", md: "23px" }}>
-                    <Masonry
-                      imageName="masonry_1"
-                      height={{ base: "63px", md: "155px" }}
-                    />
-                    <Masonry
-                      imageName="masonry_4"
-                      height={{ base: "82px", md: "203px" }}
-                    />
-                  </VStack>
-                  <Masonry
-                    imageName="masonry_2"
-                    height={{ base: "102px", md: "249px" }}
-                  />
-                  <Masonry
-                    imageName="masonry_5"
-                    height={{ base: "128px", md: "317px" }}
-                  />
-                  <VStack gap={{ base: "8px", md: "23px" }}>
-                    <Masonry
-                      imageName="masonry_3"
-                      height={{ base: "92px", md: "227px" }}
-                    />
-                    <Masonry
-                      imageName="masonry_6"
-                      height={{ base: "43px", md: "106px" }}
-                    />
-                  </VStack>
-                  <Masonry
-                    imageName="masonry_7"
-                    height={{ base: "102px", md: "249px" }}
-                    marginBottom="9"
-                  />
-                </HStack>
-              </Box>
-              <Box
-                position="absolute"
-                width="211px"
-                height="567px"
-                top="-50px"
-                right="-100px"
-                backgroundColor="white"
-                filter="blur(26px)"
-                zIndex={4}
-              />
-            </Box>
-          </Container>
-        </Box>
-      </header>
+      <Header />
       <main>
+        <Center>
+          <Box
+            bgImage={`url(${EventBg})`}
+            bgSize="cover"
+            bgPosition="bottom center"
+            h="425px"
+            w="100%"
+            pt="100px"
+          >
+            <Container padding="16px">
+              <VStack gap="3" textAlign="center" marginBottom="10">
+                <Text
+                  as="h1"
+                  fontWeight="semibold"
+                  fontStyle="italic"
+                  fontSize={{ base: "3xl", md: "8xl" }}
+                  lineHeight={{ base: "34px", md: "56px" }}
+                  bgGradient="linear(to-r, #06CC06, #C2F2C2)"
+                  bgClip="text"
+                >
+                  Events{" "}
+                  <Text
+                    as="span"
+                    fontStyle="normal"
+                    fontSize={{ md: "7xl" }}
+                    lineHeight={{ md: "10" }}
+                    color="gray.800"
+                  >
+                    for everyone. <br /> Browse, create, and share
+                  </Text>
+                </Text>
+                <Text
+                  fontWeight="normal"
+                  fontSize={{ base: "sm", md: "lg" }}
+                  lineHeight={{ base: "5", md: "7" }}
+                  color="gray.600"
+                  maxWidth="54ch"
+                  marginX="auto"
+                >
+                  Say goodbye to event planning stress. Browse countless
+                  options, create events with ease, and manage everything in one
+                  place.{" "}
+                </Text>
+              </VStack>
+              <HStack justifyContent="center" marginBottom="8" width="100%">
+                <Button variant="primary" size="lg">
+                  <Link href="/" _hover={{ textDecoration: "none" }}>
+                    Create events
+                  </Link>
+                </Button>
+                <Button variant="secondary" size="lg">
+                  <Link href="/" _hover={{ textDecoration: "none" }}>
+                    Browse events
+                  </Link>
+                </Button>
+              </HStack>
+              <Box
+                position="relative"
+                width="100%"
+                height="100%"
+                overflow="hidden"
+              >
+                <Box
+                  position="absolute"
+                  width="211px"
+                  height="567px"
+                  top="-50px"
+                  left="-100px"
+                  backgroundColor="white"
+                  filter="blur(26px)"
+                  zIndex={4}
+                />
+                <Box
+                  overflowX="auto"
+                  overflowY="hidden"
+                  css={{
+                    msOverflowStyle: "none",
+                    scrollbarWidth: "none",
+                  }}
+                >
+                  <HStack
+                    width={{ base: "700px", md: "1216px" }}
+                    height="100%"
+                    gap="7"
+                    justifyContent="center"
+                    alignItems="flex-end"
+                  >
+                    <Masonry
+                      imageName="masonry_8"
+                      height={{ base: "102px", md: "260px" }}
+                      marginBottom="34px"
+                    />
+                    <VStack gap={{ base: "8px", md: "23px" }}>
+                      <Masonry
+                        imageName="masonry_1"
+                        height={{ base: "63px", md: "155px" }}
+                      />
+                      <Masonry
+                        imageName="masonry_4"
+                        height={{ base: "82px", md: "203px" }}
+                      />
+                    </VStack>
+                    <Masonry
+                      imageName="masonry_2"
+                      height={{ base: "102px", md: "249px" }}
+                    />
+                    <Masonry
+                      imageName="masonry_5"
+                      height={{ base: "128px", md: "317px" }}
+                    />
+                    <VStack gap={{ base: "8px", md: "23px" }}>
+                      <Masonry
+                        imageName="masonry_3"
+                        height={{ base: "92px", md: "227px" }}
+                      />
+                      <Masonry
+                        imageName="masonry_6"
+                        height={{ base: "43px", md: "106px" }}
+                      />
+                    </VStack>
+                    <Masonry
+                      imageName="masonry_7"
+                      height={{ base: "102px", md: "249px" }}
+                      marginBottom="9"
+                    />
+                  </HStack>
+                </Box>
+                <Box
+                  position="absolute"
+                  width="211px"
+                  height="567px"
+                  top="-50px"
+                  right="-100px"
+                  backgroundColor="white"
+                  filter="blur(26px)"
+                  zIndex={4}
+                />
+              </Box>
+            </Container>
+          </Box>
+        </Center>
+        {/* </main>
+      <main> */}
         {/* Browse Events */}
         <Box
           paddingBottom={{ base: "11", md: "14" }}
-          paddingTop={{ base: "88px", md: "256px" }}
+          paddingTop={{ base: "88px", md: "450px" }}
         >
           <Container padding="16px">
             <Text

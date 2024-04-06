@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Center,
   HStack,
   Tab,
   TabList,
@@ -16,6 +15,7 @@ import CuratedEvents from "./CuratedEvents";
 import WatchoutEvents from "./WatchoutEvents";
 import FreeEvents from "./FreeEvents";
 import PaidEvents from "./PaidEvents";
+import { Link } from "react-router-dom";
 
 const EventTabs = () => {
   return (
@@ -36,36 +36,35 @@ const EventTabs = () => {
               <Tab>Paid events</Tab>
             </TabList>
 
-            <Box py={9} borderBottom="1px solid" borderColor="gray.300">
-              <HStack justifyContent="space-between" alignItems="center">
+            <Box>
+              <HStack pt={6} justifyContent="space-between" alignItems="center">
                 <Text fontSize={28} fontWeight={700}>
                   Trending events
                 </Text>
-                <Button variant="outline">See more</Button>
+                <Button variant="outline">
+                  <Link to="/event-category">See more</Link>
+                </Button>
               </HStack>
 
               <TabPanels>
-                <TabPanel>
+                <TabPanel p={0}>
                   <AllEvents />
                 </TabPanel>
-                <TabPanel>
+                <TabPanel p={0}>
                   <CuratedEvents />
                 </TabPanel>
-                <TabPanel>
+                <TabPanel p={0}>
                   <WatchoutEvents />
                 </TabPanel>
-                <TabPanel>
+                <TabPanel p={0}>
                   <FreeEvents />
                 </TabPanel>
-                <TabPanel>
+                <TabPanel p={0}>
                   <PaidEvents />
                 </TabPanel>
               </TabPanels>
             </Box>
           </Tabs>
-          <Center w="full" my="6">
-            <Button variant="primary">Browse all events</Button>
-          </Center>
         </Box>
       </Container>
     </section>
