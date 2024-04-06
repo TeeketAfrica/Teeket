@@ -6,7 +6,6 @@ import {
   AvatarGroup,
   Avatar,
   Grid,
-  Stack,
   Flex,
   HStack,
   VStack,
@@ -85,7 +84,7 @@ const HomePage = () => {
                 fontSize={{ base: "sm", md: "lg" }}
                 lineHeight={{ base: "5", md: "7" }}
                 color="gray.600"
-                maxWidth="54px"
+                maxWidth="54ch"
                 marginX="auto"
               >
                 Say goodbye to event planning stress. Browse countless options,
