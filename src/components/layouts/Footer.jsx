@@ -14,7 +14,7 @@ import TwitterIcon from "../../assets/icon/TwitterIcon.svg";
 import InstagramIcon from "../../assets/icon/InstagramIcon.svg";
 import LinkedInIcon from "../../assets/icon/LinkedInIcon.svg";
 
-const Footer = () => {
+const Footer = ({ border = true }) => {
   const socialLinks = [
     {
       img: FacebookIcon,
@@ -40,16 +40,21 @@ const Footer = () => {
 
   return (
     <footer>
-      <Container>
-        <Box py="64px" borderTop="1px solid" borderColor="gray.300">
+      <Container padding="16px">
+        <Box py="64px" borderTop={border && "1px solid"} borderColor="gray.300">
           <Stack
             direction={["column", "row"]}
             justifyContent="space-between"
+            gap="24px"
             alignItems="center"
             mb="64px"
           >
             <Box maxW={400} w="100%" px={0}>
-              <Text fontSize={32} fontWeight={700}>
+              <Text
+                fontSize={["2xl", "4xl"]}
+                fontWeight={700}
+                textAlign={["center", "start"]}
+              >
                 Never get bored, find the perfect event for you
               </Text>
             </Box>
@@ -60,6 +65,8 @@ const Footer = () => {
             bgColor="gray.200"
             borderRadius="10px"
             justifyContent="space-between"
+            alignItems="center"
+            gap="32px"
             py="28px"
             px="32px"
           >
@@ -70,7 +77,9 @@ const Footer = () => {
                 </Link>
               ))}
             </HStack>
-            <Text>© 2024 Teeket Africa. All rights reserved.</Text>
+            <Text fontSize="sm">
+              © 2024 Teeket Africa. All rights reserved.
+            </Text>
             <Image src={LogoBlack} alt="logo" />
           </Stack>
         </Box>
