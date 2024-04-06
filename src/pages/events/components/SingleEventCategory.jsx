@@ -7,11 +7,11 @@ import Event4 from "../../../assets/img/e4.png";
 import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
 import { useState } from "react";
-import BrowseEvents from "../../../assets/icon/BrowseEvents";
 import EmptyState from "../../../components/ui/EmptyState";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
+import BrowseEvents from "../../../assets/icon/BrowseEvents";
 
-const WatchoutEvents = () => {
+const SingleEventCategory = () => {
   const [event] = useState(true);
   return (
     <>
@@ -140,4 +140,4 @@ const WatchoutEvents = () => {
   );
 };
 
-export default WatchoutEvents;
+export default SingleEventCategory;

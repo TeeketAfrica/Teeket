@@ -12,6 +12,7 @@ import {
   OrganizationSettingsDashboardPage,
   HelpAndSupportPage,
   EventsPage,
+  EventCategoryPage,
 } from "../pages";
 
 export const routes = [
@@ -40,4 +41,5 @@ export const routes = [
 
   // Events Pages
   { path: "/events", element: <EventsPage /> },
+  { path: "/event-category", element: <EventCategoryPage /> },
 ];
