@@ -53,12 +53,23 @@ const EventBookingDetail = ({ isRegistered }) => {
                   icon: LightingIcon,
                 }}
               />
-              <Text as="h2" fontSize="5xl" fontWeight="bold" lineHeight="44px">
+              <Text
+                as="h2"
+                fontSize={{ base: "3xl", md: "5xl" }}
+                fontWeight="bold"
+                lineHeight={{ base: "30px", sm: "44px" }}
+                paddingTop="2"
+              >
                 The vintage art event africa
               </Text>
             </Box>
             <Flex flexDirection="column" gap="6" marginTop="6">
-              <HStack justifyContent="space-between" alignItems="center">
+              <Flex
+                flexDirection={{ base: "column", sm: "row" }}
+                gap="2"
+                justifyContent="space-between"
+                alignItems={{ base: "flex-start", sm: "center" }}
+              >
                 <DetailCard
                   icon={CalendarIcon}
                   title="Tuesday, 23rd January"
@@ -67,7 +78,7 @@ const EventBookingDetail = ({ isRegistered }) => {
                 <Button variant="secondary" size="sm">
                   Remind me
                 </Button>
-              </HStack>
+              </Flex>
               <DetailCard
                 icon={GPSIcon}
                 title="Register to see address"

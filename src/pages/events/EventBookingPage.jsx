@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, Divider, Flex, Text, VStack } from "@chakra-ui/react";
 
 import Header from "../../components/layouts/Header";
 import Container from "../../components/ui/Container";
@@ -18,14 +18,19 @@ const EventBooking = () => {
         <EventBookingDetail isRegistered={isRegistered} />
         <Divider borderColor="gray.300" borderWidth="1px" />
         <VStack paddingTop="11">
-          <HStack width="100%" justifyContent="space-between">
+          <Flex
+            flexDirection={{ base: "column", sm: "row" }}
+            gap="6"
+            width="100%"
+            justifyContent="space-between"
+          >
             <Text fontSize="3xl" fontWeight="bold" lineHeight="33px">
               Similar event you can attend to
             </Text>
-            <Button variant="secondary" size="sm">
+            <Button variant="secondary" size="sm" width="fit-content">
               See more
             </Button>
-          </HStack>
+          </Flex>
           <FreeEvents />
         </VStack>
       </Container>
