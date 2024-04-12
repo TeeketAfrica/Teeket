@@ -8,18 +8,18 @@ import {
   Image,
   Button,
   Text,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import DashboardLayout from '../../../components/layouts/DashboardLayout';
-import DashboardPageHeaders from '../../../components/layouts/DashboardPageHeaders';
-import BoxFrame from './components/BoxFrame';
+import DashboardLayout from "../../../components/layouts/DashboardLayout";
+import DashboardPageHeaders from "../../../components/layouts/DashboardPageHeaders";
+import BoxFrame from "../../../components/layouts/BoxFrame";
 
-import PlusLight from '../../../assets/icon/Plus-light.svg';
-import PlusDark from '../../../assets/icon/Plus-dark.svg';
-import ChartUp from '../../../assets/icon/Chart-up.svg';
-import AIStar from '../../../assets/icon/AI-star.svg';
-import Ticket from '../../../assets/icon/Ticket-green.svg';
-import Gain from '../../../assets/icon/Arrow-up.svg';
+import PlusLight from "../../../assets/icon/Plus-light.svg";
+import PlusDark from "../../../assets/icon/Plus-dark.svg";
+import ChartUp from "../../../assets/icon/Chart-up.svg";
+import AIStar from "../../../assets/icon/AI-star.svg";
+import Ticket from "../../../assets/icon/Ticket-green.svg";
+import Gain from "../../../assets/icon/Arrow-up.svg";
 
 const OverviewDashboardPage = () => {
   return (
@@ -30,7 +30,7 @@ const OverviewDashboardPage = () => {
       />
       <HStack
         alignItems="flex-start"
-        flexDirection={{ sm: 'column', xl: 'row' }}
+        flexDirection={{ sm: "column", xl: "row" }}
         gap="5"
         padding="8"
       >

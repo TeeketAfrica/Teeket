@@ -18,7 +18,12 @@ const FreeEvents = () => {
       {event ? (
         <>
           <Grid
-            templateColumns="repeat(4, 1fr)"
+            templateColumns={{
+              base: "1fr",
+              md: "repeat(2, 1fr)",
+              lg: "repeat(3, 1fr)",
+              xl: "repeat(4, 1fr)",
+            }}
             gap={6}
             borderBottom="1px solid"
             borderColor="gray.300"
