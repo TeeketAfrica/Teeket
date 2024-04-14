@@ -1,14 +1,15 @@
-import { Box } from '@chakra-ui/react';
+import { Box } from "@chakra-ui/react";
 
 const BoxFrame = ({
   children,
   backgroundColor,
   color,
-  paddingX = '3',
-  paddingY = '3',
+  paddingX = "3",
+  paddingY = "3",
 }) => {
   return (
     <Box
+      position="relative"
       width="100%"
       paddingX={paddingX}
       paddingY={paddingY}
@@ -17,6 +18,7 @@ const BoxFrame = ({
       borderRadius="16"
       backgroundColor={backgroundColor}
       color={color}
+      overflow="hidden"
     >
       {children}
     </Box>

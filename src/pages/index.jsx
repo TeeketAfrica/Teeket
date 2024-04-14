@@ -13,6 +13,7 @@ import HelpAndSupportPage from "./help-and-support";
 import EventsPage from "./events";
 import EventCategoryPage from "./events/EventCategoryPage";
 import TicketDashboardPage from "./ticket-dashboard/index";
+import EventBookingPage from "./events/EventBookingPage";
 
 export {
   HomePage,
@@ -33,6 +34,7 @@ export {
   // EVENTS PAGE
   EventsPage,
   EventCategoryPage,
+  EventBookingPage,
 
   // TICKETS PAGE
   TicketDashboardPage,

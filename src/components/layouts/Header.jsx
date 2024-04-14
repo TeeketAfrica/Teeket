@@ -14,10 +14,9 @@ import BrandLogo from "../../assets/img/brandLogo.png";
 import Avatars from "../../assets/img/Avatars.png";
 import Search from "../../assets/icon/Search";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
-const Header = () => {
-  const [user] = useState(false);
+const Header = ({ userInfo = false }) => {
+  // const [user] = useState(false);
   const menu = [
     {
       link: "Browse events",
@@ -67,7 +66,7 @@ const Header = () => {
                     </Text>
                   </Link>
                 ))}
-                {user ? (
+                {userInfo ? (
                   <Box cursor="pointer">
                     <Avatar src={Avatars} />
                   </Box>
