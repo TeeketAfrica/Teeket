@@ -12,6 +12,7 @@ import OrganizationSettingsDashboardPage from "./vendor-dashboard/organization-s
 import HelpAndSupportPage from "./help-and-support";
 import EventsPage from "./events";
 import EventCategoryPage from "./events/EventCategoryPage";
+import TicketDashboardPage from "./ticket-dashboard/index";
 
 export {
   HomePage,
@@ -32,4 +33,7 @@ export {
   // EVENTS PAGE
   EventsPage,
   EventCategoryPage,
+
+  // TICKETS PAGE
+  TicketDashboardPage,
 };
