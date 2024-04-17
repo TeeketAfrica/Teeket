@@ -14,6 +14,8 @@ import EventsPage from "./events";
 import EventCategoryPage from "./events/EventCategoryPage";
 import EventBookingPage from "./events/EventBookingPage";
 
+import CounterDownPage from "./count-down";
+
 export {
   HomePage,
   LoginPage,
@@ -34,4 +36,5 @@ export {
   EventsPage,
   EventCategoryPage,
   EventBookingPage,
+  CounterDownPage,
 };

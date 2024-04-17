@@ -14,11 +14,13 @@ import {
   EventsPage,
   EventCategoryPage,
   EventBookingPage,
+  CounterDownPage,
 } from "../pages";
 
 export const routes = [
   // Landing Page
-  { path: "/", element: <HomePage /> },
+  { path: "/", element: <CounterDownPage /> },
+  { path: "/home", element: <HomePage /> },
 
   // Authenticated Pages
   { path: "/auth/login", element: <LoginPage /> },
