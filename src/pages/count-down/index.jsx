@@ -47,7 +47,7 @@ export const Index = () => {
       <main>
         <Box
           position="relative"
-          width="60%"
+          width={{ base: "100%", md: "60%" }}
           height="20%"
           mx="auto"
           overflow="hidden"
