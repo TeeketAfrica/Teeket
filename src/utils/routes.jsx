@@ -13,6 +13,7 @@ import {
   HelpAndSupportPage,
   EventsPage,
   EventCategoryPage,
+  TicketDashboardPage,
   EventBookingPage,
   CounterDownPage,
 } from "../pages";
@@ -46,4 +47,7 @@ export const routes = [
   { path: "/events", element: <EventsPage /> },
   { path: "/event-category", element: <EventCategoryPage /> },
   { path: "/event-booking", element: <EventBookingPage /> },
+
+  // Tickets Pages
+  { path: "/my-tickets", element: <TicketDashboardPage /> },
 ];

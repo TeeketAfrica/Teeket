@@ -14,17 +14,15 @@ const EventCategoryHeroSection = () => {
           h="425px"
           mr="-100px"
         >
-          <Box px={109}>
-            <Container>
-              <HStack h="425px" w="full" spacing={8} alignItems="center">
-                <Heading fontSize={56} fontWeight={700} textAlign="center">
-                  Trending events
-                </Heading>
-                <Image src={YellowRectangle} alt="yellow" />
-              </HStack>
-              <Divider />
-            </Container>
-          </Box>
+          <Container>
+            <HStack h="425px" w="full" spacing={8} alignItems="center">
+              <Heading fontSize={56} fontWeight={700} textAlign="center">
+                Trending events
+              </Heading>
+              <Image src={YellowRectangle} alt="yellow" />
+            </HStack>
+            <Divider />
+          </Container>
         </Box>
       </Box>
     </section>

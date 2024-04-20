@@ -20,12 +20,15 @@ const Header = ({ userInfo = false }) => {
   const menu = [
     {
       link: "Browse events",
+      url: "events",
     },
     {
       link: "Contact us",
+      url: "contact-us",
     },
     {
       link: "About",
+      url: "about",
     },
   ];
   return (
@@ -57,7 +60,7 @@ const Header = ({ userInfo = false }) => {
                   </InputGroup>
                 </Box>
                 {menu.map((link, i) => (
-                  <Link key={i} to={`/${link.link}`}>
+                  <Link key={i} to={`/${link.url}`}>
                     <Text fontWeight={600} fontSize={14}>
                       {link.link}
                     </Text>
