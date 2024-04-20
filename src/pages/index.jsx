@@ -14,7 +14,6 @@ import EventsPage from "./events";
 import EventCategoryPage from "./events/EventCategoryPage";
 import TicketDashboardPage from "./ticket-dashboard/index";
 import EventBookingPage from "./events/EventBookingPage";
-
 import CounterDownPage from "./count-down";
 
 export {
@@ -37,11 +36,8 @@ export {
   EventsPage,
   EventCategoryPage,
   EventBookingPage,
-<<<<<<< HEAD
 
   // TICKETS PAGE
   TicketDashboardPage,
-=======
   CounterDownPage,
->>>>>>> dev
 };
