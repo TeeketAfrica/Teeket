@@ -34,7 +34,7 @@ import PhoneIcon from "../../assets/icon/Phone";
 import LocationIcon from "../../assets/icon/Location";
 import MinusCircle from "../../assets/icon/MinusCircle";
 import PlusCircle from "../../assets/icon/PlusCircle";
-import Curves from "../../assets/icon/Curves.svg";
+import Curves from "../../assets/icon/curves.svg";
 import Faq1Image from "../../assets/img/faqs_1.webp";
 import Faq2Image from "../../assets/img/faqs_2.webp";
 import Faq3Image from "../../assets/img/faqs_3.webp";
