@@ -37,11 +37,8 @@ export {
   EventsPage,
   EventCategoryPage,
   EventBookingPage,
-<<<<<<< HEAD
 
   // TICKETS PAGE
   TicketDashboardPage,
-=======
   CounterDownPage,
->>>>>>> dev
 };
