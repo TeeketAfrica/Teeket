@@ -12,6 +12,7 @@ import OrganizationSettingsDashboardPage from "./vendor-dashboard/organization-s
 import HelpAndSupportPage from "./help-and-support";
 import EventsPage from "./events";
 import EventCategoryPage from "./events/EventCategoryPage";
+import TicketDashboardPage from "./ticket-dashboard/index";
 import EventBookingPage from "./events/EventBookingPage";
 
 import CounterDownPage from "./count-down";
@@ -36,5 +37,8 @@ export {
   EventsPage,
   EventCategoryPage,
   EventBookingPage,
+
+  // TICKETS PAGE
+  TicketDashboardPage,
   CounterDownPage,
 };

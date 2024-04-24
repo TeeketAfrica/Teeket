@@ -34,14 +34,24 @@ import PhoneIcon from "../../assets/icon/Phone";
 import LocationIcon from "../../assets/icon/Location";
 import MinusCircle from "../../assets/icon/MinusCircle";
 import PlusCircle from "../../assets/icon/PlusCircle";
-import Curves from "../../assets/icon/Curves.svg";
+import Masonry from "./components/Masonry";
+import Header from "../../components/layouts/Header";
+
+import Curves from "../../assets/icon/curves.svg";
 import Faq1Image from "../../assets/img/faqs_1.webp";
 import Faq2Image from "../../assets/img/faqs_2.webp";
 import Faq3Image from "../../assets/img/faqs_3.webp";
 import StepBackground from "../../assets/img/steps_bg.webp";
 import EventBg from "../../assets/img/eventsBg.png";
-import Masonry from "./components/Masonry";
-import Header from "../../components/layouts/Header";
+
+import Masonry1 from '../../assets/img/masonry_1.webp';
+import Masonry2 from '../../assets/img/masonry_2.webp';
+import Masonry3 from '../../assets/img/masonry_3.webp';
+import Masonry4 from '../../assets/img/masonry_4.webp';
+import Masonry5 from '../../assets/img/masonry_5.webp';
+import Masonry6 from '../../assets/img/masonry_6.webp';
+import Masonry7 from '../../assets/img/masonry_7.webp';
+import Masonry8 from '../../assets/img/masonry_8.webp';
 
 const HomePage = () => {
   const iconMap = {
@@ -142,40 +152,40 @@ const HomePage = () => {
                     alignItems="flex-end"
                   >
                     <Masonry
-                      imageName="masonry_8"
+                      image={Masonry8}
                       height={{ base: "102px", md: "260px" }}
                       marginBottom="34px"
                     />
                     <VStack gap={{ base: "8px", md: "23px" }}>
                       <Masonry
-                        imageName="masonry_1"
+                        image={Masonry1}
                         height={{ base: "63px", md: "155px" }}
                       />
                       <Masonry
-                        imageName="masonry_4"
+                        image={Masonry4}
                         height={{ base: "82px", md: "203px" }}
                       />
                     </VStack>
                     <Masonry
-                      imageName="masonry_2"
+                      image={Masonry2}
                       height={{ base: "102px", md: "249px" }}
                     />
                     <Masonry
-                      imageName="masonry_5"
+                      image={Masonry5}
                       height={{ base: "128px", md: "317px" }}
                     />
                     <VStack gap={{ base: "8px", md: "23px" }}>
                       <Masonry
-                        imageName="masonry_3"
+                        image={Masonry3}
                         height={{ base: "92px", md: "227px" }}
                       />
                       <Masonry
-                        imageName="masonry_6"
+                        image={Masonry6}
                         height={{ base: "43px", md: "106px" }}
                       />
                     </VStack>
                     <Masonry
-                      imageName="masonry_7"
+                      image={Masonry7}
                       height={{ base: "102px", md: "249px" }}
                       marginBottom="9"
                     />
