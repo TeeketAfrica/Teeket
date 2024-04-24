@@ -19,6 +19,8 @@ import {
 } from "@chakra-ui/react";
 
 import Footer from "../../components/layouts/Footer";
+import Header from "../../components/layouts/Header";
+import Masonry from './components/Masonry';
 import Container from "../../components/ui/Container";
 import Card from "./components/Card";
 import {
@@ -34,9 +36,6 @@ import PhoneIcon from "../../assets/icon/Phone";
 import LocationIcon from "../../assets/icon/Location";
 import MinusCircle from "../../assets/icon/MinusCircle";
 import PlusCircle from "../../assets/icon/PlusCircle";
-import Masonry from "./components/Masonry";
-import Header from "../../components/layouts/Header";
-
 import Curves from "../../assets/icon/curves.svg";
 import Faq1Image from "../../assets/img/faqs_1.webp";
 import Faq2Image from "../../assets/img/faqs_2.webp";
