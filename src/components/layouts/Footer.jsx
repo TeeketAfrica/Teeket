@@ -18,23 +18,23 @@ const Footer = ({ border = true }) => {
   const socialLinks = [
     {
       img: FacebookIcon,
-      link: "#",
+      link: "https://facebook.com/teeketafrica",
       alt: "facebook",
     },
     {
       img: TwitterIcon,
-      link: "#",
-      alt: "facebook",
+      link: "https://twitter.com/Teeketafrica",
+      alt: "twitter",
     },
     {
       img: InstagramIcon,
-      link: "#",
-      alt: "facebook",
+      link: "https://instagram.com/teeketafrica",
+      alt: "instagram",
     },
     {
       img: LinkedInIcon,
-      link: "#",
-      alt: "facebook",
+      link: "https://linkedin.com/company/teeketafrica",
+      alt: "linkedin",
     },
   ];
 
@@ -72,7 +72,7 @@ const Footer = ({ border = true }) => {
           >
             <HStack spacing={6}>
               {socialLinks.map((link, i) => (
-                <Link key={i} href={link.link}>
+                <Link key={i} href={link.link} target="_blank">
                   <Image src={link.img} alt={link.alt} />
                 </Link>
               ))}
