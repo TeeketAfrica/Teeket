@@ -17,6 +17,15 @@ import CountdownTimer from "./CountdownTimer";
 import BrandLogo from "../../assets/img/brandLogo.png";
 import EventBg from "../../assets/img/eventsBg.png";
 
+import Masonry1 from '../../assets/img/masonry_1.webp';
+import Masonry2 from '../../assets/img/masonry_2.webp';
+import Masonry3 from '../../assets/img/masonry_3.webp';
+import Masonry4 from '../../assets/img/masonry_4.webp';
+import Masonry5 from '../../assets/img/masonry_5.webp';
+import Masonry6 from '../../assets/img/masonry_6.webp';
+import Masonry7 from '../../assets/img/masonry_7.webp';
+import Masonry8 from '../../assets/img/masonry_8.webp';
+
 export const Index = () => {
   const targetDate = new Date("2024-04-31T23:59:59");
   const timeLeft = CountdownTimer({ targetDate });
@@ -83,23 +92,23 @@ export const Index = () => {
               alignItems="flex-end"
             >
               <Masonry
-                imageName="masonry_8"
+                image={Masonry8}
                 height="128px"
                 width="90px"
                 marginBottom="34px"
               />
               <VStack gap={{ base: "8px", md: "23px" }}>
-                <Masonry imageName="masonry_1" height="76px" width="90px" />
-                <Masonry imageName="masonry_4" height="99px" width="90px" />
+                <Masonry image={Masonry1} height="76px" width="90px" />
+                <Masonry image={Masonry4}height="99px" width="90px" />
               </VStack>
-              <Masonry imageName="masonry_2" height="123px" width="90px" />
-              <Masonry imageName="masonry_5" height="156px" width="90px" />
+              <Masonry image={Masonry2} height="123px" width="90px" />
+              <Masonry image={Masonry5} height="156px" width="90px" />
               <VStack gap={{ base: "8px", md: "23px" }}>
-                <Masonry imageName="masonry_3" height="112px" width="90px" />
-                <Masonry imageName="masonry_6" height="52px" width="90px" />
+                <Masonry image={Masonry3} height="112px" width="90px" />
+                <Masonry image={Masonry6} height="52px" width="90px" />
               </VStack>
               <Masonry
-                imageName="masonry_7"
+                image={Masonry7}
                 height="122px"
                 width="90px"
                 marginBottom="9"
@@ -146,18 +155,19 @@ export const Index = () => {
           fontSize={{ base: "sm", md: "lg" }}
           lineHeight={{ base: "5", md: "7" }}
           color="gray.600"
+          textAlign='center'
           maxWidth="54ch"
           marginX="auto"
-          marginTop="2"
+          marginY="6"
         >
           Be the first to experience the revolution in entertainment.
         </Text>
-        <Center marginTop="4">
+        <Center margin="4">
           <Button variant="primary" size="md">
             Sign up for early access
           </Button>
         </Center>
-        <Flex gap="8" justifyContent="center">
+        <Flex gap="8" justifyContent="center" marginTop='8'>
           <VStack gap="1px">
             <Text as="span" fontSize={{ base: "3xl", md: "64px" }}>
               {timeLeft.days}
