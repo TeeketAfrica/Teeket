@@ -1,3 +1,5 @@
+export const baseUrl = import.meta.env.VITE_REACT_BASE_URL;
+
 import Img1 from "../assets/img/Avatars-8.png";
 import Img2 from "../assets/img/Avatars-1.png";
 import Img3 from "../assets/img/Avatars-2.png";
