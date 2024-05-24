@@ -33,10 +33,9 @@ import FacebookIcon from "../../assets/icon/FacebookIcon.svg";
 import TwitterIcon from "../../assets/icon/TwitterIcon.svg";
 import InstagramIcon from "../../assets/icon/InstagramIcon.svg";
 import LinkedInIcon from "../../assets/icon/LinkedInIcon.svg";
-import axios from "axios";
 import { useState } from "react";
-import { baseUrl } from "../../utils/constants";
 import SuccessModal from "./SuccessModal";
+import authApi from "../../api/authApi";
 
 export const Index = () => {
   // const targetDate = new Date("2024-04-31T23:59:59");
@@ -87,7 +86,7 @@ export const Index = () => {
         return;
       }
 
-      const response = await axios.post(`${baseUrl}/accounts/wait_list`, {
+      const response = await authApi.post("/wait_list", {
         email: participant,
       });
 
