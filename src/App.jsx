@@ -12,12 +12,16 @@ import {
   VendorPage,
   HelpAndSupportPage,
   NotFoundPage,
+  HomePage,
+  CounterDownPage,
 } from "./pages";
 
 const App = () => (
   <Router>
     <Routes>
       {/* Public Routes */}
+      <Route path="/" element={<PublicRoute element={<CounterDownPage />} />} />
+      <Route path="/home" element={<PublicRoute element={<HomePage />} />} />
       <Route
         path="/auth/login"
         element={<PublicRoute element={<LoginPage />} />}

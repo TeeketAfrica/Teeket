@@ -1,5 +1,6 @@
 import {
   HomePage,
+  CounterDownPage,
   LoginPage,
   CreateAccountPage,
   PasswordRecoveryPage,
@@ -15,7 +16,6 @@ import {
   EventCategoryPage,
   TicketDashboardPage,
   EventBookingPage,
-  CounterDownPage,
 } from "../pages";
 
 export const routes = [
