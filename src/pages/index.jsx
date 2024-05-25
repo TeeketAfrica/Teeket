@@ -15,6 +15,7 @@ import EventCategoryPage from "./events/EventCategoryPage";
 import TicketDashboardPage from "./ticket-dashboard/index";
 import EventBookingPage from "./events/EventBookingPage";
 import CounterDownPage from "./count-down";
+import NotFoundPage from "./not-found";
 
 export {
   HomePage,
@@ -40,4 +41,7 @@ export {
   // TICKETS PAGE
   TicketDashboardPage,
   CounterDownPage,
+
+  // 404 PAGE
+  NotFoundPage,
 };

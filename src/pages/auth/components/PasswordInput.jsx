@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Image } from '@chakra-ui/image';
-import { Stack, Box } from '@chakra-ui/layout';
+import { useCallback, useEffect, useState } from "react";
+import { Image } from "@chakra-ui/image";
+import { Stack, Box } from "@chakra-ui/layout";
 import {
   FormLabel,
   FormControl,
@@ -9,14 +9,22 @@ import {
   InputGroup,
   InputRightElement,
   Checkbox,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import CloseIcon from '../../../assets/icon/CloseIcon.svg';
-import EyeIcon from '../../../assets/icon/eye.svg';
-import EyeSlashIcon from '../../../assets/icon/EyeSlashIcon.svg';
+import CloseIcon from "../../../assets/icon/CloseIcon.svg";
+import EyeIcon from "../../../assets/icon/eye.svg";
+import EyeSlashIcon from "../../../assets/icon/EyeSlashIcon.svg";
 
-const PasswordInput = ({ formik, label, inputName, isCriteriaVisible }) => {
-  const isInvalid = formik.touched[inputName] && formik.errors[inputName];
+const PasswordInput = ({
+  formik,
+  label,
+  inputName,
+  errors,
+  handleError,
+  isCriteriaVisible,
+}) => {
+  const isInvalid =
+    (formik.touched[inputName] && formik.errors[inputName]) || errors.password;
   const [passwordCriteria, setPasswordCriteria] = useState({
     hasUppercase: false,
     hasLowercase: false,
@@ -44,13 +52,16 @@ const PasswordInput = ({ formik, label, inputName, isCriteriaVisible }) => {
   const [viewPassword, setViewPassword] = useState(false);
 
   const getPasswordIcon = () => {
-    if (formik.touched[inputName] && formik.errors[inputName]) {
+    if (
+      (formik.touched[inputName] && formik.errors[inputName]) ||
+      errors.password
+    ) {
       return <Image src={CloseIcon} alt="close" pointerEvents="none" />;
     }
     return (
       <Image
         src={viewPassword ? EyeSlashIcon : EyeIcon}
-        alt={viewPassword ? 'eye-slash' : 'eye'}
+        alt={viewPassword ? "eye-slash" : "eye"}
         cursor="pointer"
         onClick={() => setViewPassword(!viewPassword)}
       />
@@ -58,8 +69,8 @@ const PasswordInput = ({ formik, label, inputName, isCriteriaVisible }) => {
   };
 
   const checkboxLabels = {
-    hasMinLength: 'More than 8 characters',
-    hasSpecialChar: 'Special character (e.g. /,<>@#$%)',
+    hasMinLength: "More than 8 characters",
+    hasSpecialChar: "Special character (e.g. /,<>@#$%)",
   };
 
   return (
@@ -70,21 +81,26 @@ const PasswordInput = ({ formik, label, inputName, isCriteriaVisible }) => {
         <Input
           id={inputName}
           name={inputName}
-          type={viewPassword ? 'text' : 'password'}
+          type={viewPassword ? "text" : "password"}
           value={formik.values[inputName]}
           onChange={formik.handleChange}
-          onFocus={() => formik.setFieldTouched(inputName, false)}
+          onFocus={() => {
+            formik.setFieldTouched(inputName, false),
+              handleError({ email: "", password: "" });
+          }}
         />
       </InputGroup>
       <FormErrorMessage>
-        {isInvalid && <div>{formik.errors[inputName]}</div>}
+        {isInvalid && !errors.password && <div>{formik.errors[inputName]}</div>}
+        {errors.password && <div>{errors.password}</div>}
       </FormErrorMessage>
+
       {isCriteriaVisible && (
         <Box mt="4">
           <Stack spacing={2} direction="row" flexWrap="wrap">
             {Object.entries(passwordCriteria).map(([key, value]) => (
               <Checkbox key={key} id={key} name={key} isChecked={value}>
-                {checkboxLabels[key] || key.replace('has', '')}
+                {checkboxLabels[key] || key.replace("has", "")}
               </Checkbox>
             ))}
           </Stack>

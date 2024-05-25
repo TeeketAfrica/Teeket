@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const sumTicketQuantity = (state) => {
   const totalQuantity = state.tickets.reduce(
@@ -12,23 +12,23 @@ const sumTicketQuantity = (state) => {
 };
 
 const eventSlice = createSlice({
-  name: 'event',
+  name: "event",
   initialState: {
-    eventTitle: '',
-    eventOrganizer: '',
-    eventType: '',
-    eventIndustry: '',
-    eventTags: '',
-    eventStartDate: '',
-    eventStartTime: '',
-    eventEndDate: '',
-    eventEndTime: '',
-    eventBannerImage: '',
-    eventAbout: '',
-    eventHosting: '',
-    eventLocation: '',
-    eventPlan: '',
-    publishLive: '',
+    eventTitle: "",
+    eventOrganizer: "",
+    eventType: "",
+    eventIndustry: "",
+    eventTags: "",
+    eventStartDate: "",
+    eventStartTime: "",
+    eventEndDate: "",
+    eventEndTime: "",
+    eventBannerImage: "",
+    eventAbout: "",
+    eventHosting: "",
+    eventLocation: "",
+    eventPlan: "",
+    publishLive: "",
     tickets: [],
     totalTicketQuantities: 0,
   },
@@ -54,22 +54,22 @@ const eventSlice = createSlice({
       } = action.payload;
       return {
         ...state,
-        eventTitle: eventTitle ?? '',
-        eventOrganizer: eventOrganizer ?? '',
-        eventType: eventType ?? '',
-        eventIndustry: eventIndustry ?? '',
-        eventTags: eventTags ?? '',
-        eventStartDate: eventStartDate ?? '',
-        eventStartTime: eventStartTime ?? '',
-        eventEndDate: eventEndDate ?? '',
-        eventEndTime: eventEndTime ?? '',
-        eventBannerImage: eventBannerImage ?? '',
-        eventAbout: eventAbout ?? '',
-        eventHosting: eventHosting ?? '',
-        eventLocation: eventLocation ?? '',
-        eventPlan: eventPlan ?? '',
+        eventTitle: eventTitle ?? "",
+        eventOrganizer: eventOrganizer ?? "",
+        eventType: eventType ?? "",
+        eventIndustry: eventIndustry ?? "",
+        eventTags: eventTags ?? "",
+        eventStartDate: eventStartDate ?? "",
+        eventStartTime: eventStartTime ?? "",
+        eventEndDate: eventEndDate ?? "",
+        eventEndTime: eventEndTime ?? "",
+        eventBannerImage: eventBannerImage ?? "",
+        eventAbout: eventAbout ?? "",
+        eventHosting: eventHosting ?? "",
+        eventLocation: eventLocation ?? "",
+        eventPlan: eventPlan ?? "",
         totalTicketQuantities: totalTicketQuantities ?? 0,
-        publishLive: publishLive ?? '',
+        publishLive: publishLive ?? "",
       };
     },
 

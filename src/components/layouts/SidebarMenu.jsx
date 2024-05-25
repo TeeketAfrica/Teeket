@@ -28,9 +28,35 @@ import SignOut from "../../assets/icon/sign-out.svg";
 import ProfileAvatar from "../../assets/img/Avatars.png";
 import BrandLogo from "../../assets/img/brandLogo.png";
 import { Fragment, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  selectUserDetails,
+  setToken,
+  setUserDetails,
+} from "../../features/userSlice";
+import authApi from "../../api/authApi";
 
 const SidebarMenu = ({ onClose, isOpen }) => {
   const [placement] = useState("left");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { token } = useSelector(selectUserDetails);
+
+  const signOutHandler = async () => {
+    try {
+      await authApi.post("/refresh_token", {
+        refresh_token: token,
+      });
+
+      sessionStorage.clear("TOKEN");
+      dispatch(setToken(null));
+      dispatch(setUserDetails(""));
+      navigate("/auth/login");
+    } catch (err) {
+      console.log("Error signing out user", err);
+    }
+  };
 
   return (
     <Fragment>
@@ -101,7 +127,12 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                 </Text>
                 <Text>re...n@gmail.com</Text>
               </Box>
-              <Image src={SignOut} alt="Signout" cursor="pointer" />
+              <Image
+                src={SignOut}
+                alt="Signout"
+                cursor="pointer"
+                onClick={signOutHandler}
+              />
             </HStack>
           </VStack>
         </VStack>
@@ -174,7 +205,12 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                     </Text>
                     <Text>re...n@gmail.com</Text>
                   </Box>
-                  <Image src={SignOut} alt="Signout" cursor="pointer" />
+                  <Image
+                    src={SignOut}
+                    alt="Signout"
+                    cursor="pointer"
+                    onClick={signOutHandler}
+                  />
                 </HStack>
               </VStack>
             </VStack>
