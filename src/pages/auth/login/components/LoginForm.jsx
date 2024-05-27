@@ -26,10 +26,7 @@ const LoginForm = () => {
     password: Yup.string().required("Please input your password"),
   });
 
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
+  const [error, setError] = useState("");
 
   // Formik initialization
   const formik = useFormik({
@@ -54,11 +51,8 @@ const LoginForm = () => {
           navigate("/app/overview");
         }
       } catch (err) {
-        if (err.response.data.message === "Authentication Error") {
-          setErrors({ email: "Incorrect email address" });
-        } else {
-          setErrors({ password: "Incorrect password" });
-        }
+        setError("Invalid email or password");
+        console.log("Failed to login", err.message);
       }
     },
   });
@@ -71,8 +65,8 @@ const LoginForm = () => {
           formik={formik}
           label="Email address"
           inputName="email"
-          errors={errors}
-          handleError={setErrors}
+          error={error}
+          handleError={setError}
         />
 
         {/* Password */}
@@ -80,8 +74,8 @@ const LoginForm = () => {
           formik={formik}
           label="Password"
           inputName="password"
-          errors={errors}
-          handleError={setErrors}
+          error={error}
+          handleError={setError}
         />
 
         {/* Submit button */}
