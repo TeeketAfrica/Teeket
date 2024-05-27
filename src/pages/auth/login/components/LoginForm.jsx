@@ -62,7 +62,13 @@ const LoginForm = () => {
       <Stack spacing={4}>
         {/* Email Address */}
         <EmailInput
-          formik={formik}
+          formik={{
+            handleChange: formik.handleChange,
+            values: formik.values,
+            touched: formik.touched,
+            errors: formik.errors,
+            setFieldTouched: formik.setFieldTouched,
+          }}
           label="Email address"
           inputName="email"
           error={error}
@@ -71,7 +77,13 @@ const LoginForm = () => {
 
         {/* Password */}
         <PasswordInput
-          formik={formik}
+          formik={{
+            handleChange: formik.handleChange,
+            values: formik.values,
+            touched: formik.touched,
+            errors: formik.errors,
+            setFieldTouched: formik.setFieldTouched,
+          }}
           label="Password"
           inputName="password"
           error={error}
