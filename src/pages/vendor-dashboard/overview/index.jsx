@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Stack,
   HStack,
@@ -22,6 +23,8 @@ import Ticket from "../../../assets/icon/Ticket-green.svg";
 import Gain from "../../../assets/icon/Arrow-up.svg";
 
 const OverviewDashboardPage = () => {
+  const navigate = useNavigate();
+
   return (
     <DashboardLayout>
       <DashboardPageHeaders
@@ -185,6 +188,7 @@ const OverviewDashboardPage = () => {
                   size="sm"
                   variant="primary"
                   marginTop={6}
+                  onClick={() => navigate("/app/create-event")}
                 >
                   Create Event
                 </Button>
@@ -214,6 +218,7 @@ const OverviewDashboardPage = () => {
                       size="sm"
                       variant="secondary"
                       marginTop={6}
+                      onClick={() => navigate("/app/create-event")}
                     >
                       Create Event
                     </Button>

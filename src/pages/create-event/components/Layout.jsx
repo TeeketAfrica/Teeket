@@ -24,6 +24,7 @@ import Settings from "../../../assets/icon/Settings.svg";
 import SignOut from "../../../assets/icon/SignOut.svg";
 import Container from "../../../components/ui/Container";
 import SideNav from "./SideNav";
+import useSignOut from "../../../utils/signOut";
 
 const Layout = ({
   children,
@@ -35,6 +36,7 @@ const Layout = ({
   const [mobileToggle, setMobileToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
   const ref = useRef();
+  const { signOut } = useSignOut();
 
   useOutsideClick({
     ref: ref,
@@ -190,7 +192,13 @@ const Layout = ({
                         <Image src={Settings} alt="icon" />
                         <Text>Account Settings</Text>
                       </Link>
-                      <Text display="flex" gap="3" py="2" cursor="pointer">
+                      <Text
+                        display="flex"
+                        gap="3"
+                        py="2"
+                        cursor="pointer"
+                        onClick={signOut}
+                      >
                         <Image src={SignOut} alt="icon" />
                         <Text as="span">Log out</Text>
                       </Text>

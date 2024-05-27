@@ -1,26 +1,25 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Stack } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Stack } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/react";
 
-import EmailInput from '../../components/EmailInput';
+import EmailInput from "../../components/EmailInput";
 
 const PasswordRecoveryForm = ({ onSubmitData }) => {
   // Validation schema using Yup
   const validationSchema = Yup.object({
     email: Yup.string()
-      .email('Invalid email address')
-      .required('Please input your email address'),
+      .email("Invalid email address")
+      .required("Please input your email address"),
   });
 
   // Formik initialization
   const formik = useFormik({
     initialValues: {
-      email: '',
+      email: "",
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       onSubmitData(values);
     },
   });

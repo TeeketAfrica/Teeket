@@ -24,7 +24,7 @@ const PasswordInput = ({
   isCriteriaVisible,
 }) => {
   const isInvalid =
-    (formik.touched[inputName] && formik.errors[inputName]) || errors.password;
+    (formik.touched[inputName] && formik.errors[inputName]) || errors?.password;
   const [passwordCriteria, setPasswordCriteria] = useState({
     hasUppercase: false,
     hasLowercase: false,
@@ -54,7 +54,7 @@ const PasswordInput = ({
   const getPasswordIcon = () => {
     if (
       (formik.touched[inputName] && formik.errors[inputName]) ||
-      errors.password
+      errors?.password
     ) {
       return <Image src={CloseIcon} alt="close" pointerEvents="none" />;
     }
@@ -86,13 +86,15 @@ const PasswordInput = ({
           onChange={formik.handleChange}
           onFocus={() => {
             formik.setFieldTouched(inputName, false),
-              handleError({ email: "", password: "" });
+              handleError && handleError({ email: "", password: "" });
           }}
         />
       </InputGroup>
       <FormErrorMessage>
-        {isInvalid && !errors.password && <div>{formik.errors[inputName]}</div>}
-        {errors.password && <div>{errors.password}</div>}
+        {isInvalid && !errors?.password && (
+          <div>{formik.errors[inputName]}</div>
+        )}
+        {errors?.password && <div>{errors?.password}</div>}
       </FormErrorMessage>
 
       {isCriteriaVisible && (

@@ -2,9 +2,9 @@ import { parse, format } from "date-fns";
 
 const maskEmail = (email) => {
   const [username, domain] = email.split("@");
-  const maskingLength = Math.min(7, username.length);
+  const maskingLength = Math.min(4, username.length);
   const maskedUsername = `${username.slice(0, maskingLength)}${"*".repeat(
-    Math.max(username.length - maskingLength, 0)
+    Math.max(username.length - username.length + 2, 0)
   )}`;
   return `${maskedUsername}@${domain}`;
 };

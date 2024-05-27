@@ -54,7 +54,6 @@ const LoginForm = () => {
           navigate("/app/overview");
         }
       } catch (err) {
-        console.log(err.response.data.message);
         if (err.response.data.message === "Authentication Error") {
           setErrors({ email: "Incorrect email address" });
         } else {
