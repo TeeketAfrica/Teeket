@@ -1,19 +1,19 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-import { Stack } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
+import { Stack } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/react";
 
-import PasswordInput from '../../components/PasswordInput';
+import PasswordInput from "../../components/PasswordInput";
 
 const PasswordResetForm = ({ onSubmitData }) => {
   // Validation schema using Yup
   const validationSchema = Yup.object({
     newPassword: Yup.string()
-      .required('Please input your password')
+      .required("Please input your password")
       .test(
-        'password-criteria',
-        'Password must have at least one uppercase letter, one lowercase letter, be at least 8 characters long, and contain at least one special character',
+        "password-criteria",
+        "Password must have at least one uppercase letter, one lowercase letter, be at least 8 characters long, and contain at least one special character",
         (value) => {
           const hasUppercase = /[A-Z]/.test(value);
           const hasLowercase = /[a-z]/.test(value);
@@ -28,7 +28,7 @@ const PasswordResetForm = ({ onSubmitData }) => {
   // Formik initialization
   const formik = useFormik({
     initialValues: {
-      newPassword: '',
+      newPassword: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -42,7 +42,13 @@ const PasswordResetForm = ({ onSubmitData }) => {
       <Stack spacing={4}>
         {/* Password */}
         <PasswordInput
-          formik={formik}
+          formik={{
+            handleChange: formik.handleChange,
+            values: formik.values,
+            touched: formik.touched,
+            errors: formik.errors,
+            setFieldTouched: formik.setFieldTouched,
+          }}
           label="New password"
           inputName="newPassword"
           isCriteriaVisible={true}

@@ -26,10 +26,7 @@ const LoginForm = () => {
     password: Yup.string().required("Please input your password"),
   });
 
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
+  const [error, setError] = useState("");
 
   // Formik initialization
   const formik = useFormik({
@@ -54,12 +51,8 @@ const LoginForm = () => {
           navigate("/app/overview");
         }
       } catch (err) {
-        console.log(err.response.data.message);
-        if (err.response.data.message === "Authentication Error") {
-          setErrors({ email: "Incorrect email address" });
-        } else {
-          setErrors({ password: "Incorrect password" });
-        }
+        setError("Invalid email or password");
+        console.log("Failed to login", err.message);
       }
     },
   });
@@ -69,20 +62,32 @@ const LoginForm = () => {
       <Stack spacing={4}>
         {/* Email Address */}
         <EmailInput
-          formik={formik}
+          formik={{
+            handleChange: formik.handleChange,
+            values: formik.values,
+            touched: formik.touched,
+            errors: formik.errors,
+            setFieldTouched: formik.setFieldTouched,
+          }}
           label="Email address"
           inputName="email"
-          errors={errors}
-          handleError={setErrors}
+          error={error}
+          handleError={setError}
         />
 
         {/* Password */}
         <PasswordInput
-          formik={formik}
+          formik={{
+            handleChange: formik.handleChange,
+            values: formik.values,
+            touched: formik.touched,
+            errors: formik.errors,
+            setFieldTouched: formik.setFieldTouched,
+          }}
           label="Password"
           inputName="password"
-          errors={errors}
-          handleError={setErrors}
+          error={error}
+          handleError={setError}
         />
 
         {/* Submit button */}

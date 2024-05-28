@@ -8,7 +8,6 @@ import {
   CreateAccountPage,
   PasswordRecoveryPage,
   PasswordResetPage,
-  VendorPage,
   HelpAndSupportPage,
   NotFoundPage,
   HomePage,
@@ -36,10 +35,6 @@ const App = () => (
       <Route
         path="/auth/password-reset"
         element={<PublicRoute element={<PasswordResetPage />} />}
-      />
-      <Route
-        path="/create-event"
-        element={<PublicRoute element={<VendorPage />} />}
       />
       <Route
         path="/help-and-support"
