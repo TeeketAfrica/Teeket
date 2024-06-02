@@ -1,28 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import authApi from "../api/authApi";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectUserDetails,
-  setToken,
-  setUserDetails,
-} from "../features/userSlice";
-import { setEventDetails } from "../features/eventSlice";
+import { useDispatch } from "react-redux";
 
 const useSignOut = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token } = useSelector(selectUserDetails);
 
   const signOut = async () => {
     try {
       await authApi.post("/refresh_token", {
-        refresh_token: token,
+        refresh_token: sessionStorage.getItem("TOKEN"),
       });
 
       sessionStorage.clear("TOKEN");
-      dispatch(setToken(null));
-      dispatch(setUserDetails([]));
-      dispatch(setEventDetails([]));
+      dispatch({ type: "RESET_APP" });
       navigate("/auth/login");
     } catch (err) {
       console.log("Error signing out user", err);

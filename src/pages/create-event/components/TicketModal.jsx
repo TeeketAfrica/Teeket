@@ -93,9 +93,9 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
   const handleUpdateTicketDetails = (id) => {
     if (formik.isValid && data) {
       dispatch(updateTicketDetails({ id, ...formik.values }));
+      formik.resetForm();
+      onCloseModal({ isModalOpen: false });
     }
-    formik.resetForm();
-    onCloseModal({ isModalOpen: false });
   };
 
   const handleOpenDeleteModal = () => {
@@ -291,7 +291,10 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             </FormErrorMessage>
 
             <Text fontSize="sm" fontWeight="normal" color="gray.600">
-              {ticketQuantity - formik.values.ticketQuantity} tickets available
+              {ticketQuantity - formik.values.ticketQuantity < -1
+                ? "0"
+                : ticketQuantity - formik.values.ticketQuantity}{" "}
+              tickets available
             </Text>
           </FormControl>
 

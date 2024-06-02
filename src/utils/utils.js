@@ -32,6 +32,17 @@ const getImageDimensions = (file) => {
   });
 };
 
+const readAsBinary = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("Failed to read the image."));
+
+    reader.readAsArrayBuffer(file);
+  });
+};
+
 const formatDate = (inputDate) => {
   return format(inputDate, "do MMM',' yyyy");
 };
@@ -64,4 +75,5 @@ export {
   formatDate,
   convertTimeFormat,
   calculateMinAndMaxPrices,
+  readAsBinary,
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 
 import {
   Stack,
@@ -17,25 +17,37 @@ import {
   InputLeftElement,
   InputGroup,
   FormErrorMessage,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { useDispatch } from 'react-redux';
-import { setEventDetail } from '../../../features/eventSlice';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectEventDetails,
+  setEventDetail,
+} from "../../../features/eventSlice";
 
-import FormLayout from '../components/FormLayout';
-import ImageUpload from '../components/ImageUpload';
+import FormLayout from "../components/FormLayout";
+import ImageUpload from "../components/ImageUpload";
 
-import Refresh from '../../../assets/icon/Refresh.svg';
-import Map from '../../../assets/icon/Map.svg';
+import Refresh from "../../../assets/icon/Refresh.svg";
+import Map from "../../../assets/icon/Map.svg";
 
 const FormStep2 = ({ formik }) => {
   const dispatch = useDispatch();
+  const { eventBannerImage } = useSelector(selectEventDetails);
 
-  const [image, setImage] = useState(null);
+  const [imageData, setImageData] = useState(eventBannerImage);
+
+  useEffect(() => {
+    const data = {
+      fieldName: "eventBannerImage",
+      value: imageData,
+    };
+    dispatch(setEventDetail(data));
+  }, [imageData]);
 
   const handleInputChange = (fieldName, e) => {
     let data;
-    if (typeof e !== 'string') {
+    if (typeof e !== "string") {
       formik.handleChange(e);
       data = { fieldName: fieldName, value: e.target.value };
     } else {
@@ -52,9 +64,10 @@ const FormStep2 = ({ formik }) => {
     >
       <Stack maxW="600px" flexDirection="column" gap="8">
         {/* Banner Image */}
-        {image ? (
+        {imageData?.secure_url ? (
           <Box>
             <Box
+              key={imageData.public_id}
               h="264px"
               w="600px"
               borderRadius="12px"
@@ -62,15 +75,15 @@ const FormStep2 = ({ formik }) => {
               mb="2"
             >
               <Image
-                src={image}
-                alt="event banner"
+                src={imageData.secure_url}
+                alt={`event-banner ${imageData.public_id}`}
                 objectFit="cover"
                 w="100%"
                 h="100%"
               />
             </Box>
             <Button
-              onClick={() => setImage(null)}
+              onClick={() => setImageData(null)}
               leftIcon={<Image src={Refresh} alt="icon" />}
               variant="secondary"
               size="sm"
@@ -79,7 +92,7 @@ const FormStep2 = ({ formik }) => {
             </Button>
           </Box>
         ) : (
-          <ImageUpload handleSetImage={setImage} />
+          <ImageUpload handleSetImage={setImageData} />
         )}
 
         <VStack alignItems="flex-start" gap="8">
@@ -99,8 +112,8 @@ const FormStep2 = ({ formik }) => {
               rows="7"
               marginTop="4"
               value={formik.values.eventAbout}
-              onChange={(value) => handleInputChange('eventAbout', value)}
-              onBlur={() => formik.setFieldTouched('eventAbout', true)}
+              onChange={(value) => handleInputChange("eventAbout", value)}
+              onBlur={() => formik.setFieldTouched("eventAbout", true)}
             />
             <FormErrorMessage>
               {formik.touched.eventAbout && formik.errors.eventAbout}
@@ -119,10 +132,10 @@ const FormStep2 = ({ formik }) => {
               name="eventHosting"
               value={formik.values.eventHosting}
               onChange={(value) => {
-                formik.setFieldValue('eventHosting', value),
-                  handleInputChange('eventHosting', value);
+                formik.setFieldValue("eventHosting", value),
+                  handleInputChange("eventHosting", value);
               }}
-              onBlur={() => formik.setFieldTouched('eventHosting', true)}
+              onBlur={() => formik.setFieldTouched("eventHosting", true)}
               marginTop="4"
             >
               <HStack spacing="24px">
@@ -140,7 +153,7 @@ const FormStep2 = ({ formik }) => {
 
             {/* Event Location */}
             <Box marginTop="4">
-              {formik.values.eventHosting === 'online' && (
+              {formik.values.eventHosting === "online" && (
                 <FormControl
                   isInvalid={
                     formik.touched.eventLocation &&
@@ -163,7 +176,7 @@ const FormStep2 = ({ formik }) => {
                     size="lg"
                     value={formik.values.eventLocation}
                     onChange={(value) =>
-                      handleInputChange('eventlocation', value)
+                      handleInputChange("eventLocation", value)
                     }
                     onBlur={formik.handleBlur}
                   />
@@ -173,7 +186,7 @@ const FormStep2 = ({ formik }) => {
                   </FormErrorMessage>
                 </FormControl>
               )}
-              {formik.values.eventHosting === 'physical' && (
+              {formik.values.eventHosting === "physical" && (
                 <FormControl
                   isInvalid={
                     formik.touched.eventLocation &&
@@ -199,7 +212,7 @@ const FormStep2 = ({ formik }) => {
                       placeholder="Address"
                       value={formik.values.eventLocation}
                       onChange={(value) =>
-                        handleInputChange('eventlocation', value)
+                        handleInputChange("eventLocation", value)
                       }
                       onBlur={formik.handleBlur}
                     />

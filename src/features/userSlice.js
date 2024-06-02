@@ -4,11 +4,10 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     data: {
-      name: "Zura",
+      name: "Zura Spark",
       imageURL: "",
       email: "",
     },
-    token: sessionStorage.getItem("TOKEN") || "",
   },
   reducers: {
     setUserDetails: (state, action) => {
@@ -16,14 +15,10 @@ const userSlice = createSlice({
       state.data.imageURL = action.payload.imageURL ?? state.data.imageURL;
       state.data.email = action.payload.email ?? state.data.email;
     },
-
-    setToken: (state, action) => {
-      state.token = action.payload ?? null;
-    },
   },
 });
 
-export const { setUserDetails, setToken } = userSlice.actions;
+export const { setUserDetails } = userSlice.actions;
 
 export const selectUserDetails = (state) => state.user; // Corrected selector
 

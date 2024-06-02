@@ -8,7 +8,7 @@ import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
 import authApi from "../../../../api/authApi";
 import { useDispatch } from "react-redux";
-import { setToken, setUserDetails } from "../../../../features/userSlice";
+import { setUserDetails } from "../../../../features/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const CreateAccountForm = () => {
@@ -54,7 +54,6 @@ const CreateAccountForm = () => {
 
         if (token) {
           sessionStorage.setItem("TOKEN", token);
-          dispatch(setToken(token));
           dispatch(setUserDetails(values));
           navigate("/app/overview");
         }

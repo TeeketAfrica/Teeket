@@ -8,24 +8,24 @@ import {
   Select,
   Divider,
   Heading,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { useDispatch } from 'react-redux';
-import { setEventDetail } from '../../../features/eventSlice';
+import { useDispatch } from "react-redux";
+import { setEventDetail } from "../../../features/eventSlice";
 
-import { Stack, Text } from '@chakra-ui/layout';
-import FormLayout from '../components/FormLayout';
+import { Stack, Text } from "@chakra-ui/layout";
+import FormLayout from "../components/FormLayout";
 
-import DownIcon from '../../../assets/icon/DownIcon.jsx';
+import DownIcon from "../../../assets/icon/DownIcon.jsx";
 
 const FormStep1 = ({ formik }) => {
   const dispatch = useDispatch();
 
   // Event Options
   const eventOptions = [
-    { value: 'celebration', label: 'Celebration' },
-    { value: 'party', label: 'Party' },
-    { value: 'naming', label: 'Naming' },
+    { value: "celebration", label: "Celebration" },
+    { value: "party", label: "Party" },
+    { value: "naming", label: "Naming" },
   ];
 
   const handleInputChange = (fieldName, e) => {
@@ -43,7 +43,7 @@ const FormStep1 = ({ formik }) => {
     options = null,
     characterLength = false
   ) => {
-    const isSelect = type === 'select';
+    const isSelect = type === "select";
 
     return (
       <FormControl
@@ -105,18 +105,18 @@ const FormStep1 = ({ formik }) => {
           <Stack spacing={4}>
             {[
               {
-                name: 'eventTitle',
-                label: 'Event title',
-                type: 'text',
+                name: "eventTitle",
+                label: "Event title",
+                type: "text",
                 placeholder:
-                  'Give a clear title for the event you are creating',
+                  "Give a clear title for the event you are creating",
                 characterLength: true,
               },
               {
-                name: 'eventOrganizer',
-                label: 'Organizer',
-                type: 'text',
-                placeholder: 'Who is organizing this event?',
+                name: "eventOrganizer",
+                label: "Organizer",
+                type: "text",
+                placeholder: "Who is organizing this event?",
               },
             ].map(
               ({ name, label, type, placeholder, options, characterLength }) =>
@@ -131,23 +131,23 @@ const FormStep1 = ({ formik }) => {
             )}
             <Box
               display="flex"
-              flexDirection={{ base: 'column', md: 'row' }}
+              flexDirection={{ base: "column", md: "row" }}
               gap={4}
             >
               {[
                 {
-                  name: 'eventType',
-                  label: 'Type of event',
-                  type: 'select',
+                  name: "eventType",
+                  label: "Type of event",
+                  type: "select",
                   options: eventOptions,
-                  placeholder: 'Choose a type e.g. Celebration',
+                  placeholder: "Choose a type e.g. Celebration",
                 },
                 {
-                  name: 'eventIndustry',
-                  label: 'Industry',
-                  type: 'select',
+                  name: "eventIndustry",
+                  label: "Industry",
+                  type: "select",
                   options: eventOptions,
-                  placeholder: 'Choose an industry e.g. Anime',
+                  placeholder: "Choose an industry e.g. Anime",
                 },
               ].map(({ name, label, type, placeholder, options }) =>
                 renderFormControl(name, label, type, placeholder, options)
@@ -166,10 +166,10 @@ const FormStep1 = ({ formik }) => {
             </Heading>
 
             {renderFormControl(
-              'eventTag',
-              'Tags',
-              'text',
-              'Type a tag and press enter'
+              "eventTag",
+              "Tags",
+              "text",
+              "Type a tag and press enter"
             )}
           </Stack>
         </Box>
@@ -189,19 +189,19 @@ const FormStep1 = ({ formik }) => {
             {/* Start Date and Tine */}
             <Box
               display="flex"
-              flexDirection={{ base: 'column', md: 'row' }}
+              flexDirection={{ base: "column", md: "row" }}
               gap={4}
             >
               {[
                 {
-                  name: 'eventStartDate',
-                  label: 'Start date',
-                  type: 'date',
+                  name: "eventStartDate",
+                  label: "Start date",
+                  type: "date",
                 },
                 {
-                  name: 'eventStartTime',
-                  label: 'Start time',
-                  type: 'time',
+                  name: "eventStartTime",
+                  label: "Start time",
+                  type: "time",
                 },
               ].map(({ name, label, type }) =>
                 renderFormControl(name, label, type)
@@ -211,20 +211,20 @@ const FormStep1 = ({ formik }) => {
             {/* End Date and Time */}
             <Box
               display="flex"
-              flexDirection={{ base: 'column', md: 'row' }}
+              flexDirection={{ base: "column", md: "row" }}
               gap={4}
               mb={1}
             >
               {[
                 {
-                  name: 'eventEndDate',
-                  label: 'End date',
-                  type: 'date',
+                  name: "eventEndDate",
+                  label: "End date",
+                  type: "date",
                 },
                 {
-                  name: 'eventEndTime',
-                  label: 'End time',
-                  type: 'time',
+                  name: "eventEndTime",
+                  label: "End time",
+                  type: "time",
                 },
               ].map(({ name, label, type }) =>
                 renderFormControl(name, label, type)

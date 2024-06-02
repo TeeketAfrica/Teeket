@@ -1,3 +1,5 @@
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserDetails } from "../../../features/userSlice";
 import {
   Slide,
   Fade,
@@ -33,15 +35,23 @@ const Layout = ({
   prevStep,
   publishEvent,
 }) => {
+  const dispatch = useDispatch();
   const [mobileToggle, setMobileToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
   const ref = useRef();
   const { signOut } = useSignOut();
 
+  const { email } = useSelector(selectUserDetails).data;
+
   useOutsideClick({
     ref: ref,
     handler: () => setMenuToggle(false),
   });
+
+  const resetEvent = () => {
+    dispatch({ type: "RESET_EVENT" });
+    sessionStorage.setItem("EVENT_PAGE", 0);
+  };
 
   const steps = [
     {
@@ -141,7 +151,7 @@ const Layout = ({
                       borderColor="#F0F2F5"
                     >
                       <Text py="2" color="gray.800" fontWeight="semibold">
-                        Solomonteeket@gmail.com
+                        {email}
                       </Text>
                       <Link
                         href=""
@@ -149,6 +159,7 @@ const Layout = ({
                         gap="3"
                         py="2"
                         _hover={{ textDecoration: "none" }}
+                        onClick={resetEvent}
                       >
                         <Image src={Ticket} alt="icon" />
                         <Text>My tickets</Text>
@@ -166,6 +177,7 @@ const Layout = ({
                         gap="3"
                         py="2"
                         _hover={{ textDecoration: "none" }}
+                        onClick={resetEvent}
                       >
                         <PlusCircle />
                         <Text>Create events</Text>
@@ -176,6 +188,7 @@ const Layout = ({
                         gap="3"
                         py="2"
                         _hover={{ textDecoration: "none" }}
+                        onClick={resetEvent}
                       >
                         <Image src={Dashboard} alt="icon" />
                         <Text>Dashboard</Text>
@@ -188,6 +201,7 @@ const Layout = ({
                         gap="3"
                         py="2"
                         _hover={{ textDecoration: "none" }}
+                        onClick={resetEvent}
                       >
                         <Image src={Settings} alt="icon" />
                         <Text>Account Settings</Text>
