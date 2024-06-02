@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 import {
   Image,
@@ -19,31 +19,31 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   setEventDetail,
   selectEventDetails,
-} from '../../../features/eventSlice';
+} from "../../../features/eventSlice";
 
-import FormLayout from '../components/FormLayout';
-import Ticket from '../components/Ticket';
-import TicketModal from '../components/TicketModal';
+import FormLayout from "../components/FormLayout";
+import Ticket from "../components/Ticket";
+import TicketModal from "../components/TicketModal";
 
-import PlusIcon from '../../../assets/icon/Plus.svg';
-import PlusLightIcon from '../../../assets/icon/PlusLight.svg';
-import Notebook from '../../../assets/icon/Notebook.svg';
-import DownArrowIcon from '../../../assets/icon/DownArrow.svg';
-import UpArrowIcon from '../../../assets/icon/UpArrow.svg';
-import CircleCheckIcon from '../../../assets/icon/CircleCheck.svg';
-import InfoTriangleIcon from '../../../assets/icon/InfoTriangle.svg';
+import PlusIcon from "../../../assets/icon/Plus.svg";
+import PlusLightIcon from "../../../assets/icon/PlusLight.svg";
+import Notebook from "../../../assets/icon/Notebook.svg";
+import DownArrowIcon from "../../../assets/icon/DownArrow.svg";
+import UpArrowIcon from "../../../assets/icon/UpArrow.svg";
+import CircleCheckIcon from "../../../assets/icon/CircleCheck.svg";
+import InfoTriangleIcon from "../../../assets/icon/InfoTriangle.svg";
 
 const FormStep3 = ({ formik }) => {
   const dispatch = useDispatch();
 
-  const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
+  const { tickets } = useSelector(selectEventDetails);
 
   const [isTicketOpen, setIsTicketOpen] = useState({
     isModalOpen: false,
@@ -53,7 +53,8 @@ const FormStep3 = ({ formik }) => {
   const [isInputFocused, setIsInputFocused] = useState(false);
 
   const ticketQuantity =
-    formik.values.eventEstimatedSoldTicket - totalTicketQuantities;
+    formik.values.eventEstimatedSoldTicket -
+    formik.values.totalTicketQuantities;
 
   const handleInputChange = (fieldName, e) => {
     const data = { fieldName: fieldName, value: e };
@@ -79,11 +80,11 @@ const FormStep3 = ({ formik }) => {
             name="eventEstimatedSoldTicket"
             value={formik.values.eventEstimatedSoldTicket}
             onChange={(value) => {
-              formik.setFieldValue('eventEstimatedSoldTicket', value),
-                handleInputChange('eventEstimatedSoldTicket', value);
+              formik.setFieldValue("eventEstimatedSoldTicket", value),
+                handleInputChange("eventEstimatedSoldTicket", value);
             }}
             onBlur={() =>
-              formik.setFieldTouched('eventEstimatedSoldTicket', true)
+              formik.setFieldTouched("eventEstimatedSoldTicket", true)
             }
             marginTop="4"
           >
@@ -102,8 +103,8 @@ const FormStep3 = ({ formik }) => {
                 value={formik.values.eventEstimatedSoldTicket}
                 onChange={(valueString, valueNumber) =>
                   formik.setFieldValue(
-                    'eventEstimatedSoldTicket',
-                    valueNumber || ''
+                    "eventEstimatedSoldTicket",
+                    valueNumber || ""
                   )
                 }
                 onFocus={() => setIsInputFocused(true)}
@@ -180,7 +181,7 @@ const FormStep3 = ({ formik }) => {
                 <Image src={CircleCheckIcon} alt="circle-check" />
               ) : (
                 <Image src={InfoTriangleIcon} alt="info-triangle" />
-              )}{' '}
+              )}{" "}
               <Text as="span">
                 You have {ticketQuantity > -1 ? ticketQuantity : 0} tickets left
                 to allocate
@@ -206,7 +207,7 @@ const FormStep3 = ({ formik }) => {
               </Button>
             ) : (
               <Text fontSize="lg" fontWeight="semibold" color="gray.800">
-                {' '}
+                {" "}
                 Select the estimated number of tickets to be sold
               </Text>
             )}

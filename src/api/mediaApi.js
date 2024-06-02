@@ -4,7 +4,8 @@ import { mediaBaseUrl } from "../utils/constants";
 const mediaApi = axios.create({
   baseURL: mediaBaseUrl,
   headers: {
-    "Content-Type": "application/json",
+    Accept: "application/json",
+    "Content-Type": "multipart/form-data",
     // Add any other custom headers here
   },
   // Add other custom config here if needed

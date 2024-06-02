@@ -1,9 +1,6 @@
-import { useSelector } from "react-redux";
-import { selectUserDetails } from "../features/userSlice";
-
 const useIsUserAuth = () => {
-  const { token } = useSelector(selectUserDetails);
-  return !!token;
+  const token = sessionStorage.getItem("TOKEN") || "";
+  return token;
 };
 
 export default useIsUserAuth;

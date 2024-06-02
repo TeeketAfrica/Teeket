@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import authApi from "../../../../api/authApi";
-import { setToken, setUserDetails } from "../../../../features/userSlice";
+import { setUserDetails } from "../../../../features/userSlice";
 
 import { Stack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
@@ -46,7 +46,6 @@ const LoginForm = () => {
 
         if (token) {
           sessionStorage.setItem("TOKEN", token);
-          dispatch(setToken(token));
           dispatch(setUserDetails(values));
           navigate("/app/overview");
         }

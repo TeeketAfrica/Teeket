@@ -105,7 +105,7 @@ const SidebarMenu = ({ onClose, isOpen }) => {
               </Avatar>
               <Box>
                 <Text fontWeight="semibold" fontSize="sm">
-                  Remi Green
+                  {data?.name}
                 </Text>
                 <Text>{maskEmail(data?.email)}</Text>
               </Box>
@@ -183,7 +183,7 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                   </Avatar>
                   <Box>
                     <Text fontWeight="semibold" fontSize="sm">
-                      Remi Green
+                      {data?.name}
                     </Text>
                     <Text>{maskEmail(data?.email)}</Text>
                   </Box>
