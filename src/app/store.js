@@ -34,6 +34,7 @@ const rootReducer = (state, action) => {
       user,
       event: undefined, // Resetting event state
     };
+    sessionStorage.setItem("EVENT_PAGE", 0);
   }
 
   return allReducers(state, action);

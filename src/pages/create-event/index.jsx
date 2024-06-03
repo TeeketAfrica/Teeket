@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,8 +55,8 @@ const validationSchemas = [
 
 const VendorPage = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     eventTitle,
@@ -82,7 +82,7 @@ const VendorPage = () => {
     if (pageNumber !== null) {
       setActiveStep(Number(pageNumber));
     }
-  }, []); // Run only on mount
+  }, []);
 
   const initialValues = useMemo(
     () => ({
@@ -145,29 +145,48 @@ const VendorPage = () => {
       if (Object.keys(errors).length === 0) {
         const data = { ...formProps.values, eventBannerImage };
 
-        // try {
-        //   const res = await teeketApi.post("/events", {
-        //     title: data.eventTitle,
-        //     organizer: data.eventOrganizer,
-        //     industry: data.eventIndustry,
-        //     type: data.eventType,
-        //     tags: [],
-        //     start_date: `${data.eventStartDate}T${data.eventStartTime}Z`,
-        //     end_date: `${data.eventEndDate}T${data.eventEndTime}Z`,
-        //     description: data.eventAbout,
-        //     banner_image: data.eventBannerImage.secure_url,
-        //     hosting_site: data.eventHosting,
-        //     event_location:
-        //       data.eventHosting === "physical" ? data.eventLocation : "",
-        //     event_link:
-        //       data.eventHosting === "online" ? data.eventLocation : "",
-        //     number_of_tickets: data.totalTicketQuantities,
-        //   });
+        try {
+          const res = await teeketApi.post("/events", {
+            title: data.eventTitle,
+            organizer: data.eventOrganizer,
+            industry: data.eventIndustry,
+            type: data.eventType,
+            tags: [],
+            start_date: `${data.eventStartDate}T${data.eventStartTime}Z`,
+            end_date: `${data.eventEndDate}T${data.eventEndTime}Z`,
+            description: data.eventAbout,
+            banner_image: data.eventBannerImage.secure_url,
+            hosting_site: data.eventHosting,
+            event_location:
+              data.eventHosting == "physical" ? data.eventLocation : "",
+            event_link: data.eventHosting == "online" ? data.eventLocation : "",
+            number_of_tickets: data.totalTicketQuantities,
+          });
 
-        //   console.log(res);
-        // } catch (error) {
-        //   console.log("Failed to create event", error);
-        // }
+          if (res.data.id) {
+            const eventId = res.data.id;
+            const createTicketURL = `/api/v1/events/${eventId}/tickets`;
+
+            const ticketPromises = tickets.map(async (ticket) => {
+              try {
+                const res = await teeketApi.post(createTicketURL, {
+                  name: ticket.ticketName,
+                  price: ticket.ticketPrice,
+                  quantity: ticket.ticketQuantity,
+                  is_paid: ticket.ticketType === "paid",
+                });
+              } catch (error) {
+                console.log("Failed to create ticket:", error.message);
+              }
+            });
+
+            await Promise.all(ticketPromises);
+            navigate("/app/overview");
+            dispatch({ type: "RESET_EVENT" });
+          }
+        } catch (error) {
+          console.log("Failed to create event", error);
+        }
       }
     },
     [eventBannerImage]
