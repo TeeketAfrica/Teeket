@@ -158,8 +158,9 @@ const VendorPage = () => {
             banner_image: data.eventBannerImage.secure_url,
             hosting_site: data.eventHosting,
             event_location:
-              data.eventHosting == "physical" ? data.eventLocation : "",
-            event_link: data.eventHosting == "online" ? data.eventLocation : "",
+              data.eventHosting == "physical" ? data.eventLocation : null,
+            event_link:
+              data.eventHosting == "online" ? data.eventLocation : null,
             number_of_tickets: data.totalTicketQuantities,
           });
 
@@ -169,7 +170,7 @@ const VendorPage = () => {
 
             const ticketPromises = tickets.map(async (ticket) => {
               try {
-                const res = await teeketApi.post(createTicketURL, {
+                await teeketApi.post(createTicketURL, {
                   name: ticket.ticketName,
                   price: ticket.ticketPrice,
                   quantity: ticket.ticketQuantity,

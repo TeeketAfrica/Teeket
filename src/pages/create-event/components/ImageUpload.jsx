@@ -29,13 +29,11 @@ import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
 import Reload from "../../../assets/icon/Reload.svg";
 import CloudUpload from "../../../assets/icon/CloudUpload.svg";
 import mediaApi from "../../../api/mediaApi";
-import useIsUserAuth from "../../../hooks/useIsUserAuth";
 
 const ImageUpload = ({ handleSetImage }) => {
   const { register } = useForm();
   const fileInputRef = useRef(null);
   const [imageData, setImageData] = useState("");
-  const token = useIsUserAuth();
 
   const [imageUploadState, setImageUploadState] = useState({
     default: true,
@@ -68,15 +66,9 @@ const ImageUpload = ({ handleSetImage }) => {
 
           const imageBinary = await readAsBinary(selectedImage);
 
-          const res = await mediaApi.post(
-            "/upload/picture",
-            { file: imageBinary },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const res = await mediaApi.post("/upload/picture", {
+            file: imageBinary,
+          });
 
           handleSetImage(res.data);
         } else {

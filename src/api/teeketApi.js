@@ -1,8 +1,7 @@
 import axios from "axios";
 import { teeketBaseUrl } from "../utils/constants";
-import useIsUserAuth from "../hooks/useIsUserAuth";
 
-const token = useIsUserAuth();
+const token = sessionStorage.getItem("TOKEN");
 
 const teeketApi = axios.create({
   baseURL: teeketBaseUrl,
@@ -11,8 +10,6 @@ const teeketApi = axios.create({
 teeketApi.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${token}`;
   config.headers["Content-Type"] = "application/json";
-
-  console.log(token);
   return config;
 });
 
