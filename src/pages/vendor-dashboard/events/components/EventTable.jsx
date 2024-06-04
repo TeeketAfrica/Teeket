@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Divider,
@@ -22,6 +22,7 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
 import Search from "../../../../assets/icon/Search";
@@ -38,6 +39,7 @@ import {
 } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { Link, useNavigate } from "react-router-dom";
+import teeketApi from "../../../../api/teeketApi";
 
 const EventTable = () => {
   const [setSelectedStatusFilter] = useState(null);
@@ -46,6 +48,31 @@ const EventTable = () => {
   const [request] = useState(true);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const toast = useToast();
+
+  useEffect(() => {
+    const handleFetchEvents = async () => {
+      try {
+        sessionStorage.getItem("TOKEN");
+        const response = await teeketApi.get("/events");
+        const res = response.data.data;
+        console.log("res", res);
+      } catch (error) {
+        const errorMessage =
+          error?.response?.data?.detail || "An error occured";
+        toast({
+          title: "Fetch failed.",
+          description: `${errorMessage}`,
+          status: "error",
+          duration: 3000,
+          position: "top-right",
+          isClosable: true,
+        });
+      }
+    };
+
+    handleFetchEvents();
+  }, [toast]);
 
   const itemsPerPage = 8;
 

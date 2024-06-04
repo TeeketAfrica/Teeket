@@ -4,6 +4,7 @@ import DashboardPageHeaders from "../../../components/layouts/DashboardPageHeade
 import Export from "../../../assets/icon/Export.svg";
 import AddEvent from "../../../assets/icon/AddEvent.svg";
 import EventTable from "./components/EventTable";
+import { Link } from "react-router-dom";
 
 const EventsDashboardPage = () => {
   return (
@@ -27,10 +28,12 @@ const EventsDashboardPage = () => {
             <Image src={Export} alt="export" mr={2} />
             Export
           </Button>
-          <Button variant="primary" p={2}>
-            <Image src={AddEvent} alt="add event" mr={2} />
-            Add event
-          </Button>
+          <Link to="/app/create-event">
+            <Button variant="primary" p={2}>
+              <Image src={AddEvent} alt="add event" mr={2} />
+              Add event
+            </Button>
+          </Link>
         </HStack>
       </Stack>
       <EventTable />

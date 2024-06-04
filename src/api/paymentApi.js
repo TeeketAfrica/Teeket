@@ -1,7 +1,7 @@
 import axios from "axios";
 import { teeketBaseUrl } from "../utils/constants";
 
-const teeketApi = axios.create({
+const paymentApi = axios.create({
   baseURL: teeketBaseUrl,
   headers: {
     "Content-Type": "application/json",
@@ -10,4 +10,4 @@ const teeketApi = axios.create({
   // Add other custom config here if needed
 });
 
-export default teeketApi;
+export default paymentApi;
