@@ -10,29 +10,29 @@ import {
   Stack,
   HStack,
   Text,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   setEventDetail,
   selectEventDetails,
-} from '../../../features/eventSlice';
+} from "../../../features/eventSlice";
 
 import {
   formatDate,
   convertTimeFormat,
   calculateMinAndMaxPrices,
-} from '../../../utils/utils.js';
+} from "../../../utils/utils.js";
 
-import FormLayout from '../components/FormLayout';
+import FormLayout from "../components/FormLayout";
 
-import BannerImage from '../../../assets/img/BannerImage.png';
-import Map from '../../../assets/icon/Map.svg';
-import Clock from '../../../assets/icon/clock.svg';
-import Calendar from '../../../assets/icon/calendar-alt.svg';
-import TicketNumber from '../../../assets/icon/TicketNumber.svg';
-import TicketPrice from '../../../assets/icon/TicketPrice.svg';
+import BannerImage from "../../../assets/img/BannerImage.png";
+import Map from "../../../assets/icon/Map.svg";
+import Clock from "../../../assets/icon/clock.svg";
+import Calendar from "../../../assets/icon/calendar-alt.svg";
+import TicketNumber from "../../../assets/icon/TicketNumber.svg";
+import TicketPrice from "../../../assets/icon/TicketPrice.svg";
 
 const PublishEvent = ({ formik }) => {
   const dispatch = useDispatch();
@@ -46,6 +46,7 @@ const PublishEvent = ({ formik }) => {
     eventStartDate,
     eventStartTime,
     eventEndTime,
+    eventBannerImage,
     tickets,
     totalTicketQuantities,
   } = useSelector(selectEventDetails);
@@ -64,20 +65,20 @@ const PublishEvent = ({ formik }) => {
       />
       <Stack direction="column" spacing={8}>
         <Box border="1px solid" borderColor="gray.300" borderRadius="16px">
-          <Stack direction="row" flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+          <Stack direction="row" flexWrap={{ base: "wrap", lg: "nowrap" }}>
             <Box
-              w={{ base: '100%', lg: '397px' }}
-              h={{ base: '320px', lg: '100%' }}
+              w={{ base: "100%", lg: "397px" }}
+              h={{ base: "320px" }}
               flexShrink="0"
             >
               <Image
-                src={BannerImage}
-                alt="event banner"
+                src={eventBannerImage.secure_url}
+                alt={`event-banner ${eventBannerImage.public_id}`}
                 display="inline-block"
                 h="100%"
                 w="100%"
                 objectFit="cover"
-                borderRadius="16px 0 0 16px"
+                borderRadius={{ base: "16px 16px 0 0", lg: "16px 0 0 16px" }}
               />
             </Box>
             <Box p={6}>
@@ -93,7 +94,7 @@ const PublishEvent = ({ formik }) => {
                 <Text color="gray.600" fontSize="sm">
                   {eventAbout}
                 </Text>
-                {eventHosting === 'physical' ? (
+                {eventHosting === "physical" ? (
                   <Text display="flex" color="gray.800" gap={2} fontSize="sm">
                     <Image src={Map} alt="location" /> {eventLocation}
                   </Text>
@@ -148,7 +149,7 @@ const PublishEvent = ({ formik }) => {
                         borderRadius="8px"
                       >
                         <Image src={Clock} alt="location" />
-                        {convertTimeFormat(eventStartTime)} -{' '}
+                        {convertTimeFormat(eventStartTime)} -{" "}
                         {convertTimeFormat(eventEndTime)}
                       </Text>
                     </Stack>
@@ -239,10 +240,10 @@ const PublishEvent = ({ formik }) => {
                   name="publishLive"
                   value={formik.values.publishLive}
                   onChange={(value) => {
-                    formik.setFieldValue('publishLive', value);
-                    handleInputChange('publishLive', value);
+                    formik.setFieldValue("publishLive", value);
+                    handleInputChange("publishLive", value);
                   }}
-                  onBlur={() => formik.setFieldTouched('publishLive', true)}
+                  onBlur={() => formik.setFieldTouched("publishLive", true)}
                   marginTop="4"
                 >
                   <HStack

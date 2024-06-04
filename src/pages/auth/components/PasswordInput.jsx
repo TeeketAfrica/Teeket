@@ -85,6 +85,7 @@ const PasswordInput = ({
             formik.setFieldTouched(inputName, false),
               handleError && handleError("");
           }}
+          autoComplete="true"
         />
       </InputGroup>
       <FormErrorMessage>

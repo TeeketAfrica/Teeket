@@ -18,10 +18,27 @@ const persistConfig = {
   storage,
 };
 
-const rootReducer = combineReducers({
+const allReducers = combineReducers({
   event: eventReducer,
   user: userReducer,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type == "RESET_APP") {
+    state = undefined;
+  }
+
+  if (action.type == "RESET_EVENT") {
+    const { user } = state;
+    state = {
+      user,
+      event: undefined, // Resetting event state
+    };
+    sessionStorage.setItem("EVENT_PAGE", 0);
+  }
+
+  return allReducers(state, action);
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

@@ -17,7 +17,7 @@ import RouteGuard from "./routeGuard";
 import useIsUserAuth from "../hooks/useIsUserAuth";
 
 const AuthenticatedRoutes = () => {
-  const isAuthenticated = useIsUserAuth();
+  const isAuthenticated = !!useIsUserAuth();
 
   return (
     <RouteGuard isAllowed={isAuthenticated}>
