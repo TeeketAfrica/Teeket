@@ -46,7 +46,6 @@ const LoginForm = () => {
 
         if (token) {
           sessionStorage.setItem("TOKEN", token);
-          dispatch({ type: "RESET_APP" });
           dispatch(setUserDetails(values));
           navigate("/app/overview");
         }

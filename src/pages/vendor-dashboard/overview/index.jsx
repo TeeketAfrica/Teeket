@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Stack,
@@ -21,9 +22,36 @@ import ChartUp from "../../../assets/icon/Chart-up.svg";
 import AIStar from "../../../assets/icon/AI-star.svg";
 import Ticket from "../../../assets/icon/Ticket-green.svg";
 import Gain from "../../../assets/icon/Arrow-up.svg";
+import teeketApi from "../../../api/teeketApi";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserDetails, setUserDetails } from "../../../features/userSlice";
 
 const OverviewDashboardPage = () => {
   const navigate = useNavigate();
+
+  const [events, setEvents] = useState([]);
+  const dispatch = useDispatch();
+
+  const { data } = useSelector(selectUserDetails);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const { data } = await teeketApi("/events/user");
+        setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        setEvents([]);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  const totalTicketsSold = useMemo(
+    () => events.data?.reduce((total, event) => total + event.tickets_sold, 0),
+    [events.data]
+  );
 
   return (
     <DashboardLayout>
@@ -115,7 +143,7 @@ const OverviewDashboardPage = () => {
               </Text>
               <Box>
                 <Text fontSize="xl" fontWeight="bold" color="gray.800">
-                  0
+                  {events.total}
                 </Text>
               </Box>
             </VStack>
@@ -131,7 +159,7 @@ const OverviewDashboardPage = () => {
               </Text>
               <Box>
                 <Text fontSize="xl" fontWeight="bold" color="gray.800">
-                  230
+                  {totalTicketsSold}
                 </Text>
               </Box>
             </VStack>
@@ -188,7 +216,7 @@ const OverviewDashboardPage = () => {
                   size="sm"
                   variant="primary"
                   marginTop={6}
-                  onClick={() => navigate("/app/create-event")}
+                  onClick={() => navigate("/create-event")}
                 >
                   Create Event
                 </Button>
@@ -218,7 +246,7 @@ const OverviewDashboardPage = () => {
                       size="sm"
                       variant="secondary"
                       marginTop={6}
-                      onClick={() => navigate("/app/create-event")}
+                      onClick={() => navigate("/create-event")}
                     >
                       Create Event
                     </Button>

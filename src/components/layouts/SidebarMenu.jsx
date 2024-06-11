@@ -192,7 +192,7 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                   <Avatar
                     border="1px solid"
                     borderColor="gray.800"
-                    name={data?.name}
+                    name={data?.email}
                     src={data?.imageURL}
                     bgColor="transparent"
                   >

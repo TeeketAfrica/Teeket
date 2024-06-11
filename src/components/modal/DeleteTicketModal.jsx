@@ -14,8 +14,6 @@ const DeleteTicketModal = () => {
   const { modalState, closeModal } = useModal();
   const dispatch = useDispatch();
 
-  console.log(modalState);
-
   const handleDeleteTicket = () => {
     if (modalState.data) {
       dispatch(deleteTicket(modalState.data.id));

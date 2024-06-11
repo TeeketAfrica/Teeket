@@ -32,7 +32,6 @@ const PasswordResetForm = ({ onSubmitData }) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       onSubmitData(values);
     },
   });

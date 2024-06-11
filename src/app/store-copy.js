@@ -1,14 +1,14 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import {
+  persistReducer,
+  persistStore,
   FLUSH,
+  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
-  REHYDRATE,
-  persistReducer,
-  persistStore,
 } from "redux-persist";
 import eventReducer from "../features/eventSlice";
 import userReducer from "../features/userSlice";
@@ -23,7 +23,24 @@ const allReducers = combineReducers({
   user: userReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, allReducers);
+const rootReducer = (state, action) => {
+  if (action.type == "RESET_APP") {
+    state = undefined;
+  }
+
+  if (action.type == "RESET_EVENT") {
+    const { user } = state;
+    state = {
+      user,
+      event: undefined, // Resetting event state
+    };
+    sessionStorage.setItem("EVENT_PAGE", 0);
+  }
+
+  return allReducers(state, action);
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,

@@ -28,7 +28,7 @@ const EventsDashboardPage = () => {
             <Image src={Export} alt="export" mr={2} />
             Export
           </Button>
-          <Link to="/app/create-event">
+          <Link to="/create-event">
             <Button variant="primary" p={2}>
               <Image src={AddEvent} alt="add event" mr={2} />
               Add event

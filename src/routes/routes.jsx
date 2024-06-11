@@ -17,37 +17,90 @@ import {
   TicketDashboardPage,
   EventBookingPage,
 } from "../pages";
+import { PrivateRoute } from "./PrivateRoute";
 
-export const routes = [
-  // Landing Page
+const routes = [
+  //Public Routes
   { path: "/", element: <CounterDownPage /> },
   { path: "/home", element: <HomePage /> },
-
-  // Authenticated Pages
-  { path: "/auth/login", element: <LoginPage /> },
-  { path: "/auth/create-account", element: <CreateAccountPage /> },
-  { path: "/auth/password-recovery", element: <PasswordRecoveryPage /> },
-  { path: "/auth/password-reset", element: <PasswordResetPage /> },
-
-  // Other Pages
-  { path: "/create-event", element: <VendorPage /> },
   { path: "/help-and-support", element: <HelpAndSupportPage /> },
-
-  // Dashboard Pages
-  { path: "/app/overview", element: <OverviewDashboardPage /> },
-  { path: "/app/events", element: <EventsDashboardPage /> },
-  { path: "/app/order", element: <OrdersDashboardPage /> },
-  { path: "/app/finance", element: <FinancesDashboardPage /> },
-  {
-    path: "/app/organization-settings",
-    element: <OrganizationSettingsDashboardPage />,
-  },
-
-  // Events Pages
   { path: "/events", element: <EventsPage /> },
   { path: "/event-category", element: <EventCategoryPage /> },
-  { path: "/event-booking", element: <EventBookingPage /> },
-
-  // Tickets Pages
   { path: "/my-tickets", element: <TicketDashboardPage /> },
+  {
+    path: "/auth/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/auth/create-account",
+    element: <CreateAccountPage />,
+  },
+  {
+    path: "/auth/password-recovery",
+    element: <PasswordRecoveryPage />,
+  },
+  {
+    path: "/auth/password-reset",
+    element: <PasswordResetPage />,
+  },
+
+  //Authenticated Routes
+  {
+    path: "/create-event",
+    element: (
+      <PrivateRoute>
+        <VendorPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/app/overview",
+    element: (
+      <PrivateRoute>
+        <OverviewDashboardPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/app/events",
+    element: (
+      <PrivateRoute>
+        <EventsDashboardPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/app/order",
+    element: (
+      <PrivateRoute>
+        <OrdersDashboardPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/app/finance",
+    element: (
+      <PrivateRoute>
+        <FinancesDashboardPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/app/organization-settings",
+    element: (
+      <PrivateRoute>
+        <OrganizationSettingsDashboardPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/event-booking",
+    element: (
+      <PrivateRoute>
+        <EventBookingPage />
+      </PrivateRoute>
+    ),
+  },
 ];
+
+export default routes;
