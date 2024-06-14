@@ -23,22 +23,17 @@ import AIStar from "../../../assets/icon/AI-star.svg";
 import Ticket from "../../../assets/icon/Ticket-green.svg";
 import Gain from "../../../assets/icon/Arrow-up.svg";
 import teeketApi from "../../../api/teeketApi";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUserDetails, setUserDetails } from "../../../features/userSlice";
 
 const OverviewDashboardPage = () => {
   const navigate = useNavigate();
 
   const [events, setEvents] = useState([]);
-  const dispatch = useDispatch();
-
-  const { data } = useSelector(selectUserDetails);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const { data } = await teeketApi.get("/events/user");
-        setEvents(data);
+        const userEventData = await teeketApi.get("/events/user");
+        setEvents(userEventData.data);
       } catch (error) {
         console.error("Error fetching events:", error);
         setEvents([]);
