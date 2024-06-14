@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import authApi from "../api/authApi";
-import { useDispatch } from "react-redux";
 import { persistor } from "../app/store";
 
 const useSignOut = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const signOut = async () => {

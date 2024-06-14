@@ -37,7 +37,7 @@ const OverviewDashboardPage = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const { data } = await teeketApi("/events/user");
+        const { data } = await teeketApi.get("/events/user");
         setEvents(data);
       } catch (error) {
         console.error("Error fetching events:", error);
