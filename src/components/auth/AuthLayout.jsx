@@ -1,18 +1,18 @@
 /* eslint-disable react/prop-types */
-import { HStack, VStack, Box, Flex, Text } from '@chakra-ui/layout';
-import { Link, Avatar } from '@chakra-ui/react';
+import { HStack, VStack, Box, Flex, Text } from "@chakra-ui/layout";
+import { Link, Avatar } from "@chakra-ui/react";
 // import RightPanel from '../../assets/img/RightPanel.png';
-import loginBackground from '../../assets/img/loginBackground.png';
-import createBackground from '../../assets/img/createBackground.png';
-import lightLogo from '../../assets/img/lightLogo.png';
-import brandLogo from '../../assets/img/brandLogo.png';
-import mockOne from '../../assets/img/mockOne.png';
-import mockTwo from '../../assets/img/mockTwo.png';
-import mockThree from '../../assets/img/mockThree.png';
-import designerAvatar from '../../assets/img/designerAvatar.png';
+import loginBackground from "../../assets/img/loginBackground.png";
+import createBackground from "../../assets/img/createBackground.png";
+import lightLogo from "../../assets/img/lightLogo.png";
+import brandLogo from "../../assets/img/brandLogo.png";
+import mockOne from "../../assets/img/mockOne.png";
+import mockTwo from "../../assets/img/mockTwo.png";
+import mockThree from "../../assets/img/mockThree.png";
+import designerAvatar from "../../assets/img/designerAvatar.png";
 // import RightPanel2 from '../../assets/img/RightPanel2.png';
-import { Image } from '@chakra-ui/image';
-import { useLocation } from 'react-router';
+import { Image } from "@chakra-ui/image";
+import { useLocation } from "react-router";
 
 const AuthLayout = ({ children }) => {
   const location = useLocation();
@@ -52,11 +52,11 @@ const AuthLayout = ({ children }) => {
     //     )}
     //   </Box>
     // </Box>
-    <Box as="main" p={{ base: '6', md: '8' }} w="100%" h="100vh">
+    <Box as="main" p={{ base: "6", md: "8" }} w="100%" h="100dvh">
       <Flex
         as="section"
         columnGap={26}
-        flexDirection={{ base: 'column', md: 'row' }}
+        flexDirection={{ base: "column", md: "row" }}
         h="100%"
       >
         <Flex flex="1" placeItems="center">
@@ -66,13 +66,13 @@ const AuthLayout = ({ children }) => {
         </Flex>
 
         <Box
-          display={{ base: 'none', lg: 'block' }}
-          w={{ lg: '470px', xl: '560px' }}
+          display={{ base: "none", lg: "block" }}
+          w={{ lg: "470px", xl: "560px" }}
           flexShrink="0"
           borderRadius="30px"
           overflow="hidden"
           backgroundImage={`url(${
-            location.pathname === '/auth/create-account'
+            location.pathname === "/auth/create-account"
               ? createBackground
               : loginBackground
           })`}
@@ -80,9 +80,9 @@ const AuthLayout = ({ children }) => {
           backgroundSize="cover"
           backgroundBlendMode="luminosity"
         >
-          {location.pathname === '/auth/create-account' ? (
+          {location.pathname === "/auth/create-account" ? (
             <VStack
-              p={{ md: '30px', xl: '60px' }}
+              p={{ md: "30px", xl: "60px" }}
               h="100%"
               alignItems="start"
               gap="68px"
@@ -94,7 +94,7 @@ const AuthLayout = ({ children }) => {
               <Text
                 as="h2"
                 color="gray.800"
-                fontSize={{ md: '5xl', lg: '6xl', '2xl': '7xl' }}
+                fontSize={{ md: "5xl", lg: "6xl", "2xl": "7xl" }}
                 fontWeight="bold"
                 letterSpacing="tight"
                 lineHeight="none"
@@ -142,7 +142,7 @@ const AuthLayout = ({ children }) => {
             <VStack
               position="relative"
               isolation="isolate"
-              p={{ md: '30px', xl: '60px' }}
+              p={{ md: "30px", xl: "60px" }}
               h="100%"
               alignItems="start"
               gap="120px"
@@ -153,7 +153,7 @@ const AuthLayout = ({ children }) => {
               <Text
                 as="h2"
                 color="white"
-                fontSize={{ md: '5xl', lg: '6xl', '2xl': '7xl' }}
+                fontSize={{ md: "5xl", lg: "6xl", "2xl": "7xl" }}
                 fontWeight="bold"
                 letterSpacing="tight"
                 lineHeight="none"
@@ -164,7 +164,7 @@ const AuthLayout = ({ children }) => {
               <Box
                 position="absolute"
                 zIndex="-1"
-                right={{ md: '30px', xl: '60px' }}
+                right={{ md: "30px", xl: "60px" }}
                 bottom="200px"
               >
                 <Avatar
@@ -195,8 +195,8 @@ const AuthLayout = ({ children }) => {
               <Box
                 position="absolute"
                 zIndex="-1"
-                left={{ md: '30px', xl: '60px' }}
-                bottom={{ md: '30px', xl: '60px' }}
+                left={{ md: "30px", xl: "60px" }}
+                bottom={{ md: "30px", xl: "60px" }}
               >
                 <Avatar
                   src={mockThree}

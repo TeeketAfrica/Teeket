@@ -1,16 +1,16 @@
 import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({ children }) => {
+const PublicRoute = ({ children }) => {
   try {
     const token = sessionStorage.getItem("TOKEN");
-    if (token) {
+    if (!token) {
       return children;
     } else {
-      return <Navigate to="/home" />;
+      return <Navigate to="/app/overview" />;
     }
   } catch (err) {
     return <Navigate to="/home" />;
   }
 };
 
-export default PrivateRoute;
+export default PublicRoute;
