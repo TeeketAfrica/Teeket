@@ -52,7 +52,8 @@ const DashboardHeader = ({ onOpen }) => {
           <Avatar
             border="1px solid"
             borderColor="gray.800"
-            name={data?.name}
+            color="gray.800"
+            name={data?.name || data?.email}
             src={data?.imageURL}
             bgColor="transparent"
           />

@@ -32,11 +32,7 @@ import Filter from "../../../../assets/icon/Filter";
 import SearchIconEmpty from "../../../../assets/icon/SearchIconEmpty.svg";
 import EventSpeakerEmpty from "../../../../assets/icon/EventSpeakerEmpty.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
-import {
-  eventFilter,
-  eventTableHead,
-  // eventTableData,
-} from "../../../../utils/constants";
+import { eventFilter, eventTableHead } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { Link, useNavigate } from "react-router-dom";
 import teeketApi from "../../../../api/teeketApi";
@@ -44,10 +40,10 @@ import { formatDate } from "../../../../utils/formatDate";
 import ActionBtn from "../../../../assets/icon/ActionBtn.svg";
 
 const EventTable = ({ setData }) => {
-  const [setSelectedStatusFilter] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("");
   const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
   const [eventTableData, setEventTableData] = useState([]);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [paginatedData, setPaginatedData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -60,11 +56,15 @@ const EventTable = ({ setData }) => {
   useEffect(() => {
     const handleFetchEvents = async () => {
       try {
-        sessionStorage.getItem("TOKEN");
-        const response = await teeketApi.get("/events/user");
+        const response = await teeketApi.get(
+          `/events/user?search=${search}&status=${statusFilter}`
+        );
         const res = response.data;
+        console.log("res", res);
         setData(res.data);
         setTotalItems(res.total);
+        // console.log("item", res.page_size);
+        setItemsPerPage(res.page_size);
         setEventTableData(res.data);
         setPaginatedData(res.data.slice(0, itemsPerPage));
         setTotalPages(Math.ceil(res.total / itemsPerPage));
@@ -83,24 +83,7 @@ const EventTable = ({ setData }) => {
     };
 
     handleFetchEvents();
-  }, [toast, itemsPerPage, setData]);
-
-  // const startIndex = currentPage * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-
-  // useEffect(() => {
-  //   setPaginatedData(eventTableData.slice(startIndex, endIndex));
-  // }, [startIndex, endIndex, eventTableData]);
-
-  // //   HANDLE PAGE CHANGE
-
-  // const handlePageChange = ({ selected }) => {
-  //   const newStartIndex = selected * itemsPerPage;
-  //   const newEndIndex = newStartIndex + itemsPerPage;
-
-  //   setPaginatedData(eventTableData.slice(newStartIndex, newEndIndex));
-  //   setCurrentPage(selected);
-  // };
+  }, [toast, itemsPerPage, setData, search, statusFilter]);
 
   useEffect(() => {
     const startIndex = currentPage * itemsPerPage;
@@ -113,24 +96,6 @@ const EventTable = ({ setData }) => {
     setCurrentPage(selected);
   };
 
-  //   HANDLE SEARCH
-
-  const handleSearch = (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-
-    const filteredData = eventTableData.filter(
-      (item) =>
-        item.industry.toLowerCase().includes(searchTerm) ||
-        item.type.toLowerCase().includes(searchTerm)
-    );
-
-    setSearch(searchTerm);
-    setCurrentPage(0);
-    setPaginatedData(filteredData.slice(0, itemsPerPage));
-    setTotalItems(filteredData.length);
-    setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-  };
-
   //   HANDLE CLEAR SEARCH
 
   const handleClearSearch = () => {
@@ -141,22 +106,10 @@ const EventTable = ({ setData }) => {
     setTotalPages(Math.ceil(eventTableData.length / itemsPerPage));
   };
 
-  //   const handleFilterByStatus = () => {}
+  // FILTER BY STATUS
 
   const handleFilterByStatus = (selectedStatus) => {
-    setSelectedStatusFilter(selectedStatus);
-
-    if (selectedStatus === "All events") {
-      setPaginatedData(eventTableData);
-    } else {
-      const filteredData = eventTableData.filter(
-        (item) => item.status === selectedStatus
-      );
-      setCurrentPage(0);
-      setTotalItems(filteredData.length);
-      setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-      setPaginatedData(filteredData.slice(0, itemsPerPage));
-    }
+    setStatusFilter(selectedStatus);
   };
 
   return (
@@ -176,7 +129,7 @@ const EventTable = ({ setData }) => {
           </InputLeftElement>
           <Input
             value={search}
-            onChange={handleSearch}
+            onChange={(e) => setSearch(e.target.value.toLowerCase())}
             type="text"
             placeholder="Search for all events"
           />
@@ -277,9 +230,9 @@ const EventTable = ({ setData }) => {
                             />
                             <Box>
                               <Text fontWeight={500} color="gray.800">
-                                {td.industry}
+                                {td.title}
                               </Text>
-                              <Text color="gray.600">{td.type}</Text>
+                              <Text color="gray.600">{td.organizer}</Text>
                             </Box>
                           </HStack>
                         </Td>

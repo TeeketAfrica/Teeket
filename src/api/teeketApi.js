@@ -1,8 +1,7 @@
 import axios from "axios";
 import { teeketBaseUrl } from "../utils/constants";
-import useIsUserAuth from "../hooks/useIsUserAuth";
 
-const token = useIsUserAuth();
+const token = sessionStorage.getItem("TOKEN");
 
 const teeketApi = axios.create({
   baseURL: teeketBaseUrl,

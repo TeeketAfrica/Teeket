@@ -6,16 +6,20 @@ import Event3 from "../../../assets/img/e3.png";
 import Event4 from "../../../assets/img/e4.png";
 import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmptyState from "../../../components/ui/EmptyState";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 // import EventCautionState from "../../../assets/icon/EventCautionState.svg";
 import BrowseEvents from "../../../assets/icon/BrowseEvents";
+import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 const AllEvents = () => {
   // const navigate = useNavigate();
   const [event] = useState(true);
+
+  useEffect(() => {}, []);
+
   return (
     <>
       {event ? (
@@ -118,9 +122,11 @@ const AllEvents = () => {
             />
           </Grid>
           <Center w="full" my="6">
-            <Button variant="primary" leftIcon={<BrowseEvents />}>
-              Browse all events
-            </Button>
+            <Link to="/event-category">
+              <Button variant="primary" leftIcon={<BrowseEvents />}>
+                Browse all events
+              </Button>
+            </Link>
           </Center>
         </>
       ) : (
