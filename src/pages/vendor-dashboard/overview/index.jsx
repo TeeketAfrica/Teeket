@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import teeketApi from "../../../api/teeketApi";
+
 import {
   Stack,
   HStack,
@@ -22,7 +25,6 @@ import ChartUp from "../../../assets/icon/Chart-up.svg";
 import AIStar from "../../../assets/icon/AI-star.svg";
 import Ticket from "../../../assets/icon/Ticket-green.svg";
 import Gain from "../../../assets/icon/Arrow-up.svg";
-import teeketApi from "../../../api/teeketApi";
 
 const OverviewDashboardPage = () => {
   const navigate = useNavigate();
@@ -138,7 +140,7 @@ const OverviewDashboardPage = () => {
               </Text>
               <Box>
                 <Text fontSize="xl" fontWeight="bold" color="gray.800">
-                  {events.total}
+                  {events.total ? events.total : "Loading"}
                 </Text>
               </Box>
             </VStack>
@@ -154,7 +156,7 @@ const OverviewDashboardPage = () => {
               </Text>
               <Box>
                 <Text fontSize="xl" fontWeight="bold" color="gray.800">
-                  {totalTicketsSold}
+                  {totalTicketsSold >= 0 ? totalTicketsSold : "Loading"}
                 </Text>
               </Box>
             </VStack>
