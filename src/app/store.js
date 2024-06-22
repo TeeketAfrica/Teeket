@@ -12,6 +12,7 @@ import {
 } from "redux-persist";
 import eventReducer from "../features/eventSlice";
 import userReducer from "../features/userSlice";
+import activeUserReducer from "../features/activeUserSlice";
 
 const persistConfig = {
   key: "root",
@@ -21,6 +22,7 @@ const persistConfig = {
 const allReducers = combineReducers({
   event: eventReducer,
   user: userReducer,
+  activeUser: activeUserReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, allReducers);
