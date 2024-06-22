@@ -118,12 +118,15 @@ const HomePage = () => {
               </VStack>
               <HStack justifyContent="center" marginBottom="8" width="100%">
                 <Button variant="primary" size="lg">
-                  <Link href="/" _hover={{ textDecoration: "none" }}>
+                  <Link
+                    href="/create-event"
+                    _hover={{ textDecoration: "none" }}
+                  >
                     Create events
                   </Link>
                 </Button>
                 <Button variant="secondary" size="lg">
-                  <Link href="/" _hover={{ textDecoration: "none" }}>
+                  <Link href="/events" _hover={{ textDecoration: "none" }}>
                     Browse events
                   </Link>
                 </Button>
@@ -341,7 +344,10 @@ const HomePage = () => {
                 We have events in different categories
               </Text>
               <Button variant="secondary" size="lg" width="210px">
-                <Link href="/" _hover={{ textDecoration: "none" }}>
+                <Link
+                  href="/auth/create-account"
+                  _hover={{ textDecoration: "none" }}
+                >
                   Get Started
                 </Link>
               </Button>
@@ -476,7 +482,10 @@ const HomePage = () => {
               </Box>
 
               <Button variant="primary" size="lg" width="210px">
-                <Link href="/" _hover={{ textDecoration: "none" }}>
+                <Link
+                  href="/auth/create-account"
+                  _hover={{ textDecoration: "none" }}
+                >
                   Get Started
                 </Link>
               </Button>

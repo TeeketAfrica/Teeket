@@ -1,11 +1,16 @@
 import axios from "axios";
 import { authBaseUrl } from "../utils/constants";
 
+const token = sessionStorage.getItem("TOKEN");
+
 const authApi = axios.create({
   baseURL: authBaseUrl,
   headers: {
-    "Content-Type": "application/json",
-    // Add any other custom headers here
+    common: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      // Token: localStorage.getItem("psp-tks"),
+    },
   },
   // Add other custom config here if needed
 });
