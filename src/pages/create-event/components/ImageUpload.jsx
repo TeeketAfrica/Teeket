@@ -101,30 +101,7 @@ const ImageUpload = ({ handleSetImage }) => {
   const handleDrop = async (e) => {
     e.preventDefault();
 
-    // const droppedImage = e.dataTransfer.files[0];
-
-    // if (droppedImage) {
-    //   try {
-    //     const dimensions = await getImageDimensions(droppedImage);
-
-    //     if (
-    //       isValidImage(droppedImage) &&
-    //       dimensions.width <= 800 &&
-    //       dimensions.height <= 400
-    //     ) {
-    //       const imageUrl = await readAndConvertImage(droppedImage);
-
-    //       console.log(imageUrl);
-    //       // handleSetImage(imageUrl);
-    //     } else {
-    //       console.error(
-    //         "Invalid image type or dimensions exceed the maximum size (800x400)"
-    //       );
-    //     }
-    //   } catch (error) {
-    //     console.error("Error reading or converting the dropped image:", error);
-    //   }
-    // }
+    //TODO: Drag and drop functionality
   };
 
   return (

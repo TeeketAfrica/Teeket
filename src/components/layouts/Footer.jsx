@@ -80,7 +80,9 @@ const Footer = ({ border = true }) => {
             <Text fontSize="sm">
               © 2024 Teeket Africa. All rights reserved.
             </Text>
-            <Image src={LogoBlack} alt="logo" />
+            <Link href="/">
+              <Image src={LogoBlack} alt="logo" />
+            </Link>
           </Stack>
         </Box>
       </Container>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { selectEventDetails } from "../../features/eventSlice";
+import { resetEventState, selectEventDetails } from "../../features/eventSlice";
 import Layout from "./components/Layout";
 import FormStep1 from "./layout/FormStep1";
 import FormStep2 from "./layout/FormStep2";
@@ -182,8 +182,8 @@ const VendorPage = () => {
             });
 
             await Promise.all(ticketPromises);
+            dispatch(resetEventState());
             navigate("/app/overview");
-            dispatch({ type: "RESET_EVENT" });
           }
         } catch (error) {
           console.log("Failed to create event", error);

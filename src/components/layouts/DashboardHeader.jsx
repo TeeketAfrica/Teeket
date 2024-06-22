@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   HStack,
   Image,
@@ -8,13 +9,16 @@ import {
   InputRightElement,
   Stack,
 } from "@chakra-ui/react";
-import Avatar from "../../assets/img/Avatars.png";
 import Search from "../../assets/icon/Search";
 import SearchIcon from "../../assets/icon/SearchIcon.svg";
 import Hamburger from "../../assets/icon/Hamburger.svg";
 import BrandLogo from "../../assets/img/brandLogo.png";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUserDetails } from "../../features/userSlice";
 
 const DashboardHeader = ({ onOpen }) => {
+  const { data } = useSelector(selectUserDetails);
   return (
     <Box
       py={[3, 6]}
@@ -24,7 +28,9 @@ const DashboardHeader = ({ onOpen }) => {
     >
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Box w="107px" h="29px" display={["block", "none"]}>
-          <Image src={BrandLogo} alt="logo" />
+          <Link to="/">
+            <Image src={BrandLogo} alt="logo" />
+          </Link>
         </Box>
         <Box maxW="375px" w="100%" display={["none", "block"]}>
           <InputGroup>
@@ -43,7 +49,14 @@ const DashboardHeader = ({ onOpen }) => {
           alignItems="center"
           spacing={[3, null, null, null, 5]}
         >
-          <Image src={Avatar} alt="Avatar" w="40px" h="40px" />
+          <Avatar
+            border="1px solid"
+            borderColor="gray.800"
+            color="gray.800"
+            name={data?.name || data?.email}
+            src={data?.imageURL}
+            bgColor="transparent"
+          />
           <Image
             src={Hamburger}
             alt="menu"

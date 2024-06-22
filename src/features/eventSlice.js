@@ -1,76 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const sumTicketQuantity = (state) => {
-  const totalQuantity = state.tickets.reduce(
+// Utility function to calculate total ticket quantity
+const sumTicketQuantity = (tickets) => {
+  return tickets.reduce(
     (accumulator, { ticketQuantity }) =>
       accumulator +
       (isNaN(parseInt(ticketQuantity, 10)) ? 0 : parseInt(ticketQuantity, 10)),
     0
   );
+};
 
-  state.totalTicketQuantities = totalQuantity;
+const initialState = {
+  eventTitle: "",
+  eventOrganizer: "",
+  eventType: "",
+  eventIndustry: "",
+  eventTags: "",
+  eventStartDate: "",
+  eventStartTime: "",
+  eventEndDate: "",
+  eventEndTime: "",
+  eventBannerImage: "",
+  eventAbout: "",
+  eventHosting: "",
+  eventLocation: "",
+  eventPlan: "",
+  publishLive: "",
+  tickets: [],
+  totalTicketQuantities: 0,
 };
 
 const eventSlice = createSlice({
   name: "event",
-  initialState: {
-    eventTitle: "",
-    eventOrganizer: "",
-    eventType: "",
-    eventIndustry: "",
-    eventTags: "",
-    eventStartDate: "",
-    eventStartTime: "",
-    eventEndDate: "",
-    eventEndTime: "",
-    eventBannerImage: "",
-    eventAbout: "",
-    eventHosting: "",
-    eventLocation: "",
-    eventPlan: "",
-    publishLive: "",
-    tickets: [],
-    totalTicketQuantities: 0,
-  },
+  initialState,
   reducers: {
     setEventDetails: (state, action) => {
-      const {
-        eventTitle,
-        eventOrganizer,
-        eventType,
-        eventIndustry,
-        eventTags,
-        eventStartDate,
-        eventStartTime,
-        eventEndDate,
-        eventEndTime,
-        eventBannerImage,
-        eventAbout,
-        eventHosting,
-        eventLocation,
-        eventPlan,
-        totalTicketQuantities,
-        publishLive,
-      } = action.payload;
-      return {
-        ...state,
-        eventTitle: eventTitle ?? "",
-        eventOrganizer: eventOrganizer ?? "",
-        eventType: eventType ?? "",
-        eventIndustry: eventIndustry ?? "",
-        eventTags: eventTags ?? "",
-        eventStartDate: eventStartDate ?? "",
-        eventStartTime: eventStartTime ?? "",
-        eventEndDate: eventEndDate ?? "",
-        eventEndTime: eventEndTime ?? "",
-        eventBannerImage: eventBannerImage ?? "",
-        eventAbout: eventAbout ?? "",
-        eventHosting: eventHosting ?? "",
-        eventLocation: eventLocation ?? "",
-        eventPlan: eventPlan ?? "",
-        totalTicketQuantities: totalTicketQuantities ?? 0,
-        publishLive: publishLive ?? "",
-      };
+      Object.assign(state, action.payload);
     },
 
     setEventDetail: (state, action) => {
@@ -80,31 +45,33 @@ const eventSlice = createSlice({
 
     setTicketDetails: (state, action) => {
       state.tickets.push({
-        id: state.tickets.length + 1 * Date.now(),
+        id: Date.now(),
         ...action.payload,
       });
-
-      sumTicketQuantity(state);
+      state.totalTicketQuantities = sumTicketQuantity(state.tickets);
     },
 
     updateTicketDetails: (state, action) => {
       const { id, ...updatedFields } = action.payload;
-
-      state.tickets = state.tickets.map((ticket) =>
-        ticket.id === id ? { ...ticket, ...updatedFields } : ticket
-      );
-
-      sumTicketQuantity(state);
+      const ticketIndex = state.tickets.findIndex((ticket) => ticket.id === id);
+      if (ticketIndex >= 0) {
+        state.tickets[ticketIndex] = {
+          ...state.tickets[ticketIndex],
+          ...updatedFields,
+        };
+        state.totalTicketQuantities = sumTicketQuantity(state.tickets);
+      }
     },
 
     deleteTicket: (state, action) => {
-      const ticketIdToDelete = action.payload;
-
       state.tickets = state.tickets.filter(
-        (ticket) => ticket.id !== ticketIdToDelete
+        (ticket) => ticket.id !== action.payload
       );
+      state.totalTicketQuantities = sumTicketQuantity(state.tickets);
+    },
 
-      sumTicketQuantity(state);
+    resetEventState: (state) => {
+      Object.assign(state, initialState);
     },
   },
 });
@@ -115,6 +82,9 @@ export const {
   setTicketDetails,
   updateTicketDetails,
   deleteTicket,
+  resetEventState,
 } = eventSlice.actions;
+
 export const selectEventDetails = (state) => state.event;
+
 export default eventSlice.reducer;

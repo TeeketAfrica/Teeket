@@ -1,20 +1,19 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Box } from '@chakra-ui/layout';
-import { Button, Image } from '@chakra-ui/react';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Box } from "@chakra-ui/layout";
+import { Button, Image } from "@chakra-ui/react";
 
-import AuthLayout from '../../../components/auth/AuthLayout';
-import AuthHeader from '../../../components/auth/AuthHeader';
+import AuthLayout from "../../../components/auth/AuthLayout";
+import AuthHeader from "../../../components/auth/AuthHeader";
 
-import PasswordResetForm from './components/PasswordResetForm';
+import PasswordResetForm from "./components/PasswordResetForm";
 
-import DoubleCheckMark from '../../../assets/icon/DoubleCheckMark.svg';
+import DoubleCheckMark from "../../../assets/icon/DoubleCheckMark.svg";
 
 const PasswordResetPage = () => {
   const [passwordReset, setPasswordReset] = useState(false);
 
   const handleOnSubmit = (data) => {
-    console.log(data);
     setPasswordReset(true);
   };
 

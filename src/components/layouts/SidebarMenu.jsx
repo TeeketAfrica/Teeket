@@ -31,9 +31,9 @@ import DarkOrderIcon from "../../assets/icon/DarkOrderIcon.svg";
 import Settings from "../../assets/icon/sidebarsettings.svg";
 import Help from "../../assets/icon/question-circle.svg";
 import SignOut from "../../assets/icon/sign-out.svg";
-import ProfileAvatar from "../../assets/img/Avatars.png";
 import BrandLogo from "../../assets/img/brandLogo.png";
 import useSignOut from "../../utils/signOut";
+import { Link } from "react-router-dom";
 
 const SidebarMenu = ({ onClose, isOpen }) => {
   const [placement] = useState("left");
@@ -55,7 +55,9 @@ const SidebarMenu = ({ onClose, isOpen }) => {
         <VStack justifyContent="space-between" h="100%">
           <VStack alignItems="flex-start" spacing={7}>
             <Box px={6}>
-              <Image src={BrandLogo} alt="logo" />
+              <Link to="/">
+                <Image src={BrandLogo} alt="logo" />
+              </Link>
             </Box>
             <Box>
               <SidebarOptions
@@ -100,7 +102,14 @@ const SidebarMenu = ({ onClose, isOpen }) => {
               />
             </Box>
             <HStack justifyContent="space-between">
-              <Avatar src={ProfileAvatar}>
+              <Avatar
+                border="1px solid"
+                borderColor="gray.800"
+                color="gray.800"
+                name={data?.name || data?.email}
+                src={data?.imageURL}
+                bgColor="transparent"
+              >
                 <AvatarBadge boxSize="20px" bg="greenSuccess" />
               </Avatar>
               <Box>
@@ -130,7 +139,10 @@ const SidebarMenu = ({ onClose, isOpen }) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px" borderColor="gray.300">
-            <Image src={BrandLogo} alt="logo" /> <DrawerCloseButton />
+            <Link to="/">
+              <Image src={BrandLogo} alt="logo" />
+            </Link>{" "}
+            <DrawerCloseButton />
           </DrawerHeader>
           <DrawerBody>
             <VStack justifyContent="space-between" h="100%">
@@ -178,7 +190,14 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                   />
                 </Box>
                 <HStack justifyContent="space-between">
-                  <Avatar src={ProfileAvatar}>
+                  <Avatar
+                    border="1px solid"
+                    borderColor="gray.800"
+                    color="gray.800"
+                    name={data?.name || data?.email}
+                    src={data?.imageURL}
+                    bgColor="transparent"
+                  >
                     <AvatarBadge boxSize="20px" bg="greenSuccess" />
                   </Avatar>
                   <Box>

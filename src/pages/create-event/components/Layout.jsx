@@ -27,6 +27,7 @@ import SignOut from "../../../assets/icon/SignOut.svg";
 import Container from "../../../components/ui/Container";
 import SideNav from "./SideNav";
 import useSignOut from "../../../utils/signOut";
+import { resetEventState } from "../../../features/eventSlice";
 
 const Layout = ({
   children,
@@ -35,11 +36,11 @@ const Layout = ({
   prevStep,
   publishEvent,
 }) => {
-  const dispatch = useDispatch();
   const [mobileToggle, setMobileToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
   const ref = useRef();
   const { signOut } = useSignOut();
+  const dispatch = useDispatch();
 
   const { email } = useSelector(selectUserDetails).data;
 
@@ -49,7 +50,7 @@ const Layout = ({
   });
 
   const resetEvent = () => {
-    dispatch({ type: "RESET_EVENT" });
+    dispatch(resetEventState());
     sessionStorage.setItem("EVENT_PAGE", 0);
   };
 

@@ -9,10 +9,12 @@ html {
 .pagination {
   list-style: none;
   display: flex;
+  /* display: grid; */
+  /* grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); */
   /* flex-direction: column; */
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 2px;
 
   li.active {
     background-color: red;
@@ -74,6 +76,8 @@ html {
     a {
       font-size: 14px;
       font-weight: 500;
+      width: 40px;
+      height: 40px;
       padding: 8px;
       display: flex;
       flex-direction: column;

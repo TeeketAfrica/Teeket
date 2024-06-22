@@ -1,4 +1,8 @@
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import teeketApi from "../../../api/teeketApi";
+
 import {
   Stack,
   HStack,
@@ -24,6 +28,27 @@ import Gain from "../../../assets/icon/Arrow-up.svg";
 
 const OverviewDashboardPage = () => {
   const navigate = useNavigate();
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const userEventData = await teeketApi.get("/events/user");
+        setEvents(userEventData.data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        setEvents([]);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  const totalTicketsSold = useMemo(
+    () => events.data?.reduce((total, event) => total + event.tickets_sold, 0),
+    [events.data]
+  );
 
   return (
     <DashboardLayout>
@@ -115,7 +140,7 @@ const OverviewDashboardPage = () => {
               </Text>
               <Box>
                 <Text fontSize="xl" fontWeight="bold" color="gray.800">
-                  0
+                  {events.total ? events.total : "Loading"}
                 </Text>
               </Box>
             </VStack>
@@ -131,7 +156,7 @@ const OverviewDashboardPage = () => {
               </Text>
               <Box>
                 <Text fontSize="xl" fontWeight="bold" color="gray.800">
-                  230
+                  {totalTicketsSold >= 0 ? totalTicketsSold : "Loading"}
                 </Text>
               </Box>
             </VStack>
@@ -188,7 +213,7 @@ const OverviewDashboardPage = () => {
                   size="sm"
                   variant="primary"
                   marginTop={6}
-                  onClick={() => navigate("/app/create-event")}
+                  onClick={() => navigate("/create-event")}
                 >
                   Create Event
                 </Button>
@@ -218,7 +243,7 @@ const OverviewDashboardPage = () => {
                       size="sm"
                       variant="secondary"
                       marginTop={6}
-                      onClick={() => navigate("/app/create-event")}
+                      onClick={() => navigate("/create-event")}
                     >
                       Create Event
                     </Button>

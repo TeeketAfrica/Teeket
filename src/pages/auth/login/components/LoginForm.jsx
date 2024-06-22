@@ -46,12 +46,15 @@ const LoginForm = () => {
 
         if (token) {
           sessionStorage.setItem("TOKEN", token);
-          dispatch({ type: "RESET_APP" });
           dispatch(setUserDetails(values));
           navigate("/app/overview");
         }
       } catch (err) {
-        setError("Invalid email or password");
+        if (err.message == "Network Error") {
+          alert("Check your internet connection!.");
+        } else {
+          setError("Invalid username or password");
+        }
         console.log("Failed to login", err.message);
       }
     },
