@@ -1,0 +1,40 @@
+{
+  "routes": [
+    { "src": "/[^.]+", "dest": "/index.html", "status": 200 },
+    {
+      "src": "/help-and-support",
+      "dest": "/help-and-support.html",
+      "status": 200
+    },
+    { "src": "/events", "dest": "/events.html", "status": 200 },
+    { "src": "/event-category", "dest": "/event-category.html", "status": 200 },
+    { "src": "/my-tickets", "dest": "/my-tickets.html", "status": 200 },
+    { "src": "/auth/login", "dest": "/login.html", "status": 200 },
+    {
+      "src": "/auth/create-account",
+      "dest": "/create-account.html",
+      "status": 200
+    },
+    {
+      "src": "/auth/password-recovery",
+      "dest": "/password-recovery.html",
+      "status": 200
+    },
+    {
+      "src": "/auth/password-reset",
+      "dest": "/password-reset.html",
+      "status": 200
+    },
+    { "src": "/create-event", "dest": "/create-event.html", "status": 200 },
+    { "src": "/app/overview", "dest": "/app-overview.html", "status": 200 },
+    { "src": "/app/events", "dest": "/app-events.html", "status": 200 },
+    { "src": "/app/order", "dest": "/app-order.html", "status": 200 },
+    { "src": "/app/finance", "dest": "/app-finance.html", "status": 200 },
+    {
+      "src": "/app/organization-settings",
+      "dest": "/app-organization-settings.html",
+      "status": 200
+    },
+    { "src": "/event-booking", "dest": "/event-booking.html", "status": 200 }
+  ]
+}
