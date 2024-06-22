@@ -20,7 +20,7 @@ import {
 
 import Footer from "../../components/layouts/Footer";
 import Header from "../../components/layouts/Header";
-import Masonry from './components/Masonry';
+import Masonry from "./components/Masonry";
 import Container from "../../components/ui/Container";
 import Card from "./components/Card";
 import {
@@ -43,14 +43,14 @@ import Faq3Image from "../../assets/img/faqs_3.webp";
 import StepBackground from "../../assets/img/steps_bg.webp";
 import EventBg from "../../assets/img/eventsBg.png";
 
-import Masonry1 from '../../assets/img/masonry_1.webp';
-import Masonry2 from '../../assets/img/masonry_2.webp';
-import Masonry3 from '../../assets/img/masonry_3.webp';
-import Masonry4 from '../../assets/img/masonry_4.webp';
-import Masonry5 from '../../assets/img/masonry_5.webp';
-import Masonry6 from '../../assets/img/masonry_6.webp';
-import Masonry7 from '../../assets/img/masonry_7.webp';
-import Masonry8 from '../../assets/img/masonry_8.webp';
+import Masonry1 from "../../assets/img/masonry_1.webp";
+import Masonry2 from "../../assets/img/masonry_2.webp";
+import Masonry3 from "../../assets/img/masonry_3.webp";
+import Masonry4 from "../../assets/img/masonry_4.webp";
+import Masonry5 from "../../assets/img/masonry_5.webp";
+import Masonry6 from "../../assets/img/masonry_6.webp";
+import Masonry7 from "../../assets/img/masonry_7.webp";
+import Masonry8 from "../../assets/img/masonry_8.webp";
 
 const HomePage = () => {
   const iconMap = {
@@ -109,12 +109,15 @@ const HomePage = () => {
               </VStack>
               <HStack justifyContent="center" marginBottom="8" width="100%">
                 <Button variant="primary" size="lg">
-                  <Link href="/" _hover={{ textDecoration: "none" }}>
+                  <Link
+                    href="/create-event"
+                    _hover={{ textDecoration: "none" }}
+                  >
                     Create events
                   </Link>
                 </Button>
                 <Button variant="secondary" size="lg">
-                  <Link href="/" _hover={{ textDecoration: "none" }}>
+                  <Link href="/events" _hover={{ textDecoration: "none" }}>
                     Browse events
                   </Link>
                 </Button>
@@ -332,7 +335,10 @@ const HomePage = () => {
                 We have events in different categories
               </Text>
               <Button variant="secondary" size="lg" width="210px">
-                <Link href="/" _hover={{ textDecoration: "none" }}>
+                <Link
+                  href="/auth/create-account"
+                  _hover={{ textDecoration: "none" }}
+                >
                   Get Started
                 </Link>
               </Button>
@@ -467,7 +473,10 @@ const HomePage = () => {
               </Box>
 
               <Button variant="primary" size="lg" width="210px">
-                <Link href="/" _hover={{ textDecoration: "none" }}>
+                <Link
+                  href="/auth/create-account"
+                  _hover={{ textDecoration: "none" }}
+                >
                   Get Started
                 </Link>
               </Button>
