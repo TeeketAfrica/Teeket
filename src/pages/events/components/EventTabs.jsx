@@ -1,3 +1,8 @@
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+
+import teeketApi from "../../../api/teeketApi";
+
 import {
   Box,
   Button,
@@ -15,9 +20,11 @@ import CuratedEvents from "./CuratedEvents";
 import WatchoutEvents from "./WatchoutEvents";
 import FreeEvents from "./FreeEvents";
 import PaidEvents from "./PaidEvents";
-import { Link } from "react-router-dom";
 
 const EventTabs = () => {
+  // Fetch all events
+  useEffect(() => {}, []);
+
   return (
     <section>
       <Container>
