@@ -35,15 +35,22 @@ import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
 import {
   eventFilter,
   eventTableHead,
-  eventTableData,
+  // eventTableData,
 } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { Link, useNavigate } from "react-router-dom";
 import teeketApi from "../../../../api/teeketApi";
+import { formatDate } from "../../../../utils/formatDate";
+import ActionBtn from "../../../../assets/icon/ActionBtn.svg";
 
-const EventTable = () => {
+const EventTable = ({ setData }) => {
   const [setSelectedStatusFilter] = useState(null);
   const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
+  const [eventTableData, setEventTableData] = useState([]);
+  const [itemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [paginatedData, setPaginatedData] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [request] = useState(true);
   const [search, setSearch] = useState("");
@@ -54,14 +61,18 @@ const EventTable = () => {
     const handleFetchEvents = async () => {
       try {
         sessionStorage.getItem("TOKEN");
-        const response = await teeketApi.get("/events");
-        const res = response.data.data;
-        console.log("res", res);
+        const response = await teeketApi.get("/events/user");
+        const res = response.data;
+        setData(res.data);
+        setTotalItems(res.total);
+        setEventTableData(res.data);
+        setPaginatedData(res.data.slice(0, itemsPerPage));
+        setTotalPages(Math.ceil(res.total / itemsPerPage));
       } catch (error) {
         const errorMessage =
-          error?.response?.data?.detail || "An error occured";
+          error?.response?.data?.message || "An error occured";
         toast({
-          title: "Fetch failed.",
+          title: "Events failed to fetch.",
           description: `${errorMessage}`,
           status: "error",
           duration: 3000,
@@ -72,28 +83,33 @@ const EventTable = () => {
     };
 
     handleFetchEvents();
-  }, [toast]);
+  }, [toast, itemsPerPage, setData]);
 
-  const itemsPerPage = 8;
+  // const startIndex = currentPage * itemsPerPage;
+  // const endIndex = startIndex + itemsPerPage;
 
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  // useEffect(() => {
+  //   setPaginatedData(eventTableData.slice(startIndex, endIndex));
+  // }, [startIndex, endIndex, eventTableData]);
 
-  const [paginatedData, setPaginatedData] = useState(
-    eventTableData.slice(startIndex, endIndex)
-  );
-  const [totalItems, setTotalItems] = useState(eventTableData.length);
-  const [totalPages, setTotalPages] = useState(
-    Math.ceil(totalItems / itemsPerPage)
-  );
+  // //   HANDLE PAGE CHANGE
 
-  //   HANDLE PAGE CHANGE
+  // const handlePageChange = ({ selected }) => {
+  //   const newStartIndex = selected * itemsPerPage;
+  //   const newEndIndex = newStartIndex + itemsPerPage;
 
+  //   setPaginatedData(eventTableData.slice(newStartIndex, newEndIndex));
+  //   setCurrentPage(selected);
+  // };
+
+  useEffect(() => {
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setPaginatedData(eventTableData.slice(startIndex, endIndex));
+  }, [currentPage, itemsPerPage, eventTableData]);
+
+  // HANDLE PAGE CHANGE
   const handlePageChange = ({ selected }) => {
-    const newStartIndex = selected * itemsPerPage;
-    const newEndIndex = newStartIndex + itemsPerPage;
-
-    setPaginatedData(eventTableData.slice(newStartIndex, newEndIndex));
     setCurrentPage(selected);
   };
 
@@ -104,8 +120,8 @@ const EventTable = () => {
 
     const filteredData = eventTableData.filter(
       (item) =>
-        item.eventTitle.toLowerCase().includes(searchTerm) ||
-        item.eventCategory.toLowerCase().includes(searchTerm)
+        item.industry.toLowerCase().includes(searchTerm) ||
+        item.type.toLowerCase().includes(searchTerm)
     );
 
     setSearch(searchTerm);
@@ -222,7 +238,7 @@ const EventTable = () => {
               ? "No events"
               : search !== ""
               ? `${paginatedData.length} events`
-              : `${eventTableData.length} events`}
+              : `${totalItems} events`}
           </Tag>
         </HStack>
         {request ? (
@@ -253,27 +269,28 @@ const EventTable = () => {
                         <Td>
                           <HStack spacing={[2, 3]}>
                             <Image
-                              src={td.img}
-                              alt={td.eventTitle}
+                              src={td.banner_image}
+                              alt={td.industry}
+                              objectFit="cover"
                               w={10}
                               h={10}
                             />
                             <Box>
                               <Text fontWeight={500} color="gray.800">
-                                {td.eventTitle}
+                                {td.industry}
                               </Text>
-                              <Text color="gray.600">{td.eventCategory}</Text>
+                              <Text color="gray.600">{td.type}</Text>
                             </Box>
                           </HStack>
                         </Td>
                         <Td color="gray.600" fontWeight={500}>
-                          {td.ticketSold}/{td.ticketTotal}
+                          {td.tickets_sold}/{td.number_of_tickets}
                         </Td>
                         <Td color="gray.600" fontWeight={500}>
-                          {td.revenue}
+                          ${td.revenue}
                         </Td>
                         <Td color="gray.600" fontWeight={500}>
-                          {td.dateCreated}
+                          {formatDate(td.date_created)}
                         </Td>
                         <Td>
                           <Tag
@@ -308,7 +325,7 @@ const EventTable = () => {
                               icon={
                                 <Image
                                   cursor="pointer"
-                                  src={td.action}
+                                  src={ActionBtn}
                                   alt="more"
                                 />
                               }
@@ -394,18 +411,20 @@ const EventTable = () => {
           />
         )}
         {paginatedData.length !== 0 && (
-          <Box px={6} pt={3}>
+          <Box px={2} pt={3}>
             <ReactPaginate
-              previousLabel={"Previous"}
+              previousLabel={"Prev"}
               nextLabel={"Next"}
               breakLabel={"..."}
               pageCount={totalPages}
               marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
+              pageRangeDisplayed={3}
               onPageChange={handlePageChange}
               containerClassName={"pagination"}
               subContainerClassName={"pages pagination"}
               activeClassName={"active"}
+              previousClassName="previous"
+              nextClassName="next"
             />
           </Box>
         )}
