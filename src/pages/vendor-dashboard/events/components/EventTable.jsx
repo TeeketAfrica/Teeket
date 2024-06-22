@@ -43,7 +43,7 @@ const EventTable = ({ setData }) => {
   const [statusFilter, setStatusFilter] = useState("");
   const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
   const [eventTableData, setEventTableData] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(0);
+  const [itemsPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
   const [paginatedData, setPaginatedData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -63,8 +63,6 @@ const EventTable = ({ setData }) => {
         console.log("res", res);
         setData(res.data);
         setTotalItems(res.total);
-        // console.log("item", res.page_size);
-        setItemsPerPage(res.page_size);
         setEventTableData(res.data);
         setPaginatedData(res.data.slice(0, itemsPerPage));
         setTotalPages(Math.ceil(res.total / itemsPerPage));
