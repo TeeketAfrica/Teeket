@@ -39,7 +39,7 @@ const privateRoutes = [
     path: "/app/organization-settings",
     element: OrganizationSettingsDashboardPage,
   },
-  { path: "/event-booking", element: EventBookingPage },
+  { path: "/event-booking/:id?", element: EventBookingPage },
 ];
 
 const publicRoutesWithoutAuth = [

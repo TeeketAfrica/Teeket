@@ -8,7 +8,8 @@ import LightingIcon from "../../../../assets/icon/LightingIcon.svg";
 import CalendarIcon from "../../../../assets/icon/Calendar.svg";
 import GPSIcon from "../../../../assets/icon/Gps.svg";
 
-const LeftSideDetails = () => {
+const LeftSideDetails = ({ event }) => {
+  console.log("Left events:", event);
   return (
     <VStack width={{ base: "100%", lg: "60%" }} gap="6" alignItems="flex-start">
       <BoxFrame paddingX="24px" paddingY="24px">
@@ -27,7 +28,7 @@ const LeftSideDetails = () => {
             lineHeight={{ base: "30px", sm: "44px" }}
             paddingTop="2"
           >
-            The vintage art event africa
+            {event.title}
           </Text>
         </Box>
         <Flex flexDirection="column" gap="6" marginTop="6">
@@ -65,24 +66,7 @@ const LeftSideDetails = () => {
             lineHeight="5"
             color="gray.500"
           >
-            <Text>
-              Our communities are full of strong technical folks and we would
-              love to have these talks focus on problems, technical challenges,
-              and your solutions.
-            </Text>
-            <Text>
-              If you’d like to present, please fill in the optional question
-              when you RSVP for the event. We will reach out to you if your talk
-              fits the above criteria. <br /> Both the MLOps and GenAI
-              collective community thrive on its wonderful members sharing their
-              experiences and learning from each other. The organizers are
-              eagerly looking forward to hosting you and providing space for you
-              to present your learnings and enrich us all
-            </Text>
-            <Text>
-              Please note that these should not be self-promotion or
-              product/tool marketing pitches!
-            </Text>
+            <Text>{event.description}</Text>
           </VStack>
         </VStack>
       </BoxFrame>

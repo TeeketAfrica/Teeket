@@ -62,6 +62,7 @@ const EventTable = ({ setData }) => {
         const res = response.data;
         console.log("res", res);
         setData(res.data);
+        console.log("Res", typeof res.page_size);
         setTotalItems(res.total);
         setEventTableData(res.data);
         setPaginatedData(res.data.slice(0, itemsPerPage));
