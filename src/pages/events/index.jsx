@@ -5,6 +5,7 @@ import EventPreference from "./components/EventPreference";
 import EventTabs from "./components/EventTabs";
 import HeroSection from "./components/HeroSection";
 import { useDisclosure } from "@chakra-ui/react";
+import ScrollToTop from "../../utils/ScrollToTop";
 
 const EventsPage = () => {
   const [displayEventPreference, setDisplayEventPreference] = useState(false);
@@ -17,6 +18,7 @@ const EventsPage = () => {
 
   return (
     <main>
+      <ScrollToTop />
       <Header />
       {displayEventPreference && (
         <EventPreference isOpen={isOpen} onClose={onClose} />
