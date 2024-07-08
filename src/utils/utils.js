@@ -1,16 +1,16 @@
-import { parse, format } from 'date-fns';
+import { parse, format } from "date-fns";
 
 const maskEmail = (email) => {
-  const [username, domain] = email.split('@');
-  const maskingLength = Math.min(7, username.length);
-  const maskedUsername = `${username.slice(0, maskingLength)}${'*'.repeat(
-    Math.max(username.length - maskingLength, 0)
+  const [username, domain] = email.split("@");
+  const maskingLength = Math.min(4, username.length);
+  const maskedUsername = `${username.slice(0, maskingLength)}${"*".repeat(
+    Math.max(username.length - username.length + 2, 0)
   )}`;
   return `${maskedUsername}@${domain}`;
 };
 
 const isValidImage = (file) => {
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
   const maxFileSize = 10 * 1024 * 1024; // 10MB
 
   return allowedTypes.includes(file.type) && file.size <= maxFileSize;
@@ -25,10 +25,21 @@ const getImageDimensions = (file) => {
     };
 
     img.onerror = () => {
-      reject(new Error('Failed to get image dimensions.'));
+      reject(new Error("Failed to get image dimensions."));
     };
 
     img.src = URL.createObjectURL(file);
+  });
+};
+
+const readAsBinary = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("Failed to read the image."));
+
+    reader.readAsArrayBuffer(file);
   });
 };
 
@@ -37,7 +48,7 @@ const formatDate = (inputDate) => {
 };
 
 const convertTimeFormat = (timeString) =>
-  format(parse(timeString, 'HH:mm', new Date()), 'hh:mmaa');
+  format(parse(timeString, "HH:mm", new Date()), "hh:mmaa");
 
 const calculateMinAndMaxPrices = (tickets) => {
   return tickets.reduce(
@@ -64,4 +75,5 @@ export {
   formatDate,
   convertTimeFormat,
   calculateMinAndMaxPrices,
+  readAsBinary,
 };

@@ -22,3 +22,8 @@ status = 200
 from = "/auth/password-reset"
 to = "/passwordreset.html"
 status = 200
+
+[[redirects]]
+from = "/create-event"
+to = "/createevent.html"
+status = 200

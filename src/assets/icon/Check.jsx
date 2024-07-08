@@ -1,0 +1,24 @@
+const Check = () => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="16" height="16" rx="8" fill="#06CC06" />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12.2534 4.72355C12.4061 4.8635 12.4164 5.10071 12.2764 5.25338L6.77643 11.2534C6.70732 11.3288 6.6104 11.3727 6.50815 11.3749C6.40589 11.3771 6.30716 11.3375 6.23483 11.2651L3.73483 8.76515C3.58839 8.6187 3.58839 8.38126 3.73483 8.23482C3.88128 8.08837 4.11872 8.08837 4.26517 8.23482L6.48822 10.4579L11.7236 4.74658C11.8635 4.59392 12.1007 4.5836 12.2534 4.72355Z"
+        fill="white"
+        stroke="white"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export default Check;

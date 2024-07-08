@@ -1,23 +1,30 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-import { Stack } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
+import { Stack } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/react";
 
-import EmailInput from '../../components/EmailInput';
-import PasswordInput from '../../components/PasswordInput';
+import EmailInput from "../../components/EmailInput";
+import PasswordInput from "../../components/PasswordInput";
+import authApi from "../../../../api/authApi";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../../../../features/userSlice";
 
 const CreateAccountForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   // Validation schema using Yup
   const validationSchema = Yup.object({
     email: Yup.string()
-      .email('Invalid email address')
-      .required('Please input your email address'),
+      .email("Invalid email address")
+      .required("Please input your email address"),
     password: Yup.string()
-      .required('Please input your password')
+      .required("Please input your password")
       .test(
-        'password-criteria',
-        'Password must have at least one uppercase letter, one lowercase letter, be at least 8 characters long, and contain at least one special character',
+        "password-criteria",
+        "Password must have at least one uppercase letter, one lowercase letter, be at least 8 characters long, and contain at least one special character",
         (value) => {
           const hasUppercase = /[A-Z]/.test(value);
           const hasLowercase = /[a-z]/.test(value);
@@ -32,12 +39,27 @@ const CreateAccountForm = () => {
   // Formik initialization
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        const response = await authApi.post("/signup", {
+          email: values.email,
+          password: values.password,
+        });
+
+        const token = response.data.access_token;
+
+        if (token) {
+          sessionStorage.setItem("TOKEN", token);
+          dispatch(setUserDetails(values));
+          navigate("/app/overview");
+        }
+      } catch (err) {
+        console.log("Error creating user", err);
+      }
     },
   });
 

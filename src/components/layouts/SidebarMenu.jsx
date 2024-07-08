@@ -1,12 +1,24 @@
+import { Fragment, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Avatar,
   AvatarBadge,
   Box,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   HStack,
   Image,
   Text,
   VStack,
 } from "@chakra-ui/react";
+
+import { selectUserDetails } from "../../features/userSlice";
+import { maskEmail } from "../../utils/utils";
+
 import SidebarOptions from "./SidebarOptions";
 import OverviewIcon from "../../assets/icon/grid.svg";
 import DarkOverviewIcon from "../../assets/icon/darkgrid.svg";
@@ -19,82 +31,194 @@ import DarkOrderIcon from "../../assets/icon/DarkOrderIcon.svg";
 import Settings from "../../assets/icon/sidebarsettings.svg";
 import Help from "../../assets/icon/question-circle.svg";
 import SignOut from "../../assets/icon/sign-out.svg";
-import ProfileAvatar from "../../assets/img/Avatars.png";
 import BrandLogo from "../../assets/img/brandLogo.png";
+import useSignOut from "../../utils/signOut";
+import { Link } from "react-router-dom";
 
-const SidebarMenu = () => {
+const SidebarMenu = ({ onClose, isOpen }) => {
+  const [placement] = useState("left");
+  const { data } = useSelector(selectUserDetails);
+  const { signOut } = useSignOut();
+
   return (
-    <Box
-      maxW="272px"
-      w="100%"
-      h="100vh"
-      borderRight="1px solid"
-      borderColor="gray.300"
-      py={6}
-      px={2}
-    >
-      <VStack justifyContent="space-between" h="100%">
-        <VStack alignItems="flex-start" spacing={7}>
-          <Box px={6}>
-            <Image src={BrandLogo} alt="logo" />
-          </Box>
-          <Box>
-            <SidebarOptions
-              icon={OverviewIcon}
-              darkIcon={DarkOverviewIcon}
-              title="Overview"
-              link="/app/overview"
-            />
-            <SidebarOptions
-              icon={EventsIcon}
-              darkIcon={DarkEventsIcon}
-              title="Events"
-              link="/app/events"
-            />
-            <SidebarOptions
-              icon={OrderIcon}
-              darkIcon={DarkOrderIcon}
-              title="Order"
-              link="/app/order"
-            />
-            <SidebarOptions
-              icon={FinanceIcon}
-              darkIcon={DarkFinanceIcon}
-              title="Finance"
-              link="/app/finance"
-            />
-          </Box>
-        </VStack>
-        <VStack spacing={6}>
-          <Box>
-            <SidebarOptions
-              icon={Settings}
-              darkIcon={DarkOverviewIcon}
-              title="Organization settings"
-              link="/app/organization-settings"
-            />
-            <SidebarOptions
-              icon={Help}
-              darkIcon={DarkOverviewIcon}
-              title="Help and support"
-              link="/help-and-support"
-            />
-          </Box>
-          <HStack justifyContent="space-between">
-            <Avatar src={ProfileAvatar}>
-              <AvatarBadge boxSize="20px" bg="greenSuccess" />
-            </Avatar>
-            <Box>
-              <Text fontWeight="semibold" fontSize="sm">
-                Remi Green
-              </Text>
-              <Text>re...n@gmail.com</Text>
+    <Fragment>
+      <Box
+        maxW="272px"
+        w="100%"
+        h="100vh"
+        borderRight="1px solid"
+        borderColor="gray.300"
+        py={6}
+        px={2}
+        display={["none", null, null, null, "block"]}
+      >
+        <VStack justifyContent="space-between" h="100%">
+          <VStack alignItems="flex-start" spacing={7}>
+            <Box px={6}>
+              <Link to="/">
+                <Image src={BrandLogo} alt="logo" />
+              </Link>
             </Box>
-            <Image src={SignOut} alt="Signout" cursor="pointer" />
-          </HStack>
+            <Box>
+              <SidebarOptions
+                icon={OverviewIcon}
+                darkIcon={DarkOverviewIcon}
+                title="Overview"
+                link="/app/overview"
+              />
+              <SidebarOptions
+                icon={EventsIcon}
+                darkIcon={DarkEventsIcon}
+                title="Events"
+                link="/app/events"
+              />
+              <SidebarOptions
+                icon={OrderIcon}
+                darkIcon={DarkOrderIcon}
+                title="Order"
+                link="/app/order"
+              />
+              <SidebarOptions
+                icon={FinanceIcon}
+                darkIcon={DarkFinanceIcon}
+                title="Finance"
+                link="/app/finance"
+              />
+            </Box>
+          </VStack>
+          <VStack spacing={6}>
+            <Box>
+              <SidebarOptions
+                icon={Settings}
+                darkIcon={DarkOverviewIcon}
+                title="Organization settings"
+                link="/app/organization-settings"
+              />
+              <SidebarOptions
+                icon={Help}
+                darkIcon={DarkOverviewIcon}
+                title="Help and support"
+                link="/help-and-support"
+              />
+            </Box>
+            <HStack justifyContent="space-between">
+              <Avatar
+                border="1px solid"
+                borderColor="gray.800"
+                color="gray.800"
+                name={data?.name || data?.email}
+                src={data?.imageURL}
+                bgColor="transparent"
+              >
+                <AvatarBadge boxSize="20px" bg="greenSuccess" />
+              </Avatar>
+              <Box>
+                <Text fontWeight="semibold" fontSize="sm">
+                  {data?.name}
+                </Text>
+                <Text>{maskEmail(data?.email)}</Text>
+              </Box>
+              <Image
+                src={SignOut}
+                alt="Signout"
+                cursor="pointer"
+                onClick={signOut}
+              />
+            </HStack>
+          </VStack>
         </VStack>
-      </VStack>
-    </Box>
+      </Box>
+
+      {/* MOBILE */}
+      <Drawer
+        display={["block", null, null, null, "none"]}
+        placement={placement}
+        onClose={onClose}
+        isOpen={isOpen}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px" borderColor="gray.300">
+            <Link to="/">
+              <Image src={BrandLogo} alt="logo" />
+            </Link>{" "}
+            <DrawerCloseButton />
+          </DrawerHeader>
+          <DrawerBody>
+            <VStack justifyContent="space-between" h="100%">
+              <VStack alignItems="flex-start" spacing={7}>
+                <Box>
+                  <SidebarOptions
+                    icon={OverviewIcon}
+                    darkIcon={DarkOverviewIcon}
+                    title="Overview"
+                    link="/app/overview"
+                  />
+                  <SidebarOptions
+                    icon={EventsIcon}
+                    darkIcon={DarkEventsIcon}
+                    title="Events"
+                    link="/app/events"
+                  />
+                  <SidebarOptions
+                    icon={OrderIcon}
+                    darkIcon={DarkOrderIcon}
+                    title="Order"
+                    link="/app/order"
+                  />
+                  <SidebarOptions
+                    icon={FinanceIcon}
+                    darkIcon={DarkFinanceIcon}
+                    title="Finance"
+                    link="/app/finance"
+                  />
+                </Box>
+              </VStack>
+              <VStack spacing={6}>
+                <Box>
+                  <SidebarOptions
+                    icon={Settings}
+                    darkIcon={DarkOverviewIcon}
+                    title="Organization settings"
+                    link="/app/organization-settings"
+                  />
+                  <SidebarOptions
+                    icon={Help}
+                    darkIcon={DarkOverviewIcon}
+                    title="Help and support"
+                    link="/help-and-support"
+                  />
+                </Box>
+                <HStack justifyContent="space-between">
+                  <Avatar
+                    border="1px solid"
+                    borderColor="gray.800"
+                    color="gray.800"
+                    name={data?.name || data?.email}
+                    src={data?.imageURL}
+                    bgColor="transparent"
+                  >
+                    <AvatarBadge boxSize="20px" bg="greenSuccess" />
+                  </Avatar>
+                  <Box>
+                    <Text fontWeight="semibold" fontSize="sm">
+                      {data?.name}
+                    </Text>
+                    <Text>{maskEmail(data?.email)}</Text>
+                  </Box>
+                  <Image
+                    src={SignOut}
+                    alt="Signout"
+                    cursor="pointer"
+                    onClick={signOut}
+                  />
+                </HStack>
+              </VStack>
+            </VStack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </Fragment>
   );
 };
 

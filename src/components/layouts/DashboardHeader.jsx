@@ -1,5 +1,7 @@
 import {
+  Avatar,
   Box,
+  HStack,
   Image,
   Input,
   InputGroup,
@@ -7,15 +9,30 @@ import {
   InputRightElement,
   Stack,
 } from "@chakra-ui/react";
-import Avatar from "../../assets/img/Avatars.png";
 import Search from "../../assets/icon/Search";
 import SearchIcon from "../../assets/icon/SearchIcon.svg";
+import Hamburger from "../../assets/icon/Hamburger.svg";
+import BrandLogo from "../../assets/img/brandLogo.png";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUserDetails } from "../../features/userSlice";
 
-const DashboardHeader = () => {
+const DashboardHeader = ({ onOpen }) => {
+  const { data } = useSelector(selectUserDetails);
   return (
-    <Box py={6} px={8} borderBottom="1px solid" borderColor="gray.300">
-      <Stack direction="row" justifyContent="space-between">
-        <Box maxW="375px" w="100%">
+    <Box
+      py={[3, 6]}
+      px={[3, 8]}
+      borderBottom="1px solid"
+      borderColor="gray.300"
+    >
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Box w="107px" h="29px" display={["block", "none"]}>
+          <Link to="/">
+            <Image src={BrandLogo} alt="logo" />
+          </Link>
+        </Box>
+        <Box maxW="375px" w="100%" display={["none", "block"]}>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <Search />
@@ -26,7 +43,29 @@ const DashboardHeader = () => {
             </InputRightElement>
           </InputGroup>
         </Box>
-        <Image src={Avatar} alt="Avatar" w="40px" h="40px" />
+        <HStack
+          w="100%"
+          justifyContent="flex-end"
+          alignItems="center"
+          spacing={[3, null, null, null, 5]}
+        >
+          <Avatar
+            border="1px solid"
+            borderColor="gray.800"
+            color="gray.800"
+            name={data?.name || data?.email}
+            src={data?.imageURL}
+            bgColor="transparent"
+          />
+          <Image
+            src={Hamburger}
+            alt="menu"
+            w="24px"
+            h="24px"
+            onClick={onOpen}
+            display={["block", null, null, null, "none"]}
+          />
+        </HStack>
       </Stack>
     </Box>
   );

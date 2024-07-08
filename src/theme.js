@@ -10,6 +10,9 @@ import NumberInput from "./components/ui/NumberInput";
 import Select from "./components/ui/Select";
 import FormLabel from "./components/ui/FormLabel";
 import FormErrorMessage from "./components/ui/FormErrorMessage";
+import Avatar from "./components/ui/Avatar";
+import Tabs from "./components/ui/Tabs";
+import Switch from "./components/ui/Switch";
 
 // example theme
 export const theme = extendTheme({
@@ -24,16 +27,28 @@ export const theme = extendTheme({
     Radio,
     Select,
     NumberInput,
+    Avatar,
+    Tabs,
+    Switch,
   },
   colors: {
     transparent: "transparent",
     black: "#000000",
     white: "#fff",
     border: "rgba(255, 255, 255, 0.30)",
+    border2: "rgba(255, 255, 255, 0.42)",
     grey100: "#F0F2F5",
+    grey500: "#667085",
+    grey900: "#101828",
     error500: "#CB1A14",
     textSuccess: "#06CC06",
     greenSuccess: "#04802E",
+    bgGradient:
+      "linear-gradient(84deg, #141714 44.36%, #141714 66.37%, rgba(20, 23, 20, 0.78) 92.38%)",
+    limeGreen: "#72E572",
+    utilityLight200: "rgba(255, 255, 255, 0.50)",
+    utilityLight100: "rgba(255, 255, 255, 0.10)",
+    success700: "#027A48",
     gray: {
       100: "#FFFFFF",
       200: "#F7FAF7",

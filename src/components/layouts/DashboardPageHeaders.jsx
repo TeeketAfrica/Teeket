@@ -1,8 +1,8 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from '@chakra-ui/react';
 
 const DashboardPageHeaders = ({ pageTitle, subTitle }) => {
   return (
-    <Box>
+    <Box paddingX="8">
       <Heading fontWeight="bold" lineHeight="43px" fontSize="5xl">
         {pageTitle}
       </Heading>

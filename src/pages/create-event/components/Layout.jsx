@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserDetails } from "../../../features/userSlice";
 import {
   Slide,
   Fade,
@@ -9,20 +10,24 @@ import {
   Text,
   Link,
   useOutsideClick,
-} from '@chakra-ui/react';
-import Logo from '../../../assets/img/brandLogo.png';
-import Avatar from '../../../assets/img/Avatars.png';
-import Preview from '../../../assets/icon/eye.svg';
-import CloseIcon from '../../../assets/icon/CloseButton.svg';
-import Rocket from '../../../assets/icon/rocket-alt.svg';
-import Hamburger from '../../../assets/icon/Hamburger.svg';
-import Ticket from '../../../assets/icon/Ticket.svg';
-import PlusCircle from '../../../assets/icon/PlusCircle.svg';
-import Dashboard from '../../../assets/icon/Dashboard.svg';
-import Settings from '../../../assets/icon/Settings.svg';
-import SignOut from '../../../assets/icon/SignOut.svg';
-import Container from '../../../components/ui/Container';
-import SideNav from './SideNav';
+} from "@chakra-ui/react";
+import { useRef, useState } from "react";
+
+import Logo from "../../../assets/img/brandLogo.png";
+import Avatar from "../../../assets/img/Avatars.png";
+import Preview from "../../../assets/icon/eye.svg";
+import CloseIcon from "../../../assets/icon/CloseButton.svg";
+import Rocket from "../../../assets/icon/rocket-alt.svg";
+import Hamburger from "../../../assets/icon/Hamburger.svg";
+import Ticket from "../../../assets/icon/Ticket.svg";
+import PlusCircle from "../../../assets/icon/PlusCircle";
+import Dashboard from "../../../assets/icon/Dashboard.svg";
+import Settings from "../../../assets/icon/Settings.svg";
+import SignOut from "../../../assets/icon/SignOut.svg";
+import Container from "../../../components/ui/Container";
+import SideNav from "./SideNav";
+import useSignOut from "../../../utils/signOut";
+import { resetEventState } from "../../../features/eventSlice";
 
 const Layout = ({
   children,
@@ -34,28 +39,37 @@ const Layout = ({
   const [mobileToggle, setMobileToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
   const ref = useRef();
+  const { signOut } = useSignOut();
+  const dispatch = useDispatch();
+
+  const { email } = useSelector(selectUserDetails).data;
 
   useOutsideClick({
     ref: ref,
     handler: () => setMenuToggle(false),
   });
 
+  const resetEvent = () => {
+    dispatch(resetEventState());
+    sessionStorage.setItem("EVENT_PAGE", 0);
+  };
+
   const steps = [
     {
       stepNumber: 1,
-      stepInfo: 'Basic info',
+      stepInfo: "Basic info",
     },
     {
       stepNumber: 2,
-      stepInfo: 'Event details',
+      stepInfo: "Event details",
     },
     {
       stepNumber: 3,
-      stepInfo: 'Tickets',
+      stepInfo: "Tickets",
     },
     {
       stepNumber: 4,
-      stepInfo: 'Publish event',
+      stepInfo: "Publish event",
     },
   ];
 
@@ -66,7 +80,7 @@ const Layout = ({
       flexDirection="column"
       w="100%"
       h="100vh"
-      overflow={{ base: 'visible', lg: 'hidden' }}
+      overflow={{ base: "visible", lg: "hidden" }}
       isolation="isolate"
     >
       <Box
@@ -85,13 +99,13 @@ const Layout = ({
       >
         <Container>
           <Box display="flex" justifyContent="space-between">
-            <Box w="119px">
+            <Link href="/" w="119px" cursor="pointer">
               <Image src={Logo} alt="logo" />
-            </Box>
+            </Link>
             <Box display="flex" alignItems="center" gap={{ base: 6, lg: 8 }}>
               <Button type="submit" size="sm" variant="ghost" gap={2}>
-                <Image src={Preview} alt="logo" />
-                <Text as="span" display={{ base: 'none', lg: 'inline' }}>
+                <Image src={Preview} alt="preview" />
+                <Text as="span" display={{ base: "none", lg: "inline" }}>
                   Preview event
                 </Text>
               </Button>
@@ -102,8 +116,8 @@ const Layout = ({
                 isDisabled={activeStepColor !== steps.length - 1}
                 gap={2}
               >
-                <Image src={Rocket} alt="logo" />
-                <Text as="span" display={{ base: 'none', lg: 'inline' }}>
+                <Image src={Rocket} alt="rocket" />
+                <Text as="span" display={{ base: "none", lg: "inline" }}>
                   Publish Event
                 </Text>
               </Button>
@@ -112,11 +126,11 @@ const Layout = ({
                   cursor="pointer"
                   onClick={() => setMenuToggle(!menuToggle)}
                 >
-                  <Image src={Avatar} alt="logo" />
+                  <Image src={Avatar} alt="avatar" />
                 </Box>
                 <Fade in={menuToggle}>
                   <Box
-                    display={menuToggle ? 'flex' : 'none'}
+                    display={menuToggle ? "flex" : "none"}
                     position="absolute"
                     right="0"
                     top="50px"
@@ -138,14 +152,15 @@ const Layout = ({
                       borderColor="#F0F2F5"
                     >
                       <Text py="2" color="gray.800" fontWeight="semibold">
-                        Solomonteeket@gmail.com
+                        {email}
                       </Text>
                       <Link
                         href=""
                         display="flex"
                         gap="3"
                         py="2"
-                        _hover={{ textDecoration: 'none' }}
+                        _hover={{ textDecoration: "none" }}
+                        onClick={resetEvent}
                       >
                         <Image src={Ticket} alt="icon" />
                         <Text>My tickets</Text>
@@ -162,9 +177,10 @@ const Layout = ({
                         display="flex"
                         gap="3"
                         py="2"
-                        _hover={{ textDecoration: 'none' }}
+                        _hover={{ textDecoration: "none" }}
+                        onClick={resetEvent}
                       >
-                        <Image src={PlusCircle} alt="icon" />
+                        <PlusCircle />
                         <Text>Create events</Text>
                       </Link>
                       <Link
@@ -172,7 +188,8 @@ const Layout = ({
                         display="flex"
                         gap="3"
                         py="2"
-                        _hover={{ textDecoration: 'none' }}
+                        _hover={{ textDecoration: "none" }}
+                        onClick={resetEvent}
                       >
                         <Image src={Dashboard} alt="icon" />
                         <Text>Dashboard</Text>
@@ -184,12 +201,19 @@ const Layout = ({
                         display="flex"
                         gap="3"
                         py="2"
-                        _hover={{ textDecoration: 'none' }}
+                        _hover={{ textDecoration: "none" }}
+                        onClick={resetEvent}
                       >
                         <Image src={Settings} alt="icon" />
                         <Text>Account Settings</Text>
                       </Link>
-                      <Text display="flex" gap="3" py="2" cursor="pointer">
+                      <Text
+                        display="flex"
+                        gap="3"
+                        py="2"
+                        cursor="pointer"
+                        onClick={signOut}
+                      >
                         <Image src={SignOut} alt="icon" />
                         <Text as="span">Log out</Text>
                       </Text>
@@ -210,8 +234,8 @@ const Layout = ({
         display="flex"
         alignItems="center"
         backgroundColor="gray.100"
-        h={{ base: '72px', lg: '100px' }}
-        borderBottom={{ base: '1px solid', lg: 'none' }}
+        h={{ base: "72px", lg: "100px" }}
+        borderBottom={{ base: "1px solid", lg: "none" }}
         borderColor="gray.300"
         px={6}
         zIndex="10"
@@ -219,14 +243,14 @@ const Layout = ({
         <Container>
           <Heading
             as="h1"
-            display={{ base: 'none', lg: 'block' }}
+            display={{ base: "none", lg: "block" }}
             fontSize="6xl"
             fontWeight={700}
             color="gray.800"
           >
             Event creation
           </Heading>
-          <Box display={{ base: 'flex', lg: 'none' }} gap={6}>
+          <Box display={{ base: "flex", lg: "none" }} gap={6}>
             <Box onClick={() => setMobileToggle(true)}>
               <Image src={Hamburger} alt="Icon" />
             </Box>
@@ -234,7 +258,7 @@ const Layout = ({
               {steps.map((step, i) => (
                 <Text
                   key={step.stepInfo}
-                  display={activeStepColor + 1 === i + 1 ? 'flex' : 'none'}
+                  display={activeStepColor + 1 === i + 1 ? "flex" : "none"}
                   gap={2}
                 >
                   <Text as="span" fontSize="sm" color="gray.500">
@@ -257,13 +281,13 @@ const Layout = ({
 
       <Box
         p={6}
-        marginTop={{ base: '160px', lg: '188px' }}
+        marginTop={{ base: "160px", lg: "188px" }}
         flex="1"
-        overflow={{ base: 'visible', lg: 'hidden' }}
+        overflow={{ base: "visible", lg: "hidden" }}
       >
         <Container heightSize="100%">
-          <Box display="flex" h="100%" gap={{ base: '0', lg: 8 }}>
-            <Box display={{ base: 'block', lg: 'none' }}>
+          <Box display="flex" h="100%" gap={{ base: "0", lg: 8 }}>
+            <Box display={{ base: "block", lg: "none" }}>
               <Slide direction="left" in={mobileToggle} style={{ zIndex: 10 }}>
                 <SideNav
                   activeStep={activeStepColor}
@@ -286,7 +310,7 @@ const Layout = ({
                 </SideNav>
               </Slide>
             </Box>
-            <Box display={{ base: 'none', lg: 'block' }} w="286px">
+            <Box display={{ base: "none", lg: "block" }} w="286px">
               <SideNav
                 activeStep={activeStepColor}
                 height="100%"
@@ -297,8 +321,8 @@ const Layout = ({
               w="100%"
               px={5}
               css={{
-                '&::-webkit-scrollbar': {
-                  width: '0',
+                "&::-webkit-scrollbar": {
+                  width: "0",
                 },
               }}
               overflowY="auto"
@@ -326,7 +350,7 @@ const Layout = ({
             alignItems="center"
           >
             <Button
-              display={activeStepColor > 0 ? 'inline-flex' : 'none'}
+              display={activeStepColor > 0 ? "inline-flex" : "none"}
               variant="secondary"
               size="lg"
               onClick={() => prevStep()}
@@ -335,7 +359,7 @@ const Layout = ({
             </Button>
             {activeStepColor === steps.length - 1 && (
               <Button
-                leftIcon={<Image src={Rocket} alt="logo" />}
+                leftIcon={<Image src={Rocket} alt="rocket" />}
                 size="lg"
                 variant="accent"
                 onClick={publishEvent}

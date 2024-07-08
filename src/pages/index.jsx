@@ -10,6 +10,12 @@ import OverviewDashboardPage from "./vendor-dashboard/overview";
 import OrdersDashboardPage from "./vendor-dashboard/orders";
 import OrganizationSettingsDashboardPage from "./vendor-dashboard/organization-settings";
 import HelpAndSupportPage from "./help-and-support";
+import EventsPage from "./events";
+import EventCategoryPage from "./events/EventCategoryPage";
+import TicketDashboardPage from "./ticket-dashboard/index";
+import EventBookingPage from "./events/EventBookingPage";
+import CounterDownPage from "./count-down";
+import NotFoundPage from "./not-found";
 
 export {
   HomePage,
@@ -26,4 +32,16 @@ export {
   OverviewDashboardPage,
   OrdersDashboardPage,
   OrganizationSettingsDashboardPage,
+
+  // EVENTS PAGE
+  EventsPage,
+  EventCategoryPage,
+  EventBookingPage,
+
+  // TICKETS PAGE
+  TicketDashboardPage,
+  CounterDownPage,
+
+  // 404 PAGE
+  NotFoundPage,
 };
