@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -9,7 +10,6 @@ import PasswordInput from "../../components/PasswordInput";
 import authApi from "../../../../api/authApi";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "../../../../features/userSlice";
-import { useNavigate } from "react-router-dom";
 
 const CreateAccountForm = () => {
   const dispatch = useDispatch();

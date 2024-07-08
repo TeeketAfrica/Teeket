@@ -21,7 +21,7 @@ import TicketIcon from "../../../../assets/icon/Ticket.svg";
 import UserAvatar from "../../../../assets/img/Avatars.png";
 import EventMap from "../../../../assets/icon/PlaceMarkMap.svg";
 
-const RightSIdeDetails = ({ isRegistered }) => {
+const RightSIdeDetails = ({ event, isRegistered }) => {
   return (
     <VStack width={{ base: "100%", lg: "40%" }} gap="6" alignItems="flex-start">
       <BoxFrame paddingX="24px" paddingY="24px">
@@ -82,19 +82,19 @@ const RightSIdeDetails = ({ isRegistered }) => {
                 <Image
                   src={UserAvatar}
                   alt="avatar icon"
-                  objectFi="cover"
+                  objectFit="cover"
                   width="100%"
                 />
               </Box>
               <Box>
-                <Text>
+                <Box>
                   <Text fontSize="sm" lineHeight="5" color="gray.600">
                     Hosted by
                   </Text>
                   <Text fontSize="md" lineHeight="6" fontWeight="semibold">
-                    TheDavinci
+                    {event.organizer}
                   </Text>
-                </Text>
+                </Box>
               </Box>
             </Flex>
             <Tooltip label="Coming soon!!" aria-label="A tooltip">
