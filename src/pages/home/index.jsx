@@ -1,3 +1,7 @@
+import { useSelector } from "react-redux";
+
+import { selectUserDetails } from "../../features/userSlice";
+
 import {
   Accordion,
   AccordionItem,
@@ -23,6 +27,7 @@ import Header from "../../components/layouts/Header";
 import Masonry from "./components/Masonry";
 import Container from "../../components/ui/Container";
 import Card from "./components/Card";
+
 import {
   BrowseEventInfo,
   CatergoryInfo,
@@ -53,11 +58,15 @@ import Masonry7 from "../../assets/img/masonry_7.webp";
 import Masonry8 from "../../assets/img/masonry_8.webp";
 
 const HomePage = () => {
+  const token = sessionStorage.getItem("TOKEN");
+
   const iconMap = {
     email: <MailIcon fillColor="#ffffff" size="24px" />,
     office: <LocationIcon />,
     phone: <PhoneIcon />,
   };
+
+  console.log(token);
 
   return (
     <>
@@ -108,19 +117,19 @@ const HomePage = () => {
                 </Text>
               </VStack>
               <HStack justifyContent="center" marginBottom="8" width="100%">
-                <Button variant="primary" size="lg">
-                  <Link
-                    href="/create-event"
-                    _hover={{ textDecoration: "none" }}
-                  >
+                <Link
+                  href={token ? "/create-event" : "/auth/login"}
+                  _hover={{ textDecoration: "none" }}
+                >
+                  <Button variant="primary" size="lg">
                     Create events
-                  </Link>
-                </Button>
-                <Button variant="secondary" size="lg">
-                  <Link href="/events" _hover={{ textDecoration: "none" }}>
+                  </Button>
+                </Link>
+                <Link href="/events" _hover={{ textDecoration: "none" }}>
+                  <Button variant="secondary" size="lg">
                     Browse events
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </HStack>
               <Box
                 position="relative"
@@ -334,14 +343,14 @@ const HomePage = () => {
               >
                 We have events in different categories
               </Text>
-              <Button variant="secondary" size="lg" width="210px">
-                <Link
-                  href="/auth/create-account"
-                  _hover={{ textDecoration: "none" }}
-                >
+              <Link
+                href="/auth/create-account"
+                _hover={{ textDecoration: "none" }}
+              >
+                <Button variant="secondary" size="lg" width="210px">
                   Get Started
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </Flex>
 
             <Grid
@@ -472,14 +481,14 @@ const HomePage = () => {
                 </Grid>
               </Box>
 
-              <Button variant="primary" size="lg" width="210px">
-                <Link
-                  href="/auth/create-account"
-                  _hover={{ textDecoration: "none" }}
-                >
+              <Link
+                href="/auth/create-account"
+                _hover={{ textDecoration: "none" }}
+              >
+                <Button variant="primary" size="lg" width="210px">
                   Get Started
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </VStack>
           </Container>
         </Box>

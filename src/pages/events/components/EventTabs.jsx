@@ -1,8 +1,4 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-
-import teeketApi from "../../../api/teeketApi";
-
 import {
   Box,
   Button,
@@ -22,8 +18,6 @@ import FreeEvents from "./FreeEvents";
 import PaidEvents from "./PaidEvents";
 
 const EventTabs = () => {
-  // Fetch all events
-  useEffect(() => {}, []);
 
   return (
     <section>
