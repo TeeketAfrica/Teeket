@@ -14,10 +14,11 @@ const EventsDashboardPage = () => {
 
   const exportToExcel = () => {
     const exportData = data.map((event) => ({
-      Company: event.industry,
-      Category: event.type,
+      Title: event.title,
+      Organizer: event.organizer,
       Tickets_sold: event.tickets_sold,
       Tickets_number: event.number_of_tickets,
+      Tickets_revenue: event.total_revenue,
       Created: formatDate(event.date_created),
       Status: event.status,
     }));
