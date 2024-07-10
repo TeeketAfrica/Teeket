@@ -4,10 +4,12 @@ import Header from "../../components/layouts/Header";
 import Container from "../../components/ui/Container";
 import EventCategoryHeroSection from "./components/EventCategoryHeroSection";
 import SingleEventCategory from "./components/SingleEventCategory";
+import ScrollToTop from "../../utils/ScrollToTop";
 
 const EventCategoryPage = () => {
   return (
     <main>
+      <ScrollToTop />
       <Header />
       <EventCategoryHeroSection />
       <Container>

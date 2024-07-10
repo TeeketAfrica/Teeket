@@ -48,10 +48,26 @@ const EventTable = ({ setData }) => {
   const [paginatedData, setPaginatedData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [request] = useState(true);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const toast = useToast();
+
+  const updateNetworkStatus = () => {
+    setIsOnline(navigator.onLine);
+  };
+
+  useEffect(() => {
+    window.addEventListener("online", updateNetworkStatus);
+    window.addEventListener("offline", updateNetworkStatus);
+
+    return () => {
+      window.removeEventListener("online", updateNetworkStatus);
+      window.removeEventListener("offline", updateNetworkStatus);
+    };
+  }, []);
+
+  // FECTH EVENTS
 
   useEffect(() => {
     const handleFetchEvents = async () => {
@@ -60,9 +76,7 @@ const EventTable = ({ setData }) => {
           `/events/user?search=${search}&status=${statusFilter}`
         );
         const res = response.data;
-        console.log("res", res);
         setData(res.data);
-        console.log("Res", typeof res.page_size);
         setTotalItems(res.total);
         setEventTableData(res.data);
         setPaginatedData(res.data.slice(0, itemsPerPage));
@@ -83,6 +97,25 @@ const EventTable = ({ setData }) => {
 
     handleFetchEvents();
   }, [toast, itemsPerPage, setData, search, statusFilter]);
+
+  // DELETE EVENT
+
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const response = await teeketApi.delete(`/events/${eventId}`);
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || "An error occured";
+      toast({
+        title: "Events failed to fetch.",
+        description: `${errorMessage}`,
+        status: "error",
+        duration: 3000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
+  };
 
   useEffect(() => {
     const startIndex = currentPage * itemsPerPage;
@@ -107,8 +140,15 @@ const EventTable = ({ setData }) => {
 
   // FILTER BY STATUS
 
+  const statusMap = {
+    "All events": "",
+    "Coming soon": "coming_soon",
+    "On going": "on_going",
+    "Past events": "past_event",
+  };
+
   const handleFilterByStatus = (selectedStatus) => {
-    setStatusFilter(selectedStatus);
+    setStatusFilter(statusMap[selectedStatus]);
   };
 
   return (
@@ -146,7 +186,7 @@ const EventTable = ({ setData }) => {
               <Filter />
               <Text fontSize={14} fontWeight={600} color="gray.800">
                 File
-              </Text>{" "}
+              </Text>
               <DownIcon />
             </HStack>
           </MenuButton>
@@ -193,7 +233,7 @@ const EventTable = ({ setData }) => {
               : `${totalItems} events`}
           </Tag>
         </HStack>
-        {request ? (
+        {isOnline ? (
           <>
             {paginatedData.length !== 0 ? (
               <TableContainer>
@@ -239,7 +279,7 @@ const EventTable = ({ setData }) => {
                           {td.tickets_sold}/{td.number_of_tickets}
                         </Td>
                         <Td color="gray.600" fontWeight={500}>
-                          ${td.revenue}
+                          ${td.total_revenue}
                         </Td>
                         <Td color="gray.600" fontWeight={500}>
                           {formatDate(td.date_created)}
@@ -300,7 +340,10 @@ const EventTable = ({ setData }) => {
                               <MenuItem _hover={{ bgColor: "gray.200" }}>
                                 Copy link
                               </MenuItem>
-                              <MenuItem _hover={{ bgColor: "gray.200" }}>
+                              <MenuItem
+                                onClick={handleDeleteEvent(td.id)}
+                                _hover={{ bgColor: "gray.200" }}
+                              >
                                 Delete event
                               </MenuItem>
                             </MenuList>
@@ -318,8 +361,8 @@ const EventTable = ({ setData }) => {
                 title="No result"
                 desc={
                   <Text fontSize={14} color="gray.600" textAlign="center">
-                    Your search “{search}” did not match any events. Please try
-                    again or create add a new event.
+                    Your search “{search || statusFilter}” did not match any
+                    events. Please try again or create add a new event.
                   </Text>
                 }
                 outlineBtn="Clear search"
