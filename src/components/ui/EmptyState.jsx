@@ -30,12 +30,17 @@ const EmptyState = ({
             <Box maxW={maxW}>{desc}</Box>
           </VStack>
           <HStack>
-            <Button onClick={outlineOnClick} p={2} variant="outline">
-              {outlineBtn}
-            </Button>
-            <Button onClick={primaryOnClick} p={2} variant="primary">
-              {primaryBtn}
-            </Button>
+            {outlineBtn && (
+              <Button onClick={outlineOnClick} p={2} variant="outline">
+                {outlineBtn}
+              </Button>
+            )}
+
+            {primaryBtn && (
+              <Button onClick={primaryOnClick} p={2} variant="primary">
+                {primaryBtn}
+              </Button>
+            )}
           </HStack>
         </VStack>
       </Center>

@@ -1,21 +1,18 @@
+import { Link } from "react-router-dom";
 import { Button, Center, Container, Grid, Text } from "@chakra-ui/react";
+
 import EventCard from "./EventCard";
-import Event1 from "../../../assets/img/e1.png";
-import Event2 from "../../../assets/img/e2.png";
-import Event3 from "../../../assets/img/e3.png";
-import Event4 from "../../../assets/img/e4.png";
+
 import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
-import { useState } from "react";
 import EmptyState from "../../../components/ui/EmptyState";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 import BrowseEvents from "../../../assets/icon/BrowseEvents";
 
-const SingleEventCategory = () => {
-  const [event] = useState(true);
+const SingleEventCategory = ({ allEvents }) => {
   return (
     <>
-      {event ? (
+      {allEvents.length > 0 ? (
         <>
           <Grid
             templateColumns="repeat(4, 1fr)"
@@ -23,96 +20,25 @@ const SingleEventCategory = () => {
             borderBottom="1px solid"
             borderColor="gray.300"
             pt={6}
-            pb={9}
-          >
-            <EventCard
-              eventImage={Event1}
-              eventTitle="The Dao unveiling event"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="By Web3 and co"
-              eventLocation="Online event"
-              eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
-            />
-            <EventCard
-              eventImage={Event2}
-              eventTitle="Art exhibition show down: For enthusiast and newbies"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="by the_brush"
-              eventLocation="Online event"
-              eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
-            />
-            <EventCard
-              eventImage={Event3}
-              eventTitle="Art exhibition show down: For enthusiast and newbies"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="by the_brush"
-              eventLocation="Life camp, Abuja"
-              eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
-            />
-            <EventCard
-              eventImage={Event4}
-              eventTitle="Vintage all out party"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="by the_brush"
-              eventLocation="Online event"
-              eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
-            />
-            <EventCard
-              eventImage={Event2}
-              eventTitle="Art exhibition show down: For enthusiast and newbies"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="by the_brush"
-              eventLocation="Online event"
-              eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
-            />
-            <EventCard
-              eventImage={Event3}
-              eventTitle="Art exhibition show down: For enthusiast and newbies"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="by the_brush"
-              eventLocation="Life camp, Abuja"
-              eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
-            />
-            <EventCard
-              eventImage={Event4}
-              eventTitle="Vintage all out party"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="by the_brush"
-              eventLocation="Online event"
-              eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
-            />
-            <EventCard
-              eventImage={Event1}
-              eventTitle="The Dao unveiling event"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="By Web3 and co"
-              eventLocation="Online event"
-              eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
-            />
+            pb={9}>
+            {allEvents.map((event) => (
+              <EventCard
+                key={event.id}
+                eventI={event.id}
+                eventImage={event.banner_image}
+                eventTitle={event.title}
+                eventTag={event.status.split("_").join(" ")}
+                eventTagIcon={EventTagIcon}
+                eventOrganizer={Avatars}
+                eventCommunity={`By ${event.organizer}`}
+                eventLocation={event.hosting_site}
+                eventPrice={Number(event.lowest_ticket_price)}
+                eventDate={{
+                  startDate: event.start_date,
+                  endDate: event.end_date,
+                }}
+              />
+            ))}
           </Grid>
           <Center w="full" my="6">
             <Button variant="primary" leftIcon={<BrowseEvents />}>

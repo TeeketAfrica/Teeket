@@ -6,7 +6,7 @@ const useSignOut = () => {
 
   const signOut = async () => {
     try {
-      sessionStorage.clear("TOKEN");
+      sessionStorage.clear();
       persistor.purge();
       navigate("/auth/login");
     } catch (err) {
