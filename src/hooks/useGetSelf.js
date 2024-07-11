@@ -8,21 +8,25 @@ export default function useGetSelf() {
   const toast = useToast();
 
   async function handleGetSelf() {
-    try {
-      const response = await teeketApi.get("/user/profile");
-      const userData = response.data;
-      console.log("user", userData);
-      dispatch(setActiveUser(userData));
-    } catch (error) {
-      const errorMessage = error?.response?.data?.message || "An error occured";
-      toast({
-        title: "Events failed to fetch.",
-        description: `${errorMessage}`,
-        status: "error",
-        duration: 3000,
-        position: "top-right",
-        isClosable: true,
-      });
+    const token = sessionStorage.getItem("TOKEN");
+
+    if (token) {
+      try {
+        const response = await teeketApi.get("/user/profile");
+        const userData = response.data;
+        dispatch(setActiveUser(userData));
+      } catch (error) {
+        const errorMessage =
+          error?.response?.data?.message || "An error occured";
+        toast({
+          title: "Events failed to fetch.",
+          description: `${errorMessage}`,
+          status: "error",
+          duration: 3000,
+          position: "top-right",
+          isClosable: true,
+        });
+      }
     }
   }
 

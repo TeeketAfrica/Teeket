@@ -18,16 +18,18 @@ import {
 } from "@chakra-ui/react";
 import Container from "../ui/Container";
 import BrandLogo from "../../assets/img/brandLogo.png";
-import Avatars from "../../assets/img/Avatars.png";
 import Hamburger from "../../assets/icon/Hamburger.svg";
 import Search from "../../assets/icon/Search";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
+import { useSelector } from "react-redux";
+import { selectActiveUser } from "../../features/activeUserSlice";
 
-const Header = ({ userInfo = false }) => {
+const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
-  // const [user] = useState(false);
+  const activeUser = useSelector(selectActiveUser);
+
   const menu = [
     {
       link: "Browse events",
@@ -81,9 +83,16 @@ const Header = ({ userInfo = false }) => {
                     </Text>
                   </Link>
                 ))}
-                {userInfo ? (
+                {activeUser ? (
                   <Box cursor="pointer">
-                    <Avatar src={Avatars} />
+                    <Avatar
+                      border="1px solid"
+                      borderColor="gray.800"
+                      color="gray.800"
+                      name={activeUser?.name || activeUser?.email}
+                      src={activeUser?.imageURL}
+                      bgColor="transparent"
+                    />
                   </Box>
                 ) : (
                   <>

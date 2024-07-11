@@ -10,10 +10,14 @@ import Header from "../../components/layouts/Header";
 import EventPreference from "./components/EventPreference";
 import EventTabs from "./components/EventTabs";
 import HeroSection from "./components/HeroSection";
+
 import EmptyState from "../../components/ui/EmptyState";
 
 import EventCautionState from "../../assets/icon/EventCautionState.svg";
 import EventSpeakerEmpty from "../../assets/icon/EventSpeakerEmptyBlue.svg";
+
+import { useDisclosure } from "@chakra-ui/react";
+import ScrollToTop from "../../utils/ScrollToTop";
 
 const EventsPage = () => {
   const navigate = useNavigate();
@@ -73,6 +77,7 @@ const EventsPage = () => {
 
   return (
     <main>
+      <ScrollToTop />
       <Header />
       {displayEventPreference && (
         <EventPreference isOpen={isOpen} onClose={onClose} />

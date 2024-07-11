@@ -1,22 +1,23 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import routes from "./routes/routes";
-import { useEffect } from "react";
-import useGetSelf from "./hooks/useGetSelf";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "./features/activeUserSlice";
+import useGetSelf from "./hooks/useGetSelf";
+import { useEffect } from "react";
 
 const router = createBrowserRouter(routes);
 
 function App() {
-  // const activeUser = useSelector(selectActiveUser);
+  const activeUser = useSelector(selectActiveUser);
 
-  // const handleGetProfile = useGetSelf();
+  console.log("actve", activeUser);
 
-  // console.log("active", activeUser);
-  // useEffect(() => {
-  //   handleGetProfile();
-  // }, [handleGetProfile]);
+  const handleGetProfile = useGetSelf();
 
+  useEffect(() => {
+    handleGetProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return <RouterProvider router={router} />;
 }
 
