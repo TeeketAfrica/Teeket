@@ -44,7 +44,7 @@ const readAsBinary = (file) => {
 };
 
 const formatDate = (inputDate) => {
-  return format(inputDate, "do MMM',' yyyy");
+  return format(inputDate, "dd MMM',' yyyy");
 };
 
 const convertTimeFormat = (timeString) =>

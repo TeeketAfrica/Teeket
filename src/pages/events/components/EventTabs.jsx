@@ -16,8 +16,29 @@ import CuratedEvents from "./CuratedEvents";
 import WatchoutEvents from "./WatchoutEvents";
 import FreeEvents from "./FreeEvents";
 import PaidEvents from "./PaidEvents";
+import { useState } from "react";
 
-const EventTabs = () => {
+const EventTabs = ({ eventLists }) => {
+  const events = eventLists;
+  const [filteredEvents, setFilteredEvents] = useState(events);
+
+  const handleFilterEvents = (type) => {
+    if (type == "curated") {
+      setFilteredEvents(events);
+    } else if (type == "watch") {
+      setFilteredEvents(events);
+    } else if (type == "free") {
+      setFilteredEvents(
+        events.filter((event) => Number(event.lowest_ticket_price) === 0)
+      );
+    } else if (type == "paid") {
+      setFilteredEvents(
+        events.filter((event) => Number(event.lowest_ticket_price) > 0)
+      );
+    } else {
+      setFilteredEvents(events);
+    }
+  };
 
   return (
     <section>
@@ -28,40 +49,32 @@ const EventTabs = () => {
               borderTop="1px solid"
               borderBottom="1px solid"
               borderColor="gray.300"
-              justifyContent="center"
-            >
-              <Tab>All events</Tab>
-              <Tab>Curated for you</Tab>
-              <Tab>Watch out</Tab>
-              <Tab>Free events</Tab>
-              <Tab>Paid events</Tab>
+              justifyContent="center">
+              <Tab onClick={handleFilterEvents}>All events</Tab>
+              <Tab onClick={() => handleFilterEvents("curated")}>
+                Curated for you
+              </Tab>
+              <Tab onClick={() => handleFilterEvents("watch")}>Watch out</Tab>
+              <Tab onClick={() => handleFilterEvents("free")}>Free events</Tab>
+              <Tab onClick={() => handleFilterEvents("paid")}>Paid events</Tab>
             </TabList>
 
             <Box>
-              <HStack pt={6} justifyContent="space-between" alignItems="center">
-                <Text fontSize={28} fontWeight={700}>
-                  Trending events
-                </Text>
-                <Button variant="outline">
-                  <Link to="/event-category">See more</Link>
-                </Button>
-              </HStack>
-
               <TabPanels>
                 <TabPanel p={0}>
-                  <AllEvents />
+                  <AllEvents allEvents={filteredEvents} />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <CuratedEvents />
+                  <AllEvents allEvents={filteredEvents} />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <WatchoutEvents />
+                  <AllEvents allEvents={filteredEvents} />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <FreeEvents />
+                  <AllEvents allEvents={filteredEvents} />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <PaidEvents />
+                  <AllEvents allEvents={filteredEvents} />
                 </TabPanel>
               </TabPanels>
             </Box>

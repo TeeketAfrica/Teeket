@@ -27,7 +27,6 @@ import {
 
 import FormLayout from "../components/FormLayout";
 
-import BannerImage from "../../../assets/img/BannerImage.png";
 import Map from "../../../assets/icon/Map.svg";
 import Clock from "../../../assets/icon/clock.svg";
 import Calendar from "../../../assets/icon/calendar-alt.svg";
@@ -68,9 +67,8 @@ const PublishEvent = ({ formik }) => {
           <Stack direction="row" flexWrap={{ base: "wrap", lg: "nowrap" }}>
             <Box
               w={{ base: "100%", lg: "397px" }}
-              h={{ base: "320px" }}
-              flexShrink="0"
-            >
+              h={{ base: "320px", lg: "auto" }}
+              flexShrink="0">
               <Image
                 src={eventBannerImage.secure_url}
                 alt={`event-banner ${eventBannerImage.public_id}`}
@@ -109,8 +107,7 @@ const PublishEvent = ({ formik }) => {
                       fontWeight="semibold"
                       color="gray.800"
                       fontSize="md"
-                      mb={2}
-                    >
+                      mb={2}>
                       Date and time
                     </Heading>
                     <Stack direction="row" gap={2}>
@@ -125,8 +122,7 @@ const PublishEvent = ({ formik }) => {
                         p={2}
                         border="1px solid"
                         borderColor="gray.300"
-                        borderRadius="8px"
-                      >
+                        borderRadius="8px">
                         <Image
                           src={Calendar}
                           alt="location"
@@ -146,8 +142,7 @@ const PublishEvent = ({ formik }) => {
                         p={2}
                         border="1px solid"
                         borderColor="gray.300"
-                        borderRadius="8px"
-                      >
+                        borderRadius="8px">
                         <Image src={Clock} alt="location" />
                         {convertTimeFormat(eventStartTime)} -{" "}
                         {convertTimeFormat(eventEndTime)}
@@ -160,12 +155,11 @@ const PublishEvent = ({ formik }) => {
                     fontWeight="semibold"
                     color="gray.800"
                     fontSize="md"
-                    mb={2}
-                  >
+                    mb={2}>
                     Ticket sales
                   </Heading>
                   <Stack direction="row" gap={2}>
-                    <Text
+                    <Box
                       display="flex"
                       alignItems="center"
                       justifyItems="center"
@@ -176,8 +170,7 @@ const PublishEvent = ({ formik }) => {
                       p={2}
                       border="1px solid"
                       borderColor="gray.300"
-                      borderRadius="8px"
-                    >
+                      borderRadius="8px">
                       <Image
                         src={TicketPrice}
                         alt="location"
@@ -193,8 +186,8 @@ const PublishEvent = ({ formik }) => {
                           ${calculateMinAndMaxPrices(tickets).maxPrice}
                         </Text>
                       </Text>
-                    </Text>
-                    <Text
+                    </Box>
+                    <Box
                       display="flex"
                       alignItems="center"
                       justifyItems="center"
@@ -205,11 +198,10 @@ const PublishEvent = ({ formik }) => {
                       p={2}
                       border="1px solid"
                       borderColor="gray.300"
-                      borderRadius="8px"
-                    >
+                      borderRadius="8px">
                       <Image src={TicketNumber} alt="location" />
                       {totalTicketQuantities} tickets
-                    </Text>
+                    </Box>
                   </Stack>
                 </Box>
               </Stack>
@@ -234,8 +226,7 @@ const PublishEvent = ({ formik }) => {
               <FormControl
                 isInvalid={
                   formik.touched.publishLive && formik.errors.publishLive
-                }
-              >
+                }>
                 <RadioGroup
                   name="publishLive"
                   value={formik.values.publishLive}
@@ -244,14 +235,12 @@ const PublishEvent = ({ formik }) => {
                     handleInputChange("publishLive", value);
                   }}
                   onBlur={() => formik.setFieldTouched("publishLive", true)}
-                  marginTop="4"
-                >
+                  marginTop="4">
                   <HStack
                     color="gray.800"
                     fontWeight="medium"
                     flexWrap="wrap"
-                    gap="6"
-                  >
+                    gap="6">
                     <Radio value="eventLive" size="lg">
                       <Heading fontSize="md" fontWeight="medium">
                         Publish event live
