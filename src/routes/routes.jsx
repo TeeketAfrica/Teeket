@@ -17,6 +17,7 @@ import {
   TicketDashboardPage,
   EventBookingPage,
 } from "../pages";
+import EventGetTicket from "../pages/events/EventGetTicket";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
 
@@ -40,6 +41,7 @@ const privateRoutes = [
     element: OrganizationSettingsDashboardPage,
   },
   { path: "/event-booking/:id?", element: EventBookingPage },
+  { path: "/event-booking/:id?/get-ticket", element: EventGetTicket },
 ];
 
 const publicRoutesWithoutAuth = [
