@@ -152,8 +152,8 @@ const VendorPage = () => {
             industry: data.eventIndustry,
             type: data.eventType,
             tags: [],
-            start_date: `${data.eventStartDate}-${data.eventStartTime}`,
-            end_date: `${data.eventEndDate}-${data.eventEndTime}`,
+            start_date: `${data.eventStartDate}T${data.eventStartTime}`,
+            end_date: `${data.eventEndDate}T${data.eventEndTime}`,
             description: data.eventAbout,
             banner_image: data.eventBannerImage.secure_url,
             hosting_site: data.eventHosting,
@@ -183,6 +183,7 @@ const VendorPage = () => {
 
             await Promise.all(ticketPromises);
             dispatch(resetEventState());
+            sessionStorage.setItem("EVENT_PAGE", 0);
             navigate("/app/overview");
           }
         } catch (error) {
@@ -207,15 +208,13 @@ const VendorPage = () => {
       enableReinitialize={true}
       initialValues={initialValues}
       validationSchema={validationSchemas[activeStep]}
-      onSubmit={() => {}}
-    >
+      onSubmit={() => {}}>
       {(formProps) => (
         <Layout
           activeStepColor={activeStep}
           nextStep={() => handleNextStep(formProps)}
           prevStep={() => handlePrevStep(formProps)}
-          publishEvent={() => handlePublishEvent(formProps)}
-        >
+          publishEvent={() => handlePublishEvent(formProps)}>
           {renderFormStep(formProps)}
         </Layout>
       )}

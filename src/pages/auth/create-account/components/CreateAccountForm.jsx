@@ -55,7 +55,15 @@ const CreateAccountForm = () => {
         if (token) {
           sessionStorage.setItem("TOKEN", token);
           dispatch(setUserDetails(values));
-          navigate("/app/overview");
+          const path = sessionStorage.getItem("REDIRECT");
+
+          if (path) {
+            console.log(path);
+            sessionStorage.removeItem("REDIRECT");
+            navigate(path);
+          } else {
+            navigate("/app/overview");
+          }
         }
       } catch (err) {
         console.log("Error creating user", err);
@@ -83,8 +91,7 @@ const CreateAccountForm = () => {
           mt="4"
           variant="primary"
           size="lg"
-          isDisabled={formik.isSubmitting}
-        >
+          isDisabled={formik.isSubmitting}>
           Sign up
         </Button>
       </Stack>

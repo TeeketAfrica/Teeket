@@ -21,6 +21,7 @@ import {
   Thead,
   Tr,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
 import Search from "../../../../assets/icon/Search";
@@ -31,63 +32,85 @@ import SearchIconEmpty from "../../../../assets/icon/SearchIconEmpty.svg";
 import OrdersIconEmptyState from "../../../../assets/icon/OrdersIconEmptyState.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
 import MoreDetails from "../../../../assets/icon/MoreDetails.svg";
-import {
-  eventFilter,
-  ordersTableData,
-  ordersTableHead,
-} from "../../../../utils/constants";
+import { eventFilter, ordersTableHead } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
 import MoreDetailsModal from "./MoreDetailsModal";
+import { useEffect } from "react";
+import teeketApi from "../../../../api/teeketApi";
 
 const OrdersTable = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [request] = useState(true);
-  const [search, setSearch] = useState("");
+  const toast = useToast();
   const navigate = useNavigate();
 
-  const itemsPerPage = 8;
+  // STATES
+  const [statusFilter, setStatusFilter] = useState("");
+  const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
+  const [ordersTableData, setOrdersTableData] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [paginatedData, setPaginatedData] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [search, setSearch] = useState("");
 
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const [paginatedData, setPaginatedData] = useState(
-    ordersTableData.slice(startIndex, endIndex)
-  );
-  const [totalItems, setTotalItems] = useState(ordersTableData.length);
-  const [totalPages, setTotalPages] = useState(
-    Math.ceil(totalItems / itemsPerPage)
-  );
-
-  //   HANDLE PAGE CHANGE
-
-  const handlePageChange = ({ selected }) => {
-    const newStartIndex = selected * itemsPerPage;
-    const newEndIndex = newStartIndex + itemsPerPage;
-
-    setPaginatedData(ordersTableData.slice(newStartIndex, newEndIndex));
-    setCurrentPage(selected);
+  const updateNetworkStatus = () => {
+    setIsOnline(navigator.onLine);
   };
 
-  //   HANDLE SEARCH
+  useEffect(() => {
+    window.addEventListener("online", updateNetworkStatus);
+    window.addEventListener("offline", updateNetworkStatus);
 
-  const handleSearch = (e) => {
-    const searchTerm = e.target.value.toLowerCase();
+    return () => {
+      window.removeEventListener("online", updateNetworkStatus);
+      window.removeEventListener("offline", updateNetworkStatus);
+    };
+  }, []);
 
-    const filteredData = ordersTableData.filter(
-      (item) =>
-        item.eventTitle.toLowerCase().includes(searchTerm) ||
-        item.eventCategory.toLowerCase().includes(searchTerm)
-    );
+  // FETCH ORDERS
 
-    setSearch(searchTerm);
-    setCurrentPage(0);
-    setPaginatedData(filteredData.slice(0, itemsPerPage));
-    setTotalItems(filteredData.length);
-    setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+  useEffect(() => {
+    const handleFetchOrders = async () => {
+      try {
+        const response = await teeketApi.get(
+          `/orders?search=${search}&ordering=${statusFilter}`
+        );
+        const res = response.data;
+        // setData(res.data);
+        setTotalItems(res.total);
+        setOrdersTableData(res.data);
+        setPaginatedData(res.data.slice(0, itemsPerPage));
+        setTotalPages(Math.ceil(res.total / itemsPerPage));
+      } catch (error) {
+        const errorMessage =
+          error?.response?.data?.message || "An error occured";
+        toast({
+          title: "Events failed to fetch.",
+          description: `${errorMessage}`,
+          status: "error",
+          duration: 3000,
+          position: "top-right",
+          isClosable: true,
+        });
+      }
+    };
+
+    handleFetchOrders();
+  }, [toast, itemsPerPage, search, statusFilter]);
+
+  useEffect(() => {
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setPaginatedData(ordersTableData.slice(startIndex, endIndex));
+  }, [currentPage, itemsPerPage, ordersTableData]);
+
+  // HANDLE PAGE CHANGE
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
   };
 
   //   HANDLE CLEAR SEARCH
@@ -100,13 +123,24 @@ const OrdersTable = () => {
     setTotalPages(Math.ceil(ordersTableData.length / itemsPerPage));
   };
 
-  //   const handleFilterByStatus = () => {}
-
   // HANDLE MORE
 
   const handleMoreDetails = (item) => {
     setSelectedItem(item);
-    onOpen(); // Open the modal
+    onOpen();
+  };
+
+  // FILTER BY STATUS
+
+  const statusMap = {
+    "All events": "",
+    "Coming soon": "coming_soon",
+    "On going": "on_going",
+    "Past events": "past_event",
+  };
+
+  const handleFilterByStatus = (selectedStatus) => {
+    setStatusFilter(statusMap[selectedStatus]);
   };
 
   return (
@@ -126,7 +160,7 @@ const OrdersTable = () => {
           </InputLeftElement>
           <Input
             value={search}
-            onChange={handleSearch}
+            onChange={(e) => setSearch(e.target.value.toLowerCase())}
             type="text"
             placeholder="Search for all events"
           />
@@ -153,7 +187,10 @@ const OrdersTable = () => {
               <MenuItem
                 key={i}
                 justifyContent="space-between"
-                onClick={() => setSelectedFilterIndex(i)}
+                onClick={() => {
+                  setSelectedFilterIndex(i);
+                  handleFilterByStatus(filter.filter);
+                }}
               >
                 {filter.filter} {selectedFilterIndex === i && <Check />}
               </MenuItem>
@@ -185,10 +222,10 @@ const OrdersTable = () => {
               ? "No order"
               : search !== ""
               ? `${paginatedData.length} orders`
-              : `${ordersTableData.length} orders`}
+              : `${totalItems} orders`}
           </Tag>
         </HStack>
-        {request ? (
+        {isOnline ? (
           <>
             {paginatedData.length !== 0 ? (
               <TableContainer>
@@ -332,16 +369,18 @@ const OrdersTable = () => {
         {paginatedData.length !== 0 && (
           <Box px={6} pt={3}>
             <ReactPaginate
-              previousLabel={"Previous"}
+              previousLabel={"Prev"}
               nextLabel={"Next"}
               breakLabel={"..."}
               pageCount={totalPages}
               marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
+              pageRangeDisplayed={3}
               onPageChange={handlePageChange}
               containerClassName={"pagination"}
               subContainerClassName={"pages pagination"}
               activeClassName={"active"}
+              previousClassName="previous"
+              nextClassName="next"
             />
           </Box>
         )}

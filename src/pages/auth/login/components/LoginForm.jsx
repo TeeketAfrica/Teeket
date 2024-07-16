@@ -47,7 +47,15 @@ const LoginForm = () => {
         if (token) {
           sessionStorage.setItem("TOKEN", token);
           dispatch(setUserDetails(values));
-          navigate("/app/overview");
+
+          const path = sessionStorage.getItem("REDIRECT");
+
+          if (path) {
+            sessionStorage.removeItem("REDIRECT");
+            navigate(path);
+          } else {
+            navigate("/app/overview");
+          }
         }
       } catch (err) {
         if (err.message == "Network Error") {
@@ -99,8 +107,7 @@ const LoginForm = () => {
           mt="4"
           size="lg"
           variant="primary"
-          isDisabled={formik.isSubmitting}
-        >
+          isDisabled={formik.isSubmitting}>
           Login
         </Button>
       </Stack>

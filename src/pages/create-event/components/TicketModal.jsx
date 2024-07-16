@@ -128,8 +128,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
         display="flex"
         flexDirection="column"
         backgroundColor="gray.100"
-        boxShadow=" 0px 4px 6px -2px rgba(16, 40, 16, 0.03), 0px 16px 24px -4px rgba(16, 40, 16, 0.08);"
-      >
+        boxShadow=" 0px 4px 6px -2px rgba(16, 40, 16, 0.03), 0px 16px 24px -4px rgba(16, 40, 16, 0.08);">
         <Box
           display="flex"
           alignItems="center"
@@ -139,14 +138,12 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           borderBottom="1px solid"
           borderColor="gray.300"
           h="105px"
-          cursor="pointer"
-        >
+          cursor="pointer">
           <Text
             color="gray.800"
             fontWeight="bold"
             fontSize="2xl"
-            letterSpacing="-0.48px"
-          >
+            letterSpacing="-0.48px">
             Manage your ticket
           </Text>
           <Box onClick={handlerOnClose}>
@@ -161,11 +158,9 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           padding="6"
           backgroundColor="inherit"
           height="100%"
-          overflowY="auto"
-        >
+          overflowY="auto">
           <FormControl
-            isInvalid={formik.touched.ticketType && formik.errors.ticketType}
-          >
+            isInvalid={formik.touched.ticketType && formik.errors.ticketType}>
             <FormLabel fontSize="lg" fontWeight="semibold" color="black">
               Will this be a free or paid event?
             </FormLabel>
@@ -174,8 +169,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
               value={formik.values.ticketType}
               onChange={(value) => formik.setFieldValue("ticketType", value)}
               onBlur={() => formik.setFieldTouched("ticketType", true)}
-              marginTop="4"
-            >
+              marginTop="4">
               <HStack color="gray.800" fontWeight="medium" flexWrap="wrap">
                 <Radio value="free" size="lg" variant="border">
                   Free event
@@ -193,8 +187,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           <Divider h="1px" backgroundColor="gray.300" />
 
           <FormControl
-            isInvalid={formik.touched.ticketName && formik.errors.ticketName}
-          >
+            isInvalid={formik.touched.ticketName && formik.errors.ticketName}>
             <FormLabel htmlFor="ticketName">Ticket name</FormLabel>
 
             <InputGroup size="lg">
@@ -222,8 +215,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             <FormControl
               isInvalid={
                 formik.touched.ticketPrice && formik.errors.ticketPrice
-              }
-            >
+              }>
               <FormLabel htmlFor="ticketPrice">Ticket price</FormLabel>
 
               <InputGroup size="lg">
@@ -259,10 +251,9 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           <FormControl
             isInvalid={
               formik.touched.ticketQuantity && formik.errors.ticketQuantity
-            }
-          >
+            }>
             <FormLabel htmlFor="ticketQuantity">
-              How{" "}
+              How many{" "}
               <Text as="span" textTransform="lowercase">
                 {formik.values.ticketName}
               </Text>{" "}
@@ -305,8 +296,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
               variant="ghost"
               color="red.400"
               size="sm"
-              width="fit-content"
-            >
+              width="fit-content">
               Delete this ticket
             </Button>
           )}
@@ -321,8 +311,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           borderColor="gray.300"
           paddingY="3"
           paddingX="6"
-          marginTop="6"
-        >
+          marginTop="6">
           <Button variant="secondary" size="lg" onClick={handlerOnClose}>
             Discard
           </Button>
@@ -330,16 +319,14 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             <Button
               onClick={() => handleSaveTicketDetails()}
               size="lg"
-              variant="primary"
-            >
+              variant="primary">
               Save ticket
             </Button>
           ) : (
             <Button
               size="lg"
               variant="primary"
-              onClick={() => handleUpdateTicketDetails(data.id)}
-            >
+              onClick={() => handleUpdateTicketDetails(data.id)}>
               Update ticket
             </Button>
           )}

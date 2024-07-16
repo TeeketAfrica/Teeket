@@ -4,6 +4,7 @@ import SidebarMenu from "./SidebarMenu";
 
 const DashboardLayout = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box h="100vh" w="100vw" overflow="hidden">
       <Stack h="100%" w="100%" direction="row" spacing={0}>
