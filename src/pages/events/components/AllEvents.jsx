@@ -120,21 +120,25 @@ const AllEvents = ({ events, type }) => {
             )}
         </>
       ) : (
-        <Container maxW="385px" px={0}>
-          <EmptyState
-            icon={EventSpeakerEmpty}
-            title="No event found"
-            desc={
-              <Text fontSize={14} color="gray.600" textAlign="center">
-                “{searchTerm}” did not match any results. please try again
-              </Text>
-            }
-            outlineBtn="Clear search"
-            outlineOnClick={() => clearSearch()}
-            primaryBtn="Create an event"
-            primaryOnClick={() => navigate("/create-event")}
-          />
-        </Container>
+        <>
+          {searchTerm !== "" && (
+            <Container maxW="385px" px={0}>
+              <EmptyState
+                icon={EventSpeakerEmpty}
+                title="No event found"
+                desc={
+                  <Text fontSize={14} color="gray.600" textAlign="center">
+                    “{searchTerm}” did not match any results. please try again
+                  </Text>
+                }
+                outlineBtn="Clear search"
+                outlineOnClick={() => clearSearch()}
+                primaryBtn="Create an event"
+                primaryOnClick={() => navigate("/create-event")}
+              />
+            </Container>
+          )}
+        </>
       )}
     </VStack>
   );
