@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,7 +7,6 @@ import {
   HStack,
   Heading,
   Input,
-  Select,
   Menu,
   MenuButton,
   MenuItem,
@@ -19,10 +18,18 @@ import Container from "../../../components/ui/Container";
 import EventBg from "../../../assets/img/eventsBg.png";
 import DownIcon from "../../../assets/icon/DownIcon";
 import SearchWhite from "../../../assets/icon/SearchWhite";
+import { SearchContext } from "../../../context/SearchContext";
 
-const HeroSection = ({ onSearch }) => {
+const HeroSection = () => {
+  const { searchTerm, category, setSearchTerm, setCategory } =
+    useContext(SearchContext);
   const [inputValue, setInputValue] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    if (searchTerm === "") {
+      setInputValue("");
+    }
+  }, [searchTerm]);
 
   const categories = [
     "Anime",
@@ -37,12 +44,12 @@ const HeroSection = ({ onSearch }) => {
     "Celebration",
   ];
 
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
   };
 
   const handleButtonClick = () => {
-    onSearch({ params: inputValue.trim(), category: selectedCategory });
+    setSearchTerm(inputValue);
   };
 
   return (
@@ -93,6 +100,7 @@ const HeroSection = ({ onSearch }) => {
                               placeholder="Search for an event or location"
                               border="none"
                               outline="none"
+                              value={inputValue}
                               onChange={handleInputChange}
                               w="320px"
                               flexShrink="0"
@@ -115,17 +123,15 @@ const HeroSection = ({ onSearch }) => {
                                 textAlign="left"
                                 paddingLeft="10px"
                                 _hover={{ bg: "transparent" }}>
-                                {selectedCategory == null
+                                {category == null
                                   ? "Choose category"
-                                  : selectedCategory}
+                                  : category}
                               </MenuButton>
                               <MenuList>
                                 {categories.map((category) => (
                                   <MenuItem
                                     key={category}
-                                    onClick={() =>
-                                      setSelectedCategory(category)
-                                    }>
+                                    onClick={() => setCategory(category)}>
                                     {category}
                                   </MenuItem>
                                 ))}

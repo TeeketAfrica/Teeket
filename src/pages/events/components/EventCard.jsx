@@ -134,7 +134,7 @@ const EventCard = ({
                 <Text color="gray.600">{eventLocation}</Text>
               </HStack>
             </Box>
-            <HStack mt={4} justifyContent="space-between">
+            <HStack mt={4} justifyContent="space-between" gap={0}>
               <HStack
                 p={2}
                 spacing={2}
@@ -144,7 +144,7 @@ const EventCard = ({
                 borderRadius={8}>
                 <Image src={Cash} alt="event price" />
                 <Text color="gray.800" fontSize={12}>
-                  {eventPrice > 0 ? `Starts at ${eventPrice}` : "Free event"}
+                  {eventPrice > 0 ? `Starts at $${eventPrice}` : "Free event"}
                 </Text>
               </HStack>
               <HStack
