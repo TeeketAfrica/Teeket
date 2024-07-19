@@ -5,6 +5,7 @@ import {
   HStack,
   Image,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,17 +14,54 @@ import {
   changeTicketStep,
   selectPriceDetails,
 } from "../../../features/eventSlice";
+import teeketApi from "../../../api/teeketApi";
+import { useState } from "react";
 
 export const EventGetTicketSummaryBox = () => {
   const dispatch = useDispatch();
+  const toast = useToast();
 
   const { eventData, eventTicketBooking, ticketStep } = useSelector(
     (state) => state.event
   );
+
   const { subTotalPrice, transactionFee, totalPrice } =
     useSelector(selectPriceDetails);
 
-  console.log(eventTicketBooking);
+  const [isLoading, setIsLoading] = useState();
+
+  const handleBookingTickets = async () => {
+    const tickets = eventTicketBooking.map(({ id, quantity }) => ({
+      ticket_id: id,
+      quantity: quantity,
+    }));
+
+    try {
+      setIsLoading(true);
+      const response = await teeketApi.post(
+        `/events/${eventData.id}/tickets/book`,
+        {
+          ticket_orders: tickets,
+        }
+      );
+
+      if (response && response.status == 200) {
+        toast({
+          title: "Booking Successful.",
+          description: "You have successfully booked your ticket.",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+        });
+        dispatch(changeTicketStep(ticketStep + 1));
+      }
+      console.log(response);
+    } catch (error) {
+      console.log("Failed to create ticket:", error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <VStack
       bg="gray.200"
@@ -127,17 +165,29 @@ export const EventGetTicketSummaryBox = () => {
         )}
       </Box>
       {eventTicketBooking && (
-        <Button
-          onClick={() => {
-            dispatch(changeTicketStep(ticketStep + 1));
-          }}
-          bg="gray.800"
-          color="white"
-          w="100%"
-          padding={4}
-        >
-          Continue
-        </Button>
+        <>
+          <Button
+            onClick={handleBookingTickets}
+            bg="gray.800"
+            color="white"
+            w="100%"
+            padding={4}
+          >
+            {ticketStep === 2 ? "Checkout" : "Continue"}
+          </Button>
+          {ticketStep === 2 && (
+            <Button
+              onClick={() => {
+                dispatch(changeTicketStep(ticketStep - 1));
+              }}
+              isDisabled={isLoading}
+              w="100%"
+              padding={4}
+            >
+              Back
+            </Button>
+          )}
+        </>
       )}
     </VStack>
   );

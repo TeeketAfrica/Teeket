@@ -16,7 +16,6 @@ import EmptyState from "../../components/ui/EmptyState";
 import EventCautionState from "../../assets/icon/EventCautionState.svg";
 import EventSpeakerEmpty from "../../assets/icon/EventSpeakerEmptyBlue.svg";
 
-import { useDisclosure } from "@chakra-ui/react";
 import ScrollToTop from "../../utils/ScrollToTop";
 
 const EventsPage = () => {

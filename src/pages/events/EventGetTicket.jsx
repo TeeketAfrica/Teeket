@@ -5,6 +5,7 @@ import { EventGetTicketHeader } from "../create-event/components/EventGetTicketH
 import { EventGetTicketSummaryBox } from "../create-event/components/EventGetTicketSummaryBox";
 import { useSelector } from "react-redux";
 import { TicketTypeStep } from "../create-event/components/EventGetTicketSteps/TicketTypeStep";
+import { YourDetailsStep } from "../create-event/components/EventGetTicketSteps/YourDetailsStep";
 
 const EventGetTicket = () => {
   const { ticketStep } = useSelector((state) => state.event);
@@ -33,6 +34,7 @@ const EventGetTicket = () => {
             flex="2"
           >
             {ticketStep === 1 && <TicketTypeStep />}
+            {ticketStep === 2 && <YourDetailsStep />}
           </VStack>
           <Box gridColumn="span 1 / span 1" />
           <EventGetTicketSummaryBox />
