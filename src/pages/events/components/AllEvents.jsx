@@ -1,9 +1,11 @@
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
   Box,
   Button,
   Center,
+  Container,
   Grid,
   HStack,
   Text,
@@ -11,132 +13,129 @@ import {
 } from "@chakra-ui/react";
 
 import EventCard from "./EventCard";
+import useCategorizeEvents from "../../../hooks/useCategorizeEvents";
 
 import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
+import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 import BrowseEvents from "../../../assets/icon/BrowseEvents";
+import EmptyState from "../../../components/ui/EmptyState";
+import { SearchContext } from "../../../context/SearchContext";
 
-const AllEvents = ({ allEvents }) => {
-  const freeEvents = [];
-  const paidEvents = [];
+const AllEvents = ({ events, type }) => {
+  const { trendingFree, trendingPaid, notTrendingFree, notTrendingPaid } =
+    useCategorizeEvents(events);
+  const { searchTerm, clearSearch } = useContext(SearchContext);
 
-  allEvents.forEach((event) => {
-    if (Number(event.lowest_ticket_price) === 0) {
-      freeEvents.push(event);
-    } else {
-      paidEvents.push(event);
-    }
-  });
+  const renderEventSection = (title, events, link) => (
+    <Box>
+      <HStack pt={6} justifyContent="space-between" alignItems="center">
+        <Text fontSize={28} fontWeight={700}>
+          {title}
+        </Text>
+        <Button variant="outline">
+          <Link to={link}>See more</Link>
+        </Button>
+      </HStack>
+      <Grid templateColumns="repeat(4, 1fr)" gap={6} py={6}>
+        {events.map((event) => (
+          <EventCard
+            key={event.id}
+            eventId={event.id}
+            eventImage={event.banner_image}
+            eventTitle={event.title}
+            eventTag={event.status.split("_").join(" ")}
+            eventTagIcon={EventTagIcon}
+            eventOrganizer={Avatars}
+            eventCommunity={`By ${event.organizer}`}
+            eventLocation={event.hosting_site}
+            eventPrice={Number(event.lowest_ticket_price)}
+            eventDate={{
+              startDate: event.start_date,
+              endDate: event.end_date,
+            }}
+          />
+        ))}
+      </Grid>
+    </Box>
+  );
 
   return (
     <VStack>
-      {/* Trending Events */}
-      <Box>
-        <HStack pt={6} justifyContent="space-between" alignItems="center">
-          <Text fontSize={28} fontWeight={700}>
-            Trending events
-          </Text>
-          <Button variant="outline">
-            <Link to="/event-category">See more</Link>
-          </Button>
-        </HStack>
-        <Grid templateColumns="repeat(4, 1fr)" gap={6} py={6}>
-          {allEvents.map((event) => (
-            <EventCard
-              key={event.id}
-              eventId={event.id}
-              eventImage={event.banner_image}
-              eventTitle={event.title}
-              eventTag={event.status.split("_").join(" ")}
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity={`By ${event.organizer}`}
-              eventLocation={event.hosting_site}
-              eventPrice={Number(event.lowest_ticket_price)}
-              eventDate={{
-                startDate: event.start_date,
-                endDate: event.end_date,
-              }}
-            />
-          ))}
-        </Grid>
-      </Box>
-
-      {/* Free Events */}
-      {freeEvents.length > 0 && (
-        <Box>
-          <HStack pt={6} justifyContent="space-between" alignItems="center">
-            <Text fontSize={28} fontWeight={700}>
-              Free events
-            </Text>
-            <Button variant="outline">
-              <Link to="/event-category/free">See more</Link>
-            </Button>
-          </HStack>
-          <Grid templateColumns="repeat(4, 1fr)" gap={6} py={6}>
-            {freeEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                eventId={event.id}
-                eventImage={event.banner_image}
-                eventTitle={event.title}
-                eventTag={event.status.split("_").join(" ")}
-                eventTagIcon={EventTagIcon}
-                eventOrganizer={Avatars}
-                eventCommunity={`By ${event.organizer}`}
-                eventLocation={event.hosting_site}
-                eventPrice={Number(event.lowest_ticket_price)}
-                eventDate={{
-                  startDate: event.start_date,
-                  endDate: event.end_date,
-                }}
-              />
-            ))}
-          </Grid>
-        </Box>
+      {type === "free" &&
+      (trendingFree.length > 0 || notTrendingFree.length > 0) ? (
+        <>
+          {trendingFree.length > 0 &&
+            renderEventSection(
+              "Trending Free Events",
+              trendingFree,
+              "/event-category/free"
+            )}
+          {notTrendingFree.length > 0 &&
+            renderEventSection(
+              "Free Events",
+              notTrendingFree,
+              "/event-category/free"
+            )}
+        </>
+      ) : type === "paid" &&
+        (trendingPaid.length > 0 || notTrendingPaid.length > 0) ? (
+        <>
+          {trendingPaid.length > 0 &&
+            renderEventSection(
+              "Trending Paid Events",
+              trendingPaid,
+              "/event-category/paid"
+            )}
+          {notTrendingPaid.length > 0 &&
+            renderEventSection(
+              "Paid Events",
+              notTrendingPaid,
+              "/event-category/paid"
+            )}
+        </>
+      ) : type === "all" &&
+        (trendingFree.length > 0 ||
+          trendingPaid.length > 0 ||
+          notTrendingFree.length > 0 ||
+          notTrendingPaid.length > 0) ? (
+        <>
+          {(trendingFree.length > 0 || trendingPaid.length > 0) &&
+            renderEventSection(
+              "Trending Events",
+              [...trendingFree, ...trendingPaid],
+              "/event-category"
+            )}
+          {notTrendingFree.length > 0 &&
+            renderEventSection(
+              "Free Events",
+              notTrendingFree,
+              "/event-category/free"
+            )}
+          {notTrendingPaid.length > 0 &&
+            renderEventSection(
+              "Paid Events",
+              notTrendingPaid,
+              "/event-category/paid"
+            )}
+        </>
+      ) : (
+        <Container maxW="385px" px={0}>
+          <EmptyState
+            icon={EventSpeakerEmpty}
+            title="No event found"
+            desc={
+              <Text fontSize={14} color="gray.600" textAlign="center">
+                “{searchTerm}” did not match any results. please try again
+              </Text>
+            }
+            outlineBtn="Clear search"
+            outlineOnClick={() => clearSearch()}
+            primaryBtn="Create an event"
+            primaryOnClick={() => navigate("/create-event")}
+          />
+        </Container>
       )}
-
-      {/* Paid Events */}
-      {paidEvents.length > 0 && (
-        <Box>
-          <HStack pt={6} justifyContent="space-between" alignItems="center">
-            <Text fontSize={28} fontWeight={700}>
-              Paid events
-            </Text>
-            <Button variant="outline">
-              <Link to="/event-category/paid">See more</Link>
-            </Button>
-          </HStack>
-          <Grid templateColumns="repeat(4, 1fr)" gap={6} py={6}>
-            {paidEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                eventId={event.id}
-                eventImage={event.banner_image}
-                eventTitle={event.title}
-                eventTag={event.status.split("_").join(" ")}
-                eventTagIcon={EventTagIcon}
-                eventOrganizer={Avatars}
-                eventCommunity={`By ${event.organizer}`}
-                eventLocation={event.hosting_site}
-                eventPrice={Number(event.lowest_ticket_price)}
-                eventDate={{
-                  startDate: event.start_date,
-                  endDate: event.end_date,
-                }}
-              />
-            ))}
-          </Grid>
-        </Box>
-      )}
-
-      <Center w="full" py="10" borderTop="1px solid" borderColor="gray.300">
-        <Link to="/event-category">
-          <Button variant="primary" leftIcon={<BrowseEvents />}>
-            Browse all events
-          </Button>
-        </Link>
-      </Center>
     </VStack>
   );
 };

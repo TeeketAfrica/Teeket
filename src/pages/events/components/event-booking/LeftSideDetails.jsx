@@ -9,7 +9,6 @@ import CalendarIcon from "../../../../assets/icon/Calendar.svg";
 import GPSIcon from "../../../../assets/icon/Gps.svg";
 
 const LeftSideDetails = ({ event }) => {
-  console.log("Left events:", event);
   return (
     <VStack width={{ base: "100%", lg: "60%" }} gap="6" alignItems="flex-start">
       <BoxFrame paddingX="24px" paddingY="24px">
@@ -26,8 +25,7 @@ const LeftSideDetails = ({ event }) => {
             fontSize={{ base: "3xl", md: "5xl" }}
             fontWeight="bold"
             lineHeight={{ base: "30px", sm: "44px" }}
-            paddingTop="2"
-          >
+            paddingTop="2">
             {event.title}
           </Text>
         </Box>
@@ -36,8 +34,7 @@ const LeftSideDetails = ({ event }) => {
             flexDirection={{ base: "column", sm: "row" }}
             gap="2"
             justifyContent="space-between"
-            alignItems={{ base: "flex-start", sm: "center" }}
-          >
+            alignItems={{ base: "flex-start", sm: "center" }}>
             <DetailCard
               icon={CalendarIcon}
               title="Tuesday, 23rd January"
@@ -47,11 +44,13 @@ const LeftSideDetails = ({ event }) => {
               Remind me
             </Button>
           </Flex>
-          <DetailCard
-            icon={GPSIcon}
-            title="Register to see address"
-            subTitle="Abuja, Nigeria"
-          />
+          {event.hosting_site === "physical" && (
+            <DetailCard
+              icon={GPSIcon}
+              title="Register to see address"
+              subTitle={event.event_location}
+            />
+          )}
         </Flex>
       </BoxFrame>
       <BoxFrame paddingX="24px" paddingY="24px">
@@ -64,8 +63,7 @@ const LeftSideDetails = ({ event }) => {
             alignItems="flex-start"
             fontSize="sm"
             lineHeight="5"
-            color="gray.500"
-          >
+            color="gray.500">
             <Text>{event.description}</Text>
           </VStack>
         </VStack>

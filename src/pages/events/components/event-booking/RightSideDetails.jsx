@@ -60,7 +60,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
             <DetailCard
               icon={TicketIcon}
               title="Starting price"
-              subTitle="Regular - $10"
+              subTitle={`Regular - $${Number(event.lowest_ticket_price)}`}
             />
           )}
 
@@ -77,8 +77,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
                 width="40px"
                 height="40px"
                 borderRadius="100%"
-                overflow="hidden"
-              >
+                overflow="hidden">
                 <Image
                   src={UserAvatar}
                   alt="avatar icon"
@@ -110,60 +109,60 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
           </Text>
         </VStack>
       </BoxFrame>
-      <BoxFrame paddingX="8px" paddingY="8px">
-        <Box position="relative" overflow="hidden" borderRadius="8px">
-          <Box
-            width="100%"
-            maxHeight="222px"
-            height="100%"
-            overflow="hidden"
-            borderRadius="8px"
-            border="1px solid"
-            borderColor="gray.300"
-          >
-            <Image
-              src={EventMap}
-              alt="map"
-              width="100%"
-              height="100%"
-              objectFit="cover"
-            />
-          </Box>
-          <VStack
-            position="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%);"
-            gap="10px"
-            zIndex={4}
-          >
-            <Image
-              src={GPSIcon}
-              alt="location icon"
-              width="32px"
-              height="32px"
-              objectFit="cover"
-            />
-
-            <Button variant="secondary">
-              {!isRegistered ? "Register to view address" : "View address"}
-            </Button>
-          </VStack>
-          {!isRegistered && (
+      {event.hosting_site === "physical" && (
+        <BoxFrame paddingX="8px" paddingY="8px">
+          <Box position="relative" overflow="hidden" borderRadius="8px">
             <Box
-              position="absolute"
-              top="0"
-              bottom="0"
-              left="0"
-              right="0"
               width="100%"
+              maxHeight="222px"
               height="100%"
-              backgroundColor="rgba(247, 250, 247, .9)"
-              filter="blur(3px)"
-            />
-          )}
-        </Box>
-      </BoxFrame>
+              overflow="hidden"
+              borderRadius="8px"
+              border="1px solid"
+              borderColor="gray.300">
+              <Image
+                src={EventMap}
+                alt="map"
+                width="100%"
+                height="100%"
+                objectFit="cover"
+              />
+            </Box>
+            <VStack
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%);"
+              gap="10px"
+              zIndex={4}>
+              <Image
+                src={GPSIcon}
+                alt="location icon"
+                width="32px"
+                height="32px"
+                objectFit="cover"
+              />
+
+              <Button variant="secondary">
+                {!isRegistered ? "Register to view address" : "View address"}
+              </Button>
+            </VStack>
+            {!isRegistered && (
+              <Box
+                position="absolute"
+                top="0"
+                bottom="0"
+                left="0"
+                right="0"
+                width="100%"
+                height="100%"
+                backgroundColor="rgba(247, 250, 247, .9)"
+                filter="blur(3px)"
+              />
+            )}
+          </Box>
+        </BoxFrame>
+      )}
     </VStack>
   );
 };

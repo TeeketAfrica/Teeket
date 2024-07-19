@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Text, useDisclosure } from "@chakra-ui/react";
 
@@ -16,23 +16,23 @@ import EmptyState from "../../components/ui/EmptyState";
 import EventCautionState from "../../assets/icon/EventCautionState.svg";
 import EventSpeakerEmpty from "../../assets/icon/EventSpeakerEmptyBlue.svg";
 
-import { useDisclosure } from "@chakra-ui/react";
 import ScrollToTop from "../../utils/ScrollToTop";
+import { SearchContext } from "../../context/SearchContext";
 
 const EventsPage = () => {
   const navigate = useNavigate();
   const token = sessionStorage.getItem("TOKEN");
   const { onOpen, isOpen, onClose } = useDisclosure();
+  const { searchTerm, category, clearSearch } = useContext(SearchContext);
 
-  const [filteredEvents, setFilteredEvents] = useState([]);
   const [events, setEvents] = useState([]);
   const [displayEventPreference, setDisplayEventPreference] = useState(false);
-  const [serchString, setSerchString] = useState("");
   const [preloader, setPreLoader] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    fetchEvents(searchTerm, category);
+  }, [searchTerm, category]);
 
   useEffect(() => {
     if (!token && !displayEventPreference) {
@@ -41,38 +41,20 @@ const EventsPage = () => {
     }
   }, [token, displayEventPreference, onOpen]);
 
-  const fetchEvents = async () => {
+  const fetchEvents = async (title, category) => {
     try {
-      const response = await teeketApi.get("/events");
+      const response = await teeketApi.get(`/events?title=${title}`);
       const eventList = response.data.data;
 
       setEvents(eventList);
-      setFilteredEvents(eventList);
 
       setPreLoader(false);
+      setFetchError(false);
     } catch (error) {
       setPreLoader(false);
+      setFetchError(true);
       console.error("Error fetching events:", error);
     }
-  };
-
-  const handleSearch = (searchTerms) => {
-    if (searchTerms.params && searchTerms.category) {
-      setFilteredEvents(
-        filteredEvents.filter(
-          (event) =>
-            event.title
-              .toLowerCase()
-              .includes(searchTerms.params.toLowerCase()) ||
-            event.industry
-              .toLowerCase()
-              .includes(searchTerms.category.toLowerCase())
-        )
-      );
-    } else {
-      setFilteredEvents(events);
-    }
-    setSerchString(searchTerms.params);
   };
 
   return (
@@ -82,7 +64,7 @@ const EventsPage = () => {
       {displayEventPreference && (
         <EventPreference isOpen={isOpen} onClose={onClose} />
       )}
-      <HeroSection onSearch={handleSearch} />
+      <HeroSection />
       {preloader ? (
         <Text padding="40px 0" textAlign="center" fontSize="20px">
           {" "}
@@ -90,11 +72,9 @@ const EventsPage = () => {
         </Text>
       ) : (
         <>
-          {events.length > 0 && filteredEvents.length > 0 && (
-            <EventTabs eventLists={filteredEvents} />
-          )}
+          {events.length > 0 && <EventTabs allEvents={events} />}
 
-          {events.length == 0 && filteredEvents.length == 0 && (
+          {events.length == 0 && fetchError && (
             <Container maxW="385px" px={0}>
               <EmptyState
                 icon={EventCautionState}
@@ -114,18 +94,18 @@ const EventsPage = () => {
             </Container>
           )}
 
-          {events.length > 0 && filteredEvents.length == 0 && (
+          {events.length === 0 && (
             <Container maxW="385px" px={0}>
               <EmptyState
                 icon={EventSpeakerEmpty}
                 title="No event found"
                 desc={
                   <Text fontSize={14} color="gray.600" textAlign="center">
-                    {serchString} did not match any results. please try again
+                    “{searchTerm}” did not match any results. please try again
                   </Text>
                 }
                 outlineBtn="Clear search"
-                outlineOnClick={() => setFilteredEvents(events)}
+                outlineOnClick={() => clearSearch()}
                 primaryBtn="Create an event"
                 primaryOnClick={() => navigate("/create-event")}
               />

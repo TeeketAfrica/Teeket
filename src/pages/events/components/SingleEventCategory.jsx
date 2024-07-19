@@ -24,7 +24,7 @@ const SingleEventCategory = ({ allEvents }) => {
             {allEvents.map((event) => (
               <EventCard
                 key={event.id}
-                eventI={event.id}
+                eventId={event.id}
                 eventImage={event.banner_image}
                 eventTitle={event.title}
                 eventTag={event.status.split("_").join(" ")}
