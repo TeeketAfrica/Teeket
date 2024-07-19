@@ -25,8 +25,9 @@ const LeftSideDetails = ({ event }) => {
             fontSize={{ base: "3xl", md: "5xl" }}
             fontWeight="bold"
             lineHeight={{ base: "30px", sm: "44px" }}
-            paddingTop="2">
-            {event.title}
+            paddingTop="2"
+          >
+            {event?.title}
           </Text>
         </Box>
         <Flex flexDirection="column" gap="6" marginTop="6">
@@ -34,7 +35,8 @@ const LeftSideDetails = ({ event }) => {
             flexDirection={{ base: "column", sm: "row" }}
             gap="2"
             justifyContent="space-between"
-            alignItems={{ base: "flex-start", sm: "center" }}>
+            alignItems={{ base: "flex-start", sm: "center" }}
+          >
             <DetailCard
               icon={CalendarIcon}
               title="Tuesday, 23rd January"
@@ -44,7 +46,7 @@ const LeftSideDetails = ({ event }) => {
               Remind me
             </Button>
           </Flex>
-          {event.hosting_site === "physical" && (
+          {event?.hosting_site === "physical" && (
             <DetailCard
               icon={GPSIcon}
               title="Register to see address"
@@ -63,8 +65,9 @@ const LeftSideDetails = ({ event }) => {
             alignItems="flex-start"
             fontSize="sm"
             lineHeight="5"
-            color="gray.500">
-            <Text>{event.description}</Text>
+            color="gray.500"
+          >
+            <Text>{event?.description}</Text>
           </VStack>
         </VStack>
       </BoxFrame>

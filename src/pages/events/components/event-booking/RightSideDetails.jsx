@@ -60,7 +60,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
             <DetailCard
               icon={TicketIcon}
               title="Starting price"
-              subTitle={`Regular - $${Number(event.lowest_ticket_price)}`}
+              subTitle={`Regular - $${Number(event?.lowest_ticket_price)}`}
             />
           )}
 
@@ -77,7 +77,8 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
                 width="40px"
                 height="40px"
                 borderRadius="100%"
-                overflow="hidden">
+                overflow="hidden"
+              >
                 <Image
                   src={UserAvatar}
                   alt="avatar icon"
@@ -91,7 +92,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
                     Hosted by
                   </Text>
                   <Text fontSize="md" lineHeight="6" fontWeight="semibold">
-                    {event.organizer}
+                    {event?.organizer}
                   </Text>
                 </Box>
               </Box>
@@ -109,7 +110,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
           </Text>
         </VStack>
       </BoxFrame>
-      {event.hosting_site === "physical" && (
+      {event?.hosting_site === "physical" && (
         <BoxFrame paddingX="8px" paddingY="8px">
           <Box position="relative" overflow="hidden" borderRadius="8px">
             <Box
@@ -119,7 +120,8 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               overflow="hidden"
               borderRadius="8px"
               border="1px solid"
-              borderColor="gray.300">
+              borderColor="gray.300"
+            >
               <Image
                 src={EventMap}
                 alt="map"
@@ -134,7 +136,8 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               left="50%"
               transform="translate(-50%, -50%);"
               gap="10px"
-              zIndex={4}>
+              zIndex={4}
+            >
               <Image
                 src={GPSIcon}
                 alt="location icon"
