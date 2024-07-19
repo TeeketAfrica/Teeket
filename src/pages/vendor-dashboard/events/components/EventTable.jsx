@@ -98,6 +98,32 @@ const EventTable = ({ setData }) => {
     handleFetchEvents();
   }, [toast, itemsPerPage, setData, search, statusFilter]);
 
+  // COPY EVENT
+
+  const handleCopyEvent = async (eventId) => {
+    await navigator.clipboard.writeText(
+      `https://www.teeketafrica.com/event-booking/${eventId}`
+    );
+    alert("Event copied to clipboard");
+  };
+
+  // const handleViewEvent = async (eventId) => {
+  //   try {
+  //     // eslint-disable-next-line no-unused-vars
+  //     const response = await teeketApi.delete(`/events/${eventId}`);
+  //   } catch (error) {
+  //     const errorMessage = error?.response?.data?.message || "An error occured";
+  //     toast({
+  //       title: "Events failed to fetch.",
+  //       description: `${errorMessage}`,
+  //       status: "error",
+  //       duration: 3000,
+  //       position: "top-right",
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
+
   // DELETE EVENT
 
   const handleDeleteEvent = async (eventId) => {
@@ -325,10 +351,14 @@ const EventTable = ({ setData }) => {
                             />
                             <MenuList>
                               <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                <Link to="/create-event">Edit event</Link>
+                                <Link to={`/edit-event/${td.id}`}>
+                                  Edit event
+                                </Link>
                               </MenuItem>
                               <MenuItem _hover={{ bgColor: "gray.200" }}>
-                                <Link to="/create-event">View event</Link>
+                                <Link to={`/event-booking/${td.id}`}>
+                                  View event
+                                </Link>
                               </MenuItem>
                               <MenuItem _hover={{ bgColor: "gray.200" }}>
                                 <Link to="/create-event">Duplicate event</Link>
@@ -337,11 +367,14 @@ const EventTable = ({ setData }) => {
                                 Export attendees list
                               </MenuItem>
                               <Divider borderColor="grey100" my={3} />
-                              <MenuItem _hover={{ bgColor: "gray.200" }}>
+                              <MenuItem
+                                onClick={() => handleCopyEvent(td.id)}
+                                _hover={{ bgColor: "gray.200" }}
+                              >
                                 Copy link
                               </MenuItem>
                               <MenuItem
-                                onClick={handleDeleteEvent(td.id)}
+                                onClick={() => handleDeleteEvent(td.id)}
                                 _hover={{ bgColor: "gray.200" }}
                               >
                                 Delete event
