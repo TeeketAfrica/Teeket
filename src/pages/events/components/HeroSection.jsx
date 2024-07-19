@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -17,8 +18,40 @@ import Container from "../../../components/ui/Container";
 import EventBg from "../../../assets/img/eventsBg.png";
 import DownIcon from "../../../assets/icon/DownIcon";
 import SearchWhite from "../../../assets/icon/SearchWhite";
+import { SearchContext } from "../../../context/SearchContext";
 
 const HeroSection = () => {
+  const { searchTerm, category, setSearchTerm, setCategory } =
+    useContext(SearchContext);
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    if (searchTerm === "") {
+      setInputValue("");
+    }
+  }, [searchTerm]);
+
+  const categories = [
+    "Anime",
+    "Conference",
+    "Dance",
+    "Entertainment",
+    "Festival",
+    "Games",
+    "Tech",
+    "Students",
+    "Party",
+    "Celebration",
+  ];
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleButtonClick = () => {
+    setSearchTerm(inputValue);
+  };
+
   return (
     <section>
       <Box>
@@ -29,8 +62,7 @@ const HeroSection = () => {
               bgSize="cover"
               bgPosition="bottom center"
               h="425px"
-              w="100%"
-            >
+              w="100%">
               <Box h="full" maxW="692px" w="full" mx="auto">
                 <Center h="full" w="full">
                   <VStack w="full" spacing={8}>
@@ -38,15 +70,13 @@ const HeroSection = () => {
                       <Heading
                         fontSize={56}
                         fontWeight={700}
-                        textAlign="center"
-                      >
+                        textAlign="center">
                         Browse
                         <Text
                           as="span"
                           fontStyle="italic"
                           bgGradient="linear(to-r, #06CC06, #C2F2C2)"
-                          bgClip="text"
-                        >
+                          bgClip="text">
                           {" "}
                           events{" "}
                         </Text>
@@ -57,22 +87,23 @@ const HeroSection = () => {
                       <HStack
                         w="full"
                         justifyContent="center"
-                        alignItems="center"
-                      >
+                        alignItems="center">
                         <Box
                           maxW="545px"
                           w="full"
                           border="1px solid"
                           borderColor="gray.300"
                           borderRadius="12px"
-                          bgColor="gray.100"
-                        >
+                          bgColor="gray.100">
                           <HStack spacing={3} p={2}>
                             <Input
                               placeholder="Search for an event or location"
                               border="none"
                               outline="none"
-                              w={319}
+                              value={inputValue}
+                              onChange={handleInputChange}
+                              w="320px"
+                              flexShrink="0"
                               style={{ boxShadow: "none" }}
                             />
                             <Center height="34px">
@@ -81,26 +112,29 @@ const HeroSection = () => {
                                 orientation="vertical"
                               />
                             </Center>
-                            <Menu w="full">
+                            <Menu>
                               <MenuButton
                                 as={Button}
                                 rightIcon={<DownIcon />}
                                 color="gray.400"
                                 fontWeight={400}
                                 variant="link"
-                                _hover={{ bg: "transparent" }}
-                              >
-                                Choose category
+                                width="100%"
+                                textAlign="left"
+                                paddingLeft="10px"
+                                _hover={{ bg: "transparent" }}>
+                                {category == null
+                                  ? "Choose category"
+                                  : category}
                               </MenuButton>
                               <MenuList>
-                                <MenuItem>Anime</MenuItem>
-                                <MenuItem>Conference</MenuItem>
-                                <MenuItem>Dance</MenuItem>
-                                <MenuItem>Entertainment</MenuItem>
-                                <MenuItem>Festival</MenuItem>
-                                <MenuItem>Games</MenuItem>
-                                <MenuItem>Tech</MenuItem>
-                                <MenuItem>Students</MenuItem>
+                                {categories.map((category) => (
+                                  <MenuItem
+                                    key={category}
+                                    onClick={() => setCategory(category)}>
+                                    {category}
+                                  </MenuItem>
+                                ))}
                               </MenuList>
                             </Menu>
                           </HStack>
@@ -109,7 +143,7 @@ const HeroSection = () => {
                           leftIcon={<SearchWhite />}
                           variant="primary"
                           style={{ height: "56px" }}
-                        >
+                          onClick={handleButtonClick}>
                           Search
                         </Button>
                       </HStack>

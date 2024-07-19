@@ -16,9 +16,9 @@ import CuratedEvents from "./CuratedEvents";
 import WatchoutEvents from "./WatchoutEvents";
 import FreeEvents from "./FreeEvents";
 import PaidEvents from "./PaidEvents";
+import { useEffect, useState } from "react";
 
-const EventTabs = () => {
-
+const EventTabs = ({ allEvents }) => {
   return (
     <section>
       <Container>
@@ -28,8 +28,7 @@ const EventTabs = () => {
               borderTop="1px solid"
               borderBottom="1px solid"
               borderColor="gray.300"
-              justifyContent="center"
-            >
+              justifyContent="center">
               <Tab>All events</Tab>
               <Tab>Curated for you</Tab>
               <Tab>Watch out</Tab>
@@ -38,30 +37,21 @@ const EventTabs = () => {
             </TabList>
 
             <Box>
-              <HStack pt={6} justifyContent="space-between" alignItems="center">
-                <Text fontSize={28} fontWeight={700}>
-                  Trending events
-                </Text>
-                <Button variant="outline">
-                  <Link to="/event-category">See more</Link>
-                </Button>
-              </HStack>
-
               <TabPanels>
                 <TabPanel p={0}>
-                  <AllEvents />
+                  <AllEvents events={allEvents} type="all" />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <CuratedEvents />
+                  <AllEvents events={allEvents} type="all" />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <WatchoutEvents />
+                  <AllEvents events={allEvents} type="all" />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <FreeEvents />
+                  <AllEvents events={allEvents} type="free" />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <PaidEvents />
+                  <AllEvents events={allEvents} type="paid" />
                 </TabPanel>
               </TabPanels>
             </Box>

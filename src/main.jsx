@@ -9,18 +9,21 @@ import { persistor, store } from "./app/store.js";
 import { ModalProvider } from "./context/ModalContext.jsx";
 import ReusableModal from "./components/modal";
 import { PersistGate } from "redux-persist/integration/react";
+import { SearchProvider } from "./context/SearchContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ModalProvider>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ChakraProvider theme={theme}>
-            <App />
-            <ReusableModal />
-          </ChakraProvider>
-        </PersistGate>
-      </Provider>
+      <SearchProvider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <ChakraProvider theme={theme}>
+              <App />
+              <ReusableModal />
+            </ChakraProvider>
+          </PersistGate>
+        </Provider>
+      </SearchProvider>
     </ModalProvider>
   </React.StrictMode>
 );

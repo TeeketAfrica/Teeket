@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, Divider, Flex, Text, VStack } from "@chakra-ui/react";
@@ -11,11 +11,13 @@ import Footer from "../../components/layouts/Footer";
 
 import EventBookingDetail from "./components/event-booking/EventBookingDetail";
 import FreeEvents from "./components/FreeEvents";
+import { setEventData } from "../../features/eventSlice";
+import { useDispatch } from "react-redux";
 
 const EventBooking = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [event, setEvent] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!id) {
@@ -25,21 +27,20 @@ const EventBooking = () => {
     const fetchEvent = async () => {
       try {
         const response = await teeketApi.get(`/events/${id}`);
-        setEvent(response.data);
+        dispatch(setEventData(response.data));
       } catch (err) {
         console.log(`Error fetching event with id ${id} `, err.message);
       }
     };
 
     fetchEvent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [dispatch, id, navigate]);
 
   return (
     <main>
       <Header />
       <Container padding="16px">
-        <EventBookingDetail event={event} />
+        <EventBookingDetail />
         <Divider borderColor="gray.300" borderWidth="1px" />
         <VStack paddingTop="11">
           <Flex
