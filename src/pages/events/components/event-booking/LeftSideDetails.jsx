@@ -3,19 +3,23 @@ import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
 import BoxFrame from "../../../../components/layouts/BoxFrame";
 import EventBadge from "../EventBadge";
 import DetailCard from "../DetailCard";
+import { formatDateAndTime } from "../../../../utils/utils";
 
 import LightingIcon from "../../../../assets/icon/LightingIcon.svg";
 import CalendarIcon from "../../../../assets/icon/Calendar.svg";
 import GPSIcon from "../../../../assets/icon/Gps.svg";
 
 const LeftSideDetails = ({ event }) => {
+  let startDate = formatDateAndTime(event.start_date, "long");
+  let endDate = formatDateAndTime(event.end_date, "long");
+
   return (
     <VStack width={{ base: "100%", lg: "60%" }} gap="6" alignItems="flex-start">
       <BoxFrame paddingX="24px" paddingY="24px">
         <Box>
           <EventBadge
             eventBadgeInfo={{
-              badgeTitle: "Trending",
+              badgeTitle: `${event.status.split("_").join(" ")}`,
               state: "trending",
               icon: LightingIcon,
             }}
@@ -37,8 +41,8 @@ const LeftSideDetails = ({ event }) => {
             alignItems={{ base: "flex-start", sm: "center" }}>
             <DetailCard
               icon={CalendarIcon}
-              title="Tuesday, 23rd January"
-              subTitle="8:00pm - 10pm"
+              title={`${startDate.date.day}, ${startDate.date.dayNumber} ${startDate.date.month}`}
+              subTitle={`${startDate.time} - ${endDate.time}`}
             />
             <Button variant="secondary" size="sm">
               Remind me

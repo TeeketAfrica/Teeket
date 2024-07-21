@@ -68,6 +68,47 @@ const calculateMinAndMaxPrices = (tickets) => {
   );
 };
 
+const formatDateAndTime = (isoString, type) => {
+  const dateObj = new Date(isoString);
+
+  const day = dateObj.getUTCDate();
+  const month = dateObj.getUTCMonth() + 1;
+  const year = dateObj.getUTCFullYear();
+
+  const options = { weekday: type };
+  const dayOfWeek = new Intl.DateTimeFormat("en-US", options).format(dateObj);
+
+  const monthName = dateObj.toLocaleString("en-US", { month: type });
+
+  const getOrdinalSuffix = (day) => {
+    if (day === 1 || day === 21 || day === 31) return "st";
+    if (day === 2 || day === 22) return "nd";
+    if (day === 3 || day === 23) return "rd";
+    return "th";
+  };
+
+  let hours = dateObj.getUTCHours();
+  const minutes = dateObj.getUTCMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  const formattedTime = `${String(hours).padStart(2, "0")}:${String(
+    minutes
+  ).padStart(2, "0")} ${ampm}`;
+
+  const dayNumber = `${day}${getOrdinalSuffix(day)}`;
+
+  return {
+    time: formattedTime,
+    date: {
+      dayNumber: dayNumber,
+      day: dayOfWeek,
+      month: monthName,
+      year: year,
+    },
+  };
+};
+
 export {
   maskEmail,
   isValidImage,
@@ -76,4 +117,5 @@ export {
   convertTimeFormat,
   calculateMinAndMaxPrices,
   readAsBinary,
+  formatDateAndTime,
 };

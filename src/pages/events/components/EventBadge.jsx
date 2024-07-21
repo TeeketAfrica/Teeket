@@ -13,7 +13,7 @@ const EventBadge = ({ eventBadgeInfo }) => {
         border: "1px solid",
         borderRadius: state !== "defaultIcon" ? "16px" : "8px",
         borderColor: theme.colors.gray[300],
-        width: state !== "defaultIcon" ? "90px" : "40px",
+        width: state !== "defaultIcon" ? "fit-content" : "40px",
         height: state !== "defaultIcon" ? "32px" : "40px",
         padding: state !== "defaultIcon" ? "6px 8px" : "10px",
       },
@@ -40,8 +40,8 @@ const EventBadge = ({ eventBadgeInfo }) => {
             fontSize="sm"
             fontWeight="medium"
             lineHeight="5"
-            color={style.content?.color}
-          >
+            textTransform="capitalize"
+            color={style.content?.color}>
             {badgeTitle}
           </Text>
         </>

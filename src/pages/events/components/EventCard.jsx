@@ -8,48 +8,10 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { formatDateAndTime } from "../../../utils/utils";
 import EventMap from "../../../assets/icon/EventMap.svg";
 import Cash from "../../../assets/icon/Cash.svg";
 import Calendar from "../../../assets/icon/calendar-alt.svg";
-import { formatDate } from "../../../utils/formatDate";
-
-const formatDateRange = (startDateStr, endDateStr) => {
-  const startDateParts = startDateStr.split("/");
-  const endDateParts = endDateStr.split("/");
-
-  const startDate = new Date(
-    startDateParts[2],
-    startDateParts[1] - 1,
-    startDateParts[0]
-  );
-  const endDate = new Date(
-    endDateParts[2],
-    endDateParts[1] - 1,
-    endDateParts[0]
-  );
-
-  const startDay = startDate.getDate();
-  const endDay = endDate.getDate();
-  const startMonth = startDate.toLocaleString("default", { month: "short" });
-  const endMonth = endDate.toLocaleString("default", { month: "short" });
-
-  const getOrdinalSuffix = (day) => {
-    if (day === 1 || day === 21 || day === 31) return "st";
-    if (day === 2 || day === 22) return "nd";
-    if (day === 3 || day === 23) return "rd";
-    return "th";
-  };
-
-  if (startDate.getMonth() === endDate.getMonth()) {
-    return `${startDay}${getOrdinalSuffix(
-      startDay
-    )} - ${endDay}${getOrdinalSuffix(endDay)} ${startMonth}`;
-  } else {
-    return `${startDay}${getOrdinalSuffix(
-      startDay
-    )} ${startMonth} - ${endDay}${getOrdinalSuffix(endDay)} ${endMonth}`;
-  }
-};
 
 const EventCard = ({
   eventId,
@@ -65,10 +27,16 @@ const EventCard = ({
 }) => {
   const navigate = useNavigate();
   const token = sessionStorage.getItem("TOKEN");
-  const formatedEventDate = formatDateRange(
-    formatDate(eventDate.startDate),
-    formatDate(eventDate.endDate)
-  );
+  const startDate = formatDateAndTime(eventDate.startDate, "short");
+  const endDate = formatDateAndTime(eventDate.endDate, "short");
+
+  let formatedDate = "";
+
+  if (startDate.date.month === endDate.date.month) {
+    formatedDate = `${startDate.date.dayNumber} - ${endDate.date.dayNumber} ${startDate.date.month}`;
+  } else {
+    formatedDate = `${startDate.date.dayNumber} ${startDate.date.month} - ${endDate.date.dayNumber} ${endDate.date.month}`;
+  }
 
   const handleRedirect = () => {
     if (token) {
@@ -156,7 +124,7 @@ const EventCard = ({
                 borderRadius={8}>
                 <Image src={Calendar} alt="event date" />
                 <Text color="gray.800" fontSize={12}>
-                  {formatedEventDate}
+                  {formatedDate}
                 </Text>
               </HStack>
             </HStack>
