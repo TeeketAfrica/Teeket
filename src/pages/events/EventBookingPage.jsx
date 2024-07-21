@@ -10,9 +10,9 @@ import Container from "../../components/ui/Container";
 import Footer from "../../components/layouts/Footer";
 
 import EventBookingDetail from "./components/event-booking/EventBookingDetail";
-import FreeEvents from "./components/FreeEvents";
 import { setEventData } from "../../features/eventSlice";
 import { useDispatch } from "react-redux";
+// import AllEvents from "./components/AllEvents";
 
 const EventBooking = () => {
   const { id } = useParams();
@@ -47,8 +47,7 @@ const EventBooking = () => {
             flexDirection={{ base: "column", sm: "row" }}
             gap="6"
             width="100%"
-            justifyContent="space-between"
-          >
+            justifyContent="space-between">
             <Text fontSize="3xl" fontWeight="bold" lineHeight="33px">
               Similar event you can attend to
             </Text>
@@ -56,7 +55,7 @@ const EventBooking = () => {
               See more
             </Button>
           </Flex>
-          <FreeEvents />
+          {/* <AllEvents /> */}
         </VStack>
       </Container>
       <Footer />

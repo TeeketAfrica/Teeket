@@ -24,9 +24,9 @@ const EventBookingDetail = () => {
           />
         </Box>
         <Flex flexDirection={{ base: "column", lg: "row" }} gap="6">
-          <LeftSideDetails />
+          <LeftSideDetails event={event} />
 
-          <RightSideDetails isRegistered={isRegistered} />
+          <RightSideDetails event={event} isRegistered={isRegistered} />
         </Flex>
       </VStack>
     )
