@@ -20,6 +20,7 @@ import GPSIcon from "../../../../assets/icon/Gps.svg";
 import TicketIcon from "../../../../assets/icon/Ticket.svg";
 import UserAvatar from "../../../../assets/img/Avatars.png";
 import EventMap from "../../../../assets/icon/PlaceMarkMap.svg";
+import { Link } from "react-router-dom";
 
 const RightSIdeDetails = ({ event, isRegistered }) => {
   return (
@@ -63,10 +64,11 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               subTitle={`Regular - $${Number(event?.lowest_ticket_price)}`}
             />
           )}
-
-          <Button variant="primary" size="lg" width="100%">
-            {!isRegistered ? "Get Your Ticket" : "See my ticket"}
-          </Button>
+          <Link to={`/event-booking/${event?.id}/get-ticket`}>
+            <Button variant="primary" size="lg" width="100%">
+              {!isRegistered ? "Get Your Ticket" : "See my ticket"}
+            </Button>
+          </Link>
         </VStack>
       </BoxFrame>
       <BoxFrame paddingX="24px" paddingY="24px">
