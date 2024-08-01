@@ -76,6 +76,7 @@ export const TicketTypeStep = () => {
         padding={4}
         fontWeight={600}
         w="max"
+        variant="primary"
       >
         Continue
       </Button>

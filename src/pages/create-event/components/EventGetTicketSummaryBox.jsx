@@ -168,8 +168,7 @@ export const EventGetTicketSummaryBox = () => {
         <>
           <Button
             onClick={handleBookingTickets}
-            bg="gray.800"
-            color="white"
+            variant="primary"
             w="100%"
             padding={4}
           >
@@ -181,6 +180,7 @@ export const EventGetTicketSummaryBox = () => {
                 dispatch(changeTicketStep(ticketStep - 1));
               }}
               isDisabled={isLoading}
+              variant="secondary"
               w="100%"
               padding={4}
             >

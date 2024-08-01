@@ -117,7 +117,7 @@ export const YourDetailsStep = () => {
             )}
           </GridItem>
           <GridItem colSpan={5}>
-            <Button type="submit" bg="gray.800" color="gray.100" width="full">
+            <Button type="submit" bg="gray.800" width="full" variant="primary">
               Submit
             </Button>
           </GridItem>
