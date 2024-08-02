@@ -1,5 +1,5 @@
 import { Box, Button, HStack, Image, Text, VStack } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -10,6 +10,8 @@ import {
 import teeketApi from "../../../../api/teeketApi";
 import { TicketTypeBox } from "../TicketTypeBox";
 import CalendarIcon from "../../../../assets/icon/Calendar.svg";
+import { format, parseISO } from "date-fns";
+
 export const TicketTypeStep = () => {
   const {
     eventData,
@@ -17,6 +19,9 @@ export const TicketTypeStep = () => {
   } = useSelector((state) => state.event);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [date, setDate] = useState("");
+  const [timeRange, setTimeRange] = useState("");
 
   useEffect(() => {
     if (!eventData) {
@@ -42,6 +47,19 @@ export const TicketTypeStep = () => {
     fetchEvent();
   }, [dispatch, eventData, navigate]);
 
+  useEffect(() => {
+    if (eventData) {
+      const startDate = parseISO(eventData.start_date);
+      const endDate = parseISO(eventData.end_date);
+      const formattedDate = format(endDate, "EEEE, do MMMM yyyy");
+      const formattedStartTime = format(startDate, "h:mma").toLowerCase();
+      const formattedEndTime = format(endDate, "h:mma").toLowerCase();
+
+      setDate(formattedDate);
+      setTimeRange(`${formattedStartTime} - ${formattedEndTime}`);
+    }
+  }, [eventData]);
+
   return (
     <>
       <Box>
@@ -52,10 +70,10 @@ export const TicketTypeStep = () => {
           <Image src={CalendarIcon} />
           <Box>
             <Text color="gray.800" fontWeight={600} fontSize={16} maxW="700px">
-              Tuesday, 23rd January
+              {date}
             </Text>
             <Text color="gray.600" fontSize={14} maxW="700px">
-              8:00pm - 10pm
+              {timeRange}
             </Text>
           </Box>
         </HStack>

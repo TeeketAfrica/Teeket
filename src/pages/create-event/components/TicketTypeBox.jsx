@@ -9,15 +9,20 @@ import {
 } from "@chakra-ui/react";
 import { Add, Minus } from "iconsax-react";
 import TicketIcon from "../../../assets/icon/Ticket2.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeEventDataTicketsQuantity } from "../../../features/eventSlice";
+import {
+  changeEventDataTicketsQuantity,
+  setTicketQuantity,
+} from "../../../features/eventSlice";
 
 export const TicketTypeBox = ({ data }) => {
-  const [quantity, setQuantity] = useState(0);
+  // const [quantity, setQuantity] = useState(0);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const { eventTicketBooking } = useSelector((state) => state.event);
+  const { eventTicketBooking, ticketQuantity } = useSelector(
+    (state) => state.event
+  );
 
   const handleInputChange = (e) => {
     let value = parseInt(e.target.value, 10);
@@ -31,7 +36,7 @@ export const TicketTypeBox = ({ data }) => {
     }
 
     if (value < 1) value = 1;
-    setQuantity(value);
+    dispatch(setTicketQuantity(value));
 
     dispatch(
       changeEventDataTicketsQuantity({
@@ -76,8 +81,8 @@ export const TicketTypeBox = ({ data }) => {
           <HStack>
             <Button
               onClick={() => {
-                const newQuantity = Math.max(quantity - 1, 1);
-                setQuantity(newQuantity);
+                const newQuantity = Math.max(ticketQuantity - 1, 1);
+                dispatch(setTicketQuantity(newQuantity));
                 dispatch(
                   changeEventDataTicketsQuantity({
                     id: data.id,
@@ -87,8 +92,8 @@ export const TicketTypeBox = ({ data }) => {
                   })
                 );
               }}
-              isDisabled={quantity <= 1}
-              bgColor="gray.300"
+              isDisabled={ticketQuantity <= 1}
+              variant={ticketQuantity <= 1 ? "secondary" : "primary"}
               padding={2}
             >
               <Minus size="20" color="#fff" />
@@ -97,13 +102,14 @@ export const TicketTypeBox = ({ data }) => {
               type="number"
               paddingX={3}
               w={50}
-              value={quantity}
+              value={ticketQuantity}
               onChange={handleInputChange}
             />
             <Button
               onClick={() => {
-                const newQuantity = Math.min(quantity + 1, data.quantity);
-                setQuantity(newQuantity);
+                const newQuantity = Math.min(ticketQuantity + 1, data.quantity);
+
+                dispatch(setTicketQuantity(newQuantity));
                 setError("");
                 dispatch(
                   changeEventDataTicketsQuantity({
@@ -114,7 +120,8 @@ export const TicketTypeBox = ({ data }) => {
                   })
                 );
               }}
-              isDisabled={quantity >= data.quantity}
+              isDisabled={ticketQuantity >= data.quantity}
+              variant={"primary"}
               bgColor="gray.800"
               padding={2}
             >

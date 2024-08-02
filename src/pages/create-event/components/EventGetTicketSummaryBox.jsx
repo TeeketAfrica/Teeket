@@ -13,6 +13,7 @@ import ListSummary from "../../../assets/icon/ListSummary.svg";
 import {
   changeTicketStep,
   selectPriceDetails,
+  setIsBookedTicket,
 } from "../../../features/eventSlice";
 import teeketApi from "../../../api/teeketApi";
 import { useState } from "react";
@@ -52,8 +53,10 @@ export const EventGetTicketSummaryBox = () => {
           status: "success",
           duration: 4000,
           isClosable: true,
+          position: "top",
         });
         dispatch(changeTicketStep(ticketStep + 1));
+        dispatch(setIsBookedTicket(true));
       }
       console.log(response);
     } catch (error) {
@@ -82,12 +85,18 @@ export const EventGetTicketSummaryBox = () => {
         height="148px"
         bgRepeat="no-repeat"
         bgSize="contain"
+        bgPosition="center"
         w="100%"
         display="flex"
         alignItems="center"
         justifyContent="center"
       >
-        <Text fontFamily="chela one" fontSize={18} color="gray.100">
+        <Text
+          fontFamily="chela one"
+          fontSize={18}
+          color="gray.100"
+          mixBlendMode="difference"
+        >
           {eventData.title}
         </Text>
       </Box>
@@ -166,25 +175,40 @@ export const EventGetTicketSummaryBox = () => {
       </Box>
       {eventTicketBooking && (
         <>
-          <Button
-            onClick={handleBookingTickets}
-            variant="primary"
-            w="100%"
-            padding={4}
-          >
-            {ticketStep === 2 ? "Checkout" : "Continue"}
-          </Button>
-          {ticketStep === 2 && (
+          {ticketStep === 2 ? (
+            <>
+              <Button
+                // Implement logic for checkout here
+                // onClick={() => {}}
+                isDisabled={isLoading}
+                variant="primary"
+                w="100%"
+                padding={4}
+              >
+                Checkout
+              </Button>
+
+              <Button
+                onClick={() => {
+                  dispatch(changeTicketStep(ticketStep - 1));
+                }}
+                isDisabled={isLoading}
+                variant="secondary"
+                w="100%"
+                padding={4}
+              >
+                Back
+              </Button>
+            </>
+          ) : (
             <Button
-              onClick={() => {
-                dispatch(changeTicketStep(ticketStep - 1));
-              }}
+              onClick={handleBookingTickets}
               isDisabled={isLoading}
-              variant="secondary"
+              variant="primary"
               w="100%"
               padding={4}
             >
-              Back
+              Continue
             </Button>
           )}
         </>

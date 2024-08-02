@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Container from "../../components/ui/Container";
 import { Box, Image, Text, VStack } from "@chakra-ui/react";
 import WarningIcon from "../../assets/icon/Warning.svg";
@@ -8,7 +9,33 @@ import { TicketTypeStep } from "../create-event/components/EventGetTicketSteps/T
 import { YourDetailsStep } from "../create-event/components/EventGetTicketSteps/YourDetailsStep";
 
 const EventGetTicket = () => {
-  const { ticketStep } = useSelector((state) => state.event);
+  const { ticketStep, eventData } = useSelector((state) => state.event);
+
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    const intervalId = setInterval(
+      (() => {
+        const now = new Date();
+        const timeDifference = eventData?.end_date - now;
+
+        if (timeDifference > 0) {
+          const minutes = Math.floor((timeDifference / 1000 / 60) % 60);
+          const hours = Math.floor((timeDifference / 1000 / 60 / 60) % 24);
+          setTimeLeft(
+            `${hours.toString().padStart(2, "0")}:${minutes
+              .toString()
+              .padStart(2, "0")}`
+          );
+        } else {
+          setTimeLeft("00:00");
+        }
+      })(),
+      1000
+    );
+
+    return () => clearInterval(intervalId);
+  }, [eventData]);
 
   return (
     <Container padding="16px">
@@ -17,7 +44,7 @@ const EventGetTicket = () => {
         <Box w="100%" display="flex" gap={3} alignItems="center">
           <Image src={WarningIcon} />
           <Text color="gray.600" size={14}>
-            Time left: 09:58
+            Time left: {timeLeft}
           </Text>
         </Box>
         <Box
