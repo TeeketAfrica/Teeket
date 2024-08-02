@@ -12,8 +12,11 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectActiveUser } from "../../../../features/activeUserSlice";
+import { useState } from "react";
 
-const formSchema = z
+const visitorsFormSchema = z
   .object({
     firstName: z
       .string({ required_error: "First name cannot be empty" })
@@ -30,19 +33,36 @@ const formSchema = z
     message: "Emails don't match",
     path: ["confirmEmail"],
   });
+const userFormSchema = z.object({
+  firstName: z
+    .string({ required_error: "First name cannot be empty" })
+    .min(3, { message: "First name is too short" })
+    .max(50, { message: "First name is too long" }),
+  lastName: z
+    .string({ required_error: "Last name cannot be empty" })
+    .min(3, { message: "Last name is too short" })
+    .max(50, { message: "Last name is too long" }),
+  email: z.string().email({ message: "Invalid email" }).optional(),
+});
 
 export const YourDetailsStep = () => {
+  const activeUser = useSelector(selectActiveUser);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(activeUser ? userFormSchema : visitorsFormSchema),
   });
+
+  const [showEmailBox, setShowEmailBox] = useState(false);
 
   const onSubmit = (data) => {
     console.log(data);
   };
+
+  console.log(activeUser);
 
   return (
     <>
@@ -50,79 +70,163 @@ export const YourDetailsStep = () => {
         <Text color="gray.800" fontWeight={700} fontSize={36} maxW="700px">
           Your details
         </Text>
-        <HStack>
-          <Link to="/login">
-            <Text fontWeight={600} color="textSuccess">
-              Log in
+        {activeUser ? (
+          <HStack>
+            <Text fontSize={14} color="gray.600">
+              You are logged in as {activeUser.email}
+            </Text>{" "}
+            <Text
+              fontWeight={600}
+              color="textSuccess"
+              cursor="pointer"
+              onClick={() => setShowEmailBox(true)}
+            >
+              Not you?
             </Text>
-          </Link>
-          <Text fontSize={14} color="gray.600">
-            for a better experience. Save your ticket to your profile
-          </Text>
-        </HStack>
+          </HStack>
+        ) : (
+          <HStack>
+            <Link to="/login">
+              <Text fontWeight={600} color="textSuccess">
+                Log in
+              </Text>
+            </Link>
+            <Text fontSize={14} color="gray.600">
+              for a better experience. Save your ticket to your profile
+            </Text>
+          </HStack>
+        )}
       </VStack>
-
-      <Box as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
-        <Grid templateColumns="repeat(6, 1fr)" gap={6} mt={4}>
-          <GridItem colSpan={3}>
-            <Input
-              placeholder="First Name"
-              {...register("firstName")}
-              isInvalid={!!errors.firstName}
-              errorBorderColor="red.300"
-            />
-            {errors.firstName && (
-              <Text color="red.500" fontSize="sm">
-                {errors.firstName.message}
-              </Text>
+      {activeUser ? (
+        <Box as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
+          <Grid templateColumns="repeat(6, 1fr)" gap={6}>
+            {showEmailBox && (
+              <GridItem colSpan={6}>
+                <Input
+                  placeholder={activeUser.email}
+                  {...register("email")}
+                  isInvalid={!!errors.email}
+                  errorBorderColor="red.300"
+                />
+                {errors.email && (
+                  <Text color="red.500" fontSize="sm">
+                    {errors.email.message}
+                  </Text>
+                )}
+              </GridItem>
             )}
-          </GridItem>
-          <GridItem colSpan={3}>
-            <Input
-              placeholder="Last Name"
-              {...register("lastName")}
-              isInvalid={!!errors.lastName}
-              errorBorderColor="red.300"
-            />
-            {errors.lastName && (
-              <Text color="red.500" fontSize="sm">
-                {errors.lastName.message}
+            <GridItem colSpan={6}>
+              <Text color="gray.600" fontSize="sm">
+                These name below will appear on your profile. You can customize
+                it if you want so.
               </Text>
-            )}
-          </GridItem>
-          <GridItem colSpan={3}>
-            <Input
-              placeholder="Email"
-              {...register("email")}
-              isInvalid={!!errors.email}
-              errorBorderColor="red.300"
-            />
-            {errors.email && (
-              <Text color="red.500" fontSize="sm">
-                {errors.email.message}
-              </Text>
-            )}
-          </GridItem>
-          <GridItem colSpan={3}>
-            <Input
-              placeholder="Confirm Email"
-              {...register("confirmEmail")}
-              isInvalid={!!errors.confirmEmail}
-              errorBorderColor="red.300"
-            />
-            {errors.confirmEmail && (
-              <Text color="red.500" fontSize="sm">
-                {errors.confirmEmail.message}
-              </Text>
-            )}
-          </GridItem>
-          <GridItem colSpan={5}>
-            <Button type="submit" bg="gray.800" color="gray.100" width="full">
-              Submit
-            </Button>
-          </GridItem>
-        </Grid>
-      </Box>
+            </GridItem>
+            <GridItem colSpan={3}>
+              <Input
+                placeholder="First Name"
+                {...register("firstName")}
+                isInvalid={!!errors.firstName}
+                errorBorderColor="red.300"
+              />
+              {errors.firstName && (
+                <Text color="red.500" fontSize="sm">
+                  {errors.firstName.message}
+                </Text>
+              )}
+            </GridItem>
+            <GridItem colSpan={3}>
+              <Input
+                placeholder="Last Name"
+                {...register("lastName")}
+                isInvalid={!!errors.lastName}
+                errorBorderColor="red.300"
+              />
+              {errors.lastName && (
+                <Text color="red.500" fontSize="sm">
+                  {errors.lastName.message}
+                </Text>
+              )}
+            </GridItem>
+            <GridItem colSpan={5}>
+              <Button
+                type="submit"
+                bg="gray.800"
+                width="full"
+                variant="primary"
+              >
+                Submit
+              </Button>
+            </GridItem>
+          </Grid>
+        </Box>
+      ) : (
+        <Box as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
+          <Grid templateColumns="repeat(6, 1fr)" gap={6} mt={4}>
+            <GridItem colSpan={3}>
+              <Input
+                placeholder="First Name"
+                {...register("firstName")}
+                isInvalid={!!errors.firstName}
+                errorBorderColor="red.300"
+              />
+              {errors.firstName && (
+                <Text color="red.500" fontSize="sm">
+                  {errors.firstName.message}
+                </Text>
+              )}
+            </GridItem>
+            <GridItem colSpan={3}>
+              <Input
+                placeholder="Last Name"
+                {...register("lastName")}
+                isInvalid={!!errors.lastName}
+                errorBorderColor="red.300"
+              />
+              {errors.lastName && (
+                <Text color="red.500" fontSize="sm">
+                  {errors.lastName.message}
+                </Text>
+              )}
+            </GridItem>
+            <GridItem colSpan={3}>
+              <Input
+                placeholder="Email"
+                {...register("email")}
+                isInvalid={!!errors.email}
+                errorBorderColor="red.300"
+              />
+              {errors.email && (
+                <Text color="red.500" fontSize="sm">
+                  {errors.email.message}
+                </Text>
+              )}
+            </GridItem>
+            <GridItem colSpan={3}>
+              <Input
+                placeholder="Confirm Email"
+                {...register("confirmEmail")}
+                isInvalid={!!errors.confirmEmail}
+                errorBorderColor="red.300"
+              />
+              {errors.confirmEmail && (
+                <Text color="red.500" fontSize="sm">
+                  {errors.confirmEmail.message}
+                </Text>
+              )}
+            </GridItem>
+            <GridItem colSpan={5}>
+              <Button
+                type="submit"
+                bg="gray.800"
+                width="full"
+                variant="primary"
+              >
+                Submit
+              </Button>
+            </GridItem>
+          </Grid>
+        </Box>
+      )}
     </>
   );
 };

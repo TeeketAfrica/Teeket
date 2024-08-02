@@ -38,6 +38,9 @@ const initialState = {
   },
   eventTicketBooking: null,
   ticketStep: 1,
+  ticketQuantity: 0,
+  isBookedTicket: false,
+  isSetDetails: false,
 };
 
 const eventSlice = createSlice({
@@ -127,6 +130,15 @@ const eventSlice = createSlice({
     changeTicketStep: (state, action) => {
       state.ticketStep = action.payload;
     },
+    setTicketQuantity: (state, action) => {
+      state.ticketQuantity = action.payload;
+    },
+    setIsBookedTicket: (state, action) => {
+      state.isBookedTicket = action.payload;
+    },
+    setIsSetDetails: (state, action) => {
+      state.isBookedTicket = action.payload;
+    },
   },
 });
 
@@ -143,6 +155,9 @@ export const {
   setEventDataTicketsError,
   changeEventDataTicketsQuantity,
   changeTicketStep,
+  setTicketQuantity,
+  setIsBookedTicket,
+  setIsSetDetails,
 } = eventSlice.actions;
 
 const TRANSACTION_FEE_RATE = 0.01;
