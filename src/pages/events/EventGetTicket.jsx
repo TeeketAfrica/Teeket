@@ -7,6 +7,8 @@ import { EventGetTicketSummaryBox } from "../create-event/components/EventGetTic
 import { useSelector } from "react-redux";
 import { TicketTypeStep } from "../create-event/components/EventGetTicketSteps/TicketTypeStep";
 import { YourDetailsStep } from "../create-event/components/EventGetTicketSteps/YourDetailsStep";
+import Payment from "../create-event/components/EventGetTicketSteps/Payment";
+import Footer from "../../components/layouts/Footer";
 
 const EventGetTicket = () => {
   const { ticketStep, eventData } = useSelector((state) => state.event);
@@ -40,33 +42,38 @@ const EventGetTicket = () => {
   return (
     <Container padding="16px">
       <EventGetTicketHeader />
-      <VStack marginY={9} spacing={6}>
-        <Box w="100%" display="flex" gap={3} alignItems="center">
-          <Image src={WarningIcon} />
-          <Text color="gray.600" size={14}>
-            Time left: {timeLeft}
-          </Text>
-        </Box>
-        <Box
-          display="grid"
-          gridTemplateColumns="repeat(8, minmax(0, 1fr))"
-          w="100%"
-          justifyItems="between"
-          alignItems="stretch"
-        >
-          <VStack
-            gap={8}
-            gridColumn="span 4 / span 4"
-            alignItems="start"
-            flex="2"
+      {ticketStep === 3 ? (
+        <Payment />
+      ) : (
+        <VStack marginY={9} spacing={6}>
+          <Box w="100%" display="flex" gap={3} alignItems="center">
+            <Image src={WarningIcon} />
+            <Text color="gray.600" size={14}>
+              Time left: {timeLeft}
+            </Text>
+          </Box>
+          <Box
+            display="grid"
+            gridTemplateColumns="repeat(8, minmax(0, 1fr))"
+            w="100%"
+            justifyItems="between"
+            alignItems="stretch"
           >
-            {ticketStep === 1 && <TicketTypeStep />}
-            {ticketStep === 2 && <YourDetailsStep />}
-          </VStack>
-          <Box gridColumn="span 1 / span 1" />
-          <EventGetTicketSummaryBox />
-        </Box>
-      </VStack>
+            <VStack
+              gap={8}
+              gridColumn="span 4 / span 4"
+              alignItems="start"
+              flex="2"
+            >
+              {ticketStep === 1 && <TicketTypeStep />}
+              {ticketStep === 2 && <YourDetailsStep />}
+            </VStack>
+            <Box gridColumn="span 1 / span 1" />
+            <EventGetTicketSummaryBox />
+          </Box>
+        </VStack>
+      )}
+      <Footer />
     </Container>
   );
 };
