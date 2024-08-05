@@ -1,10 +1,69 @@
+/* eslint-disable no-unused-vars */
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-import { VStack, Box, Heading, Text, Button } from "@chakra-ui/react";
+import { VStack, Box, Heading, Text, Button, useToast } from "@chakra-ui/react";
 import RenderFormControl from "../renderFormControl";
+import teeketApi from "../../../../api/teeketApi";
+import { useEffect, useState } from "react";
 
 const OrganizationTab = () => {
+  const toast = useToast();
+  const [organizationFormValues, setOrganizationFormValues] = useState({
+    orgName: "",
+    orgEmail: "",
+    orgDescription: "",
+  });
+
+  // UPDATE ORGANIZATION DETAILS
+  const handleUpdateOrganization = async (values) => {
+    try {
+      const response = await teeketApi.patch("/organization", {
+        name: values.orgName,
+        email: values.orgEmail,
+        description: values.orgDescription,
+      });
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || "An error occured";
+      toast({
+        title: "Failed to update",
+        description: `${errorMessage}`,
+        status: "error",
+        duration: 3000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
+  };
+
+  // FETCH ORGANIZATION DETAILS
+  useEffect(() => {
+    const fetchOrganizationDetails = async (values) => {
+      try {
+        const response = await teeketApi.get("/organization");
+        const res = response.data;
+        setOrganizationFormValues({
+          orgName: res.name,
+          orgEmail: res.email,
+          orgDescription: res.description,
+        });
+      } catch (error) {
+        const errorMessage = error?.message || "An error occured";
+        toast({
+          title: "Failed to fetch",
+          description: `${errorMessage}`,
+          status: "error",
+          duration: 3000,
+          position: "top-right",
+          isClosable: true,
+        });
+      }
+    };
+
+    fetchOrganizationDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <VStack alignItems="stretch" maxW="624px" px="4" gap="6">
       <Box>
@@ -19,16 +78,20 @@ const OrganizationTab = () => {
 
       <Formik
         enableReinitialize={true}
-        initialValues={{
-          orgName: "",
-          orgEmail: "",
-        }}
+        initialValues={organizationFormValues}
         validationSchema={Yup.object({
           orgName: Yup.string().required("Please input organization name"),
           orgEmail: Yup.string()
             .email("Invalid email format")
             .required("Please input organization email"),
+          orgDescription: Yup.string().required(
+            "Please input organization description"
+          ),
         })}
+        onSubmit={async (values, actions) => {
+          await handleUpdateOrganization(values);
+          actions.setSubmitting(false);
+        }}
       >
         {(formik) => (
           <form onSubmit={formik.handleSubmit}>

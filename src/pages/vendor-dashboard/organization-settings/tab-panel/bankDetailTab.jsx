@@ -1,13 +1,58 @@
+/* eslint-disable no-unused-vars */
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-import { HStack, VStack, Box, Heading, Text, Button } from "@chakra-ui/react";
+import {
+  HStack,
+  VStack,
+  Box,
+  Heading,
+  Text,
+  Button,
+  useToast,
+} from "@chakra-ui/react";
 import RenderFormControl from "../renderFormControl";
 
 import { useModal } from "../../../../context/ModalContext";
+import { useEffect, useState } from "react";
+import teeketApi from "../../../../api/teeketApi";
 
 const BankDetailTab = () => {
   const { openModal } = useModal();
+  const toast = useToast();
+  const [bankFormValues, setBankFormValues] = useState({
+    acctName: "",
+    acctNumber: "",
+    bankName: "",
+  });
+
+  // FETCH BANK DETAILS
+  // useEffect(() => {
+  //   const fetchOrganizationDetails = async (values) => {
+  //     try {
+  //       const response = await teeketApi.get("/bank-account");
+  //       const res = response.data;
+  //       setBankFormValues({
+  //         acctName: res.name,
+  //         acctNumber: res.email,
+  //         bankName: res.description,
+  //       });
+  //     } catch (error) {
+  //       const errorMessage = error?.message || "An error occured";
+  //       toast({
+  //         title: "Failed to fetch",
+  //         description: `${errorMessage}`,
+  //         status: "error",
+  //         duration: 3000,
+  //         position: "top-right",
+  //         isClosable: true,
+  //       });
+  //     }
+  //   };
+
+  //   fetchOrganizationDetails();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const handleModal = (type, data) => {
     openModal(type, data);
@@ -26,16 +71,15 @@ const BankDetailTab = () => {
 
       <Formik
         enableReinitialize={true}
-        initialValues={{
-          bankName: "",
-          acctNumber: "",
-          acctName: "",
-        }}
+        initialValues={bankFormValues}
         validationSchema={Yup.object({
           bankName: Yup.string().required("Please input  bank name"),
           acctNumber: Yup.number().required("Please input account number"),
           acctName: Yup.string().required("Please input account name"),
         })}
+        onSubmit={(values) => {
+          handleModal("editBankDetail", values);
+        }}
       >
         {(formik) => (
           <form onSubmit={formik.handleSubmit}>
@@ -108,7 +152,7 @@ const BankDetailTab = () => {
                   size="lg"
                   variant="primary"
                   w="fit-content"
-                  onClick={() => handleModal("editBankDetail", {})}
+                  onClick={() => formik.handleSubmit()}
                 >
                   Request change
                 </Button>

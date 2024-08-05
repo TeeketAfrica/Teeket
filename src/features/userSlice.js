@@ -4,7 +4,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     data: {
-      name: "Zura Spark",
+      name: "",
       imageURL: "",
       email: "",
     },
