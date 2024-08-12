@@ -42,12 +42,13 @@ const EventBooking = () => {
       <Container padding="16px">
         <EventBookingDetail />
         <Divider borderColor="gray.300" borderWidth="1px" />
-        <VStack paddingTop="11">
+        <VStack py="11">
           <Flex
             flexDirection={{ base: "column", sm: "row" }}
             gap="6"
             width="100%"
-            justifyContent="space-between">
+            justifyContent="space-between"
+          >
             <Text fontSize="3xl" fontWeight="bold" lineHeight="33px">
               Similar event you can attend to
             </Text>
