@@ -11,11 +11,13 @@ import teeketApi from "../../../../api/teeketApi";
 import { TicketTypeBox } from "../TicketTypeBox";
 import CalendarIcon from "../../../../assets/icon/Calendar.svg";
 import { format, parseISO } from "date-fns";
+import { TickCircle } from "iconsax-react";
 
 export const TicketTypeStep = () => {
   const {
     eventData,
     eventDataTickets: { data: eventDataTickets, eventDataLoading },
+    ticketQuantity,
   } = useSelector((state) => state.event);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,6 +25,8 @@ export const TicketTypeStep = () => {
   const [date, setDate] = useState("");
   const [timeRange, setTimeRange] = useState("");
   const [eventTitle] = useState(eventDataTickets[0]?.event?.title);
+
+  const [isTicketError, setIsTicketError] = useState(false);
 
   useEffect(() => {
     if (!eventData) {
@@ -59,7 +63,13 @@ export const TicketTypeStep = () => {
       setDate(formattedDate);
       setTimeRange(`${formattedStartTime} - ${formattedEndTime}`);
     }
-  }, [eventData]);
+
+    if (isTicketError) {
+      if (ticketQuantity > 0) {
+        setIsTicketError(false);
+      }
+    }
+  }, [eventData, isTicketError, ticketQuantity]);
 
   return (
     <>
@@ -102,9 +112,31 @@ export const TicketTypeStep = () => {
         fontWeight={600}
         w="max"
         variant="primary"
+        onClick={() => {
+          if (ticketQuantity === 0) {
+            setIsTicketError(true);
+          }
+        }}
       >
         Continue
       </Button>
+      {isTicketError && (
+        <HStack spacing={4}>
+          <Box
+            bg="#FBEAE9"
+            padding="6px"
+            borderRadius="16px"
+            borderWidth="1px"
+            borderStyle="solid"
+            borderColor="#F2BCBA"
+          >
+            <TickCircle size="24" color="#CB1A14" variant="Bold" />
+          </Box>
+          <Text fontSize={14} color="gray.600">
+            You have to pick a ticket before checking out
+          </Text>
+        </HStack>
+      )}
     </>
   );
 };

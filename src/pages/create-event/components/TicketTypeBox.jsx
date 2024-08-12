@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { Add, Minus } from "iconsax-react";
 import TicketIcon from "../../../assets/icon/Ticket2.svg";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeEventDataTicketsQuantity,
@@ -20,7 +20,7 @@ export const TicketTypeBox = ({ data }) => {
   // const [quantity, setQuantity] = useState(0);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const { eventTicketBooking, ticketQuantity } = useSelector(
+  const { ticketQuantity } = useSelector(
     (state) => state.event
   );
 
@@ -48,7 +48,7 @@ export const TicketTypeBox = ({ data }) => {
     );
   };
 
-  console.log(eventTicketBooking);
+  console.log(ticketQuantity);
 
   return (
     <Box w="100%">

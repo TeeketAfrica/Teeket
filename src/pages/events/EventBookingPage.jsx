@@ -42,7 +42,7 @@ const EventBooking = () => {
       <Container padding="16px">
         <EventBookingDetail />
         <Divider borderColor="gray.300" borderWidth="1px" />
-        <VStack py="11">
+        <VStack paddingY="11">
           <Flex
             flexDirection={{ base: "column", sm: "row" }}
             gap="6"
