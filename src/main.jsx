@@ -10,6 +10,8 @@ import { ModalProvider } from "./context/ModalContext.jsx";
 import ReusableModal from "./components/modal";
 import { PersistGate } from "redux-persist/integration/react";
 import { SearchProvider } from "./context/SearchContext.jsx";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { clientId } from "./utils/constants.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -18,7 +20,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <ChakraProvider theme={theme}>
-              <App />
+              <GoogleOAuthProvider clientId={clientId}>
+                <App />
+              </GoogleOAuthProvider>
               <ReusableModal />
             </ChakraProvider>
           </PersistGate>

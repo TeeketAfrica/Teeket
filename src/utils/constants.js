@@ -1,6 +1,7 @@
 export const authBaseUrl = import.meta.env.VITE_REACT_AUTH_BASE_URL;
 export const mediaBaseUrl = import.meta.env.VITE_REACT_MEDIA_BASE_URL;
 export const teeketBaseUrl = import.meta.env.VITE_REACT_TEEKET_BASE_URL;
+export const clientId = import.meta.env.VITE_REACT_GOOGLE_CLIENT_ID;
 
 import Img1 from "../assets/img/Avatars-8.png";
 import Img2 from "../assets/img/Avatars-1.png";
