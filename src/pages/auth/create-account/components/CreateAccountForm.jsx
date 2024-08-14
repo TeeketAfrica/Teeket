@@ -53,16 +53,21 @@ const CreateAccountForm = () => {
         const token = response.data.access_token;
 
         if (token) {
-          sessionStorage.setItem("TOKEN", token);
-          dispatch(setUserDetails(values));
-          const path = sessionStorage.getItem("REDIRECT");
+          try {
+            const sendOTP = await authApi.post("/send_otp", {
+              email: values.email,
+              kind: "verify",
+            });
 
-          if (path) {
-            console.log(path);
-            sessionStorage.removeItem("REDIRECT");
-            navigate(path);
-          } else {
-            navigate("/app/overview");
+            if (sendOTP.status === 200) {
+              dispatch(setUserDetails(values));
+
+              navigate("/auth/send-otp", {
+                state: { value: values.email, token: token },
+              });
+            }
+          } catch (err) {
+            console.log("Error sending OTP", err);
           }
         }
       } catch (err) {

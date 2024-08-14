@@ -2,6 +2,7 @@ import HomePage from "./home";
 import LoginPage from "./auth/login";
 import CreateAccountPage from "./auth/create-account";
 import PasswordRecoveryPage from "./auth/password-recovery";
+import SendOTPPage from "./auth/send-otp";
 import PasswordResetPage from "./auth/password-reset";
 import VendorPage from "./create-event";
 import EventsDashboardPage from "./vendor-dashboard/events";
@@ -22,6 +23,7 @@ export {
   HomePage,
   LoginPage,
   CreateAccountPage,
+  SendOTPPage,
   PasswordRecoveryPage,
   PasswordResetPage,
   VendorPage,

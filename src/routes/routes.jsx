@@ -3,6 +3,7 @@ import {
   CounterDownPage,
   LoginPage,
   CreateAccountPage,
+  SendOTPPage,
   PasswordRecoveryPage,
   PasswordResetPage,
   VendorPage,
@@ -51,6 +52,7 @@ const publicRoutesWithoutAuth = [
   { path: "/auth/create-account", element: CreateAccountPage },
   { path: "/auth/password-recovery", element: PasswordRecoveryPage },
   { path: "/auth/password-reset", element: PasswordResetPage },
+  { path: "/auth/send-otp", element: SendOTPPage },
 ];
 
 const routes = [
