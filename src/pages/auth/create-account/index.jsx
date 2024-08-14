@@ -7,9 +7,11 @@ import GoogleBtn from "../../../components/auth/GoogleBtn";
 import CreateAccountForm from "./components/CreateAccountForm";
 import authApi from "../../../api/authApi";
 import { useToast } from "@chakra-ui/react";
+// import { useDispatch } from "react-redux";
 
 const CreateAccountPage = () => {
   const toast = useToast();
+  // const dispatch = useDispatch();
 
   const googleSignup = async (res) => {
     try {
@@ -17,6 +19,24 @@ const CreateAccountPage = () => {
         auth_token: res.access_token,
       });
       console.log("Signup successful:", response);
+
+      const token = response.data;
+
+      sessionStorage.setItem("TOKEN", token);
+
+      // if (token) {
+      //   sessionStorage.setItem("TOKEN", token);
+      //   dispatch(setUserDetails(values));
+      //   const path = sessionStorage.getItem("REDIRECT");
+
+      //   if (path) {
+      //     console.log(path);
+      //     sessionStorage.removeItem("REDIRECT");
+      //     navigate(path);
+      //   } else {
+      //     navigate("/app/overview");
+      //   }
+      // }
     } catch (error) {
       const errorMessage = error?.response?.data?.message || "An error occured";
       toast({
