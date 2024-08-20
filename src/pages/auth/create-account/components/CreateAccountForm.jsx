@@ -7,7 +7,7 @@ import { Button } from "@chakra-ui/react";
 
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
-import authApi from "../../../../api/authApi";
+import authApi from "../../../../utils/api";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "../../../../features/userSlice";
 
@@ -96,7 +96,8 @@ const CreateAccountForm = () => {
           mt="4"
           variant="primary"
           size="lg"
-          isDisabled={formik.isSubmitting}>
+          isDisabled={formik.isSubmitting}
+        >
           Sign up
         </Button>
       </Stack>

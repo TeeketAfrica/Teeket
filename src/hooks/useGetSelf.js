@@ -1,14 +1,18 @@
 import { useDispatch } from "react-redux";
 import { setActiveUser } from "../features/activeUserSlice";
-import teeketApi from "../api/teeketApi";
+
 import { useToast } from "@chakra-ui/react";
+import Cookies from "js-cookie";
+import { teeketApi } from "../utils/api";
+import { useStorage } from "../utils/storage";
 
 export default function useGetSelf() {
   const dispatch = useDispatch();
   const toast = useToast();
 
   async function handleGetSelf() {
-    const token = sessionStorage.getItem("TOKEN");
+    const {} = useStorage();
+    const token = Cookies.get("access_token");
 
     if (token) {
       try {

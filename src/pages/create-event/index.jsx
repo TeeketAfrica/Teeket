@@ -9,7 +9,7 @@ import FormStep1 from "./layout/FormStep1";
 import FormStep2 from "./layout/FormStep2";
 import FormStep3 from "./layout/FormStep3";
 import PublishEvent from "./layout/PublishEvent";
-import teeketApi from "../../api/teeketApi";
+import { teeketApi } from "../../utils/api";
 
 // Validation schemas for each step
 const validationSchemas = [
@@ -191,7 +191,7 @@ const VendorPage = () => {
         }
       }
     },
-    [eventBannerImage]
+    [dispatch, eventBannerImage, navigate, tickets]
   );
 
   const renderFormStep = useCallback(
@@ -208,13 +208,15 @@ const VendorPage = () => {
       enableReinitialize={true}
       initialValues={initialValues}
       validationSchema={validationSchemas[activeStep]}
-      onSubmit={() => {}}>
+      onSubmit={() => {}}
+    >
       {(formProps) => (
         <Layout
           activeStepColor={activeStep}
           nextStep={() => handleNextStep(formProps)}
           prevStep={() => handlePrevStep(formProps)}
-          publishEvent={() => handlePublishEvent(formProps)}>
+          publishEvent={() => handlePublishEvent(formProps)}
+        >
           {renderFormStep(formProps)}
         </Layout>
       )}

@@ -7,9 +7,10 @@ import {
   setEventDataTicketsError,
   setEventDataTicketsLoading,
 } from "../../../../features/eventSlice";
-import teeketApi from "../../../../api/teeketApi";
 import { TicketTypeBox } from "../TicketTypeBox";
 import CalendarIcon from "../../../../assets/icon/Calendar.svg";
+import { teeketApi } from "../../../../utils/api";
+
 export const TicketTypeStep = () => {
   const {
     eventData,

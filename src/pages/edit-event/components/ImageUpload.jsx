@@ -28,7 +28,7 @@ import Document from "../../../assets/icon/Document.svg";
 import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
 import Reload from "../../../assets/icon/Reload.svg";
 import CloudUpload from "../../../assets/icon/CloudUpload.svg";
-import mediaApi from "../../../api/mediaApi";
+import { mediaApi } from "../../../utils/api";
 
 const ImageUpload = ({ handleSetImage }) => {
   const { register } = useForm();

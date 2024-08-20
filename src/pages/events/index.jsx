@@ -1,9 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Text, useDisclosure } from "@chakra-ui/react";
-
-import teeketApi from "../../api/teeketApi";
-
 import Footer from "../../components/layouts/Footer";
 import Header from "../../components/layouts/Header";
 
@@ -18,10 +15,14 @@ import EventSpeakerEmpty from "../../assets/icon/EventSpeakerEmptyBlue.svg";
 
 import ScrollToTop from "../../utils/ScrollToTop";
 import { SearchContext } from "../../context/SearchContext";
+import { useStorage } from "../../utils/storage";
+import { teeketApi } from "../../utils/api";
 
 const EventsPage = () => {
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("TOKEN");
+  const { getAccessToken } = useStorage();
+
+  const token = getAccessToken();
   const { onOpen, isOpen, onClose } = useDisclosure();
   const { searchTerm, category, clearSearch } = useContext(SearchContext);
 
