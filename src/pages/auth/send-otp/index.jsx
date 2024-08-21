@@ -7,7 +7,7 @@ import { Box, HStack } from "@chakra-ui/layout";
 import AuthLayout from "../../../components/auth/AuthLayout";
 import AuthHeader from "../../../components/auth/AuthHeader";
 import { maskEmail } from "../../../utils/utils";
-import authApi from "../../../utils/api";
+import { authApi } from "../../../utils/api";
 import { useStorage } from "../../../utils/storage";
 
 const CreateAccountPage = () => {
@@ -75,8 +75,7 @@ const CreateAccountPage = () => {
     if (!value) {
       navigate("auth/create-account");
     } else {
-      // sessionStorage.setItem("TOKEN", token);
-      setAccessToken(token, { expires: 24 / 6 });
+      setAccessToken(token);
     }
   }, [navigate, setAccessToken, token, value]);
 

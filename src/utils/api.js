@@ -77,7 +77,7 @@ export const createApiInstance = (
           const access_token = response.data.accessToken;
 
           // Update access tokens in storage
-          setAccessToken(access_token, { expires: 24 / 6 });
+          setAccessToken(access_token);
 
           // Process the queue with the new access token
           processQueue(null, access_token);

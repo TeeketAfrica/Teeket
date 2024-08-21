@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import authApi from "../../../../utils/api";
+import { authApi } from "../../../../utils/api";
 import { setUserDetails } from "../../../../features/userSlice";
 import { Stack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
@@ -14,7 +14,10 @@ import { useStorage } from "../../../../utils/storage";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { setAccessToken, setRefreshToken } = useStorage();
+  const { setAccessToken, setRefreshToken, getAccessToken } = useStorage();
+
+  const token = getAccessToken();
+  console.log(token);
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -45,10 +48,8 @@ const LoginForm = () => {
 
         if (access_token) {
           // set the refresh token and access token to cookie storage
-          // sessionStorage.setItem("TOKEN", token);
-
-          setAccessToken(access_token, { expires: 24 / 6 });
-          setRefreshToken(refresh_token, { expires: 24 / 6 });
+          setAccessToken(access_token);
+          setRefreshToken(refresh_token);
 
           dispatch(setUserDetails(values));
 

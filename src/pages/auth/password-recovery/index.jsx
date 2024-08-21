@@ -7,7 +7,7 @@ import AuthLayout from "../../../components/auth/AuthLayout";
 import AuthHeader from "../../../components/auth/AuthHeader";
 import PasswordRecoveryForm from "./components/PasswordRecoveryForm";
 import { maskEmail } from "../../../utils/utils";
-import authApi from "../../../utils/api";
+import { authApi } from "../../../utils/api";
 
 const PasswordRecoveryPage = () => {
   const theme = useTheme();

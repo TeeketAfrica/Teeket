@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { setActiveUser } from "../features/activeUserSlice";
 
 import { useToast } from "@chakra-ui/react";
-import Cookies from "js-cookie";
 import { teeketApi } from "../utils/api";
 import { useStorage } from "../utils/storage";
 
@@ -11,8 +10,9 @@ export default function useGetSelf() {
   const toast = useToast();
 
   async function handleGetSelf() {
-    const {} = useStorage();
-    const token = Cookies.get("access_token");
+    const { getAccessToken } = useStorage();
+    const token = getAccessToken();
+    
 
     if (token) {
       try {

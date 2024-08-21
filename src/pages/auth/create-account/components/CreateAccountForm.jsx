@@ -7,7 +7,7 @@ import { Button } from "@chakra-ui/react";
 
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
-import authApi from "../../../../utils/api";
+import { authApi } from "../../../../utils/api";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "../../../../features/userSlice";
 

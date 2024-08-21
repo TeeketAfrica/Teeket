@@ -35,7 +35,7 @@ import InstagramIcon from "../../assets/icon/InstagramIcon.svg";
 import LinkedInIcon from "../../assets/icon/LinkedInIcon.svg";
 import { useState } from "react";
 import SuccessModal from "./SuccessModal";
-import authApi from "../../utils/api";
+import { authApi } from "../../utils/api";
 
 export const Index = () => {
   // const targetDate = new Date("2024-04-31T23:59:59");
