@@ -47,8 +47,10 @@ const formatDate = (inputDate) => {
   return format(inputDate, "dd MMM',' yyyy");
 };
 
-const convertTimeFormat = (timeString) =>
-  format(parse(timeString, "HH:mm", new Date()), "hh:mmaa");
+const convertTimeFormat = (timeString) => {
+  const formatString = timeString.length === 5 ? "HH:mm" : "HH:mm:ss";
+  return format(parse(timeString, formatString, new Date()), "hh:mmaa");
+};
 
 const calculateMinAndMaxPrices = (tickets) => {
   return tickets.reduce(

@@ -1,15 +1,21 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { resetEventState, selectEventDetails } from "../../features/eventSlice";
+import { useToast } from "@chakra-ui/react";
+import teeketApi from "../../api/teeketApi";
+import {
+  resetEventState,
+  selectEventDetails,
+  setEventDetails,
+  setTicket,
+} from "../../features/eventSlice";
 import Layout from "./components/Layout";
 import FormStep1 from "./layout/FormStep1";
 import FormStep2 from "./layout/FormStep2";
 import FormStep3 from "./layout/FormStep3";
 import PublishEvent from "./layout/PublishEvent";
-import teeketApi from "../../api/teeketApi";
 
 // Validation schemas for each step
 const validationSchemas = [
@@ -57,6 +63,8 @@ const VendorPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const toast = useToast();
 
   const {
     eventTitle,
@@ -72,17 +80,51 @@ const VendorPage = () => {
     eventLocation,
     eventBannerImage,
     eventEstimatedSoldTicket,
-    publishLive,
     tickets,
+    publishLive,
     totalTicketQuantities,
   } = useSelector(selectEventDetails);
 
   useEffect(() => {
-    const pageNumber = sessionStorage.getItem("EVENT_PAGE");
-    if (pageNumber !== null) {
-      setActiveStep(Number(pageNumber));
+    dispatch(resetEventState());
+
+    const handleFetchEvent = async () => {
+      try {
+        const response = await teeketApi.get(`/events/${id}`);
+
+        dispatch(setEventDetails(response.data));
+
+        const res = await teeketApi.get(`/events/${id}/tickets`);
+
+        const transformedData = res.data.data.map(
+          ({ id, name, price, quantity, is_paid }) => ({
+            id: id,
+            ticketName: name,
+            ticketPrice: price,
+            ticketQuantity: quantity,
+            ticketType: is_paid ? "paid" : "free",
+          })
+        );
+        dispatch(setTicket(transformedData));
+      } catch (error) {
+        const errorMessage =
+          error?.response?.data?.message ||
+          `Error fetching event with id ${id}`;
+        toast({
+          title: "Events failed to fetch.",
+          description: errorMessage,
+          status: "error",
+          duration: 3000,
+          position: "top-right",
+          isClosable: true,
+        });
+      }
+    };
+
+    if (id) {
+      handleFetchEvent();
     }
-  }, []);
+  }, [id, dispatch, toast]);
 
   const initialValues = useMemo(
     () => ({
@@ -98,6 +140,7 @@ const VendorPage = () => {
       eventHosting: eventHosting || "",
       eventLocation: eventLocation || "",
       eventEstimatedSoldTicket: eventEstimatedSoldTicket || "",
+      tickets: tickets || [],
       publishLive: publishLive || "",
       totalTicketQuantities: totalTicketQuantities || 0,
     }),
@@ -115,6 +158,7 @@ const VendorPage = () => {
       eventLocation,
       eventEstimatedSoldTicket,
       publishLive,
+      tickets,
       totalTicketQuantities,
     ]
   );
@@ -126,7 +170,26 @@ const VendorPage = () => {
 
       if (Object.keys(errors).length === 0) {
         setActiveStep((prevStep) => prevStep + 1);
-        sessionStorage.setItem("EVENT_PAGE", activeStep + 1);
+        if (id) {
+          try {
+            if (id && activeStep == 2) {
+              const res = await teeketApi.get(`/events/${id}`);
+
+              if (res.data.number_of_tickets) {
+                const ticketRemaining =
+                  formProps.values.totalTicketQuantities -
+                  res.data.number_of_tickets;
+
+                // update number of ticket
+                await teeketApi.patch(`/events/${id}`, {
+                  number_of_tickets_remaining: ticketRemaining,
+                });
+              }
+            }
+          } catch (error) {
+            console.log("Unable to update number of tickets:", error.message);
+          }
+        }
       }
     },
     [activeStep]
@@ -134,7 +197,6 @@ const VendorPage = () => {
 
   const handlePrevStep = useCallback(() => {
     setActiveStep((prevStep) => prevStep - 1);
-    sessionStorage.setItem("EVENT_PAGE", activeStep - 1);
   }, [activeStep]);
 
   const handlePublishEvent = useCallback(
@@ -144,54 +206,81 @@ const VendorPage = () => {
 
       if (Object.keys(errors).length === 0) {
         const data = { ...formProps.values, eventBannerImage };
+        const eventPayload = {
+          title: data.eventTitle,
+          organizer: data.eventOrganizer,
+          industry: data.eventIndustry,
+          type: data.eventType,
+          tags: [],
+          start_date: `${data.eventStartDate}T${data.eventStartTime}`,
+          end_date: `${data.eventEndDate}T${data.eventEndTime}`,
+          description: data.eventAbout,
+          banner_image:
+            "https://res.cloudinary.com/doc3jbqfc/image/upload/v1723846959/fe89e8d3-3494-46db-b97e-09bbd9eae1ed-3696.png",
+          hosting_site: data.eventHosting,
+          event_location:
+            data.eventHosting === "physical" ? data.eventLocation : null,
+          event_link:
+            data.eventHosting === "online" ? data.eventLocation : null,
+          number_of_tickets: data.totalTicketQuantities,
+        };
 
         try {
-          const res = await teeketApi.post("/events", {
-            title: data.eventTitle,
-            organizer: data.eventOrganizer,
-            industry: data.eventIndustry,
-            type: data.eventType,
-            tags: [],
-            start_date: `${data.eventStartDate}T${data.eventStartTime}`,
-            end_date: `${data.eventEndDate}T${data.eventEndTime}`,
-            description: data.eventAbout,
-            banner_image: data.eventBannerImage.secure_url,
-            hosting_site: data.eventHosting,
-            event_location:
-              data.eventHosting == "physical" ? data.eventLocation : null,
-            event_link:
-              data.eventHosting == "online" ? data.eventLocation : null,
-            number_of_tickets: data.totalTicketQuantities,
+          let eventId;
+
+          if (id) {
+            const res = await teeketApi.patch(`/events/${id}`, eventPayload);
+            eventId = res.data.id;
+          } else {
+            const res = await teeketApi.post("/events", eventPayload);
+            eventId = res.data.id;
+          }
+
+          if (!eventId) {
+            throw new Error("Event ID is missing from the response.");
+          }
+
+          const ticketPromises = data.tickets.map((ticket) => {
+            const ticketPayload = {
+              name: ticket.ticketName,
+              price: ticket.ticketPrice,
+              quantity: ticket.ticketQuantity,
+              is_paid: ticket.ticketType === "paid",
+            };
+
+            if (typeof ticket.id === "string") {
+              return teeketApi.patch(
+                `/events/${eventId}/tickets/${ticket.id}`,
+                ticketPayload
+              );
+            } else {
+              return teeketApi.post(
+                `/events/${eventId}/tickets`,
+                ticketPayload
+              );
+            }
           });
 
-          if (res.data.id) {
-            const eventId = res.data.id;
-            const createTicketURL = `/api/v1/events/${eventId}/tickets`;
+          // Wait for all ticket requests to complete
+          await Promise.all(ticketPromises);
 
-            const ticketPromises = tickets.map(async (ticket) => {
-              try {
-                await teeketApi.post(createTicketURL, {
-                  name: ticket.ticketName,
-                  price: ticket.ticketPrice,
-                  quantity: ticket.ticketQuantity,
-                  is_paid: ticket.ticketType === "paid",
-                });
-              } catch (error) {
-                console.log("Failed to create ticket:", error.message);
-              }
-            });
-
-            await Promise.all(ticketPromises);
-            dispatch(resetEventState());
-            sessionStorage.setItem("EVENT_PAGE", 0);
-            navigate("/app/overview");
+          if (formProps.values.publishLive === "eventLive") {
+            try {
+              // Publish event
+              await teeketApi.patch(`events/${eventId}/publish`);
+            } catch (error) {
+              console.log("Failed to publish event", error.message);
+            }
           }
+          // Reset state and navigate upon successful creation
+          navigate("/app/overview");
+          dispatch(resetEventState());
         } catch (error) {
-          console.log("Failed to create event", error);
+          console.log("Failed to create or update event", error);
         }
       }
     },
-    [eventBannerImage]
+    [eventBannerImage, id, navigate, dispatch]
   );
 
   const renderFormStep = useCallback(

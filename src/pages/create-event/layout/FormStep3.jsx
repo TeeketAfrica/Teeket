@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Image,
@@ -21,8 +22,6 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import {
   setEventDetail,
   selectEventDetails,
@@ -43,7 +42,7 @@ import InfoTriangleIcon from "../../../assets/icon/InfoTriangle.svg";
 const FormStep3 = ({ formik }) => {
   const dispatch = useDispatch();
 
-  const { tickets } = useSelector(selectEventDetails);
+  const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
 
   const [isTicketOpen, setIsTicketOpen] = useState({
     isModalOpen: false,
@@ -53,8 +52,7 @@ const FormStep3 = ({ formik }) => {
   const [isInputFocused, setIsInputFocused] = useState(false);
 
   const ticketQuantity =
-    formik.values.eventEstimatedSoldTicket -
-    formik.values.totalTicketQuantities;
+    formik.values.eventEstimatedSoldTicket - totalTicketQuantities;
 
   const handleInputChange = (fieldName, e) => {
     const data = { fieldName: fieldName, value: e };
@@ -65,16 +63,14 @@ const FormStep3 = ({ formik }) => {
   return (
     <FormLayout
       title="Tickets"
-      description="Set how much tickets are to be sold and create the various types of tickets to be used for this event"
-    >
+      description="Set how much tickets are to be sold and create the various types of tickets to be used for this event">
       <Stack flexDirection="column" gap="8">
         {/* Estimated Tickets */}
         <FormControl
           isInvalid={
             formik.touched.eventEstimatedSoldTicket &&
             formik.errors.eventEstimatedSoldTicket
-          }
-        >
+          }>
           <FormLabel>How many tickets on estimate should be sold?</FormLabel>
           <RadioGroup
             name="eventEstimatedSoldTicket"
@@ -86,8 +82,7 @@ const FormStep3 = ({ formik }) => {
             onBlur={() =>
               formik.setFieldTouched("eventEstimatedSoldTicket", true)
             }
-            marginTop="4"
-          >
+            marginTop="4">
             <HStack color="gray.800" fontWeight="medium" flexWrap="wrap">
               <Radio value="25" size="lg" variant="border">
                 25 Tickets
@@ -101,15 +96,15 @@ const FormStep3 = ({ formik }) => {
               <NumberInput
                 min={0}
                 value={formik.values.eventEstimatedSoldTicket}
-                onChange={(valueString, valueNumber) =>
+                onChange={(valueString, valueNumber) => {
                   formik.setFieldValue(
                     "eventEstimatedSoldTicket",
                     valueNumber || ""
-                  )
-                }
+                  );
+                  handleInputChange("eventEstimatedSoldTicket", valueNumber);
+                }}
                 onFocus={() => setIsInputFocused(true)}
-                onBlur={() => setIsInputFocused(false)}
-              >
+                onBlur={() => setIsInputFocused(false)}>
                 <NumberInputField backgroundColor="transparent" zIndex="2" />
                 <NumberInputStepper marginRight="8px" zIndex="3">
                   <NumberIncrementStepper>
@@ -127,8 +122,7 @@ const FormStep3 = ({ formik }) => {
                     left="1rem"
                     transform="translateY(-45%)"
                     color="gray.400"
-                    fontSize="sm"
-                  >
+                    fontSize="sm">
                     Custom amount
                   </Text>
                 )}
@@ -154,8 +148,7 @@ const FormStep3 = ({ formik }) => {
                   leftIcon={<Image src={PlusIcon} alt="icon" />}
                   variant="secondary"
                   size="sm"
-                  onClick={() => setIsTicketOpen({ isModalOpen: true })}
-                >
+                  onClick={() => setIsTicketOpen({ isModalOpen: true })}>
                   New ticket
                 </Button>
               </HStack>
@@ -175,8 +168,7 @@ const FormStep3 = ({ formik }) => {
               fontSize="md"
               fontWeight="600"
               color="gray.800"
-              marginTop="8"
-            >
+              marginTop="8">
               {ticketQuantity > 0 ? (
                 <Image src={CircleCheckIcon} alt="circle-check" />
               ) : (
@@ -201,8 +193,7 @@ const FormStep3 = ({ formik }) => {
                 leftIcon={<Image src={PlusLightIcon} alt="icon" />}
                 size="lg"
                 variant="primary"
-                onClick={() => setIsTicketOpen({ isModalOpen: true })}
-              >
+                onClick={() => setIsTicketOpen({ isModalOpen: true })}>
                 New Ticket
               </Button>
             ) : (

@@ -112,11 +112,11 @@ export const Index = () => {
                 alignItems="center"
                 px={5}
                 w="full">
-                <Link to="/">
+                <Link href="/">
                   <Image w="full" src={BrandLogo} alt="logo" />
                 </Link>
                 <HStack spacing={6}>
-                  <Link to="/auth/login">
+                  <Link href="/auth/create-account">
                     <Button variant="accent" size="sm">
                       Sign up
                     </Button>

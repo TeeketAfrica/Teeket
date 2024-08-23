@@ -59,6 +59,8 @@ const CreateAccountForm = () => {
               kind: "verify",
             });
 
+            console.log(sendOTP);
+
             if (sendOTP.status === 200) {
               dispatch(setUserDetails(values));
 
