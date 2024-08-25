@@ -39,6 +39,7 @@ const privateRoutes = [
   { path: "/app/events", element: EventsDashboardPage },
   { path: "/app/order", element: OrdersDashboardPage },
   { path: "/app/finance", element: FinancesDashboardPage },
+  { path: "/account-settings", element: FinancesDashboardPage },
   {
     path: "/app/organization-settings",
     element: OrganizationSettingsDashboardPage,

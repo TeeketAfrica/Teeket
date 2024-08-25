@@ -8,14 +8,29 @@ import {
   InputLeftElement,
   InputRightElement,
   Stack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
 } from "@chakra-ui/react";
+
 import Search from "../../assets/icon/Search";
+import TicketIcon from "../../assets/icon/Ticket.svg";
 import SearchIcon from "../../assets/icon/SearchIcon.svg";
+import PlusIcon from "../../assets/icon/plus-circle.svg";
+import GridIcon from "../../assets/icon/grid-2.svg";
+import SettingsIcon from "../../assets/icon/Settings.svg";
+import SignOutIcon from "../../assets/icon/sign-out-2.svg";
 import Hamburger from "../../assets/icon/Hamburger.svg";
 import BrandLogo from "../../assets/img/brandLogo.png";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserDetails } from "../../features/userSlice";
+import { MenuBoard } from "iconsax-react";
 
 const DashboardHeader = ({ onOpen }) => {
   const { data } = useSelector(selectUserDetails);
@@ -49,14 +64,59 @@ const DashboardHeader = ({ onOpen }) => {
           alignItems="center"
           spacing={[3, null, null, null, 5]}
         >
-          <Avatar
-            border="1px solid"
-            borderColor="gray.800"
-            color="gray.800"
-            name={data?.name || data?.email}
-            src={data?.imageURL}
-            bgColor="transparent"
-          />
+          <Menu>
+            <MenuButton>
+              <Avatar
+                border="1px solid"
+                borderColor="gray.800"
+                color="gray.800"
+                name={data?.name || data?.email}
+                src={data?.imageURL}
+                bgColor="transparent"
+              />
+            </MenuButton>
+            <MenuList>
+              <MenuGroup title={data?.email}>
+                <MenuItem icon={<TicketIcon />} color="gray.600" fontSize={14}>
+                  My Account
+                </MenuItem>
+              </MenuGroup>
+              <MenuDivider />
+              <MenuGroup>
+                <MenuItem icon={<PlusIcon />} color="gray.600" fontSize={14}>
+                  Create Event
+                </MenuItem>
+                <MenuItem
+                  icon={<GridIcon />}
+                  color="gray.600"
+                  fontSize={14}
+                  command="⌘N"
+                >
+                  My dashboard
+                </MenuItem>
+              </MenuGroup>
+              <MenuDivider />
+              <MenuGroup>
+                <Link to="/account-settings">
+                  <MenuItem
+                    icon={<SettingsIcon />}
+                    color="gray.600"
+                    fontSize={14}
+                  >
+                    Account settings
+                  </MenuItem>
+                </Link>
+                <MenuItem
+                  icon={<SignOutIcon color="#5E665E" />}
+                  color="gray.600"
+                  fontSize={14}
+                >
+                  Log out
+                </MenuItem>
+              </MenuGroup>
+            </MenuList>
+          </Menu>
+
           <Image
             src={Hamburger}
             alt="menu"
