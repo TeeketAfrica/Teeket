@@ -1,4 +1,3 @@
-import { Image } from "@chakra-ui/image";
 import {
   FormControl,
   FormLabel,
@@ -7,9 +6,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-
-// Importing icons
-import MailIcon from "../../../assets/icon/MailIcon";
+import MailIcon from "../../../assets/icon/MailIcon.svg";
 import CloseIcon from "../../../assets/icon/CloseIcon.svg";
 
 const EmailInput = ({ formik, label, inputName, error, handleError }) => {
@@ -22,7 +19,7 @@ const EmailInput = ({ formik, label, inputName, error, handleError }) => {
       <InputGroup size="lg">
         <InputRightElement pointerEvents="none">
           {isInvalid || error ? (
-            <Image src={CloseIcon} alt="close" />
+            <CloseIcon />
           ) : (
             <MailIcon fillColor="#5E665E" />
           )}

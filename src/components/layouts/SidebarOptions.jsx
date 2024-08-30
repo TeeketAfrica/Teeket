@@ -1,7 +1,7 @@
 import { Box, Image, Stack, Text } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 
-const SidebarOptions = ({ icon, title, link, darkIcon }) => {
+const SidebarOptions = ({ icon: Icon, title, link, darkIcon: DarkIcon }) => {
   const location = useLocation();
 
   const confirmLocation = location.pathname === link;
@@ -17,7 +17,7 @@ const SidebarOptions = ({ icon, title, link, darkIcon }) => {
     >
       <Link to={link}>
         <Stack direction="row" spacing={3}>
-          <Image src={confirmLocation ? darkIcon : icon} alt={title} />
+          {confirmLocation ? <DarkIcon /> : <Icon />}
           <Text
             fontSize="sm"
             fontWeight={confirmLocation ? "semibold" : "normal"}

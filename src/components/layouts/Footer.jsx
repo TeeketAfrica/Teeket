@@ -1,42 +1,10 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Image,
-  Link,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, HStack, Link, Stack, Text } from "@chakra-ui/react";
 import Container from "../ui/Container";
 import LogoBlack from "../../assets/icon/LogoBlack.svg";
-import FacebookIcon from "../../assets/icon/FacebookIcon.svg";
-import TwitterIcon from "../../assets/icon/TwitterIcon.svg";
-import InstagramIcon from "../../assets/icon/InstagramIcon.svg";
-import LinkedInIcon from "../../assets/icon/LinkedInIcon.svg";
+import { SOCIAL_LINKS } from "../../utils/constants";
 
 const Footer = ({ border = true }) => {
-  const socialLinks = [
-    {
-      img: FacebookIcon,
-      link: "https://facebook.com/teeketafrica",
-      alt: "facebook",
-    },
-    {
-      img: TwitterIcon,
-      link: "https://twitter.com/Teeketafrica",
-      alt: "twitter",
-    },
-    {
-      img: InstagramIcon,
-      link: "https://instagram.com/teeketafrica",
-      alt: "instagram",
-    },
-    {
-      img: LinkedInIcon,
-      link: "https://linkedin.com/company/teeketafrica",
-      alt: "linkedin",
-    },
-  ];
+
 
   return (
     <footer>
@@ -71,9 +39,9 @@ const Footer = ({ border = true }) => {
             px="32px"
           >
             <HStack spacing={6}>
-              {socialLinks.map((link, i) => (
-                <Link key={i} href={link.link} target="_blank">
-                  <Image src={link.img} alt={link.alt} />
+              {SOCIAL_LINKS.map(({ link, icon: Icon }, i) => (
+                <Link key={i} href={link} target="_blank">
+                  <Icon />
                 </Link>
               ))}
             </HStack>
@@ -81,7 +49,7 @@ const Footer = ({ border = true }) => {
               © 2024 Teeket Africa. All rights reserved.
             </Text>
             <Link href="/">
-              <Image src={LogoBlack} alt="logo" />
+              <LogoBlack />
             </Link>
           </Stack>
         </Box>

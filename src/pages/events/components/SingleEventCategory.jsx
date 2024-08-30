@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Button, Center, Container, Grid, Text } from "@chakra-ui/react";
 
 import EventCard from "./EventCard";
@@ -7,7 +6,7 @@ import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
 import EmptyState from "../../../components/ui/EmptyState";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
-import BrowseEvents from "../../../assets/icon/BrowseEvents";
+import BrowseEvents from "../../../assets/icon/BrowseEvents.svg";
 
 const SingleEventCategory = ({ allEvents }) => {
   return (
@@ -20,7 +19,8 @@ const SingleEventCategory = ({ allEvents }) => {
             borderBottom="1px solid"
             borderColor="gray.300"
             pt={6}
-            pb={9}>
+            pb={9}
+          >
             {allEvents.map((event) => (
               <EventCard
                 key={event.id}

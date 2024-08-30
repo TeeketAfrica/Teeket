@@ -24,10 +24,10 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
-import Search from "../../../../assets/icon/Search";
-import Check from "../../../../assets/icon/Check";
-import DownIcon from "../../../../assets/icon/DownIcon";
-import Filter from "../../../../assets/icon/Filter";
+import Search from "../../../../assets/icon/Search.svg";
+import Check from "../../../../assets/icon/Check.svg";
+import DownIcon from "../../../../assets/icon/DownIcon.svg";
+import Filter from "../../../../assets/icon/Filter.svg";
 import SearchIconEmpty from "../../../../assets/icon/SearchIconEmpty.svg";
 import OrdersIconEmptyState from "../../../../assets/icon/OrdersIconEmptyState.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
@@ -38,7 +38,6 @@ import { useNavigate } from "react-router-dom";
 import MoreDetailsModal from "./MoreDetailsModal";
 import { useEffect } from "react";
 import { teeketApi } from "../../../../utils/api";
-
 
 const OrdersTable = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -300,12 +299,7 @@ const OrdersTable = () => {
                             onClick={() => handleMoreDetails(td)}
                             spacing={3}
                           >
-                            <Image
-                              src={MoreDetails}
-                              alt="more details"
-                              w={5}
-                              h={5}
-                            />
+                            <MoreDetails width={5} height={5} />
                             <Text fontWeight={600} color="gray.700">
                               More details
                             </Text>

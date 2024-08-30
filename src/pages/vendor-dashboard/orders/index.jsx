@@ -1,4 +1,4 @@
-import { Button, Image, Stack } from "@chakra-ui/react";
+import { Button, Stack } from "@chakra-ui/react";
 import DashboardLayout from "../../../components/layouts/DashboardLayout";
 import DashboardPageHeaders from "../../../components/layouts/DashboardPageHeaders";
 import Export from "../../../assets/icon/Export.svg";
@@ -22,7 +22,7 @@ const OrdersDashboardPage = () => {
           subTitle="Explore Your Event Ticket Orders"
         />
         <Button variant="secondary" p={2}>
-          <Image src={Export} alt="export" mr={2} />
+          <Export />
           Export
         </Button>
       </Stack>

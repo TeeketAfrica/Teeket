@@ -1,7 +1,6 @@
 import {
   Center,
   HStack,
-  Image,
   Link,
   Modal,
   ModalBody,
@@ -11,36 +10,10 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import FacebookIcon from "../../assets/icon/FacebookIcon.svg";
-import TwitterIcon from "../../assets/icon/TwitterIcon.svg";
-import InstagramIcon from "../../assets/icon/InstagramIcon.svg";
-import LinkedInIcon from "../../assets/icon/LinkedInIcon.svg";
 import SuccessIcon from "../../assets/icon/SuccessIcon.svg";
+import { SOCIAL_LINKS } from "../../utils/constants";
 
 const SuccessModal = ({ isOpen, onClose }) => {
-  const socialLinks = [
-    {
-      img: FacebookIcon,
-      link: "https://facebook.com/teeketafrica",
-      alt: "facebook",
-    },
-    {
-      img: TwitterIcon,
-      link: "https://twitter.com/Teeketafrica",
-      alt: "twitter",
-    },
-    {
-      img: InstagramIcon,
-      link: "https://instagram.com/teeketafrica",
-      alt: "instagram",
-    },
-    {
-      img: LinkedInIcon,
-      link: "https://linkedin.com/company/teeketafrica",
-      alt: "linkedin",
-    },
-  ];
-
   return (
     <Modal
       isCentered
@@ -53,7 +26,7 @@ const SuccessModal = ({ isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody py={5}>
           <Center mb={5}>
-            <Image src={SuccessIcon} alt="success" />
+            <SuccessIcon />
           </Center>
           <Text fontWeight="600" fontSize={18} textAlign="center" mb="1rem">
             Welcome to the Teeket Family
@@ -66,9 +39,9 @@ const SuccessModal = ({ isOpen, onClose }) => {
 
         <ModalFooter justifyContent="center">
           <HStack spacing={6}>
-            {socialLinks.map((link, i) => (
-              <Link key={i} href={link.link} target="_blank">
-                <Image src={link.img} alt={link.alt} />
+            {SOCIAL_LINKS.map(({ link, icon: Icon }, i) => (
+              <Link key={i} href={link} target="_blank">
+                <Icon />
               </Link>
             ))}
           </HStack>

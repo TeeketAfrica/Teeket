@@ -1,8 +1,8 @@
-import { Flex, Image, Text, useTheme } from "@chakra-ui/react";
+import { Flex, Text, useTheme } from "@chakra-ui/react";
 
 const EventBadge = ({ eventBadgeInfo }) => {
   const theme = useTheme();
-  const { badgeTitle, state, icon } = eventBadgeInfo;
+  const { badgeTitle, state, icon: Icon } = eventBadgeInfo;
 
   const commonStyles = {
     default: {
@@ -35,18 +35,19 @@ const EventBadge = ({ eventBadgeInfo }) => {
     <Flex {...commonStyles.default.container} {...style.container}>
       {state !== "defaultIcon" ? (
         <>
-          <Image src={icon} alt={`${badgeTitle} icon`} />
+          <Icon />
           <Text
             fontSize="sm"
             fontWeight="medium"
             lineHeight="5"
             textTransform="capitalize"
-            color={style.content?.color}>
+            color={style.content?.color}
+          >
             {badgeTitle}
           </Text>
         </>
       ) : (
-        <Image src={icon} alt="icon" />
+        <Icon />
       )}
     </Flex>
   );

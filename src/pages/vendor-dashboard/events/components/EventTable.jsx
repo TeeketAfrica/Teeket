@@ -25,10 +25,10 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
-import Search from "../../../../assets/icon/Search";
-import Check from "../../../../assets/icon/Check";
-import DownIcon from "../../../../assets/icon/DownIcon";
-import Filter from "../../../../assets/icon/Filter";
+import Search from "../../../../assets/icon/Search.svg";
+import Check from "../../../../assets/icon/Check.svg";
+import DownIcon from "../../../../assets/icon/DownIcon.svg";
+import Filter from "../../../../assets/icon/Filter.svg";
 import SearchIconEmpty from "../../../../assets/icon/SearchIconEmpty.svg";
 import EventSpeakerEmpty from "../../../../assets/icon/EventSpeakerEmpty.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
@@ -340,13 +340,7 @@ const EventTable = ({ setData }) => {
                             <MenuButton
                               as={IconButton}
                               aria-label="Options"
-                              icon={
-                                <Image
-                                  cursor="pointer"
-                                  src={ActionBtn}
-                                  alt="more"
-                                />
-                              }
+                              icon={<ActionBtn />}
                               variant="outline"
                             />
                             <MenuList>

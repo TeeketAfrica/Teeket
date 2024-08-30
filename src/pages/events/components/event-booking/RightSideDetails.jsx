@@ -124,8 +124,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               border="1px solid"
               borderColor="gray.300"
             >
-              <Image
-                src={EventMap}
+              <EventMap
                 alt="map"
                 width="100%"
                 height="100%"
@@ -140,13 +139,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               gap="10px"
               zIndex={4}
             >
-              <Image
-                src={GPSIcon}
-                alt="location icon"
-                width="32px"
-                height="32px"
-                objectFit="cover"
-              />
+              <GPSIcon width="32px" height="32px" objectFit="cover" />
 
               <Button variant="secondary">
                 {!isRegistered ? "Register to view address" : "View address"}

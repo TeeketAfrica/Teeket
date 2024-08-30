@@ -3,7 +3,6 @@ import {
   Button,
   Divider,
   HStack,
-  Image,
   Text,
   useToast,
   VStack,
@@ -161,7 +160,7 @@ export const EventGetTicketSummaryBox = () => {
           </VStack>
         ) : (
           <VStack spacing={4}>
-            <Image src={ListSummary} />
+            <ListSummary />
             <VStack spacing={0}>
               <Text color="gray.800" fontWeight={600}>
                 No summary yet

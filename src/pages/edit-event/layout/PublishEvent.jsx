@@ -11,22 +11,18 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
-
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   setEventDetail,
   selectEventDetails,
 } from "../../../features/eventSlice";
-
 import {
   formatDate,
   convertTimeFormat,
   calculateMinAndMaxPrices,
 } from "../../../utils/utils.js";
-
 import FormLayout from "../components/FormLayout";
-
 import Map from "../../../assets/icon/Map.svg";
 import Clock from "../../../assets/icon/clock.svg";
 import Calendar from "../../../assets/icon/calendar-alt.svg";
@@ -68,7 +64,8 @@ const PublishEvent = ({ formik }) => {
             <Box
               w={{ base: "100%", lg: "397px" }}
               h={{ base: "320px", lg: "auto" }}
-              flexShrink="0">
+              flexShrink="0"
+            >
               <Image
                 src={eventBannerImage.secure_url}
                 alt={`event-banner ${eventBannerImage.public_id}`}
@@ -94,7 +91,7 @@ const PublishEvent = ({ formik }) => {
                 </Text>
                 {eventHosting === "physical" ? (
                   <Text display="flex" color="gray.800" gap={2} fontSize="sm">
-                    <Image src={Map} alt="location" /> {eventLocation}
+                    <Map /> {eventLocation}
                   </Text>
                 ) : (
                   <Text display="flex" color="gray.800" gap={2} fontSize="sm">
@@ -107,7 +104,8 @@ const PublishEvent = ({ formik }) => {
                       fontWeight="semibold"
                       color="gray.800"
                       fontSize="md"
-                      mb={2}>
+                      mb={2}
+                    >
                       Date and time
                     </Heading>
                     <Stack direction="row" gap={2}>
@@ -122,13 +120,9 @@ const PublishEvent = ({ formik }) => {
                         p={2}
                         border="1px solid"
                         borderColor="gray.300"
-                        borderRadius="8px">
-                        <Image
-                          src={Calendar}
-                          alt="location"
-                          w="14px"
-                          h="14px"
-                        />
+                        borderRadius="8px"
+                      >
+                        <Calendar />
                         {formatDate(eventStartDate)}
                       </Text>
                       <Text
@@ -142,8 +136,9 @@ const PublishEvent = ({ formik }) => {
                         p={2}
                         border="1px solid"
                         borderColor="gray.300"
-                        borderRadius="8px">
-                        <Image src={Clock} alt="location" />
+                        borderRadius="8px"
+                      >
+                        <Clock />
                         {convertTimeFormat(eventStartTime)} -{" "}
                         {convertTimeFormat(eventEndTime)}
                       </Text>
@@ -155,7 +150,8 @@ const PublishEvent = ({ formik }) => {
                     fontWeight="semibold"
                     color="gray.800"
                     fontSize="md"
-                    mb={2}>
+                    mb={2}
+                  >
                     Ticket sales
                   </Heading>
                   <Stack direction="row" gap={2}>
@@ -170,13 +166,9 @@ const PublishEvent = ({ formik }) => {
                       p={2}
                       border="1px solid"
                       borderColor="gray.300"
-                      borderRadius="8px">
-                      <Image
-                        src={TicketPrice}
-                        alt="location"
-                        w="14px"
-                        h="14px"
-                      />
+                      borderRadius="8px"
+                    >
+                      <TicketPrice />
                       <Text display="inline-flex" gap="2">
                         <Text as="span">
                           ${calculateMinAndMaxPrices(tickets).minPrice}
@@ -198,8 +190,9 @@ const PublishEvent = ({ formik }) => {
                       p={2}
                       border="1px solid"
                       borderColor="gray.300"
-                      borderRadius="8px">
-                      <Image src={TicketNumber} alt="location" />
+                      borderRadius="8px"
+                    >
+                      <TicketNumber />
                       {totalTicketQuantities} tickets
                     </Box>
                   </Stack>
@@ -226,7 +219,8 @@ const PublishEvent = ({ formik }) => {
               <FormControl
                 isInvalid={
                   formik.touched.publishLive && formik.errors.publishLive
-                }>
+                }
+              >
                 <RadioGroup
                   name="publishLive"
                   value={formik.values.publishLive}
@@ -235,12 +229,14 @@ const PublishEvent = ({ formik }) => {
                     handleInputChange("publishLive", value);
                   }}
                   onBlur={() => formik.setFieldTouched("publishLive", true)}
-                  marginTop="4">
+                  marginTop="4"
+                >
                   <HStack
                     color="gray.800"
                     fontWeight="medium"
                     flexWrap="wrap"
-                    gap="6">
+                    gap="6"
+                  >
                     <Radio value="eventLive" size="lg">
                       <Heading fontSize="md" fontWeight="medium">
                         Publish event live

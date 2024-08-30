@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-import { Image } from "@chakra-ui/image";
 import { Box, Divider, Text } from "@chakra-ui/layout";
 import CloseButton from "../../assets/icon/CloseButton.svg";
 import MiscIcon from "../../assets/icon/MiscIcon.svg";
@@ -35,7 +33,7 @@ const CustomNotification = ({ message, addedText }) => {
       top={8}
       left={8}
     >
-      <Image src={MiscIcon} alt="toast icon" />
+      <MiscIcon />
       <Box maxW="271px" w="100%">
         <Text
           fontSize="sm"
@@ -54,7 +52,7 @@ const CustomNotification = ({ message, addedText }) => {
           border="1px solid"
           borderColor={theme.colors.grey100}
         />
-        <Image src={CloseButton} alt="close" cursor="pointer" />
+        <CloseButton />
       </Box>
     </Box>
   );

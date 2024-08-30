@@ -1,4 +1,4 @@
-import { Box, HStack, Heading, Image } from "@chakra-ui/react";
+import { Box, HStack, Heading } from "@chakra-ui/react";
 import YellowRectangle from "../../../assets/icon/YellowRectangle.svg";
 
 const TicketsHeroSection = () => {
@@ -9,7 +9,7 @@ const TicketsHeroSection = () => {
           <Heading fontSize={56} fontWeight={700} textAlign="center">
             My tickets
           </Heading>
-          <Image src={YellowRectangle} alt="yellow" />
+          <YellowRectangle />
         </HStack>
       </Box>
     </section>

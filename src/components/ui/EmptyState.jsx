@@ -1,15 +1,7 @@
-import {
-  Box,
-  Button,
-  Center,
-  HStack,
-  Image,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Center, HStack, Text, VStack } from "@chakra-ui/react";
 
 const EmptyState = ({
-  icon,
+  icon: Icon,
   maxW,
   title,
   desc,
@@ -22,7 +14,7 @@ const EmptyState = ({
     <Box my="64px">
       <Center h="100%">
         <VStack>
-          <Image src={icon} alt="empty state" />
+          <Icon />
           <VStack pt={4} pb={6}>
             <Text fontWeight={600} color="gray.800">
               {title}

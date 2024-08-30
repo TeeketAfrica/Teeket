@@ -1,8 +1,32 @@
+import FacebookIcon from "../assets/icon/FacebookIcon.svg";
+import TwitterIcon from "../assets/icon/TwitterIcon.svg";
+import InstagramIcon from "../assets/icon/InstagramIcon.svg";
+import LinkedInIcon from "../assets/icon/LinkedInIcon.svg";
+
 export const authBaseUrl = import.meta.env.VITE_REACT_AUTH_BASE_URL;
 export const mediaBaseUrl = import.meta.env.VITE_REACT_MEDIA_BASE_URL;
 export const teeketBaseUrl = import.meta.env.VITE_REACT_TEEKET_BASE_URL;
 export const REFRESH_TOKEN_EXPIRY_SECONDS = 7 * 24 * 60 * 60; // 7 days
 export const ACCESS_TOKEN_EXPIRY_SECONDS = 24 * 60 * 60; // 1 day
+
+export const SOCIAL_LINKS = [
+  {
+    icon: FacebookIcon,
+    link: "https://facebook.com/teeketafrica",
+  },
+  {
+    icon: TwitterIcon,
+    link: "https://twitter.com/Teeketafrica",
+  },
+  {
+    icon: InstagramIcon,
+    link: "https://instagram.com/teeketafrica",
+  },
+  {
+    icon: LinkedInIcon,
+    link: "https://linkedin.com/company/teeketafrica",
+  },
+];
 
 import Img1 from "../assets/img/Avatars-8.png";
 import Img2 from "../assets/img/Avatars-1.png";

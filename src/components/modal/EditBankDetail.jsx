@@ -6,12 +6,9 @@ import {
   ModalFooter,
   Heading,
   Text,
-  Image,
   Button,
 } from "@chakra-ui/react";
-
 import { useModal } from "../../context/ModalContext";
-
 import FeatureIcon from "../../assets/icon/Feature-icon.svg";
 
 const EditBankDetail = () => {
@@ -20,7 +17,7 @@ const EditBankDetail = () => {
     <ModalContent paddingY={2}>
       <ModalHeader textAlign="center">
         <VStack gap={5}>
-          <Image src={FeatureIcon} alt="icon" />
+          <FeatureIcon />
           <Heading as="h6" fontSize="lg" fontWeight="semibold">
             Confirm sending request
           </Heading>

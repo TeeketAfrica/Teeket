@@ -1,4 +1,4 @@
-import { Button, HStack, Image, Stack } from "@chakra-ui/react";
+import { Button, HStack, Stack } from "@chakra-ui/react";
 import DashboardLayout from "../../../components/layouts/DashboardLayout";
 import DashboardPageHeaders from "../../../components/layouts/DashboardPageHeaders";
 import Export from "../../../assets/icon/Export.svg";
@@ -46,12 +46,12 @@ const EventsDashboardPage = () => {
         />
         <HStack spacing="12px">
           <Button variant="secondary" p={2} onClick={exportToExcel}>
-            <Image src={Export} alt="export" mr={2} />
+            <Export />
             Export
           </Button>
           <Link to="/create-event">
             <Button variant="primary" p={2}>
-              <Image src={AddEvent} alt="add event" mr={2} />
+              <AddEvent />
               Add event
             </Button>
           </Link>

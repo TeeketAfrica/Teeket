@@ -17,13 +17,11 @@ import {
   Link,
   Center,
 } from "@chakra-ui/react";
-
 import Footer from "../../components/layouts/Footer";
 import Header from "../../components/layouts/Header";
 import Masonry from "./components/Masonry";
 import Container from "../../components/ui/Container";
 import Card from "./components/Card";
-
 import {
   BrowseEventInfo,
   CatergoryInfo,
@@ -31,19 +29,17 @@ import {
   FAQSInfo,
   StepsInfo,
 } from "./config";
-
-import MailIcon from "../../assets/icon/MailIcon";
-import PhoneIcon from "../../assets/icon/Phone";
-import LocationIcon from "../../assets/icon/Location";
-import MinusCircle from "../../assets/icon/MinusCircle";
-import PlusCircle from "../../assets/icon/PlusCircle";
+import MailIcon from "../../assets/icon/MailIcon.svg";
+import PhoneIcon from "../../assets/icon/Phone.svg";
+import LocationIcon from "../../assets/icon/Location.svg";
+import MinusCircle from "../../assets/icon/MinusCircle.svg";
+import PlusCircle from "../../assets/icon/PlusCircle.svg";
 import Curves from "../../assets/icon/curves.svg";
 import Faq1Image from "../../assets/img/faqs_1.webp";
 import Faq2Image from "../../assets/img/faqs_2.webp";
 import Faq3Image from "../../assets/img/faqs_3.webp";
 import StepBackground from "../../assets/img/steps_bg.webp";
 import EventBg from "../../assets/img/eventsBg.png";
-
 import Masonry1 from "../../assets/img/masonry_1.webp";
 import Masonry2 from "../../assets/img/masonry_2.webp";
 import Masonry3 from "../../assets/img/masonry_3.webp";
@@ -317,7 +313,7 @@ const HomePage = () => {
             left="0"
             right="0"
           >
-            <Image src={Curves} alt="curves icon" />
+            <Curves />
           </Box>
 
           <Container padding="16px">
@@ -429,8 +425,8 @@ const HomePage = () => {
                   columnGap="9"
                   rowGap="6"
                 >
-                  {StepsInfo.map((data) => (
-                    <Card key={data.title} width="289px" height="240px">
+                  {StepsInfo.map(({ title, icon: Icon, id, content }) => (
+                    <Card key={title} width="289px" height="240px">
                       <VStack
                         justifyContent="space-between"
                         padding="16px"
@@ -448,9 +444,9 @@ const HomePage = () => {
                             lineHeight={["44px"]}
                             color="gray.600"
                           >
-                            {data.id}/
+                            {id}/
                           </Text>
-                          <Image src={data.icon} alt="icon" />
+                          <Icon />
                         </HStack>
 
                         <VStack alignItems="flex-start" mt="auto" gap="10px">
@@ -460,7 +456,7 @@ const HomePage = () => {
                             lineHeight="26px"
                             color="black"
                           >
-                            {data.title}
+                            {title}
                           </Text>
                           <Text
                             fontWeight="normal"
@@ -468,7 +464,7 @@ const HomePage = () => {
                             lineHeight="5"
                             color="gray.600"
                           >
-                            {data.content}
+                            {content}
                           </Text>
                         </VStack>
                       </VStack>

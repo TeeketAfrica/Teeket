@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import {
   Stack,
   HStack,
@@ -18,16 +17,13 @@ import {
   InputGroup,
   FormErrorMessage,
 } from "@chakra-ui/react";
-
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectEventDetails,
   setEventDetail,
 } from "../../../features/eventSlice";
-
 import FormLayout from "../components/FormLayout";
 import ImageUpload from "../components/ImageUpload";
-
 import Refresh from "../../../assets/icon/Refresh.svg";
 import Map from "../../../assets/icon/Map.svg";
 
@@ -43,7 +39,7 @@ const FormStep2 = ({ formik }) => {
       value: imageData,
     };
     dispatch(setEventDetail(data));
-  }, [imageData]);
+  }, [dispatch, imageData]);
 
   const handleInputChange = (fieldName, e) => {
     let data;
@@ -84,7 +80,7 @@ const FormStep2 = ({ formik }) => {
             </Box>
             <Button
               onClick={() => setImageData(null)}
-              leftIcon={<Image src={Refresh} alt="icon" />}
+              leftIcon={<Refresh />}
               variant="secondary"
               size="sm"
             >
@@ -203,7 +199,7 @@ const FormStep2 = ({ formik }) => {
                   </FormLabel>
                   <InputGroup size="lg">
                     <InputLeftElement pointerEvents="none">
-                      <Image src={Map} alt="icon" />
+                      <Map />
                     </InputLeftElement>
                     <Input
                       id="eventLocation"

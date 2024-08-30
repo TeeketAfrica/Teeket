@@ -1,4 +1,4 @@
-import { Box, Divider, HStack, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Divider, HStack, Heading, Text } from "@chakra-ui/react";
 import Container from "../../../components/ui/Container";
 import EventBg from "../../../assets/img/eventsBg.png";
 import YellowRectangle from "../../../assets/icon/YellowRectangle.svg";
@@ -12,7 +12,8 @@ const EventCategoryHeroSection = ({ eventType }) => {
           bgSize="cover"
           bgPosition="bottom right"
           h="425px"
-          mr="-100px">
+          mr="-100px"
+        >
           <Container>
             <HStack h="425px" w="full" spacing={8} alignItems="center">
               <Heading fontSize={56} fontWeight={700} textAlign="center">
@@ -21,7 +22,7 @@ const EventCategoryHeroSection = ({ eventType }) => {
                 </Text>{" "}
                 events
               </Heading>
-              <Image src={YellowRectangle} alt="yellow" />
+              <YellowRectangle />
             </HStack>
             <Divider />
           </Container>

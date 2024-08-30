@@ -118,12 +118,7 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                 </Text>
                 <Text>{maskEmail(data?.email)}</Text>
               </Box>
-              <Image
-                src={SignOut}
-                alt="Signout"
-                cursor="pointer"
-                onClick={signOut}
-              />
+              <SignOut onClick={signOut} />
             </HStack>
           </VStack>
         </VStack>
@@ -206,12 +201,7 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                     </Text>
                     <Text>{maskEmail(data?.email)}</Text>
                   </Box>
-                  <Image
-                    src={SignOut}
-                    alt="Signout"
-                    cursor="pointer"
-                    onClick={signOut}
-                  />
+                  <SignOut onClick={signOut} />
                 </HStack>
               </VStack>
             </VStack>

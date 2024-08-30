@@ -3,16 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Container, Text, useDisclosure } from "@chakra-ui/react";
 import Footer from "../../components/layouts/Footer";
 import Header from "../../components/layouts/Header";
-
 import EventPreference from "./components/EventPreference";
 import EventTabs from "./components/EventTabs";
 import HeroSection from "./components/HeroSection";
-
 import EmptyState from "../../components/ui/EmptyState";
-
 import EventCautionState from "../../assets/icon/EventCautionState.svg";
 import EventSpeakerEmpty from "../../assets/icon/EventSpeakerEmptyBlue.svg";
-
 import ScrollToTop from "../../utils/ScrollToTop";
 import { SearchContext } from "../../context/SearchContext";
 import { useStorage } from "../../utils/storage";
@@ -42,7 +38,7 @@ const EventsPage = () => {
     }
   }, [token, displayEventPreference, onOpen]);
 
-  const fetchEvents = async (title, category) => {
+  const fetchEvents = async (title) => {
     try {
       const response = await teeketApi.get(`/events?title=${title}`);
       const eventList = response.data.data;

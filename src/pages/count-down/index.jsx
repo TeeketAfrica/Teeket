@@ -14,11 +14,8 @@ import {
 } from "@chakra-ui/react";
 import Container from "../../components/ui/Container";
 import Masonry from "../home/components/Masonry";
-// import CountdownTimer from "./CountdownTimer";
-
 import BrandLogo from "../../assets/img/brandLogo.png";
 import EventBg from "../../assets/img/eventsBg.png";
-
 import Masonry1 from "../../assets/img/masonry_1.webp";
 import Masonry2 from "../../assets/img/masonry_2.webp";
 import Masonry3 from "../../assets/img/masonry_3.webp";
@@ -27,15 +24,11 @@ import Masonry5 from "../../assets/img/masonry_5.webp";
 import Masonry6 from "../../assets/img/masonry_6.webp";
 import Masonry7 from "../../assets/img/masonry_7.webp";
 import Masonry8 from "../../assets/img/masonry_8.webp";
-
 import LogoBlack from "../../assets/icon/LogoBlack.svg";
-import FacebookIcon from "../../assets/icon/FacebookIcon.svg";
-import TwitterIcon from "../../assets/icon/TwitterIcon.svg";
-import InstagramIcon from "../../assets/icon/InstagramIcon.svg";
-import LinkedInIcon from "../../assets/icon/LinkedInIcon.svg";
 import { useState } from "react";
 import SuccessModal from "./SuccessModal";
 import { authApi } from "../../utils/api";
+import { SOCIAL_LINKS } from "../../utils/constants";
 
 export const Index = () => {
   // const targetDate = new Date("2024-04-31T23:59:59");
@@ -43,29 +36,6 @@ export const Index = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [participant, setParticipant] = useState("");
   const [emailError, setEmailError] = useState("");
-
-  const socialLinks = [
-    {
-      img: FacebookIcon,
-      link: "https://facebook.com/teeketafrica",
-      alt: "facebook",
-    },
-    {
-      img: TwitterIcon,
-      link: "https://twitter.com/Teeketafrica",
-      alt: "twitter",
-    },
-    {
-      img: InstagramIcon,
-      link: "https://instagram.com/teeketafrica",
-      alt: "instagram",
-    },
-    {
-      img: LinkedInIcon,
-      link: "https://linkedin.com/company/teeketafrica",
-      alt: "linkedin",
-    },
-  ];
 
   const isValidEmail = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -296,16 +266,16 @@ export const Index = () => {
               my={10}
             >
               <HStack spacing={6}>
-                {socialLinks.map((link, i) => (
-                  <Link key={i} href={link.link} target="_blank">
-                    <Image src={link.img} alt={link.alt} />
+                {SOCIAL_LINKS.map(({ link, icon: Icon }, i) => (
+                  <Link key={i} href={link} target="_blank">
+                    <Icon />
                   </Link>
                 ))}
               </HStack>
               <Text fontSize="sm">
                 © 2024 Teeket Africa. All rights reserved.
               </Text>
-              <Image src={LogoBlack} alt="logo" />
+              <LogoBlack />
             </Stack>
           </footer>
         </Stack>

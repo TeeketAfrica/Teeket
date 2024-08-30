@@ -18,8 +18,9 @@ import {
   TicketDashboardPage,
   EventBookingPage,
   EditEventPage,
+  AccountSettingsPage,
+  EventGetTicket,
 } from "../pages";
-import EventGetTicket from "../pages/events/EventGetTicket";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
 
@@ -39,7 +40,7 @@ const privateRoutes = [
   { path: "/app/events", element: EventsDashboardPage },
   { path: "/app/order", element: OrdersDashboardPage },
   { path: "/app/finance", element: FinancesDashboardPage },
-  { path: "/account-settings", element: FinancesDashboardPage },
+  { path: "/account-settings", element: AccountSettingsPage },
   {
     path: "/app/organization-settings",
     element: OrganizationSettingsDashboardPage,

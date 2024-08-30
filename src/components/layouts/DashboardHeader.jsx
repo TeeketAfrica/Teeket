@@ -12,13 +12,11 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
   MenuGroup,
-  MenuOptionGroup,
   MenuDivider,
 } from "@chakra-ui/react";
 
-import Search from "../../assets/icon/Search";
+import Search from "../../assets/icon/Search.svg";
 import TicketIcon from "../../assets/icon/Ticket.svg";
 import SearchIcon from "../../assets/icon/SearchIcon.svg";
 import PlusIcon from "../../assets/icon/plus-circle.svg";
@@ -30,7 +28,6 @@ import BrandLogo from "../../assets/img/brandLogo.png";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserDetails } from "../../features/userSlice";
-import { MenuBoard } from "iconsax-react";
 
 const DashboardHeader = ({ onOpen }) => {
   const { data } = useSelector(selectUserDetails);
@@ -54,7 +51,7 @@ const DashboardHeader = ({ onOpen }) => {
             </InputLeftElement>
             <Input borderRadius="48px" type="text" placeholder="Search" />
             <InputRightElement mr={3}>
-              <Image src={SearchIcon} alt="search" />
+              <SearchIcon />
             </InputRightElement>
           </InputGroup>
         </Box>
@@ -117,14 +114,7 @@ const DashboardHeader = ({ onOpen }) => {
             </MenuList>
           </Menu>
 
-          <Image
-            src={Hamburger}
-            alt="menu"
-            w="24px"
-            h="24px"
-            onClick={onOpen}
-            display={["block", null, null, null, "none"]}
-          />
+          <Hamburger height="24px" width="24px" onClick={onOpen} />
         </HStack>
       </Stack>
     </Box>

@@ -1,6 +1,5 @@
-import { Box, Button, Text, Image } from '@chakra-ui/react';
-
-import Illustration from '../../../assets/icon/Illustration.svg';
+import { Box, Button, Text } from "@chakra-ui/react";
+import Illustration from "../../../assets/icon/Illustration.svg";
 
 const Ticket = ({ data, handleOnclick }) => {
   return (
@@ -42,7 +41,7 @@ const Ticket = ({ data, handleOnclick }) => {
           </Box>
         </Box>
         <Box position="absolute" right="11px" top="10px">
-          <Image src={Illustration} alt="icon" />
+          <Illustration />
         </Box>
       </Box>
     </Box>

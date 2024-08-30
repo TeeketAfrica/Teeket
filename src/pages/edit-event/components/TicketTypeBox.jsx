@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Image,
-  Input,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import { Add, Minus } from "iconsax-react";
 import TicketIcon from "../../../assets/icon/Ticket2.svg";
 import { useState } from "react";
@@ -58,7 +50,7 @@ export const TicketTypeBox = ({ data }) => {
       >
         <HStack justifyContent="space-between" w="100%">
           <HStack>
-            <Image src={TicketIcon} />
+            <TicketIcon />
             <Box>
               <Text
                 color="gray.800"

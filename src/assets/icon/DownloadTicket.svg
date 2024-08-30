@@ -1,5 +1,4 @@
-const DownloadTicket = () => {
-  return (
+
     <svg
       width="21"
       height="20"
@@ -16,7 +15,3 @@ const DownloadTicket = () => {
         fill="white"
       />
     </svg>
-  );
-};
-
-export default DownloadTicket;

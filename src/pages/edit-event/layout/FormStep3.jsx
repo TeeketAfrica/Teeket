@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import {
-  Image,
   Box,
   FormControl,
   FormLabel,
@@ -20,18 +18,15 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from "@chakra-ui/react";
-
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   setEventDetail,
   selectEventDetails,
 } from "../../../features/eventSlice";
-
 import FormLayout from "../components/FormLayout";
 import Ticket from "../components/Ticket";
 import TicketModal from "../components/TicketModal";
-
 import PlusIcon from "../../../assets/icon/Plus.svg";
 import PlusLightIcon from "../../../assets/icon/PlusLight.svg";
 import Notebook from "../../../assets/icon/Notebook.svg";
@@ -113,10 +108,10 @@ const FormStep3 = ({ formik }) => {
                 <NumberInputField backgroundColor="transparent" zIndex="2" />
                 <NumberInputStepper marginRight="8px" zIndex="3">
                   <NumberIncrementStepper>
-                    <Image src={UpArrowIcon} alt="up-arrow" />
+                    <UpArrowIcon />
                   </NumberIncrementStepper>
                   <NumberDecrementStepper>
-                    <Image src={DownArrowIcon} alt="down-arrow" />
+                    <DownArrowIcon />
                   </NumberDecrementStepper>
                 </NumberInputStepper>
                 {!formik.values.eventEstimatedSoldTicket && !isInputFocused && (
@@ -151,7 +146,7 @@ const FormStep3 = ({ formik }) => {
                   Build your tickets
                 </Text>
                 <Button
-                  leftIcon={<Image src={PlusIcon} alt="icon" />}
+                  leftIcon={<PlusIcon />}
                   variant="secondary"
                   size="sm"
                   onClick={() => setIsTicketOpen({ isModalOpen: true })}
@@ -177,11 +172,7 @@ const FormStep3 = ({ formik }) => {
               color="gray.800"
               marginTop="8"
             >
-              {ticketQuantity > 0 ? (
-                <Image src={CircleCheckIcon} alt="circle-check" />
-              ) : (
-                <Image src={InfoTriangleIcon} alt="info-triangle" />
-              )}{" "}
+              {ticketQuantity > 0 ? <CircleCheckIcon /> : <InfoTriangleIcon />}{" "}
               <Text as="span">
                 You have {ticketQuantity > -1 ? ticketQuantity : 0} tickets left
                 to allocate
@@ -191,14 +182,14 @@ const FormStep3 = ({ formik }) => {
         ) : (
           <VStack gap="4">
             <VStack>
-              <Image src={Notebook} alt="icon" />
+              <Notebook />
               <Text fontSize="lg" fontWeight="semibold" color="gray.600">
                 Build your various ticket category here
               </Text>
             </VStack>
             {formik.values.eventEstimatedSoldTicket ? (
               <Button
-                leftIcon={<Image src={PlusLightIcon} alt="icon" />}
+                leftIcon={<PlusLightIcon />}
                 size="lg"
                 variant="primary"
                 onClick={() => setIsTicketOpen({ isModalOpen: true })}

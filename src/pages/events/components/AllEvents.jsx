@@ -1,28 +1,25 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-
 import {
   Box,
   Button,
-  Center,
   Container,
   Grid,
   HStack,
   Text,
   VStack,
 } from "@chakra-ui/react";
-
 import EventCard from "./EventCard";
 import useCategorizeEvents from "../../../hooks/useCategorizeEvents";
-
 import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
-import BrowseEvents from "../../../assets/icon/BrowseEvents";
 import EmptyState from "../../../components/ui/EmptyState";
 import { SearchContext } from "../../../context/SearchContext";
+import { useNavigate } from "react-router-dom";
 
 const AllEvents = ({ events, type }) => {
+  const navigate = useNavigate();
   const { trendingFree, trendingPaid, notTrendingFree, notTrendingPaid } =
     useCategorizeEvents(events);
   const { searchTerm, clearSearch } = useContext(SearchContext);

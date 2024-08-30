@@ -7,7 +7,6 @@ import {
   Avatar,
   AvatarGroup,
   Box,
-  Image,
   Button,
   Text,
 } from "@chakra-ui/react";
@@ -81,7 +80,7 @@ const OverviewDashboardPage = () => {
                   </Text>
                   <HStack fontSize="sm" fontWeight="medium" marginTop="auto">
                     <HStack>
-                      <Image src={Gain} alt="Arrow-up icon" />
+                      <Gain />
                       <Text as="span" color="green.400">
                         40%
                       </Text>
@@ -191,7 +190,7 @@ const OverviewDashboardPage = () => {
                 </HStack>
               </HStack>
               <VStack flexGrow="1" justifyContent="center">
-                <Image src={ChartUp} alt="chart-up icon" />
+                <ChartUp />
 
                 <Text
                   as="h4"
@@ -205,7 +204,7 @@ const OverviewDashboardPage = () => {
                   You will get some analytics here from event sales
                 </Text>
                 <Button
-                  leftIcon={<Image src={PlusLight} alt="Plus icon" />}
+                  leftIcon={<PlusLight />}
                   size="sm"
                   variant="primary"
                   marginTop={6}
@@ -230,12 +229,12 @@ const OverviewDashboardPage = () => {
                     justifyContent="flex-end"
                     gap="13px"
                   >
-                    <Image src={AIStar} alt="AI star icon" />
+                    <AIStar />
                     <Text fontSize="md" fontWeight="semibold">
                       Create an event and make it unforgettable!
                     </Text>
                     <Button
-                      leftIcon={<Image src={PlusDark} alt="Plus icon" />}
+                      leftIcon={<PlusDark />}
                       size="sm"
                       variant="secondary"
                       marginTop={6}
@@ -252,7 +251,7 @@ const OverviewDashboardPage = () => {
                     justifyContent="flex-end"
                     gap="13px"
                   >
-                    <Image src={Ticket} alt="Ticket icon" />
+                    <Ticket />
                     <Text fontSize="md" fontWeight="semibold">
                       Don &apos; t miss out - check your orders
                     </Text>

@@ -13,14 +13,13 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-
 import Logo from "../../../assets/img/brandLogo.png";
 import Preview from "../../../assets/icon/eye.svg";
 import CloseIcon from "../../../assets/icon/CloseButton.svg";
 import Rocket from "../../../assets/icon/rocket-alt.svg";
 import Hamburger from "../../../assets/icon/Hamburger.svg";
 import Ticket from "../../../assets/icon/Ticket.svg";
-import PlusCircle from "../../../assets/icon/PlusCircle";
+import PlusCircle from "../../../assets/icon/PlusCircle.svg";
 import Dashboard from "../../../assets/icon/Dashboard.svg";
 import Settings from "../../../assets/icon/Settings.svg";
 import SignOut from "../../../assets/icon/SignOut.svg";
@@ -106,7 +105,7 @@ const Layout = ({
             </Link>
             <Box display="flex" alignItems="center" gap={{ base: 6, lg: 8 }}>
               <Button type="submit" size="sm" variant="ghost" gap={2}>
-                <Image src={Preview} alt="preview" />
+                <Preview />
                 <Text as="span" display={{ base: "none", lg: "inline" }}>
                   Preview event
                 </Text>
@@ -118,7 +117,7 @@ const Layout = ({
                 isDisabled={activeStepColor !== steps.length - 1}
                 gap={2}
               >
-                <Image src={Rocket} alt="rocket" />
+                <Rocket />
                 <Text as="span" display={{ base: "none", lg: "inline" }}>
                   Publish Event
                 </Text>
@@ -171,7 +170,7 @@ const Layout = ({
                         _hover={{ textDecoration: "none" }}
                         onClick={resetEvent}
                       >
-                        <Image src={Ticket} alt="icon" />
+                        <Ticket />
                         <Text>My tickets</Text>
                       </Link>
                     </Box>
@@ -200,7 +199,7 @@ const Layout = ({
                         _hover={{ textDecoration: "none" }}
                         onClick={resetEvent}
                       >
-                        <Image src={Dashboard} alt="icon" />
+                        <Dashboard />
                         <Text>Dashboard</Text>
                       </Link>
                     </Box>
@@ -213,7 +212,7 @@ const Layout = ({
                         _hover={{ textDecoration: "none" }}
                         onClick={resetEvent}
                       >
-                        <Image src={Settings} alt="icon" />
+                        <Settings />
                         <Text>Account Settings</Text>
                       </Link>
                       <Text
@@ -223,7 +222,7 @@ const Layout = ({
                         cursor="pointer"
                         onClick={signOut}
                       >
-                        <Image src={SignOut} alt="icon" />
+                        <SignOut />
                         <Text as="span">Log out</Text>
                       </Text>
                     </Box>
@@ -261,7 +260,7 @@ const Layout = ({
           </Heading>
           <Box display={{ base: "flex", lg: "none" }} gap={6}>
             <Box onClick={() => setMobileToggle(true)}>
-              <Image src={Hamburger} alt="Icon" />
+              <Hamburger />
             </Box>
             <Box display="inline-flex" gap={2}>
               {steps.map((step, i) => (
@@ -313,7 +312,7 @@ const Layout = ({
                       Create event
                     </Text>
                     <Box w={6} h={6} onClick={() => setMobileToggle(false)}>
-                      <Image src={CloseIcon} alt="icon" w="full" />
+                      <CloseIcon />
                     </Box>
                   </Box>
                 </SideNav>
@@ -368,7 +367,7 @@ const Layout = ({
             </Button>
             {activeStepColor === steps.length - 1 && (
               <Button
-                leftIcon={<Image src={Rocket} alt="rocket" />}
+                leftIcon={<Rocket />}
                 size="lg"
                 variant="accent"
                 onClick={editEvent}

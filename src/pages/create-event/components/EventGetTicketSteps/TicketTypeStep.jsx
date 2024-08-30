@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -77,7 +77,7 @@ export const TicketTypeStep = () => {
           The vintage art event africa
         </Text>
         <HStack>
-          <Image src={CalendarIcon} />
+          <CalendarIcon />
           <Box>
             <Text color="gray.800" fontWeight={600} fontSize={16} maxW="700px">
               {date}
