@@ -17,11 +17,13 @@ import {
   UnorderedList,
   HStack,
 } from "@chakra-ui/react";
+
 import {
   getImageDimensions,
   isValidImage,
   readAsBinary,
 } from "../../../utils/utils";
+
 import Document from "../../../assets/icon/Document.svg";
 import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
 import Reload from "../../../assets/icon/Reload.svg";

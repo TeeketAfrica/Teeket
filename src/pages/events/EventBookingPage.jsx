@@ -3,8 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, Divider, Flex, Text, VStack } from "@chakra-ui/react";
 
-import teeketApi from "../../api/teeketApi";
-
 import Header from "../../components/layouts/Header";
 import Container from "../../components/ui/Container";
 import Footer from "../../components/layouts/Footer";
@@ -12,6 +10,7 @@ import Footer from "../../components/layouts/Footer";
 import EventBookingDetail from "./components/event-booking/EventBookingDetail";
 import { setEventData } from "../../features/eventSlice";
 import { useDispatch } from "react-redux";
+import { teeketApi } from "../../utils/api";
 // import AllEvents from "./components/AllEvents";
 
 const EventBooking = () => {

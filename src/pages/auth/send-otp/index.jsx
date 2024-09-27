@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Button, Input, Text } from "@chakra-ui/react";
 import { Box, HStack } from "@chakra-ui/layout";
-
 import AuthLayout from "../../../components/auth/AuthLayout";
 import AuthHeader from "../../../components/auth/AuthHeader";
 import { maskEmail } from "../../../utils/utils";
-import authApi from "../../../api/authApi";
+import { authApi } from "../../../utils/api";
+import { useStorage } from "../../../utils/storage";
 
 const CreateAccountPage = () => {
   const location = useLocation();
   const { value, token } = location.state || {};
   const navigate = useNavigate();
+  const { setAccessToken } = useStorage();
 
   const formatEmail = value && maskEmail(value);
 
@@ -74,9 +75,9 @@ const CreateAccountPage = () => {
     if (!value) {
       navigate("auth/create-account");
     } else {
-      sessionStorage.setItem("TOKEN", token);
+      setAccessToken(token);
     }
-  }, [value]);
+  }, [navigate, setAccessToken, token, value]);
 
   const handleInputChange = (e) => {
     if (otpError) {
@@ -171,7 +172,8 @@ const CreateAccountPage = () => {
                 fontWeight="semibold"
                 fontSize="sm"
                 cursor="pointer"
-                onClick={resendOTP}>
+                onClick={resendOTP}
+              >
                 {otpError ? "Resend OTP" : "Resend"}
               </Text>
             </Text>

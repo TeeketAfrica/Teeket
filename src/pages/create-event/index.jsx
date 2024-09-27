@@ -1,16 +1,16 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Formik } from "formik";
-import * as Yup from "yup";
 import { useToast } from "@chakra-ui/react";
-import teeketApi from "../../api/teeketApi";
+import { Formik } from "formik";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import * as Yup from "yup";
 import {
   resetEventState,
   selectEventDetails,
   setEventDetails,
   setTicket,
 } from "../../features/eventSlice";
+import { teeketApi } from "../../utils/api";
 import Layout from "./components/Layout";
 import FormStep1 from "./layout/FormStep1";
 import FormStep2 from "./layout/FormStep2";
@@ -43,9 +43,8 @@ const validationSchemas = [
           return schema.required(
             "Please input a valid event link, such as a Zoom link."
           );
-        } else {
-          return schema.required("Please input an address for the event");
         }
+        return schema.required("Please input an address for the event");
       }
     ),
   }),
@@ -172,7 +171,7 @@ const VendorPage = () => {
         setActiveStep((prevStep) => prevStep + 1);
         if (id) {
           try {
-            if (id && activeStep == 2) {
+            if (id && activeStep === 2) {
               const res = await teeketApi.get(`/events/${id}`);
 
               if (res.data.number_of_tickets) {
@@ -192,12 +191,12 @@ const VendorPage = () => {
         }
       }
     },
-    [activeStep]
+    [activeStep, id]
   );
 
   const handlePrevStep = useCallback(() => {
     setActiveStep((prevStep) => prevStep - 1);
-  }, [activeStep]);
+  }, []);
 
   const handlePublishEvent = useCallback(
     async (formProps) => {
@@ -253,12 +252,8 @@ const VendorPage = () => {
                 `/events/${eventId}/tickets/${ticket.id}`,
                 ticketPayload
               );
-            } else {
-              return teeketApi.post(
-                `/events/${eventId}/tickets`,
-                ticketPayload
-              );
             }
+            return teeketApi.post(`/events/${eventId}/tickets`, ticketPayload);
           });
 
           // Wait for all ticket requests to complete
@@ -280,7 +275,7 @@ const VendorPage = () => {
         }
       }
     },
-    [eventBannerImage, id, navigate, dispatch]
+    [dispatch, navigate, id, eventBannerImage]
   );
 
   const renderFormStep = useCallback(
@@ -297,13 +292,15 @@ const VendorPage = () => {
       enableReinitialize={true}
       initialValues={initialValues}
       validationSchema={validationSchemas[activeStep]}
-      onSubmit={() => {}}>
+      onSubmit={() => {}}
+    >
       {(formProps) => (
         <Layout
           activeStepColor={activeStep}
           nextStep={() => handleNextStep(formProps)}
           prevStep={() => handlePrevStep(formProps)}
-          publishEvent={() => handlePublishEvent(formProps)}>
+          publishEvent={() => handlePublishEvent(formProps)}
+        >
           {renderFormStep(formProps)}
         </Layout>
       )}
