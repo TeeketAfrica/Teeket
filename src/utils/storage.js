@@ -1,11 +1,11 @@
-import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
 import {
   ACCESS_TOKEN_EXPIRY_SECONDS,
   REFRESH_TOKEN_EXPIRY_SECONDS,
 } from "./constants";
 
-const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
+const SECRET_KEY = import.meta.env.VITE_REACT_SECRET_KEY;
 
 export const useStorage = () => {
   const encrypt = (data) => {
