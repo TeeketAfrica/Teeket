@@ -57,8 +57,7 @@ const AuthLayout = ({ children }) => {
         as="section"
         columnGap={26}
         flexDirection={{ base: "column", md: "row" }}
-        h="100%"
-      >
+        h="100%">
         <Flex flex="1" placeItems="center">
           <Box flex="1" maxW="454px" mx="auto">
             {children}
@@ -78,15 +77,13 @@ const AuthLayout = ({ children }) => {
           })`}
           backgroundColor="rgba(102, 204, 102, 0.70)"
           backgroundSize="cover"
-          backgroundBlendMode="luminosity"
-        >
+          backgroundBlendMode="luminosity">
           {location.pathname === "/auth/create-account" ? (
             <VStack
               p={{ md: "30px", xl: "60px" }}
               h="100%"
               alignItems="start"
-              gap="68px"
-            >
+              gap="68px">
               <Link href="/">
                 <Image src={brandLogo} alt="Logo" />
               </Link>
@@ -98,8 +95,7 @@ const AuthLayout = ({ children }) => {
                 fontWeight="bold"
                 letterSpacing="tight"
                 lineHeight="none"
-                maxW="12ch"
-              >
+                maxW="12ch">
                 Endless events at your finger tip
               </Text>
 
@@ -110,8 +106,7 @@ const AuthLayout = ({ children }) => {
                 borderColor="border"
                 borderStyle="dashed"
                 borderRadius="20px"
-                backdropFilter="blur(50px)"
-              >
+                backdropFilter="blur(50px)">
                 <Text color="#FFFFFFE5" fontSize="md" fontWeight="normal">
                   Teeket has really transformed how I make use of ticketing
                   apps, it’s really seemless to use and find events I want to
@@ -145,8 +140,7 @@ const AuthLayout = ({ children }) => {
               p={{ md: "30px", xl: "60px" }}
               h="100%"
               alignItems="start"
-              gap="120px"
-            >
+              gap="120px">
               <Link href="/">
                 <Image src={lightLogo} alt="Logo" />
               </Link>
@@ -156,8 +150,7 @@ const AuthLayout = ({ children }) => {
                 fontSize={{ md: "5xl", lg: "6xl", "2xl": "7xl" }}
                 fontWeight="bold"
                 letterSpacing="tight"
-                lineHeight="none"
-              >
+                lineHeight="none">
                 Experience something amazing. That event is waiting for you
               </Text>
 
@@ -165,8 +158,7 @@ const AuthLayout = ({ children }) => {
                 position="absolute"
                 zIndex="-1"
                 right={{ md: "30px", xl: "60px" }}
-                bottom="200px"
-              >
+                bottom="200px">
                 <Avatar
                   src={mockOne}
                   name="mock image"
@@ -181,8 +173,7 @@ const AuthLayout = ({ children }) => {
                 zIndex="-1"
                 left="50%"
                 transform="translateX(-50%)"
-                top="110px"
-              >
+                top="110px">
                 <Avatar
                   src={mockTwo}
                   name="mock image"
@@ -196,8 +187,7 @@ const AuthLayout = ({ children }) => {
                 position="absolute"
                 zIndex="-1"
                 left={{ md: "30px", xl: "60px" }}
-                bottom={{ md: "30px", xl: "60px" }}
-              >
+                bottom={{ md: "30px", xl: "60px" }}>
                 <Avatar
                   src={mockThree}
                   name="mock image"
