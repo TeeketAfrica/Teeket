@@ -16,27 +16,13 @@ const CreateAccountPage = () => {
   const googleSignup = async (res) => {
     try {
       const response = await authApi.post("/google/signup", {
-        auth_token: res.access_token,
+        auth_token: res.id_token,
       });
       console.log("Signup successful:", response);
 
       const token = response.data;
 
       sessionStorage.setItem("TOKEN", token);
-
-      // if (token) {
-      //   sessionStorage.setItem("TOKEN", token);
-      //   dispatch(setUserDetails(values));
-      //   const path = sessionStorage.getItem("REDIRECT");
-
-      //   if (path) {
-      //     console.log(path);
-      //     sessionStorage.removeItem("REDIRECT");
-      //     navigate(path);
-      //   } else {
-      //     navigate("/app/overview");
-      //   }
-      // }
     } catch (error) {
       const errorMessage = error?.response?.data?.message || "An error occured";
       toast({
@@ -61,7 +47,7 @@ const CreateAccountPage = () => {
         <Box>
           <GoogleBtn
             title="Connect with Google"
-            handleGoogleResponse={googleSignup}
+            // handleGoogleResponse={googleSignup}
           />
           <Box display="flex" gap={2} alignItems="center" mt={6}>
             <Divider border="1px solid" borderColor="grey100" />
