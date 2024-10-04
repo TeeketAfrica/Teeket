@@ -1,8 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import teeketApi from "../../../api/teeketApi";
-
 import {
   Stack,
   HStack,
@@ -14,17 +11,16 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
-
 import DashboardLayout from "../../../components/layouts/DashboardLayout";
 import DashboardPageHeaders from "../../../components/layouts/DashboardPageHeaders";
 import BoxFrame from "../../../components/layouts/BoxFrame";
-
 import PlusLight from "../../../assets/icon/Plus-light.svg";
 import PlusDark from "../../../assets/icon/Plus-dark.svg";
 import ChartUp from "../../../assets/icon/Chart-up.svg";
 import AIStar from "../../../assets/icon/AI-star.svg";
 import Ticket from "../../../assets/icon/Ticket-green.svg";
 import Gain from "../../../assets/icon/Arrow-up.svg";
+import { teeketApi } from "../../../utils/api";
 
 const OverviewDashboardPage = () => {
   const navigate = useNavigate();
@@ -36,6 +32,8 @@ const OverviewDashboardPage = () => {
       try {
         const userEventData = await teeketApi.get("/events/user");
         setEvents(userEventData.data);
+
+        console.log(userEventData);
       } catch (error) {
         console.error("Error fetching events:", error);
         setEvents([]);
@@ -60,7 +58,8 @@ const OverviewDashboardPage = () => {
         alignItems="flex-start"
         flexDirection={{ sm: "column", xl: "row" }}
         gap="5"
-        padding="8">
+        padding="8"
+      >
         <VStack width="100%" gap="8">
           <BoxFrame backgroundColor="gray.800" color="gray.100">
             <Box
@@ -68,12 +67,14 @@ const OverviewDashboardPage = () => {
               width="100%"
               backgroundColor="rgba(255, 255, 255, 0.10)"
               borderRadius="12"
-              marginBottom="6">
+              marginBottom="6"
+            >
               <HStack
                 height="100%"
                 justifyContent="space-between"
                 paddingX="3"
-                paddingY="4">
+                paddingY="4"
+              >
                 <VStack alignItems="flex-start" gap="0" height="100%">
                   <Text fontSize="md">Your earnings</Text>
                   <Text fontSize="5xl" fontWeight="bold">
@@ -130,7 +131,8 @@ const OverviewDashboardPage = () => {
             <VStack
               height="107px"
               alignItems="flex-start"
-              justifyContent="space-between">
+              justifyContent="space-between"
+            >
               <Text fontSize="sm" fontWeight="medium" color="gray.600">
                 Event
               </Text>
@@ -145,7 +147,8 @@ const OverviewDashboardPage = () => {
             <VStack
               height="107px"
               alignItems="flex-start"
-              justifyContent="space-between">
+              justifyContent="space-between"
+            >
               <Text fontSize="sm" fontWeight="medium" color="gray.600">
                 Ticket Sold
               </Text>
@@ -170,7 +173,8 @@ const OverviewDashboardPage = () => {
                       width="8px"
                       height="8px"
                       borderRadius="full"
-                      backgroundColor="gray.800"></Box>
+                      backgroundColor="gray.800"
+                    ></Box>
                     <Text fontSize="sm" color="gray.600">
                       Sales
                     </Text>
@@ -180,7 +184,8 @@ const OverviewDashboardPage = () => {
                       width="8px"
                       height="8px"
                       borderRadius="full"
-                      backgroundColor="green.500"></Box>
+                      backgroundColor="green.500"
+                    ></Box>
                     <Text fontSize="sm" color="gray.600">
                       Visits
                     </Text>
@@ -194,7 +199,8 @@ const OverviewDashboardPage = () => {
                   as="h4"
                   fontSize="md"
                   fontWeight="semibold"
-                  color="gray.800">
+                  color="gray.800"
+                >
                   No sales analytics
                 </Text>
                 <Text fontSize="sm">
@@ -205,7 +211,8 @@ const OverviewDashboardPage = () => {
                   size="sm"
                   variant="primary"
                   marginTop={6}
-                  onClick={() => navigate("/create-event")}>
+                  onClick={() => navigate("/create-event")}
+                >
                   Create Event
                 </Button>
               </VStack>
@@ -223,7 +230,8 @@ const OverviewDashboardPage = () => {
                     alignItems="self-start"
                     height="232px"
                     justifyContent="flex-end"
-                    gap="13px">
+                    gap="13px"
+                  >
                     <Image src={AIStar} alt="AI star icon" />
                     <Text fontSize="md" fontWeight="semibold">
                       Create an event and make it unforgettable!
@@ -233,7 +241,8 @@ const OverviewDashboardPage = () => {
                       size="sm"
                       variant="secondary"
                       marginTop={6}
-                      onClick={() => navigate("/create-event")}>
+                      onClick={() => navigate("/create-event")}
+                    >
                       Create Event
                     </Button>
                   </VStack>
@@ -243,7 +252,8 @@ const OverviewDashboardPage = () => {
                     alignItems="self-start"
                     height="232px"
                     justifyContent="flex-end"
-                    gap="13px">
+                    gap="13px"
+                  >
                     <Image src={Ticket} alt="Ticket icon" />
                     <Text fontSize="md" fontWeight="semibold">
                       Don &apos; t miss out - check your orders
@@ -252,7 +262,8 @@ const OverviewDashboardPage = () => {
                       size="sm"
                       variant="secondary"
                       marginTop={6}
-                      isDisabled={true}>
+                      isDisabled={true}
+                    >
                       Open Order
                     </Button>
                   </VStack>

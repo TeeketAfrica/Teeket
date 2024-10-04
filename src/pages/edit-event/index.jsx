@@ -9,8 +9,8 @@ import FormStep1 from "./layout/FormStep1";
 import FormStep2 from "./layout/FormStep2";
 import FormStep3 from "./layout/FormStep3";
 import PublishEvent from "./layout/PublishEvent";
-import teeketApi from "../../api/teeketApi";
 import { useToast } from "@chakra-ui/react";
+import { teeketApi } from "../../utils/api";
 
 // Validation schemas for each step
 const validationSchemas = [

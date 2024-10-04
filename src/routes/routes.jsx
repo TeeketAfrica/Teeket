@@ -3,6 +3,7 @@ import {
   CounterDownPage,
   LoginPage,
   CreateAccountPage,
+  SendOTPPage,
   PasswordRecoveryPage,
   PasswordResetPage,
   VendorPage,
@@ -16,7 +17,6 @@ import {
   EventCategoryPage,
   TicketDashboardPage,
   EventBookingPage,
-  EditEventPage,
 } from "../pages";
 import EventGetTicket from "../pages/events/EventGetTicket";
 import PrivateRoute from "./PrivateRoute";
@@ -33,7 +33,7 @@ const publicRoutes = [
 
 const privateRoutes = [
   { path: "/create-event", element: VendorPage },
-  { path: "/edit-event/:id?", element: EditEventPage },
+  { path: "/edit-event/:id?", element: VendorPage },
   { path: "/app/overview", element: OverviewDashboardPage },
   { path: "/app/events", element: EventsDashboardPage },
   { path: "/app/order", element: OrdersDashboardPage },
@@ -51,6 +51,7 @@ const publicRoutesWithoutAuth = [
   { path: "/auth/create-account", element: CreateAccountPage },
   { path: "/auth/password-recovery", element: PasswordRecoveryPage },
   { path: "/auth/password-reset", element: PasswordResetPage },
+  { path: "/auth/send-otp", element: SendOTPPage },
 ];
 
 const routes = [

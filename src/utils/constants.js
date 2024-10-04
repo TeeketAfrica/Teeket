@@ -2,6 +2,8 @@ export const authBaseUrl = import.meta.env.VITE_REACT_AUTH_BASE_URL;
 export const mediaBaseUrl = import.meta.env.VITE_REACT_MEDIA_BASE_URL;
 export const teeketBaseUrl = import.meta.env.VITE_REACT_TEEKET_BASE_URL;
 export const clientId = import.meta.env.VITE_REACT_GOOGLE_CLIENT_ID;
+export const REFRESH_TOKEN_EXPIRY_SECONDS = 7 * 24 * 60 * 60; // 7 days
+export const ACCESS_TOKEN_EXPIRY_SECONDS = 24 * 60 * 60; // 1 day
 
 import Img1 from "../assets/img/Avatars-8.png";
 import Img2 from "../assets/img/Avatars-1.png";

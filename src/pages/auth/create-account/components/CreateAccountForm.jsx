@@ -7,7 +7,7 @@ import { Button } from "@chakra-ui/react";
 
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
-import authApi from "../../../../api/authApi";
+import { authApi } from "../../../../utils/api";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "../../../../features/userSlice";
 
@@ -53,16 +53,23 @@ const CreateAccountForm = () => {
         const token = response.data.access_token;
 
         if (token) {
-          sessionStorage.setItem("TOKEN", token);
-          dispatch(setUserDetails(values));
-          const path = sessionStorage.getItem("REDIRECT");
+          try {
+            const sendOTP = await authApi.post("/send_otp", {
+              email: values.email,
+              kind: "verify",
+            });
 
-          if (path) {
-            console.log(path);
-            sessionStorage.removeItem("REDIRECT");
-            navigate(path);
-          } else {
-            navigate("/app/overview");
+            console.log(sendOTP);
+
+            if (sendOTP.status === 200) {
+              dispatch(setUserDetails(values));
+
+              navigate("/auth/send-otp", {
+                state: { value: values.email, token: token },
+              });
+            }
+          } catch (err) {
+            console.log("Error sending OTP", err);
           }
         }
       } catch (err) {
@@ -91,7 +98,8 @@ const CreateAccountForm = () => {
           mt="4"
           variant="primary"
           size="lg"
-          isDisabled={formik.isSubmitting}>
+          isDisabled={formik.isSubmitting}
+        >
           Sign up
         </Button>
       </Stack>

@@ -1,22 +1,23 @@
+import * as Yup from "yup";
 import { useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import authApi from "../../../../api/authApi";
+import { authApi } from "../../../../utils/api";
 import { setUserDetails } from "../../../../features/userSlice";
-
 import { Stack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
-
-// Importing icons
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
+import { useStorage } from "../../../../utils/storage";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { setAccessToken, setRefreshToken, getAccessToken } = useStorage();
+
+  const token = getAccessToken();
+  console.log(token);
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -42,14 +43,17 @@ const LoginForm = () => {
           password: values.password,
         });
 
-        const token = response.data.access_token;
+        const access_token = response.data.access_token;
+        const refresh_token = response.data.refresh_token;
 
-        if (token) {
-          sessionStorage.setItem("TOKEN", token);
+        if (access_token) {
+          // set the refresh token and access token to cookie storage
+          setAccessToken(access_token);
+          setRefreshToken(refresh_token);
+
           dispatch(setUserDetails(values));
 
           const path = sessionStorage.getItem("REDIRECT");
-
           if (path) {
             sessionStorage.removeItem("REDIRECT");
             navigate(path);
@@ -107,7 +111,8 @@ const LoginForm = () => {
           mt="4"
           size="lg"
           variant="primary"
-          isDisabled={formik.isSubmitting}>
+          isDisabled={formik.isSubmitting}
+        >
           Login
         </Button>
       </Stack>

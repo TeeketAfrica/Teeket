@@ -37,7 +37,8 @@ import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
 import MoreDetailsModal from "./MoreDetailsModal";
 import { useEffect } from "react";
-import teeketApi from "../../../../api/teeketApi";
+import { teeketApi } from "../../../../utils/api";
+
 
 const OrdersTable = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

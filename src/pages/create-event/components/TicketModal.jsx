@@ -1,3 +1,5 @@
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -20,23 +22,23 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { useDispatch } from "react-redux";
 import {
   setTicketDetails,
   updateTicketDetails,
 } from "../../../features/eventSlice";
+import { useModal } from "../../../context/ModalContext";
 
 import TicketIcon from "../../../assets/icon/Ticket.svg";
 import PriceIcon from "../../../assets/icon/Price.svg";
 import DollarIcon from "../../../assets/icon/Dollar.svg";
 import TrashIcon from "../../../assets/icon/Trash.svg";
 import MultiplyIcon from "../../../assets/icon/Multiply.svg";
-import { useModal } from "../../../context/ModalContext";
 
 const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
   const dispatch = useDispatch();
   const { isModalOpen, data } = ticketState;
   const { openModal } = useModal();
+  const { id } = useParams();
 
   const ticketQuantity = data
     ? selectedQuantity + data.ticketQuantity
@@ -63,7 +65,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
     initialValues: {
       ticketType: data?.ticketType || "",
       ticketName: data?.ticketName || "",
-      ticketPrice: data?.ticketPrice || "",
+      ticketPrice: parseInt(data?.ticketPrice) || "",
       ticketQuantity: data?.ticketQuantity || "",
     },
 
@@ -75,7 +77,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
     onCloseModal({ isModalOpen: false });
   };
 
-  const handleSaveTicketDetails = () => {
+  const handleTicketDetails = (id = null) => {
     if (formik.isValid) {
       const { values } = formik;
       const ticketType = values.ticketType;
@@ -83,38 +85,25 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
         ...values,
         ticketPrice: ticketType === "free" ? 0 : values.ticketPrice,
       };
-      dispatch(setTicketDetails(updatedValues));
 
-      formik.resetForm();
-      onCloseModal({ isModalOpen: false });
-    }
-  };
+      if (id) {
+        dispatch(updateTicketDetails({ id, ...updatedValues }));
+      } else {
+        dispatch(setTicketDetails(updatedValues));
+      }
 
-  const handleUpdateTicketDetails = (id) => {
-    if (formik.isValid && data) {
-      dispatch(updateTicketDetails({ id, ...formik.values }));
-      formik.resetForm();
-      onCloseModal({ isModalOpen: false });
+      handlerOnClose();
     }
   };
 
   const handleOpenDeleteModal = () => {
     openModal("deleteTicket", {
+      event_id: id,
       id: data.id,
       formik: formik,
       closeParentModal: onCloseModal,
     });
   };
-
-  // const handleDeleteTicket = (id) => {
-  //   if (data) {
-  //     dispatch(deleteTicket(id));
-
-  //     formik.resetForm();
-  //     onClose();
-  //     onCloseModal({ isModalOpen: false });
-  //   }
-  // };
 
   return (
     <Slide in={isModalOpen} direction="right" style={{ zIndex: "999999" }}>
@@ -317,7 +306,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           </Button>
           {!data ? (
             <Button
-              onClick={() => handleSaveTicketDetails()}
+              onClick={() => handleTicketDetails()}
               size="lg"
               variant="primary">
               Save ticket
@@ -326,7 +315,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             <Button
               size="lg"
               variant="primary"
-              onClick={() => handleUpdateTicketDetails(data.id)}>
+              onClick={() => handleTicketDetails(data.id)}>
               Update ticket
             </Button>
           )}

@@ -15,8 +15,8 @@ import {
   selectPriceDetails,
   setIsBookedTicket,
 } from "../../../features/eventSlice";
-import teeketApi from "../../../api/teeketApi";
 import { useState } from "react";
+import { teeketApi } from "../../../utils/api";
 
 export const EventGetTicketSummaryBox = () => {
   const dispatch = useDispatch();
