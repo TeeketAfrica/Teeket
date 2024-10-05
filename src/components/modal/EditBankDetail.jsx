@@ -15,7 +15,7 @@ import {
 import { useModal } from "../../context/ModalContext";
 
 import FeatureIcon from "../../assets/icon/Feature-icon.svg";
-import teeketApi from "../../api/teeketApi";
+import { teeketApi } from "../../utils/api";
 
 const EditBankDetail = () => {
   const { closeModal, modalState } = useModal();

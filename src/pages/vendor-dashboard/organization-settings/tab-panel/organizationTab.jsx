@@ -4,8 +4,8 @@ import * as Yup from "yup";
 
 import { VStack, Box, Heading, Text, Button, useToast } from "@chakra-ui/react";
 import RenderFormControl from "../renderFormControl";
-import teeketApi from "../../../../api/teeketApi";
 import { useEffect, useState } from "react";
+import { teeketApi } from "../../../../utils/api";
 
 const OrganizationTab = () => {
   const toast = useToast();

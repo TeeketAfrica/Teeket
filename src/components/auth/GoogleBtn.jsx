@@ -4,7 +4,6 @@ import { Text } from "@chakra-ui/layout";
 import GoogleIcon from "../../assets/icon/GoogleIcon.svg";
 import { useTheme } from "@chakra-ui/system";
 import { useGoogleLogin } from "@react-oauth/google";
-import authApi from "../../api/authApi";
 import axios from "axios";
 import { clientId } from "../../utils/constants";
 

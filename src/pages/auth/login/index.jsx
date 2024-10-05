@@ -8,7 +8,7 @@ import GoogleBtn from "../../../components/auth/GoogleBtn";
 
 import LoginForm from "./components/LoginForm";
 import { useToast } from "@chakra-ui/react";
-import authApi from "../../../api/authApi";
+import { authApi } from "../../../utils/api";
 
 const LoginPage = () => {
   const theme = useTheme();

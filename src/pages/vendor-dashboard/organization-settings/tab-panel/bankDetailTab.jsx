@@ -15,7 +15,6 @@ import RenderFormControl from "../renderFormControl";
 
 import { useModal } from "../../../../context/ModalContext";
 import { useEffect, useState } from "react";
-import teeketApi from "../../../../api/teeketApi";
 
 const BankDetailTab = () => {
   const { openModal } = useModal();

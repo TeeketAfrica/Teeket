@@ -5,36 +5,37 @@ import AuthLayout from "../../../components/auth/AuthLayout";
 import AuthHeader from "../../../components/auth/AuthHeader";
 import GoogleBtn from "../../../components/auth/GoogleBtn";
 import CreateAccountForm from "./components/CreateAccountForm";
-import authApi from "../../../api/authApi";
-import { useToast } from "@chakra-ui/react";
+
+// import { useToast } from "@chakra-ui/react";
+// import { authApi } from "../../../utils/api";
 // import { useDispatch } from "react-redux";
 
 const CreateAccountPage = () => {
-  const toast = useToast();
+  // const toast = useToast();
   // const dispatch = useDispatch();
 
-  const googleSignup = async (res) => {
-    try {
-      const response = await authApi.post("/google/signup", {
-        auth_token: res.id_token,
-      });
-      console.log("Signup successful:", response);
+  // const googleSignup = async (res) => {
+  //   try {
+  //     const response = await authApi.post("/google/signup", {
+  //       auth_token: res.id_token,
+  //     });
+  //     console.log("Signup successful:", response);
 
-      const token = response.data;
+  //     const token = response.data;
 
-      sessionStorage.setItem("TOKEN", token);
-    } catch (error) {
-      const errorMessage = error?.response?.data?.message || "An error occured";
-      toast({
-        title: "Events failed to fetch.",
-        description: `${errorMessage}`,
-        status: "error",
-        duration: 3000,
-        position: "top-right",
-        isClosable: true,
-      });
-    }
-  };
+  //     sessionStorage.setItem("TOKEN", token);
+  //   } catch (error) {
+  //     const errorMessage = error?.response?.data?.message || "An error occured";
+  //     toast({
+  //       title: "Events failed to fetch.",
+  //       description: `${errorMessage}`,
+  //       status: "error",
+  //       duration: 3000,
+  //       position: "top-right",
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
 
   return (
     <AuthLayout>
