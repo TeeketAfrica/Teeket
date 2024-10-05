@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   VStack,
   ModalContent,
@@ -8,14 +9,39 @@ import {
   Text,
   Image,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useModal } from "../../context/ModalContext";
 
 import FeatureIcon from "../../assets/icon/Feature-icon.svg";
+import { teeketApi } from "../../utils/api";
 
 const EditBankDetail = () => {
-  const { closeModal } = useModal();
+  const { closeModal, modalState } = useModal();
+  const toast = useToast();
+
+  // UPDATE BANK DETAILS
+  const handleUpdateBank = async () => {
+    try {
+      const response = await teeketApi.patch("/bank-account", {
+        account_name: modalState.data.acctName,
+        account_number: modalState.data.acctNumber,
+        bank_name: modalState.data.bankName,
+      });
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || "An error occured";
+      toast({
+        title: "Failed to update",
+        description: `${errorMessage}`,
+        status: "error",
+        duration: 3000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <ModalContent paddingY={2}>
       <ModalHeader textAlign="center">
@@ -41,7 +67,12 @@ const EditBankDetail = () => {
         >
           Cancel
         </Button>
-        <Button width="170px" variant="primary" size="lg">
+        <Button
+          width="170px"
+          variant="primary"
+          size="lg"
+          onClick={handleUpdateBank}
+        >
           Send Request
         </Button>
       </ModalFooter>

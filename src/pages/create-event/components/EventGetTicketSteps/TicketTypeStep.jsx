@@ -24,6 +24,7 @@ export const TicketTypeStep = () => {
 
   const [date, setDate] = useState("");
   const [timeRange, setTimeRange] = useState("");
+  const [eventTitle] = useState(eventDataTickets[0]?.event?.title);
 
   const [isTicketError, setIsTicketError] = useState(false);
 
@@ -73,8 +74,14 @@ export const TicketTypeStep = () => {
   return (
     <>
       <Box>
-        <Text color="gray.800" fontWeight={700} fontSize={36} maxW="700px">
-          The vintage art event africa
+        <Text
+          color="gray.800"
+          fontWeight={700}
+          fontSize={36}
+          maxW="700px"
+          pb={5}
+        >
+          {eventTitle}
         </Text>
         <HStack>
           <Image src={CalendarIcon} />
