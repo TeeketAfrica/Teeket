@@ -7,16 +7,31 @@ import {
 
 const SECRET_KEY = import.meta.env.VITE_REACT_SECRET_KEY;
 
+if (!SECRET_KEY) {
+  throw new Error("SECRET_KEY is not defined or is invalid");
+}
+
 export const useStorage = () => {
   const encrypt = (data) => {
-    return CryptoJS.AES.encrypt(data, SECRET_KEY).toString();
+    const dataToEncrypt =
+      typeof data === "string" ? data : JSON.stringify(data);
+    return CryptoJS.AES.encrypt(dataToEncrypt, SECRET_KEY).toString();
   };
 
   const decrypt = (ciphertext) => {
-    const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
-    return bytes.toString(CryptoJS.enc.Utf8);
+    try {
+      const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
+      const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+      try {
+        return JSON.parse(decryptedText);
+      } catch {
+        return decryptedText;
+      }
+    } catch (error) {
+      console.error("Error decrypting data:", error);
+      return null;
+    }
   };
-
   const setCookie = (token, value, options) => {
     const encryptedValue = encrypt(value);
     Cookies.set(token, encryptedValue, options);
