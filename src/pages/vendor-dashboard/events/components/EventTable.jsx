@@ -130,6 +130,10 @@ const EventTable = ({ setData }) => {
     try {
       // eslint-disable-next-line no-unused-vars
       const response = await teeketApi.delete(`/events/${eventId}`);
+
+      if (response.status === 204) {
+        window.location.reload();
+      }
     } catch (error) {
       const errorMessage = error?.response?.data?.message || "An error occured";
       toast({
@@ -186,8 +190,7 @@ const EventTable = ({ setData }) => {
         spacing="24px"
         alignItems="flex-start"
         pt={8}
-        pb={6}
-      >
+        pb={6}>
         <InputGroup maxW="375px" w="100%">
           <InputLeftElement pointerEvents="none">
             <Search />
@@ -206,8 +209,7 @@ const EventTable = ({ setData }) => {
             borderColor="gray.300"
             transition="all 0.2s"
             borderRadius="md"
-            _hover={{ bg: "gray.400" }}
-          >
+            _hover={{ bg: "gray.400" }}>
             <HStack spacing="8px">
               <Filter />
               <Text fontSize={14} fontWeight={600} color="gray.800">
@@ -224,8 +226,7 @@ const EventTable = ({ setData }) => {
                 onClick={() => {
                   setSelectedFilterIndex(i);
                   handleFilterByStatus(filter.filter);
-                }}
-              >
+                }}>
                 {filter.filter} {selectedFilterIndex === i && <Check />}
               </MenuItem>
             ))}
@@ -249,8 +250,7 @@ const EventTable = ({ setData }) => {
             bgColor="gray.200"
             fontSize={12}
             fontWeight={500}
-            color="gray.700"
-          >
+            color="gray.700">
             {(paginatedData.length === 0 && search === "") ||
             (paginatedData.length === 0 && search !== "")
               ? "No events"
@@ -274,8 +274,7 @@ const EventTable = ({ setData }) => {
                           color="gray.600"
                           borderBottom="1px solid"
                           borderColor="gray.300"
-                          key={i}
-                        >
+                          key={i}>
                           {th.head}
                         </Th>
                       ))}
@@ -330,8 +329,7 @@ const EventTable = ({ setData }) => {
                             py="2px"
                             px={2}
                             fontWeight={500}
-                            fontSize={12}
-                          >
+                            fontSize={12}>
                             {td.status}
                           </Tag>
                         </Td>
@@ -363,14 +361,12 @@ const EventTable = ({ setData }) => {
                               <Divider borderColor="grey100" my={3} />
                               <MenuItem
                                 onClick={() => handleCopyEvent(td.id)}
-                                _hover={{ bgColor: "gray.200" }}
-                              >
+                                _hover={{ bgColor: "gray.200" }}>
                                 Copy link
                               </MenuItem>
                               <MenuItem
                                 onClick={() => handleDeleteEvent(td.id)}
-                                _hover={{ bgColor: "gray.200" }}
-                              >
+                                _hover={{ bgColor: "gray.200" }}>
                                 Delete event
                               </MenuItem>
                             </MenuList>

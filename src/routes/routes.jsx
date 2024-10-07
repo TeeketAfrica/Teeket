@@ -17,7 +17,6 @@ import {
   EventCategoryPage,
   TicketDashboardPage,
   EventBookingPage,
-  EditEventPage,
   AccountSettingsPage,
   EventGetTicket,
 } from "../pages";
@@ -35,7 +34,7 @@ const publicRoutes = [
 
 const privateRoutes = [
   { path: "/create-event", element: VendorPage },
-  { path: "/edit-event/:id?", element: EditEventPage },
+  { path: "/edit-event/:id?", element: VendorPage },
   { path: "/app/overview", element: OverviewDashboardPage },
   { path: "/app/events", element: EventsDashboardPage },
   { path: "/app/order", element: OrdersDashboardPage },

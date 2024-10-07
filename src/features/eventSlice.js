@@ -12,6 +12,7 @@ const sumTicketQuantity = (tickets) => {
 };
 
 const initialState = {
+  id: "",
   eventTitle: "",
   eventOrganizer: "",
   eventType: "",
@@ -29,7 +30,7 @@ const initialState = {
   publishLive: "",
   tickets: [],
   totalTicketQuantities: 0,
-
+  eventEstimatedSoldTicket: 0,
   eventData: null,
   eventDataTickets: {
     isLoading: false,
@@ -48,7 +49,34 @@ const eventSlice = createSlice({
   initialState,
   reducers: {
     setEventDetails: (state, action) => {
-      Object.assign(state, action.payload);
+      const eventData = action.payload;
+      state.id = eventData.id;
+      state.eventTitle = eventData.title || state.eventTitle;
+      state.eventOrganizer = eventData.organizer || state.eventOrganizer;
+      state.eventType = eventData.type || state.eventType;
+      state.eventIndustry = eventData.industry || state.eventIndustry;
+      state.eventTags = eventData.tags || state.eventTags;
+      state.eventStartDate =
+        eventData.start_date.split("T")[0] || state.eventStartDate;
+      state.eventStartTime =
+        eventData.start_date.split("T")[1].slice(0, 8) || state.eventStartTime;
+      state.eventEndDate =
+        eventData.end_date.split("T")[0] || state.eventEndDate;
+      state.eventEndTime =
+        eventData.end_date.split("T")[1].slice(0, 8) || state.eventEndTime;
+      state.eventBannerImage = eventData.banner_image || state.eventBannerImage;
+      state.eventAbout = eventData.description || state.eventAbout;
+      state.eventHosting = eventData.hosting_site || state.eventHosting;
+      state.eventLocation =
+        eventData.event_location || eventData.event_link || state.eventLocation;
+      state.publishLive = eventData.status || state.publishLive;
+      state.totalTicketQuantities =
+        eventData.number_of_tickets || state.totalTicketQuantities;
+      state.eventEstimatedSoldTicket = eventData.number_of_tickets;
+    },
+
+    setTicket: (state, action) => {
+      state.tickets = action.payload;
     },
 
     setEventDetail: (state, action) => {
@@ -57,10 +85,13 @@ const eventSlice = createSlice({
     },
 
     setTicketDetails: (state, action) => {
-      state.tickets.push({
+      const newTicket = {
         id: Date.now(),
         ...action.payload,
-      });
+      };
+
+      state.tickets = [...state.tickets, newTicket];
+
       state.totalTicketQuantities = sumTicketQuantity(state.tickets);
     },
 
@@ -145,6 +176,7 @@ const eventSlice = createSlice({
 export const {
   setEventDetails,
   setEventDetail,
+  setTicket,
   setTicketDetails,
   updateTicketDetails,
   deleteTicket,
@@ -157,7 +189,7 @@ export const {
   changeTicketStep,
   setTicketQuantity,
   setIsBookedTicket,
-  setIsSetDetails,
+  setIsSetDetailst,
 } = eventSlice.actions;
 
 const TRANSACTION_FEE_RATE = 0.01;

@@ -31,6 +31,8 @@ const OverviewDashboardPage = () => {
       try {
         const userEventData = await teeketApi.get("/events/user");
         setEvents(userEventData.data);
+
+        console.log(userEventData);
       } catch (error) {
         console.error("Error fetching events:", error);
         setEvents([]);

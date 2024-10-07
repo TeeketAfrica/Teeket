@@ -1,44 +1,44 @@
-import { useState } from "react";
 import {
   Box,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  VStack,
-  Stack,
-  HStack,
-  Radio,
-  RadioGroup,
-  Divider,
-  Text,
   Button,
+  Divider,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  Radio,
+  RadioGroup,
+  Stack,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import CircleCheckIcon from "../../../assets/icon/CircleCheck.svg";
+import DownArrowIcon from "../../../assets/icon/DownArrow.svg";
+import InfoTriangleIcon from "../../../assets/icon/InfoTriangle.svg";
+import Notebook from "../../../assets/icon/Notebook.svg";
+import PlusIcon from "../../../assets/icon/Plus.svg";
+import PlusLightIcon from "../../../assets/icon/PlusLight.svg";
+import UpArrowIcon from "../../../assets/icon/UpArrow.svg";
 import {
-  setEventDetail,
   selectEventDetails,
+  setEventDetail,
 } from "../../../features/eventSlice";
 import FormLayout from "../components/FormLayout";
 import Ticket from "../components/Ticket";
 import TicketModal from "../components/TicketModal";
-import PlusIcon from "../../../assets/icon/Plus.svg";
-import PlusLightIcon from "../../../assets/icon/PlusLight.svg";
-import Notebook from "../../../assets/icon/Notebook.svg";
-import DownArrowIcon from "../../../assets/icon/DownArrow.svg";
-import UpArrowIcon from "../../../assets/icon/UpArrow.svg";
-import CircleCheckIcon from "../../../assets/icon/CircleCheck.svg";
-import InfoTriangleIcon from "../../../assets/icon/InfoTriangle.svg";
 
 const FormStep3 = ({ formik }) => {
   const dispatch = useDispatch();
 
-  const { tickets } = useSelector(selectEventDetails);
+  const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
 
   const [isTicketOpen, setIsTicketOpen] = useState({
     isModalOpen: false,
@@ -48,8 +48,7 @@ const FormStep3 = ({ formik }) => {
   const [isInputFocused, setIsInputFocused] = useState(false);
 
   const ticketQuantity =
-    formik.values.eventEstimatedSoldTicket -
-    formik.values.totalTicketQuantities;
+    formik.values.eventEstimatedSoldTicket - totalTicketQuantities;
 
   const handleInputChange = (fieldName, e) => {
     const data = { fieldName: fieldName, value: e };
@@ -75,8 +74,8 @@ const FormStep3 = ({ formik }) => {
             name="eventEstimatedSoldTicket"
             value={formik.values.eventEstimatedSoldTicket}
             onChange={(value) => {
-              formik.setFieldValue("eventEstimatedSoldTicket", value),
-                handleInputChange("eventEstimatedSoldTicket", value);
+              formik.setFieldValue("eventEstimatedSoldTicket", value);
+              handleInputChange("eventEstimatedSoldTicket", value);
             }}
             onBlur={() =>
               formik.setFieldTouched("eventEstimatedSoldTicket", true)
@@ -96,12 +95,13 @@ const FormStep3 = ({ formik }) => {
               <NumberInput
                 min={0}
                 value={formik.values.eventEstimatedSoldTicket}
-                onChange={(valueString, valueNumber) =>
+                onChange={(valueString, valueNumber) => {
                   formik.setFieldValue(
                     "eventEstimatedSoldTicket",
                     valueNumber || ""
-                  )
-                }
+                  );
+                  handleInputChange("eventEstimatedSoldTicket", valueNumber);
+                }}
                 onFocus={() => setIsInputFocused(true)}
                 onBlur={() => setIsInputFocused(false)}
               >

@@ -17,7 +17,6 @@ import TicketDashboardPage from "./ticket-dashboard/index";
 import EventBookingPage from "./events/EventBookingPage";
 import CounterDownPage from "./count-down";
 import NotFoundPage from "./not-found";
-import EditEventPage from "./edit-event";
 import AccountSettingsPage from "./account-settings";
 import EventGetTicket from "./events/EventGetTicket";
 
@@ -29,7 +28,6 @@ export {
   PasswordRecoveryPage,
   PasswordResetPage,
   VendorPage,
-  EditEventPage,
   HelpAndSupportPage,
 
   // DASHBOARD PAGES

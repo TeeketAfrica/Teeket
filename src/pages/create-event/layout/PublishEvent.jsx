@@ -51,7 +51,6 @@ const PublishEvent = ({ formik }) => {
 
     dispatch(setEventDetail(data));
   };
-
   return (
     <>
       <FormLayout

@@ -45,8 +45,7 @@ const FormStep1 = ({ formik }) => {
     return (
       <FormControl
         isInvalid={formik.touched[name] && formik.errors[name]}
-        key={name}
-      >
+        key={name}>
         <FormLabel htmlFor={name}>{label}</FormLabel>
         <InputGroup size="lg">
           {isSelect ? (
@@ -59,8 +58,7 @@ const FormStep1 = ({ formik }) => {
               value={formik.values[name]}
               onChange={(e) => handleInputChange(name, e)}
               onFocus={() => formik.setFieldTouched(name, false)}
-              onBlur={() => formik.setFieldTouched(name, true)}
-            >
+              onBlur={() => formik.setFieldTouched(name, true)}>
               {options.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -95,8 +93,7 @@ const FormStep1 = ({ formik }) => {
   return (
     <FormLayout
       title="Basic Info"
-      description="Give your event a name and also add other basic information that will help your attendees know what this event is about"
-    >
+      description="Give your event a name and also add other basic information that will help your attendees know what this event is about">
       <Stack spacing={4}>
         <Box maxW="600px" w="100%">
           <Stack spacing={4}>
@@ -129,8 +126,7 @@ const FormStep1 = ({ formik }) => {
             <Box
               display="flex"
               flexDirection={{ base: "column", md: "row" }}
-              gap={4}
-            >
+              gap={4}>
               {[
                 {
                   name: "eventType",
@@ -187,8 +183,7 @@ const FormStep1 = ({ formik }) => {
             <Box
               display="flex"
               flexDirection={{ base: "column", md: "row" }}
-              gap={4}
-            >
+              gap={4}>
               {[
                 {
                   name: "eventStartDate",
@@ -210,8 +205,7 @@ const FormStep1 = ({ formik }) => {
               display="flex"
               flexDirection={{ base: "column", md: "row" }}
               gap={4}
-              mb={1}
-            >
+              mb={1}>
               {[
                 {
                   name: "eventEndDate",
