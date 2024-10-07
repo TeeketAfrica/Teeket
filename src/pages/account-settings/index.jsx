@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Rectangle from "../../assets/icon/rectangle.svg";
+import Footer from "../../components/layouts/Footer";
 import Header from "../../components/layouts/Header";
 import Container from "../../components/ui/Container";
 import { AccountName } from "./components/account-name";
@@ -61,6 +62,7 @@ const AccountSettingsPage = () => {
           <DeleteAccount />
         </VStack>
       </Container>
+      <Footer />
     </main>
   );
 };

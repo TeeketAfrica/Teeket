@@ -14,7 +14,9 @@ export const DeleteAccount = () => {
           remove all the content associated with it.
         </Text>
       </VStack>
-      <Button variant="danger">Delete Account</Button>
+      <Button variant="secondary" color="#CC0613">
+        Delete Account
+      </Button>
     </VStack>
   );
 };
