@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-const Container = ({ children, heightSize, padding, sx }) => {
+const Container = ({ children, heightSize, padding, sx, alignItems }) => {
   return (
     <Box
       maxW="1200px"
@@ -10,6 +10,7 @@ const Container = ({ children, heightSize, padding, sx }) => {
       mx="auto"
       px={padding && padding}
       sx={sx}
+      alignItems={alignItems}
     >
       {children}
     </Box>

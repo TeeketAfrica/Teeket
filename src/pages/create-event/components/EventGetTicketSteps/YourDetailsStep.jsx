@@ -1,20 +1,20 @@
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
+  Button,
   Grid,
   GridItem,
   HStack,
+  Input,
   Text,
   VStack,
-  Input,
-  Button,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectActiveUser } from "../../../../features/activeUserSlice";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import * as z from "zod";
+import { selectActiveUser } from "../../../../features/activeUserSlice";
 
 const visitorsFormSchema = z
   .object({
@@ -33,6 +33,7 @@ const visitorsFormSchema = z
     message: "Emails don't match",
     path: ["confirmEmail"],
   });
+
 const userFormSchema = z.object({
   firstName: z
     .string({ required_error: "First name cannot be empty" })
