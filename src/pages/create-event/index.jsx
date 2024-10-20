@@ -215,8 +215,7 @@ const VendorPage = () => {
           start_date: `${data.eventStartDate}T${data.eventStartTime}`,
           end_date: `${data.eventEndDate}T${data.eventEndTime}`,
           description: data.eventAbout,
-          banner_image:
-            "https://res.cloudinary.com/doc3jbqfc/image/upload/v1723846959/fe89e8d3-3494-46db-b97e-09bbd9eae1ed-3696.png",
+          banner_image: eventBannerImage,
           hosting_site: data.eventHosting,
           event_location:
             data.eventHosting === "physical" ? data.eventLocation : null,
