@@ -16,6 +16,7 @@ import FormStep1 from "./layout/FormStep1";
 import FormStep2 from "./layout/FormStep2";
 import FormStep3 from "./layout/FormStep3";
 import PublishEvent from "./layout/PublishEvent";
+import { DEFAULTBANNERIMAGE } from "../../utils/constants";
 
 // Validation schemas for each step
 const validationSchemas = [
@@ -214,7 +215,9 @@ const VendorPage = () => {
           start_date: `${data.eventStartDate}T${data.eventStartTime}`,
           end_date: `${data.eventEndDate}T${data.eventEndTime}`,
           description: data.eventAbout,
-          banner_image: eventBannerImage,
+          banner_image: eventBannerImage
+            ? eventBannerImage
+            : DEFAULTBANNERIMAGE,
           hosting_site: data.eventHosting,
           event_location:
             data.eventHosting === "physical" ? data.eventLocation : null,
@@ -291,15 +294,13 @@ const VendorPage = () => {
       enableReinitialize={true}
       initialValues={initialValues}
       validationSchema={validationSchemas[activeStep]}
-      onSubmit={() => {}}
-    >
+      onSubmit={() => {}}>
       {(formProps) => (
         <Layout
           activeStepColor={activeStep}
           nextStep={() => handleNextStep(formProps)}
           prevStep={() => handlePrevStep(formProps)}
-          publishEvent={() => handlePublishEvent(formProps)}
-        >
+          publishEvent={() => handlePublishEvent(formProps)}>
           {renderFormStep(formProps)}
         </Layout>
       )}

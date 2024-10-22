@@ -32,6 +32,7 @@ import Clock from "../../../assets/icon/clock.svg";
 import Calendar from "../../../assets/icon/calendar-alt.svg";
 import TicketNumber from "../../../assets/icon/TicketNumber.svg";
 import TicketPrice from "../../../assets/icon/TicketPrice.svg";
+import { DEFAULTBANNERIMAGE } from "../../../utils/constants.js";
 
 const PublishEvent = ({ formik }) => {
   const dispatch = useDispatch();
@@ -69,7 +70,11 @@ const PublishEvent = ({ formik }) => {
               h={{ base: "320px", lg: "auto" }}
               flexShrink="0">
               <Image
-                src={eventBannerImage.secure_url}
+                src={
+                  eventBannerImage
+                    ? eventBannerImage.secure_url
+                    : DEFAULTBANNERIMAGE
+                }
                 alt={`event-banner ${eventBannerImage.public_id}`}
                 display="inline-block"
                 h="100%"

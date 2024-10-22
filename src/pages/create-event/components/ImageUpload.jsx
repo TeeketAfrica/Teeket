@@ -27,6 +27,7 @@ import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
 import Reload from "../../../assets/icon/Reload.svg";
 import CloudUpload from "../../../assets/icon/CloudUpload.svg";
 import { mediaApi } from "../../../utils/api";
+import { IMAGEDIMENSION, IMAGESIZE } from "../../../utils/constants";
 
 const ImageUpload = ({ handleSetImage }) => {
   const { register } = useForm();
@@ -42,19 +43,45 @@ const ImageUpload = ({ handleSetImage }) => {
     },
   });
 
-  const handleImageChange = async (e) => {
-    let selectedImage =
-      e.target.files && e.target.files.length > 0 ? e.target.files[0] : null;
+  const handleImageChange = async (imageFile) => {
+    let selectedImage = imageFile || null;
+
+    if (!isValidImage(selectedImage)) {
+      setImageUploadState({
+        default: false,
+        loading: false,
+        error: {
+          state: true,
+          message:
+            "The file you uploaded is not recognized as a valid image format. Please use formats like JPEG, PNG, or GIF.",
+        },
+      });
+      return;
+    }
+
+    if (selectedImage && selectedImage.size > IMAGESIZE.size) {
+      setImageUploadState({
+        default: false,
+        loading: false,
+        error: {
+          state: true,
+          message: `Image exceeds the maximum file size of ${
+            IMAGESIZE.size / 1024
+          }${IMAGESIZE.unit}`,
+        },
+      });
+      return;
+    }
 
     if (selectedImage) {
       try {
         const dimensions = await getImageDimensions(selectedImage);
+
         setImageData(selectedImage);
 
         if (
-          isValidImage(selectedImage) &&
-          dimensions.width <= 2160 &&
-          dimensions.height <= 1080
+          dimensions.width <= IMAGEDIMENSION.width &&
+          dimensions.height <= IMAGEDIMENSION.height
         ) {
           setImageUploadState({
             default: false,
@@ -75,8 +102,7 @@ const ImageUpload = ({ handleSetImage }) => {
             loading: false,
             error: {
               state: true,
-              message:
-                "Invalid image type or dimensions exceed the maximum size (800x400)",
+              message: `Image exceed the recommended size (2160x1080)`,
             },
           });
         }
@@ -86,10 +112,9 @@ const ImageUpload = ({ handleSetImage }) => {
           loading: false,
           error: {
             state: true,
-            message: "",
+            message: "Error uploading image, try again",
           },
         });
-        console.error("Error reading or converting the selected image:", error);
       } finally {
         fileInputRef.current.value = "";
       }
@@ -99,7 +124,10 @@ const ImageUpload = ({ handleSetImage }) => {
   const handleDrop = async (e) => {
     e.preventDefault();
 
-    //TODO: Drag and drop functionality
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      handleImageChange(droppedFile);
+    }
   };
 
   return (
@@ -150,7 +178,8 @@ const ImageUpload = ({ handleSetImage }) => {
                     </Text>
                   </Text>
                   <Text fontSize="xs" color="gray.400">
-                    SVG, PNG, JPG or GIF (max. 800x400px)
+                    SVG, PNG, JPG or GIF (max. {IMAGEDIMENSION.width}x
+                    {IMAGEDIMENSION.height})
                   </Text>
                 </Box>
               </VStack>
@@ -226,7 +255,7 @@ const ImageUpload = ({ handleSetImage }) => {
                       marginBottom="2">
                       Failed to upload
                     </Text>
-                    <Text fontWeight="normal" fontSize="xs">
+                    <Text fontWeight="normal" fontSize="xs" maxWidth="60ch">
                       {imageUploadState.error.message &&
                         imageUploadState.error.message}
                     </Text>
@@ -258,13 +287,10 @@ const ImageUpload = ({ handleSetImage }) => {
         id="upload"
         type="file"
         accept="image/*"
-        {...register("upload", {
-          required: "This is required",
-        })}
         size="lg"
         border="none"
         display="none"
-        onChange={handleImageChange}
+        onChange={(e) => handleImageChange(e.target.files[0])}
         ref={fileInputRef}
       />
       <UnorderedList
@@ -272,8 +298,14 @@ const ImageUpload = ({ handleSetImage }) => {
         fontSize="xs"
         marginLeft="18px"
         marginTop="2">
-        <ListItem>Recommended image size: 2160 x 1080px</ListItem>
-        <ListItem>Maximum file size: 10MB</ListItem>
+        <ListItem>
+          Recommended image size: {IMAGEDIMENSION.width} x
+          {IMAGEDIMENSION.height}
+        </ListItem>
+        <ListItem>
+          Maximum file size: {IMAGESIZE.size / 1024}
+          {IMAGESIZE.unit}
+        </ListItem>
         <ListItem>Supported image files: JPEG or PNG</ListItem>
       </UnorderedList>
 
