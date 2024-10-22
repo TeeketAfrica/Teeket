@@ -35,9 +35,9 @@ import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
 import { eventFilter, eventTableHead } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { Link, useNavigate } from "react-router-dom";
-import teeketApi from "../../../../api/teeketApi";
 import { formatDate } from "../../../../utils/formatDate";
 import ActionBtn from "../../../../assets/icon/ActionBtn.svg";
+import { teeketApi } from "../../../../utils/api";
 
 const EventTable = ({ setData }) => {
   const [statusFilter, setStatusFilter] = useState("");

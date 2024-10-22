@@ -21,7 +21,7 @@ const RenderFormControl = (formik, formData) => {
           type={formData.type}
           placeholder={formData.placeholder}
           size="lg"
-          value={formik.values.name}
+          value={formik.values[formData.name]}
           onChange={formik.handleChange}
         />
       ) : (
@@ -31,6 +31,8 @@ const RenderFormControl = (formik, formData) => {
           placeholder={formData.placeholder}
           size="sm"
           rows="7"
+          value={formik.values[formData.name]}
+          onChange={formik.handleChange}
         />
       )}
       <FormErrorMessage>

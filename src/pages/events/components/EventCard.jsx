@@ -12,6 +12,7 @@ import { formatDateAndTime } from "../../../utils/utils";
 import EventMap from "../../../assets/icon/EventMap.svg";
 import Cash from "../../../assets/icon/Cash.svg";
 import Calendar from "../../../assets/icon/calendar-alt.svg";
+import { useStorage } from "../../../utils/storage";
 
 const EventCard = ({
   eventId,
@@ -26,7 +27,10 @@ const EventCard = ({
   eventDate,
 }) => {
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("TOKEN");
+  const { getAccessToken } = useStorage();
+
+  const token = getAccessToken();
+
   const startDate = formatDateAndTime(eventDate.startDate, "short");
   const endDate = formatDateAndTime(eventDate.endDate, "short");
 
@@ -55,7 +59,8 @@ const EventCard = ({
         p={3}
         border="1px solid"
         borderColor="gray.300"
-        borderRadius={16}>
+        borderRadius={16}
+      >
         <Box height="140px" width="100%" borderRadius={8} overflow="hidden">
           <Image
             src={eventImage}
@@ -72,13 +77,15 @@ const EventCard = ({
               py="2px"
               px={2}
               w="fit-content"
-              borderRadius={16}>
+              borderRadius={16}
+            >
               <Image src={eventTagIcon} />
               <Text
                 fontSize={12}
                 fontWeight={500}
                 color="gray.700"
-                textTransform="capitalize">
+                textTransform="capitalize"
+              >
                 {eventTag}
               </Text>
             </HStack>
@@ -109,7 +116,8 @@ const EventCard = ({
                 bgColor="green.100"
                 border="1px solid"
                 borderColor="green.300"
-                borderRadius={8}>
+                borderRadius={8}
+              >
                 <Image src={Cash} alt="event price" />
                 <Text color="gray.800" fontSize={12}>
                   {eventPrice > 0 ? `Starts at $${eventPrice}` : "Free event"}
@@ -121,7 +129,8 @@ const EventCard = ({
                 bgColor="gray.200"
                 border="1px solid"
                 borderColor="gray.300"
-                borderRadius={8}>
+                borderRadius={8}
+              >
                 <Image src={Calendar} alt="event date" />
                 <Text color="gray.800" fontSize={12}>
                   {formatedDate}

@@ -1,5 +1,5 @@
 import { Box, Button, HStack, Image, Text, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,24 +9,15 @@ import {
 } from "../../../../features/eventSlice";
 import { TicketTypeBox } from "../TicketTypeBox";
 import CalendarIcon from "../../../../assets/icon/Calendar.svg";
-import { format, parseISO } from "date-fns";
-import { TickCircle } from "iconsax-react";
 import { teeketApi } from "../../../../utils/api";
 
 export const TicketTypeStep = () => {
   const {
     eventData,
     eventDataTickets: { data: eventDataTickets, eventDataLoading },
-    ticketQuantity,
   } = useSelector((state) => state.event);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [date, setDate] = useState("");
-  const [timeRange, setTimeRange] = useState("");
-  const [eventTitle] = useState(eventDataTickets[0]?.event?.title);
-
-  const [isTicketError, setIsTicketError] = useState(false);
 
   useEffect(() => {
     if (!eventData) {
@@ -52,45 +43,20 @@ export const TicketTypeStep = () => {
     fetchEvent();
   }, [dispatch, eventData, navigate]);
 
-  useEffect(() => {
-    if (eventData) {
-      const startDate = parseISO(eventData.start_date);
-      const endDate = parseISO(eventData.end_date);
-      const formattedDate = format(endDate, "EEEE, do MMMM yyyy");
-      const formattedStartTime = format(startDate, "h:mma").toLowerCase();
-      const formattedEndTime = format(endDate, "h:mma").toLowerCase();
-
-      setDate(formattedDate);
-      setTimeRange(`${formattedStartTime} - ${formattedEndTime}`);
-    }
-
-    if (isTicketError) {
-      if (ticketQuantity > 0) {
-        setIsTicketError(false);
-      }
-    }
-  }, [eventData, isTicketError, ticketQuantity]);
-
   return (
     <>
       <Box>
-        <Text
-          color="gray.800"
-          fontWeight={700}
-          fontSize={36}
-          maxW="700px"
-          pb={5}
-        >
-          {eventTitle}
+        <Text color="gray.800" fontWeight={700} fontSize={36} maxW="700px">
+          The vintage art event africa
         </Text>
         <HStack>
           <Image src={CalendarIcon} />
           <Box>
             <Text color="gray.800" fontWeight={600} fontSize={16} maxW="700px">
-              {date}
+              Tuesday, 23rd January
             </Text>
             <Text color="gray.600" fontSize={14} maxW="700px">
-              {timeRange}
+              8:00pm - 10pm
             </Text>
           </Box>
         </HStack>
@@ -111,32 +77,9 @@ export const TicketTypeStep = () => {
         padding={4}
         fontWeight={600}
         w="max"
-        variant="primary"
-        onClick={() => {
-          if (ticketQuantity === 0) {
-            setIsTicketError(true);
-          }
-        }}
       >
         Continue
       </Button>
-      {isTicketError && (
-        <HStack spacing={4}>
-          <Box
-            bg="#FBEAE9"
-            padding="6px"
-            borderRadius="16px"
-            borderWidth="1px"
-            borderStyle="solid"
-            borderColor="#F2BCBA"
-          >
-            <TickCircle size="24" color="#CB1A14" variant="Bold" />
-          </Box>
-          <Text fontSize={14} color="gray.600">
-            You have to pick a ticket before checking out
-          </Text>
-        </HStack>
-      )}
     </>
   );
 };

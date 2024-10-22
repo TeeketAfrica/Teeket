@@ -14,9 +14,12 @@ import {
   VendorPage,
 } from "../pages";
 import RouteGuard from "./routeGuard";
+import { useStorage } from "../utils/storage";
 
 const AuthenticatedRoutes = () => {
-  const isAuthenticated = !!sessionStorage.getItem("TOKEN");
+  const { getAccessToken } = useStorage();
+
+  const isAuthenticated = !!getAccessToken();
 
   return (
     <RouteGuard isAllowed={isAuthenticated}>

@@ -3,13 +3,11 @@ import { Link } from "react-router-dom";
 import { Box, Heading, Text } from "@chakra-ui/layout";
 import { useTheme } from "@chakra-ui/system";
 import { Button } from "@chakra-ui/react";
-
 import AuthLayout from "../../../components/auth/AuthLayout";
 import AuthHeader from "../../../components/auth/AuthHeader";
 import PasswordRecoveryForm from "./components/PasswordRecoveryForm";
-
 import { maskEmail } from "../../../utils/utils";
-import authApi from "../../../api/authApi";
+import { authApi } from "../../../utils/api";
 
 const PasswordRecoveryPage = () => {
   const theme = useTheme();

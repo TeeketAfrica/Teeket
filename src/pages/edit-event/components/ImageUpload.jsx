@@ -17,11 +17,13 @@ import {
   UnorderedList,
   HStack,
 } from "@chakra-ui/react";
+
 import {
   getImageDimensions,
   isValidImage,
   readAsBinary,
 } from "../../../utils/utils";
+
 import Document from "../../../assets/icon/Document.svg";
 import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
 import Reload from "../../../assets/icon/Reload.svg";
@@ -116,14 +118,16 @@ const ImageUpload = ({ handleSetImage }) => {
         borderRadius="12px"
         overflow="hidden"
         onDrop={handleDrop}
-        onDragOver={(e) => e.preventDefault()}>
+        onDragOver={(e) => e.preventDefault()}
+      >
         {imageUploadState.default && (
           <FormLabel htmlFor="upload" m="0" cursor="pointer">
             <VStack
               flexDirection="column"
               justifyContent="center"
               gap="5"
-              w="100%">
+              w="100%"
+            >
               <VStack justifyContent="center">
                 <Box
                   display="inline-flex"
@@ -132,7 +136,8 @@ const ImageUpload = ({ handleSetImage }) => {
                   w="56px"
                   h="56px"
                   borderRadius="full"
-                  bg="gray.200">
+                  bg="gray.200"
+                >
                   <Image src={CloudUpload} alt="icon" />
                 </Box>
                 <Box mt="4">
@@ -142,7 +147,8 @@ const ImageUpload = ({ handleSetImage }) => {
                       fontSize="md"
                       fontWeight="semibold"
                       color="green.400"
-                      cursor="pointer">
+                      cursor="pointer"
+                    >
                       Click to upload
                     </Text>{" "}
                     <Text as="span" fontSize="sm" color="gray.600">
@@ -173,7 +179,8 @@ const ImageUpload = ({ handleSetImage }) => {
             justifyContent="center"
             backgroundColor="gray.200"
             width="100%"
-            height="100%">
+            height="100%"
+          >
             {imageUploadState.loading && (
               <>
                 <Box position="relative" marginBottom="2">
@@ -187,7 +194,8 @@ const ImageUpload = ({ handleSetImage }) => {
                     color="gray.100"
                     width="100%"
                     backgroundColor="#C548F1"
-                    fontSize="2">
+                    fontSize="2"
+                  >
                     <Text>JPG</Text>
                   </Box>
                 </Box>
@@ -195,7 +203,8 @@ const ImageUpload = ({ handleSetImage }) => {
                   justifyContent="center"
                   width="100%"
                   marginTop="2"
-                  marginBottom="4">
+                  marginBottom="4"
+                >
                   <Spinner
                     thickness="4px"
                     speed="0.65s"
@@ -223,7 +232,8 @@ const ImageUpload = ({ handleSetImage }) => {
                       fontWeight="semibold"
                       fontSize="sm"
                       marginTop="4"
-                      marginBottom="2">
+                      marginBottom="2"
+                    >
                       Failed to upload
                     </Text>
                     <Text fontWeight="normal" fontSize="xs">
@@ -244,7 +254,8 @@ const ImageUpload = ({ handleSetImage }) => {
                           loading: false,
                           error: { state: false, message: "" },
                         })
-                      }>
+                      }
+                    >
                       Try again
                     </Button>
                   </Box>
@@ -271,7 +282,8 @@ const ImageUpload = ({ handleSetImage }) => {
         color="gray.600 "
         fontSize="xs"
         marginLeft="18px"
-        marginTop="2">
+        marginTop="2"
+      >
         <ListItem>Recommended image size: 2160 x 1080px</ListItem>
         <ListItem>Maximum file size: 10MB</ListItem>
         <ListItem>Supported image files: JPEG or PNG</ListItem>

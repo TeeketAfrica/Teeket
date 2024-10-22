@@ -35,7 +35,7 @@ import InstagramIcon from "../../assets/icon/InstagramIcon.svg";
 import LinkedInIcon from "../../assets/icon/LinkedInIcon.svg";
 import { useState } from "react";
 import SuccessModal from "./SuccessModal";
-import authApi from "../../api/authApi";
+import { authApi } from "../../utils/api";
 
 export const Index = () => {
   // const targetDate = new Date("2024-04-31T23:59:59");
@@ -111,8 +111,9 @@ export const Index = () => {
                 justifyContent="space-between"
                 alignItems="center"
                 px={5}
-                w="full">
-                <Link href="/">
+                w="full"
+              >
+                <Link to="/">
                   <Image w="full" src={BrandLogo} alt="logo" />
                 </Link>
                 <HStack spacing={6}>
@@ -152,14 +153,16 @@ export const Index = () => {
                 css={{
                   msOverflowStyle: "none",
                   scrollbarWidth: "none",
-                }}>
+                }}
+              >
                 <HStack
                   width="800px"
                   height="100%"
                   gap="7"
                   justifyContent="center"
                   textAlign="center"
-                  alignItems="flex-end">
+                  alignItems="flex-end"
+                >
                   <Masonry
                     image={Masonry8}
                     height="128px"
@@ -206,14 +209,16 @@ export const Index = () => {
               maxWidth="18ch"
               mx="auto"
               marginTop="5"
-              textAlign="center">
+              textAlign="center"
+            >
               Endless events{" "}
               <Text
                 as="span"
                 fontStyle="normal"
                 fontSize={{ md: "7xl" }}
                 lineHeight={{ md: "10" }}
-                color="gray.800">
+                color="gray.800"
+              >
                 at your fingertips. No more queues!
               </Text>
             </Text>
@@ -225,7 +230,8 @@ export const Index = () => {
               textAlign="center"
               maxWidth="54ch"
               marginX="auto"
-              marginY="6">
+              marginY="6"
+            >
               There&apos;s something for everyone. We&apos;re connecting people
               through shared experiences and transforming the entertainment
               industry. Join the wait-list to be the first to experience it all.
@@ -241,7 +247,8 @@ export const Index = () => {
                   _hover={{
                     borderColor: "gray.500",
                     boxShadow: "0px 0px 1px 4px #CBD1CB",
-                  }}>
+                  }}
+                >
                   <Input
                     type="email"
                     border="none"
@@ -263,7 +270,8 @@ export const Index = () => {
                     borderRadius={6}
                     width="35%"
                     size="lg"
-                    onClick={handleWaitList}>
+                    onClick={handleWaitList}
+                  >
                     Join wait list
                   </Button>
                 </Flex>
@@ -285,7 +293,8 @@ export const Index = () => {
               gap="32px"
               py="28px"
               px="32px"
-              my={10}>
+              my={10}
+            >
               <HStack spacing={6}>
                 {socialLinks.map((link, i) => (
                   <Link key={i} href={link.link} target="_blank">

@@ -13,7 +13,7 @@ import {
   setEventDetail,
 } from "../../features/eventSlice";
 import { useModal } from "../../context/ModalContext";
-import teeketApi from "../../api/teeketApi";
+import { teeketApi } from "../../utils/api";
 
 const DeleteTicketModal = () => {
   const { modalState, closeModal } = useModal();

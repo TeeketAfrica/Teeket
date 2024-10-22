@@ -1,8 +1,11 @@
 import { Navigate } from "react-router-dom";
+import { useStorage } from "../utils/storage";
 
 const PrivateRoute = ({ children }) => {
+  const { getAccessToken } = useStorage();
+
   try {
-    const token = sessionStorage.getItem("TOKEN");
+    const token = getAccessToken();
     if (token) {
       return children;
     } else {
