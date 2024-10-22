@@ -72,7 +72,7 @@ const PublishEvent = ({ formik }) => {
               <Image
                 src={
                   eventBannerImage
-                    ? eventBannerImage.secure_url
+                    ? eventBannerImage.secure_url || eventBannerImage
                     : DEFAULTBANNERIMAGE
                 }
                 alt={`event-banner ${eventBannerImage.public_id}`}

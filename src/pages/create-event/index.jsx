@@ -216,7 +216,7 @@ const VendorPage = () => {
           end_date: `${data.eventEndDate}T${data.eventEndTime}`,
           description: data.eventAbout,
           banner_image: eventBannerImage
-            ? eventBannerImage
+            ? eventBannerImage.secure_url || eventBannerImage
             : DEFAULTBANNERIMAGE,
           hosting_site: data.eventHosting,
           event_location:
