@@ -8,13 +8,21 @@ import {
   HStack,
   Input,
   InputGroup,
+
+  Stack,
   Text,
   VStack,
+  useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm, useFormState } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import * as z from "zod";
+import { setActiveUser } from "../../../features/activeUserSlice";
+import { teeketApi } from "../../../utils/api";
+import EmailInput from "../../auth/components/EmailInput";
 
 const formSchema = z.object({
   firstName: z
@@ -28,6 +36,21 @@ const formSchema = z.object({
 });
 
 export const AccountName = () => {
+  const user = useSelector((state) => state.activeUser);
+  const [md] = useMediaQuery("(min-width: 768px)");
+  const dispatch = useDispatch();
+
+
+  const defaultVaules = user
+    ? {
+        firstName: user?.first_name ?? "",
+        lastName: user?.last_name ?? "",
+      }
+    : {
+        firstName: "",
+        lastName: "",
+      };
+
   const {
     register,
     handleSubmit,
@@ -35,33 +58,60 @@ export const AccountName = () => {
     control,
   } = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: defaultVaules,
   });
 
   const { isDirty } = useFormState({ control: control });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (values) => {
+    try {
+      const response = await teeketApi.patch("/user/profile", {
+        first_name: values.firstName,
+        last_name: values.lastName,
+        profile_image: user?.profile_image ?? "",
+      });
+
+      dispatch(setActiveUser(response));
+      reset();
+      toast({
+        title: "Account Updated.",
+        description: "You have successfully updated your account.",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+        position: "top",
+      });
+      if (!response) {
+        throw new Error("Failed to update password.");
+      }
+    } catch (error) {
+      console.error("Error updating account:", error);
+    }
   };
 
   return (
     <VStack w="100%" alignItems="start" justifyContent="start">
-      <Text fontSize="2xl" fontWeight={600}>
+      <Text fontSize={md ? "2xl" : "xl"} fontWeight={600}>
         Account Name
       </Text>
-      <HStack
+      <Stack
         as="form"
         onSubmit={handleSubmit(onSubmit)}
         justifyContent="space-between"
         w="100%"
-        alignItems="center"
+        alignItems={md ? "center" : "start"}
+        flexDir={md ? "row" : "column"}
       >
-        <Grid templateColumns="repeat(6, 1fr)" gap={6}>
+        <Grid
+          templateColumns={md ? "repeat(6, 1fr)" : "repeat(1, 1fr)"}
+          gap={6}
+        >
           <GridItem colSpan={3}>
             <FormControl isInvalid={errors.firstName}>
               <FormLabel>First Name</FormLabel>
               <InputGroup size="md">
                 <Input
-                  placeholder="First Name"
+                  placeholder={user?.first_name ?? "First Name"}
                   {...register("firstName")}
                   w="375px"
                   isInvalid={!!errors.firstName}
@@ -80,7 +130,7 @@ export const AccountName = () => {
               <FormLabel>Last Name</FormLabel>
               <InputGroup size="md">
                 <Input
-                  placeholder="Last Name"
+                  placeholder={user?.first_name ?? "Last Name"}
                   {...register("lastName")}
                   w="375px"
                   isInvalid={!!errors.lastName}
@@ -104,10 +154,13 @@ export const AccountName = () => {
           fontWeight={600}
           lineHeight={0}
           disabled={!isDirty}
+         
         >
           Save Change
         </Button>
-      </HStack>
+
+        
+      </Stack>
     </VStack>
   );
 };

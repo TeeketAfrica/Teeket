@@ -9,14 +9,21 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Stack,
   Text,
   VStack,
+  useMediaQuery,
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
+import { useSelector } from "react-redux";
 import * as z from "zod";
 import EyeOpen from "../../../assets/icon/EyeOpen.svg";
+import { authApi, teeketApi } from "../../../utils/api";
+import useStorage from "../../../utils/storage";
 
 const formSchema = z
   .object({
@@ -38,41 +45,79 @@ const formSchema = z
       required_error: "Confirm Password cannot be empty",
     }),
   })
-  .refine((val, ctx) => val === ctx.parent.password, {
+  .refine((val) => val.password === val.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
 export const Password = () => {
+  const [md] = useMediaQuery("(min-width: 768px)");
   const [show, setShow] = useState(false);
+  const toast = useToast();
+  const { getAccessToken } = useStorage();
+  const access_token = getAccessToken();
+  const user = useSelector((state) => state.activeUser);
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     control,
+    reset,
   } = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   const { isDirty } = useFormState({ control: control });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const { password } = data;
+
+    try {
+      const response = await authApi.post("/reset_password", {
+        uidb64: user?.id,
+        new_password: JSON.stringify({ password }),
+        token: access_token,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update password.");
+      }
+      reset();
+      toast({
+        title: "Password Updated.",
+        description: "You have successfully updated your password.",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+        position: "top",
+      });
+    } catch (error) {
+      console.error("Error updating password:", error);
+    }
   };
 
   return (
     <VStack w="100%" alignItems="flex-start">
-      <Text fontSize="2xl" fontWeight={600}>
+      <Text fontSize={md ? "2xl" : "xl"} fontWeight={600}>
         Change Password
       </Text>
-      <HStack
+      <Stack
         as="form"
         onSubmit={handleSubmit(onSubmit)}
         justifyContent="space-between"
         w="100%"
-        alignItems="center"
+        alignItems={md ? "center" : "start"}
+        flexDir={md ? "row" : "column"}
       >
-        <Grid templateColumns="repeat(6, 1fr)" gap={6}>
+        <Grid
+          templateColumns={md ? "repeat(6, 1fr)" : "repeat(1, 1fr)"}
+          gap={6}
+        >
           <GridItem colSpan={3}>
             <FormControl isInvalid={errors.password}>
               <FormLabel>Password</FormLabel>
@@ -105,7 +150,7 @@ export const Password = () => {
                 <Input
                   pr="4.5rem"
                   w="375px"
-                  type={show ? "text" : "confirmPassword"}
+                  type={show ? "text" : "password"}
                   {...register("confirmPassword")}
                   isInvalid={!!errors.confirmPassword}
                   placeholder="Confirm Password"
@@ -132,11 +177,21 @@ export const Password = () => {
           color="#fff"
           fontWeight={600}
           lineHeight={0}
-          disabled={!isDirty}
+          disabled={!isDirty || isSubmitting}
         >
-          Save Change
+          {isSubmitting ? (
+            <>
+              <Loader2
+                style={{ height: "1rem", width: "1rem", marginRight: "0.5rem" }}
+                className="animate-spin"
+              />
+              Saving Change...
+            </>
+          ) : (
+            "Save Change"
+          )}
         </Button>
-      </HStack>
+      </Stack>
     </VStack>
   );
 };

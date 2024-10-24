@@ -4,9 +4,10 @@ import {
   Divider,
   HStack,
   Text,
-  useToast,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ListSummary from "../../../assets/icon/ListSummary.svg";
 import {
@@ -14,7 +15,6 @@ import {
   selectPriceDetails,
   setIsBookedTicket,
 } from "../../../features/eventSlice";
-import { useState } from "react";
 import { teeketApi } from "../../../utils/api";
 
 export const EventGetTicketSummaryBox = () => {
@@ -45,7 +45,7 @@ export const EventGetTicketSummaryBox = () => {
         }
       );
 
-      if (response && response.status == 200) {
+      if (response && response.status === 200) {
         toast({
           title: "Booking Successful.",
           description: "You have successfully booked your ticket.",
@@ -57,7 +57,6 @@ export const EventGetTicketSummaryBox = () => {
         dispatch(changeTicketStep(ticketStep + 1));
         dispatch(setIsBookedTicket(true));
       }
-      console.log(response);
     } catch (error) {
       console.log("Failed to create ticket:", error.message);
     } finally {

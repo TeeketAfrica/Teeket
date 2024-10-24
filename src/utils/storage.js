@@ -47,7 +47,7 @@ export const useStorage = () => {
       if (encryptedValue === null) {
         throw new Error("Encryption failed");
       }
-      Cookies.set(token, encryptedValue, options);
+      Cookies.set(token, value, options);
     } catch (error) {
       console.error(`Error setting cookie ${token}:`, error);
     }
@@ -59,7 +59,8 @@ export const useStorage = () => {
       if (!encryptedValue) {
         return null;
       }
-      return decrypt(encryptedValue);
+      // return decrypt(encryptedValue);
+      return Cookies.get(token);
     } catch (error) {
       console.error(`Error getting cookie ${token}:`, error);
       return null;
