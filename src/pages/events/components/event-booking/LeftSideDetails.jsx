@@ -17,7 +17,7 @@ const LeftSideDetails = ({ event }) => {
         <Box>
           <EventBadge
             eventBadgeInfo={{
-              badgeTitle: `${event.status.split("_").join(" ")}`,
+              badgeTitle: `${event.status?.split("_").join(" ")}`,
               state: "trending",
               icon: LightingIcon,
             }}

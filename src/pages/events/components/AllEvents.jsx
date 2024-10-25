@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
 import {
   Box,
   Button,
@@ -9,14 +7,16 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import EventCard from "./EventCard";
-import useCategorizeEvents from "../../../hooks/useCategorizeEvents";
-import Avatars from "../../../assets/img/Avatars.png";
-import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
+import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
+import Avatars from "../../../assets/img/Avatars.png";
 import EmptyState from "../../../components/ui/EmptyState";
 import { SearchContext } from "../../../context/SearchContext";
-import { useNavigate } from "react-router-dom";
+import useCategorizeEvents from "../../../hooks/useCategorizeEvents";
+import EventCard from "./EventCard";
 
 const AllEvents = ({ events, type }) => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const AllEvents = ({ events, type }) => {
             eventId={event.id}
             eventImage={event.banner_image}
             eventTitle={event.title}
-            eventTag={event.status.split("_").join(" ")}
+            eventTag={event.status?.split("_").join(" ")}
             eventTagIcon={EventTagIcon}
             eventOrganizer={Avatars}
             eventCommunity={`By ${event.organizer}`}

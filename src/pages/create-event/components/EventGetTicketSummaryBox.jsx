@@ -82,7 +82,7 @@ export const EventGetTicketSummaryBox = () => {
         bgImage={eventData?.banner_image}
         height="148px"
         bgRepeat="no-repeat"
-        bgSize="contain"
+        bgSize="cover"
         bgPosition="center"
         w="100%"
         display="flex"
@@ -171,46 +171,43 @@ export const EventGetTicketSummaryBox = () => {
           </VStack>
         )}
       </Box>
-      {eventTicketBooking && (
-        <>
-          {ticketStep === 2 ? (
-            <>
-              <Button
-                // Implement logic for checkout here
-                // onClick={() => {}}
-                isDisabled={isLoading}
-                variant="primary"
-                w="100%"
-                padding={4}
-              >
-                Checkout
-              </Button>
-
-              <Button
-                onClick={() => {
-                  dispatch(changeTicketStep(ticketStep - 1));
-                }}
-                isDisabled={isLoading}
-                variant="secondary"
-                w="100%"
-                padding={4}
-              >
-                Back
-              </Button>
-            </>
-          ) : (
+      {eventTicketBooking &&
+        (ticketStep === 2 ? (
+          <>
             <Button
-              onClick={handleBookingTickets}
+              // Implement logic for checkout here
+              // onClick={() => {}}
               isDisabled={isLoading}
               variant="primary"
               w="100%"
               padding={4}
             >
-              Continue
+              Checkout
             </Button>
-          )}
-        </>
-      )}
+
+            <Button
+              onClick={() => {
+                dispatch(changeTicketStep(ticketStep - 1));
+              }}
+              isDisabled={isLoading}
+              variant="secondary"
+              w="100%"
+              padding={4}
+            >
+              Back
+            </Button>
+          </>
+        ) : (
+          <Button
+            onClick={handleBookingTickets}
+            isDisabled={isLoading}
+            variant="primary"
+            w="100%"
+            padding={4}
+          >
+            Continue
+          </Button>
+        ))}
     </VStack>
   );
 };
