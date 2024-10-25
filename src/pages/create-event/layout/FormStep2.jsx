@@ -1,31 +1,31 @@
-import { useEffect, useState } from "react";
 import {
-  Stack,
-  HStack,
-  VStack,
   Box,
   Button,
-  Image,
-  Text,
   FormControl,
-  Textarea,
+  FormErrorMessage,
   FormLabel,
+  HStack,
+  Image,
   Input,
+  InputGroup,
+  InputLeftElement,
   Radio,
   RadioGroup,
-  InputLeftElement,
-  InputGroup,
-  FormErrorMessage,
+  Stack,
+  Text,
+  Textarea,
+  VStack,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import MapIcon from "../../../assets/icon/Map.svg";
+import RefreshIcon from "../../../assets/icon/Refresh.svg";
 import {
   selectEventDetails,
   setEventDetail,
 } from "../../../features/eventSlice";
 import FormLayout from "../components/FormLayout";
 import ImageUpload from "../components/ImageUpload";
-import Refresh from "../../../assets/icon/Refresh.svg";
-import Map from "../../../assets/icon/Map.svg";
 
 const FormStep2 = ({ formik }) => {
   const dispatch = useDispatch();
@@ -57,31 +57,35 @@ const FormStep2 = ({ formik }) => {
   return (
     <FormLayout
       title="Nigeria Anime Festival"
-      description="Provide additional context about what this event is about.">
+      description="Provide additional context about what this event is about."
+    >
       <Stack maxW="600px" flexDirection="column" gap="8">
         {/* Banner Image */}
         {imageData?.secure_url || eventBannerImage ? (
           <Box>
             <Box
               key={imageData.public_id || id}
-              h="264px"
-              w="600px"
+              h="400px"
+              maxW="600px"
               borderRadius="12px"
               overflow="hidden"
-              mb="2">
+              mb="2"
+            >
               <Image
                 src={imageData.secure_url || eventBannerImage}
                 alt={`event-banner ${imageData.public_id || id}`}
                 objectFit="cover"
-                w="100%"
                 h="100%"
+                w="100%"
+                objectPosition="top"
               />
             </Box>
             <Button
-              onClick={() => setImageData(null)}
-              leftIcon={<Refresh />}
+              onClick={() => setImageData("")}
+              leftIcon={<Image src={Refresh} alt="icon" />}
               variant="secondary"
-              size="sm">
+              size="sm"
+            >
               Change Image
             </Button>
           </Box>
@@ -92,7 +96,8 @@ const FormStep2 = ({ formik }) => {
         <VStack alignItems="flex-start" gap="8">
           {/* About Event */}
           <FormControl
-            isInvalid={formik.touched.eventAbout && !!formik.errors.eventAbout}>
+            isInvalid={formik.touched.eventAbout && !!formik.errors.eventAbout}
+          >
             <FormLabel htmlFor="eventAbout">About the event</FormLabel>
             <Text fontWeight="normal" color="gray.500">
               Give a detailed description of what this event is about
@@ -117,18 +122,20 @@ const FormStep2 = ({ formik }) => {
           <FormControl
             isInvalid={
               formik.touched.eventHosting && !!formik.errors.eventHosting
-            }>
+            }
+          >
             <FormLabel>How will this event be hosted</FormLabel>
 
             <RadioGroup
               name="eventHosting"
               value={formik.values.eventHosting}
               onChange={(value) => {
-                formik.setFieldValue("eventHosting", value),
-                  handleInputChange("eventHosting", value);
+                formik.setFieldValue("eventHosting", value);
+                handleInputChange("eventHosting", value);
               }}
               onBlur={() => formik.setFieldTouched("eventHosting", true)}
-              marginTop="4">
+              marginTop="4"
+            >
               <HStack spacing="24px">
                 <Radio value="online" size="lg" variant="border">
                   Online event
@@ -149,12 +156,14 @@ const FormStep2 = ({ formik }) => {
                   isInvalid={
                     formik.touched.eventLocation &&
                     !!formik.errors.eventLocation
-                  }>
+                  }
+                >
                   <FormLabel
                     htmlFor="eventLocation"
                     fontSize="sm"
                     fontWeight="medium"
-                    color="gray.800">
+                    color="gray.800"
+                  >
                     Online event link
                   </FormLabel>
                   <Input
@@ -180,17 +189,19 @@ const FormStep2 = ({ formik }) => {
                   isInvalid={
                     formik.touched.eventLocation &&
                     !!formik.errors.eventLocation
-                  }>
+                  }
+                >
                   <FormLabel
                     htmlFor="eventLocation"
                     fontSize="sm"
                     fontWeight="medium"
-                    color="gray.800">
+                    color="gray.800"
+                  >
                     Event location
                   </FormLabel>
                   <InputGroup size="lg">
                     <InputLeftElement pointerEvents="none">
-                      <Map />
+                      <MapIcon />
                     </InputLeftElement>
                     <Input
                       id="eventLocation"

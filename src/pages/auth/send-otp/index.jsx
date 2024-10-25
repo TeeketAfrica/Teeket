@@ -19,6 +19,7 @@ const CreateAccountPage = () => {
   const formatEmail = value && maskEmail(value);
 
   const [otpError, setOtpError] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       otp1: "",
@@ -79,11 +80,12 @@ const CreateAccountPage = () => {
     }
   }, [navigate, setAccessToken, token, value]);
 
-  const handleInputChange = (e) => {
-    if (otpError) {
-      setOtpError(false);
-    }
+  const handleInputChange = (e, idx) => {
     formik.handleChange(e);
+    if (idx < 5) {
+      const nextInput = document.querySelector(`input[name=otp${idx + 2}]`);
+      if (nextInput) nextInput.focus();
+    }
   };
 
   const resendOTP = async () => {
@@ -119,7 +121,7 @@ const CreateAccountPage = () => {
                     maxLength="1"
                     name={field}
                     value={formik.values[field]}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, index)}
                     onBlur={formik.handleBlur}
                     maxWidth="55px"
                     height={{ base: "50px", md: "55px" }}
@@ -127,38 +129,14 @@ const CreateAccountPage = () => {
                     fontSize={{ base: "14px", md: "16px" }}
                     textAlign="center"
                     textTransform="capitalize"
-                    backgroundColor={
-                      otpError
-                        ? "transparent"
-                        : formik.touched[field] && formik.errors[field]
-                        ? "transparent"
-                        : formik.values[field]
-                        ? "transparent"
-                        : "gray.300"
-                    }
-                    borderColor={
-                      otpError
-                        ? "red.400"
-                        : formik.touched[field] && formik.errors[field]
-                        ? "red.400"
-                        : formik.values[field]
-                        ? "gray.300"
-                        : "transparent"
-                    }
+                    backgroundColor={otpError ? "transparent" : "gray.300"}
+                    borderColor={otpError ? "red.500" : "transparent"}
                     _hover={{
-                      backgroundColor: "transparent",
-                      borderColor: otpError
-                        ? "red.400"
-                        : formik.touched[field] && formik.errors[field]
-                        ? "red.500"
-                        : "gray.300",
+                      backgroundColor: otpError ? "transparent" : "gray.300",
                     }}
                     _focus={{
-                      borderColor: otpError
-                        ? "red.400"
-                        : formik.touched[field] && formik.errors[field]
-                        ? "red.500"
-                        : "gray.300",
+                      borderColor: "gray.300",
+                      backgroundColor: "transparent",
                     }}
                   />
                 )
@@ -172,8 +150,7 @@ const CreateAccountPage = () => {
                 fontWeight="semibold"
                 fontSize="sm"
                 cursor="pointer"
-                onClick={resendOTP}
-              >
+                onClick={resendOTP}>
                 {otpError ? "Resend OTP" : "Resend"}
               </Text>
             </Text>

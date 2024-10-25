@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useContext } from "react";
 
 const ModalContext = createContext();
@@ -5,7 +6,7 @@ const ModalContext = createContext();
 export const ModalProvider = ({ children }) => {
   const [modalState, setModalState] = useState({
     isOpen: false,
-    type: "",
+    type: null,
     data: null,
   });
 
@@ -20,7 +21,7 @@ export const ModalProvider = ({ children }) => {
   const closeModal = () => {
     setModalState({
       isOpen: false,
-      type: "",
+      type: null,
       data: null,
     });
   };

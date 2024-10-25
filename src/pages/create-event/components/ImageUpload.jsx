@@ -1,31 +1,32 @@
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
 import {
-  VStack,
+  AbsoluteCenter,
+  Box,
+  Button,
+  Divider,
+  FormControl,
   FormErrorMessage,
   FormLabel,
-  FormControl,
-  Input,
-  Box,
-  Text,
-  Divider,
-  AbsoluteCenter,
-  Button,
-  Spinner,
-  ListItem,
-  UnorderedList,
   HStack,
+  Input,
+  ListItem,
+  Spinner,
+  Text,
+  UnorderedList,
+  VStack,
 } from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import CloudUpload from "../../../assets/icon/CloudUpload.svg";
+import Document from "../../../assets/icon/Document.svg";
+import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
+import Reload from "../../../assets/icon/Reload.svg";
+import { mediaApi } from "../../../utils/api";
+import { IMAGEDIMENSION, IMAGESIZE } from "../../../utils/constants";
 import {
   getImageDimensions,
   isValidImage,
   readAsBinary,
 } from "../../../utils/utils";
-import Document from "../../../assets/icon/Document.svg";
-import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
-import Reload from "../../../assets/icon/Reload.svg";
-import CloudUpload from "../../../assets/icon/CloudUpload.svg";
-import { mediaApi } from "../../../utils/api";
 
 const ImageUpload = ({ handleSetImage }) => {
   const { register } = useForm();
@@ -41,19 +42,45 @@ const ImageUpload = ({ handleSetImage }) => {
     },
   });
 
-  const handleImageChange = async (e) => {
-    let selectedImage =
-      e.target.files && e.target.files.length > 0 ? e.target.files[0] : null;
+  const handleImageChange = async (imageFile) => {
+    const selectedImage = imageFile || null;
+
+    if (!isValidImage(selectedImage)) {
+      setImageUploadState({
+        default: false,
+        loading: false,
+        error: {
+          state: true,
+          message:
+            "The file you uploaded is not recognized as a valid image format. Please use formats like JPEG, PNG, or GIF.",
+        },
+      });
+      return;
+    }
+
+    if (selectedImage && selectedImage.size > IMAGESIZE.size) {
+      setImageUploadState({
+        default: false,
+        loading: false,
+        error: {
+          state: true,
+          message: `Image exceeds the maximum file size of ${
+            IMAGESIZE.size / 1024
+          }${IMAGESIZE.unit}`,
+        },
+      });
+      return;
+    }
 
     if (selectedImage) {
       try {
         const dimensions = await getImageDimensions(selectedImage);
+
         setImageData(selectedImage);
 
         if (
-          isValidImage(selectedImage) &&
-          dimensions.width <= 2160 &&
-          dimensions.height <= 1080
+          dimensions.width <= IMAGEDIMENSION.width &&
+          dimensions.height <= IMAGEDIMENSION.height
         ) {
           setImageUploadState({
             default: false,
@@ -74,8 +101,7 @@ const ImageUpload = ({ handleSetImage }) => {
             loading: false,
             error: {
               state: true,
-              message:
-                "Invalid image type or dimensions exceed the maximum size (800x400)",
+              message: "Image exceed the recommended size (2160x1080)",
             },
           });
         }
@@ -85,10 +111,9 @@ const ImageUpload = ({ handleSetImage }) => {
           loading: false,
           error: {
             state: true,
-            message: "",
+            message: "Error uploading image, try again",
           },
         });
-        console.error("Error reading or converting the selected image:", error);
       } finally {
         fileInputRef.current.value = "";
       }
@@ -98,7 +123,10 @@ const ImageUpload = ({ handleSetImage }) => {
   const handleDrop = async (e) => {
     e.preventDefault();
 
-    //TODO: Drag and drop functionality
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      handleImageChange(droppedFile);
+    }
   };
 
   return (
@@ -135,7 +163,7 @@ const ImageUpload = ({ handleSetImage }) => {
                   borderRadius="full"
                   bg="gray.200"
                 >
-                  <CloudUpload />
+                  <Image src={CloudUpload} alt="icon" />
                 </Box>
                 <Box mt="4">
                   <Text fontWeight="normal">
@@ -153,7 +181,8 @@ const ImageUpload = ({ handleSetImage }) => {
                     </Text>
                   </Text>
                   <Text fontSize="xs" color="gray.400">
-                    SVG, PNG, JPG or GIF (max. 800x400px)
+                    SVG, PNG, JPG or GIF (max. {IMAGEDIMENSION.width}x
+                    {IMAGEDIMENSION.height})
                   </Text>
                 </Box>
               </VStack>
@@ -220,44 +249,42 @@ const ImageUpload = ({ handleSetImage }) => {
             )}
 
             {imageUploadState.error.state && (
-              <>
-                <VStack justifyContent="center" marginBottom="2">
-                  <FileUploadStatus />
+              <VStack justifyContent="center" marginBottom="2">
+                <FileUploadStatus />
 
-                  <Box textAlign="center">
-                    <Text
-                      fontWeight="semibold"
-                      fontSize="sm"
-                      marginTop="4"
-                      marginBottom="2"
-                    >
-                      Failed to upload
-                    </Text>
-                    <Text fontWeight="normal" fontSize="xs">
-                      {imageUploadState.error.message &&
-                        imageUploadState.error.message}
-                    </Text>
-                  </Box>
+                <Box textAlign="center">
+                  <Text
+                    fontWeight="semibold"
+                    fontSize="sm"
+                    marginTop="4"
+                    marginBottom="2"
+                  >
+                    Failed to upload
+                  </Text>
+                  <Text fontWeight="normal" fontSize="xs" maxWidth="60ch">
+                    {imageUploadState.error.message &&
+                      imageUploadState.error.message}
+                  </Text>
+                </Box>
 
-                  <Box marginTop="6">
-                    <Button
-                      leftIcon={<Reload />}
-                      type="button"
-                      h="0"
-                      color="red.400"
-                      onClick={() =>
-                        setImageUploadState({
-                          default: true,
-                          loading: false,
-                          error: { state: false, message: "" },
-                        })
-                      }
-                    >
-                      Try again
-                    </Button>
-                  </Box>
-                </VStack>
-              </>
+                <Box marginTop="6">
+                  <Button
+                    leftIcon={<Reload />}
+                    type="button"
+                    h="0"
+                    color="red.400"
+                    onClick={() =>
+                      setImageUploadState({
+                        default: true,
+                        loading: false,
+                        error: { state: false, message: "" },
+                      })
+                    }
+                  >
+                    Try again
+                  </Button>
+                </Box>
+              </VStack>
             )}
           </VStack>
         )}
@@ -266,13 +293,10 @@ const ImageUpload = ({ handleSetImage }) => {
         id="upload"
         type="file"
         accept="image/*"
-        {...register("upload", {
-          required: "This is required",
-        })}
         size="lg"
         border="none"
         display="none"
-        onChange={handleImageChange}
+        onChange={(e) => handleImageChange(e.target.files[0])}
         ref={fileInputRef}
       />
       <UnorderedList
@@ -281,12 +305,18 @@ const ImageUpload = ({ handleSetImage }) => {
         marginLeft="18px"
         marginTop="2"
       >
-        <ListItem>Recommended image size: 2160 x 1080px</ListItem>
-        <ListItem>Maximum file size: 10MB</ListItem>
+        <ListItem>
+          Recommended image size: {IMAGEDIMENSION.width} x
+          {IMAGEDIMENSION.height}
+        </ListItem>
+        <ListItem>
+          Maximum file size: {IMAGESIZE.size / 1024}
+          {IMAGESIZE.unit}
+        </ListItem>
         <ListItem>Supported image files: JPEG or PNG</ListItem>
       </UnorderedList>
 
-      <FormErrorMessage color="red.500"></FormErrorMessage>
+      <FormErrorMessage color="red.500" />
     </FormControl>
   );
 };

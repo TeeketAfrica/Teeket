@@ -6,6 +6,7 @@ import LinkedInIcon from "../assets/icon/LinkedInIcon.svg";
 export const authBaseUrl = import.meta.env.VITE_REACT_AUTH_BASE_URL;
 export const mediaBaseUrl = import.meta.env.VITE_REACT_MEDIA_BASE_URL;
 export const teeketBaseUrl = import.meta.env.VITE_REACT_TEEKET_BASE_URL;
+export const clientId = import.meta.env.VITE_REACT_GOOGLE_CLIENT_ID;
 export const REFRESH_TOKEN_EXPIRY_SECONDS = 7 * 24 * 60 * 60; // 7 days
 export const ACCESS_TOKEN_EXPIRY_SECONDS = 24 * 60 * 60; // 1 day
 
@@ -38,6 +39,17 @@ import Img7 from "../assets/img/Avatars-6.png";
 import Img8 from "../assets/img/Avatars-7.png";
 import Avatar from "../assets/img/Avatars.png";
 import ActionBtn from "../assets/icon/ActionBtn.svg";
+
+export const DEFAULTBANNERIMAGE = "https://i.postimg.cc/tC8yTCMc/default.png";
+
+export const IMAGESIZE = {
+  size: 400 * 1024, // 400kb
+  unit: "kb",
+};
+export const IMAGEDIMENSION = {
+  height: 1080,
+  width: 2160,
+};
 
 export const eventFilter = [
   {
