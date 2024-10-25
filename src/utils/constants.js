@@ -16,6 +16,17 @@ import Img8 from "../assets/img/Avatars-7.png";
 import Avatar from "../assets/img/Avatars.png";
 import ActionBtn from "../assets/icon/ActionBtn.svg";
 
+export const DEFAULTBANNERIMAGE = "https://i.postimg.cc/tC8yTCMc/default.png";
+
+export const IMAGESIZE = {
+  size: 400 * 1024, // 400kb
+  unit: "kb",
+};
+export const IMAGEDIMENSION = {
+  height: 1080,
+  width: 2160,
+};
+
 export const eventFilter = [
   {
     filter: "All events",

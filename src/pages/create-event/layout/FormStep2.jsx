@@ -68,8 +68,8 @@ const FormStep2 = ({ formik }) => {
           <Box>
             <Box
               key={imageData.public_id || id}
-              h="264px"
-              w="600px"
+              h="400px"
+              maxW="600px"
               borderRadius="12px"
               overflow="hidden"
               mb="2">
@@ -77,12 +77,13 @@ const FormStep2 = ({ formik }) => {
                 src={imageData.secure_url || eventBannerImage}
                 alt={`event-banner ${imageData.public_id || id}`}
                 objectFit="cover"
-                w="100%"
                 h="100%"
+                w="100%"
+                objectPosition="top"
               />
             </Box>
             <Button
-              onClick={() => setImageData(null)}
+              onClick={() => setImageData("")}
               leftIcon={<Image src={Refresh} alt="icon" />}
               variant="secondary"
               size="sm">

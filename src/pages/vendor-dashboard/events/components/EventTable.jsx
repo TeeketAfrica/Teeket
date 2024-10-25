@@ -76,6 +76,7 @@ const EventTable = ({ setData }) => {
           `/events/user?search=${search}&status=${statusFilter}`
         );
         const res = response.data;
+
         setData(res.data);
         setTotalItems(res.total);
         setEventTableData(res.data);
