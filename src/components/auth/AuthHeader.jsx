@@ -1,9 +1,9 @@
+import { Box, Heading, Text } from "@chakra-ui/layout";
+import { HStack } from "@chakra-ui/layout";
+import { Image } from "@chakra-ui/react";
+import { useTheme } from "@chakra-ui/system";
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
-import { Box, Heading, Text } from "@chakra-ui/layout";
-import { Image } from "@chakra-ui/react";
-import { HStack } from "@chakra-ui/layout";
-import { useTheme } from "@chakra-ui/system";
 
 import Logo from "../../assets/img/brandLogo.png";
 
@@ -14,7 +14,8 @@ const AuthHeader = ({ heading, subheading, subheadingLink }) => {
       <HStack
         display={{ base: "flex", lg: "none" }}
         justifyContent="center"
-        marginBottom={8}>
+        marginBottom={8}
+      >
         <Image src={Logo} alt="Brand Logo" width="106px" />
       </HStack>
       <Heading as="h2" fontWeight="bold" textAlign="center" mb={2}>
@@ -26,11 +27,15 @@ const AuthHeader = ({ heading, subheading, subheadingLink }) => {
           as="span"
           color={theme.colors.gray[700]}
           fontWeight="semibold"
-          fontSize="sm">
+          fontSize="sm"
+        >
           <Link
             to={`${
-              subheadingLink == "login" ? "/auth/login" : "/auth/create-account"
-            }`}>
+              subheadingLink === "login"
+                ? "/auth/login"
+                : "/auth/create-account"
+            }`}
+          >
             <Text as="span" textTransform="capitalize">
               {subheadingLink}
             </Text>

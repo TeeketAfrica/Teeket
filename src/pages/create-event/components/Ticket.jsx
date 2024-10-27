@@ -1,5 +1,4 @@
-import { Box, Button, Text, Image } from "@chakra-ui/react";
-
+import { Box, Button, Text } from "@chakra-ui/react";
 import Illustration from "../../../assets/icon/Illustration.svg";
 
 const Ticket = ({ data, handleOnclick }) => {
@@ -34,12 +33,12 @@ const Ticket = ({ data, handleOnclick }) => {
               {data.ticketQuantity} {data.ticketName} tickets
             </Text>
             <Text fontSize="5xl" fontWeight="bold">
-              ${parseInt(data.ticketPrice)}
+              ${Number.parseInt(data.ticketPrice)}
             </Text>
           </Box>
         </Box>
         <Box position="absolute" right="11px" top="10px">
-          <Image src={Illustration} alt="icon" />
+          <Illustration />
         </Box>
       </Box>
     </Box>

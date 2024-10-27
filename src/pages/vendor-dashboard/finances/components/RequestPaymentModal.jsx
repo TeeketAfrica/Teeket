@@ -4,7 +4,6 @@ import {
   Checkbox,
   Divider,
   HStack,
-  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -31,7 +30,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
       {requestPayment ? (
         <ModalContent>
           <ModalHeader>
-            <Image src={DollarsIcon} alt="payment" />
+            <DollarsIcon />
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -101,7 +100,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
           <ModalCloseButton />
           <ModalBody>
             <VStack>
-              <Image src={RequestDollarFailed} alt="can't request" />
+              <RequestDollarFailed />
               <Text fontWeight={600} fontSize={18} mb="1rem">
                 You can’t request payment yet
               </Text>

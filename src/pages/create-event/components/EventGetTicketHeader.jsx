@@ -28,7 +28,7 @@ export const EventGetTicketHeader = () => {
   useEffect(() => {
     if (ticketStep == 1) {
       setSearchParams({ step: "ticket-type" });
-    } else if (ticketStep == 2) {
+    } else if (ticketStep === 2) {
       setSearchParams({ step: "your-details" });
     } else if (ticketStep == 3) {
       setSearchParams({ step: "payment" });

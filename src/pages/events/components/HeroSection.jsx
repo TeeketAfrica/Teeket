@@ -16,8 +16,8 @@ import {
 } from "@chakra-ui/react";
 import Container from "../../../components/ui/Container";
 import EventBg from "../../../assets/img/eventsBg.png";
-import DownIcon from "../../../assets/icon/DownIcon";
-import SearchWhite from "../../../assets/icon/SearchWhite";
+import DownIcon from "../../../assets/icon/DownIcon.svg";
+import SearchWhite from "../../../assets/icon/SearchWhite.svg";
 import { SearchContext } from "../../../context/SearchContext";
 
 const HeroSection = () => {

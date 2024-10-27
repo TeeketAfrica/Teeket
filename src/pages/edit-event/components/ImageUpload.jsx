@@ -8,7 +8,6 @@ import {
   Input,
   Box,
   Text,
-  Image,
   Divider,
   AbsoluteCenter,
   Button,
@@ -17,13 +16,11 @@ import {
   UnorderedList,
   HStack,
 } from "@chakra-ui/react";
-
 import {
   getImageDimensions,
   isValidImage,
   readAsBinary,
 } from "../../../utils/utils";
-
 import Document from "../../../assets/icon/Document.svg";
 import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
 import Reload from "../../../assets/icon/Reload.svg";
@@ -138,7 +135,7 @@ const ImageUpload = ({ handleSetImage }) => {
                   borderRadius="full"
                   bg="gray.200"
                 >
-                  <Image src={CloudUpload} alt="icon" />
+                  <CloudUpload />
                 </Box>
                 <Box mt="4">
                   <Text fontWeight="normal">
@@ -184,7 +181,7 @@ const ImageUpload = ({ handleSetImage }) => {
             {imageUploadState.loading && (
               <>
                 <Box position="relative" marginBottom="2">
-                  <Image src={Document} alt="document" />
+                  <Document />
                   <Box
                     position="absolute"
                     top="35%"
@@ -225,7 +222,7 @@ const ImageUpload = ({ handleSetImage }) => {
             {imageUploadState.error.state && (
               <>
                 <VStack justifyContent="center" marginBottom="2">
-                  <Image src={FileUploadStatus} alt="icon" />
+                  <FileUploadStatus />
 
                   <Box textAlign="center">
                     <Text
@@ -244,7 +241,7 @@ const ImageUpload = ({ handleSetImage }) => {
 
                   <Box marginTop="6">
                     <Button
-                      leftIcon={<Image src={Reload} alt="icon" />}
+                      leftIcon={<Reload />}
                       type="button"
                       h="0"
                       color="red.400"

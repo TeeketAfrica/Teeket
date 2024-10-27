@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { Image } from "@chakra-ui/image";
 import { Stack, Box } from "@chakra-ui/layout";
 import {
   FormLabel,
@@ -10,7 +9,6 @@ import {
   InputRightElement,
   Checkbox,
 } from "@chakra-ui/react";
-
 import CloseIcon from "../../../assets/icon/CloseIcon.svg";
 import EyeIcon from "../../../assets/icon/eye.svg";
 import EyeSlashIcon from "../../../assets/icon/EyeSlashIcon.svg";
@@ -53,15 +51,12 @@ const PasswordInput = ({
 
   const getPasswordIcon = () => {
     if ((formik.touched[inputName] && formik.errors[inputName]) || error) {
-      return <Image src={CloseIcon} alt="close" pointerEvents="none" />;
+      return <CloseIcon />;
     }
-    return (
-      <Image
-        src={viewPassword ? EyeSlashIcon : EyeIcon}
-        alt={viewPassword ? "eye-slash" : "eye"}
-        cursor="pointer"
-        onClick={() => setViewPassword(!viewPassword)}
-      />
+    return viewPassword ? (
+      <EyeSlashIcon onClick={() => setViewPassword(!viewPassword)} />
+    ) : (
+      <EyeIcon onClick={() => setViewPassword(!viewPassword)} />
     );
   };
 

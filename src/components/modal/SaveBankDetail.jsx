@@ -9,13 +9,10 @@ import {
   UnorderedList,
   Heading,
   Text,
-  Image,
   Button,
   Divider,
 } from "@chakra-ui/react";
-
 import { useModal } from "../../context/ModalContext";
-
 import FeatureIcon from "../../assets/icon/Feature-icon.svg";
 
 const SaveBankDetail = () => {
@@ -25,7 +22,7 @@ const SaveBankDetail = () => {
     <ModalContent paddingY={2}>
       <ModalHeader>
         <VStack alignItems="flex-start" gap={5}>
-          <Image src={FeatureIcon} alt="icon" />
+          <FeatureIcon />
           <Heading as="h6" fontSize="lg" fontWeight="semibold">
             Confirm bank information
           </Heading>

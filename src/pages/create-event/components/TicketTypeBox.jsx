@@ -2,14 +2,13 @@ import {
   Box,
   Button,
   HStack,
-  Image,
   Input,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { Add, Minus } from "iconsax-react";
 import TicketIcon from "../../../assets/icon/Ticket2.svg";
-import {  useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeEventDataTicketsQuantity,
@@ -20,9 +19,7 @@ export const TicketTypeBox = ({ data }) => {
   // const [quantity, setQuantity] = useState(0);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const { ticketQuantity } = useSelector(
-    (state) => state.event
-  );
+  const { ticketQuantity } = useSelector((state) => state.event);
 
   const handleInputChange = (e) => {
     let value = parseInt(e.target.value, 10);
@@ -63,7 +60,7 @@ export const TicketTypeBox = ({ data }) => {
       >
         <HStack justifyContent="space-between" w="100%">
           <HStack>
-            <Image src={TicketIcon} />
+            <TicketIcon />
             <Box>
               <Text
                 color="gray.800"

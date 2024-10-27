@@ -15,7 +15,7 @@ import { Image } from "@chakra-ui/image";
 import { useLocation } from "react-router";
 
 const AuthLayout = ({ children }) => {
-  const location = useLocation();
+  // const location = useLocation();
 
   return (
     // <Box

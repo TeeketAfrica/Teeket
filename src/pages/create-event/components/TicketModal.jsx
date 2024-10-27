@@ -1,8 +1,5 @@
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { useFormik } from "formik";
 import * as Yup from "yup";
-
+import { useFormik } from "formik";
 import {
   Slide,
   Box,
@@ -14,20 +11,17 @@ import {
   RadioGroup,
   Divider,
   Text,
-  Image,
   InputGroup,
   InputRightElement,
   InputLeftElement,
   Input,
   Button,
 } from "@chakra-ui/react";
-
+import { useDispatch } from "react-redux";
 import {
   setTicketDetails,
   updateTicketDetails,
 } from "../../../features/eventSlice";
-import { useModal } from "../../../context/ModalContext";
-
 import TicketIcon from "../../../assets/icon/Ticket.svg";
 import PriceIcon from "../../../assets/icon/Price.svg";
 import DollarIcon from "../../../assets/icon/Dollar.svg";
@@ -65,7 +59,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
     initialValues: {
       ticketType: data?.ticketType || "",
       ticketName: data?.ticketName || "",
-      ticketPrice: parseInt(data?.ticketPrice) || "",
+      ticketPrice: Number.parseInt(data?.ticketPrice) || "",
       ticketQuantity: data?.ticketQuantity || "",
     },
 
@@ -117,7 +111,8 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
         display="flex"
         flexDirection="column"
         backgroundColor="gray.100"
-        boxShadow=" 0px 4px 6px -2px rgba(16, 40, 16, 0.03), 0px 16px 24px -4px rgba(16, 40, 16, 0.08);">
+        boxShadow=" 0px 4px 6px -2px rgba(16, 40, 16, 0.03), 0px 16px 24px -4px rgba(16, 40, 16, 0.08);"
+      >
         <Box
           display="flex"
           alignItems="center"
@@ -127,16 +122,18 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           borderBottom="1px solid"
           borderColor="gray.300"
           h="105px"
-          cursor="pointer">
+          cursor="pointer"
+        >
           <Text
             color="gray.800"
             fontWeight="bold"
             fontSize="2xl"
-            letterSpacing="-0.48px">
+            letterSpacing="-0.48px"
+          >
             Manage your ticket
           </Text>
           <Box onClick={handlerOnClose}>
-            <Image src={MultiplyIcon} alt="icon" />
+            <MultiplyIcon />
           </Box>
         </Box>
 
@@ -147,9 +144,11 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           padding="6"
           backgroundColor="inherit"
           height="100%"
-          overflowY="auto">
+          overflowY="auto"
+        >
           <FormControl
-            isInvalid={formik.touched.ticketType && formik.errors.ticketType}>
+            isInvalid={formik.touched.ticketType && formik.errors.ticketType}
+          >
             <FormLabel fontSize="lg" fontWeight="semibold" color="black">
               Will this be a free or paid event?
             </FormLabel>
@@ -158,7 +157,8 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
               value={formik.values.ticketType}
               onChange={(value) => formik.setFieldValue("ticketType", value)}
               onBlur={() => formik.setFieldTouched("ticketType", true)}
-              marginTop="4">
+              marginTop="4"
+            >
               <HStack color="gray.800" fontWeight="medium" flexWrap="wrap">
                 <Radio value="free" size="lg" variant="border">
                   Free event
@@ -176,12 +176,13 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           <Divider h="1px" backgroundColor="gray.300" />
 
           <FormControl
-            isInvalid={formik.touched.ticketName && formik.errors.ticketName}>
+            isInvalid={formik.touched.ticketName && formik.errors.ticketName}
+          >
             <FormLabel htmlFor="ticketName">Ticket name</FormLabel>
 
             <InputGroup size="lg">
               <InputRightElement pointerEvents="none">
-                <Image src={TicketIcon} alt="icon" />
+                <TicketIcon />
               </InputRightElement>
 
               <Input
@@ -204,15 +205,16 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             <FormControl
               isInvalid={
                 formik.touched.ticketPrice && formik.errors.ticketPrice
-              }>
+              }
+            >
               <FormLabel htmlFor="ticketPrice">Ticket price</FormLabel>
 
               <InputGroup size="lg">
                 <InputRightElement pointerEvents="none">
-                  <Image src={PriceIcon} alt="icon" />
+                  <PriceIcon />
                 </InputRightElement>
                 <InputLeftElement pointerEvents="none">
-                  <Image src={DollarIcon} alt="icon" />
+                  <DollarIcon />
                 </InputLeftElement>
 
                 <Input
@@ -240,7 +242,8 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           <FormControl
             isInvalid={
               formik.touched.ticketQuantity && formik.errors.ticketQuantity
-            }>
+            }
+          >
             <FormLabel htmlFor="ticketQuantity">
               How many{" "}
               <Text as="span" textTransform="lowercase">
@@ -251,7 +254,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
 
             <InputGroup size="lg">
               <InputLeftElement pointerEvents="none">
-                <Image src={DollarIcon} alt="icon" />
+                <DollarIcon />
               </InputLeftElement>
 
               <Input
@@ -281,11 +284,12 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           {data && (
             <Button
               onClick={() => handleOpenDeleteModal()}
-              leftIcon={<Image src={TrashIcon} alt="icon" />}
+              leftIcon={<TrashIcon />}
               variant="ghost"
               color="red.400"
               size="sm"
-              width="fit-content">
+              width="fit-content"
+            >
               Delete this ticket
             </Button>
           )}
@@ -300,7 +304,8 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           borderColor="gray.300"
           paddingY="3"
           paddingX="6"
-          marginTop="6">
+          marginTop="6"
+        >
           <Button variant="secondary" size="lg" onClick={handlerOnClose}>
             Discard
           </Button>
@@ -308,14 +313,16 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             <Button
               onClick={() => handleTicketDetails()}
               size="lg"
-              variant="primary">
+              variant="primary"
+            >
               Save ticket
             </Button>
           ) : (
             <Button
               size="lg"
               variant="primary"
-              onClick={() => handleTicketDetails(data.id)}>
+              onClick={() => handleUpdateTicketDetails(data.id)}
+            >
               Update ticket
             </Button>
           )}

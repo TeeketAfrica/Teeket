@@ -1,7 +1,6 @@
 import {
   Button,
   HStack,
-  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -53,7 +52,7 @@ const EventPreference = ({ isOpen, onClose }) => {
         <ModalContent>
           <ModalHeader>
             <VStack>
-              <Image src={ModalFlake} alt="modal icon" w={42} />
+              <ModalFlake width={42} />
               <Text fontSize={24} fontWeight={700} lineHeight="28.8px">
                 Choose your preference
               </Text>

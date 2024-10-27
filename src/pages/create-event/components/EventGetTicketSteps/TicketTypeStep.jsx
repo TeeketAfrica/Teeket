@@ -1,17 +1,17 @@
-import { Box, Button, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { format, parseISO } from "date-fns";
+import { TickCircle } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import CalendarIcon from "../../../../assets/icon/Calendar.svg";
 import {
   setEventDataTicketsData,
   setEventDataTicketsError,
   setEventDataTicketsLoading,
 } from "../../../../features/eventSlice";
-import { TicketTypeBox } from "../TicketTypeBox";
-import CalendarIcon from "../../../../assets/icon/Calendar.svg";
-import { format, parseISO } from "date-fns";
-import { TickCircle } from "iconsax-react";
 import { teeketApi } from "../../../../utils/api";
+import { TicketTypeBox } from "../TicketTypeBox";
 
 export const TicketTypeStep = () => {
   const {
@@ -84,7 +84,7 @@ export const TicketTypeStep = () => {
           {eventTitle}
         </Text>
         <HStack>
-          <Image src={CalendarIcon} />
+          <CalendarIcon />
           <Box>
             <Text color="gray.800" fontWeight={600} fontSize={16} maxW="700px">
               {date}
@@ -97,10 +97,9 @@ export const TicketTypeStep = () => {
       </Box>
       <VStack spacing={4} w="100%">
         {eventDataLoading ? (
-          <></>
+          <>Loading...</>
         ) : (
-          eventDataTickets &&
-          eventDataTickets.map((data, index) => (
+          eventDataTickets?.map((data, index) => (
             <TicketTypeBox data={data} key={index} />
           ))
         )}

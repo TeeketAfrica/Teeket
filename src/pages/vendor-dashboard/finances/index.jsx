@@ -1,7 +1,6 @@
 import {
   Button,
   HStack,
-  Image,
   SimpleGrid,
   Stack,
   useDisclosure,
@@ -38,8 +37,8 @@ const FinancesDashboardPage = () => {
           subTitle="Get an overview of all event-related revenue"
         />
         <HStack spacing="12px">
-          <Button variant="secondary" p={2}>
-            <Image src={Export} alt="export" mr={2} />
+          <Button spacing={2} variant="secondary" p={2}>
+            <Export />
             Export
           </Button>
           <Button variant="primary" p={2} onClick={onOpen}>

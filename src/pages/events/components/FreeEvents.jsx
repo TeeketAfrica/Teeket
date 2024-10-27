@@ -7,7 +7,7 @@ import Event4 from "../../../assets/img/e4.png";
 import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
 import EmptyState from "../../../components/ui/EmptyState";
-import BrowseEvents from "../../../assets/icon/BrowseEvents";
+import BrowseEvents from "../../../assets/icon/BrowseEvents.svg";
 import { useState } from "react";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 

@@ -11,16 +11,14 @@ import {
   Tooltip,
   VStack,
 } from "@chakra-ui/react";
-
-import BoxFrame from "../../../../components/layouts/BoxFrame";
-import DetailCard from "../DetailCard";
-
-import LightingOutlineIcon from "../../../../assets/icon/LightingOutline.svg";
+import { Link } from "react-router-dom";
 import GPSIcon from "../../../../assets/icon/Gps.svg";
+import LightingOutlineIcon from "../../../../assets/icon/LightingOutline.svg";
+import EventMap from "../../../../assets/icon/PlaceMarkMap.svg";
 import TicketIcon from "../../../../assets/icon/Ticket.svg";
 import UserAvatar from "../../../../assets/img/Avatars.png";
-import EventMap from "../../../../assets/icon/PlaceMarkMap.svg";
-import { Link } from "react-router-dom";
+import BoxFrame from "../../../../components/layouts/BoxFrame";
+import DetailCard from "../DetailCard";
 
 const RightSIdeDetails = ({ event, isRegistered }) => {
   return (
@@ -124,8 +122,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               border="1px solid"
               borderColor="gray.300"
             >
-              <Image
-                src={EventMap}
+              <EventMap
                 alt="map"
                 width="100%"
                 height="100%"
@@ -140,13 +137,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               gap="10px"
               zIndex={4}
             >
-              <Image
-                src={GPSIcon}
-                alt="location icon"
-                width="32px"
-                height="32px"
-                objectFit="cover"
-              />
+              <GPSIcon width="32px" height="32px" objectFit="cover" />
 
               <Button variant="secondary">
                 {!isRegistered ? "Register to view address" : "View address"}

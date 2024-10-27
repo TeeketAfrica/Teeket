@@ -1,24 +1,23 @@
-import { Box, Image, Text } from '@chakra-ui/react';
-
-import CheckDone from '../../../assets/icon/CheckDone.svg';
+import { Box, Text } from "@chakra-ui/react";
+import CheckDone from "../../../assets/icon/CheckDone.svg";
 
 const SideNav = ({ children, activeStep, height, width }) => {
   const steps = [
     {
       stepNumber: 1,
-      stepInfo: 'Basic info',
+      stepInfo: "Basic info",
     },
     {
       stepNumber: 2,
-      stepInfo: 'Event details',
+      stepInfo: "Event details",
     },
     {
       stepNumber: 3,
-      stepInfo: 'Tickets',
+      stepInfo: "Tickets",
     },
     {
       stepNumber: 4,
-      stepInfo: 'Publish event',
+      stepInfo: "Publish event",
     },
   ];
   return (
@@ -39,9 +38,9 @@ const SideNav = ({ children, activeStep, height, width }) => {
             py={2}
             px={4}
             borderRadius={3}
-            bgColor={i + 1 === activeStep + 1 ? 'gray.200' : ''}
+            bgColor={i + 1 === activeStep + 1 ? "gray.200" : ""}
             cursor="pointer"
-            color={i + 1 <= activeStep + 1 ? 'gray.800' : 'gray.500'}
+            color={i + 1 <= activeStep + 1 ? "gray.800" : "gray.500"}
             display="flex"
             justifyContent="space-between"
           >
@@ -59,7 +58,7 @@ const SideNav = ({ children, activeStep, height, width }) => {
                 </Text>
               </Text>
             </Box>
-            {i + 1 <= activeStep && <Image src={CheckDone} alt="done" />}
+            {i + 1 <= activeStep && <CheckDone />}
           </Box>
         ))}
       </Box>

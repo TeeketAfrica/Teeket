@@ -1,8 +1,8 @@
-import { Box, HStack, Image, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import UpIncreaseArrow from "../../../../assets/icon/UpIncreaseArrow.svg";
 
 const RevenueCard = ({
-  icon,
+  icon: Icon,
   revenueTitle,
   revenueTotal,
   percentIncrease,
@@ -22,7 +22,7 @@ const RevenueCard = ({
       boxShadow="0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.10);"
     >
       <HStack spacing={5} mb={6}>
-        <Image src={icon} />
+        <Icon />
         <Text fontWeight={500} color="grey900">
           {revenueTitle}
         </Text>
@@ -33,7 +33,7 @@ const RevenueCard = ({
       <HStack spacing={2}>
         {percentIncrease && (
           <HStack spacing={1}>
-            <Image src={UpIncreaseArrow} alt="increase" />
+            <UpIncreaseArrow />
             <Text fontSize={14} fontWeight={500} color="success700">
               {percentIncrease}
             </Text>

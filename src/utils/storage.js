@@ -7,72 +7,110 @@ import {
 
 const SECRET_KEY = import.meta.env.VITE_REACT_SECRET_KEY;
 
+if (!SECRET_KEY) {
+  throw new Error("SECRET_KEY is not defined or is invalid");
+}
+
 export const useStorage = () => {
   const encrypt = (data) => {
-    return CryptoJS.AES.encrypt(data, SECRET_KEY).toString();
+    try {
+      const dataToEncrypt =
+        typeof data === "string" ? data : JSON.stringify(data);
+      return CryptoJS.AES.encrypt(dataToEncrypt, SECRET_KEY).toString();
+    } catch (error) {
+      console.error("Error encrypting data:", error);
+      return null;
+    }
   };
 
   const decrypt = (ciphertext) => {
-    const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
-    return bytes.toString(CryptoJS.enc.Utf8);
+    try {
+      const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
+      const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+      if (!decryptedText) {
+        throw new Error("Decryption resulted in empty string");
+      }
+      try {
+        return JSON.parse(decryptedText);
+      } catch {
+        return decryptedText;
+      }
+    } catch (error) {
+      console.error("Error decrypting data:", error);
+      return null;
+    }
   };
 
   const setCookie = (token, value, options) => {
-    const encryptedValue = encrypt(value);
-    Cookies.set(token, encryptedValue, options);
+    try {
+      const encryptedValue = encrypt(value);
+      if (encryptedValue === null) {
+        throw new Error("Encryption failed");
+      }
+      Cookies.set(token, value, options);
+    } catch (error) {
+      console.error(`Error setting cookie ${token}:`, error);
+    }
+  };
+
+  const getCookie = (token) => {
+    try {
+      const encryptedValue = Cookies.get(token);
+      if (!encryptedValue) {
+        return null;
+      }
+      // return decrypt(encryptedValue);
+      return Cookies.get(token);
+    } catch (error) {
+      console.error(`Error getting cookie ${token}:`, error);
+      return null;
+    }
   };
 
   const setAccessToken = (
     value,
     options = { expires: ACCESS_TOKEN_EXPIRY_SECONDS }
   ) => {
-    const encryptedValue = encrypt(value);
-    Cookies.set("access_token", encryptedValue, options);
+    setCookie("access_token", value, options);
   };
 
   const setRefreshToken = (
     value,
     options = { expires: REFRESH_TOKEN_EXPIRY_SECONDS }
   ) => {
-    const encryptedValue = encrypt(value);
-    Cookies.set("refresh_token", encryptedValue, options);
+    setCookie("refresh_token", value, options);
   };
 
   const setName = (value, options) => {
-    const encryptedValue = encrypt(value);
-    Cookies.set("name", encryptedValue, options);
+    setCookie("name", value, options);
   };
 
   const removeCookie = (token, options) => {
-    Cookies.remove(token, options);
+    try {
+      Cookies.remove(token, options);
+    } catch (error) {
+      console.error(`Error removing cookie ${token}:`, error);
+    }
   };
 
   const removeAccessToken = (options) => {
-    Cookies.remove("access_token", options);
+    removeCookie("access_token", options);
   };
 
   const removeRefreshToken = (options) => {
-    Cookies.remove("refresh_token", options);
-  };
-
-  const getCookie = (token) => {
-    const encryptedValue = Cookies.get(token);
-    return encryptedValue ? decrypt(encryptedValue) : null;
+    removeCookie("refresh_token", options);
   };
 
   const getAccessToken = () => {
-    const encryptedValue = Cookies.get("access_token");
-    return encryptedValue ? decrypt(encryptedValue) : null;
+    return getCookie("access_token");
   };
 
   const getRefreshToken = () => {
-    const encryptedValue = Cookies.get("refresh_token");
-    return encryptedValue ? decrypt(encryptedValue) : null;
+    return getCookie("refresh_token");
   };
 
   const getName = () => {
-    const encryptedValue = Cookies.get("name");
-    return encryptedValue ? decrypt(encryptedValue) : null;
+    return getCookie("name");
   };
 
   return {
@@ -89,3 +127,5 @@ export const useStorage = () => {
     getName,
   };
 };
+
+export default useStorage;

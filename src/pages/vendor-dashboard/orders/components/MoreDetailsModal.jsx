@@ -121,7 +121,7 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                     border="1px solid"
                     color="white"
                   >
-                    <Image src={Calendar} alt="calendar" mr={2} />
+                    <Calendar />
                     5th Jan, 2024
                   </Tag>
                   <Tag
@@ -132,12 +132,12 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                     border="1px solid"
                     color="white"
                   >
-                    <Image src={Clock} alt="clock" mr={2} />
+                    <Clock />
                     6:00PM - 8:00PM
                   </Tag>
                 </HStack>
                 <Box>
-                  <Image src={Ticket} alt="ticket icon" />
+                  <Ticket />
                 </Box>
               </HStack>
             </Box>

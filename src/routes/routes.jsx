@@ -1,24 +1,25 @@
 import {
-  HomePage,
+  AccountSettingsPage,
   CounterDownPage,
-  LoginPage,
   CreateAccountPage,
-  SendOTPPage,
-  PasswordRecoveryPage,
-  PasswordResetPage,
-  VendorPage,
+  EventBookingPage,
+  EventCategoryPage,
+  EventGetTicket,
   EventsDashboardPage,
-  OverviewDashboardPage,
+  EventsPage,
   FinancesDashboardPage,
+  HelpAndSupportPage,
+  HomePage,
+  LoginPage,
   OrdersDashboardPage,
   OrganizationSettingsDashboardPage,
-  HelpAndSupportPage,
-  EventsPage,
-  EventCategoryPage,
+  OverviewDashboardPage,
+  PasswordRecoveryPage,
+  PasswordResetPage,
+  SendOTPPage,
   TicketDashboardPage,
-  EventBookingPage,
+  VendorPage,
 } from "../pages";
-import EventGetTicket from "../pages/events/EventGetTicket";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
 
@@ -29,6 +30,7 @@ const publicRoutes = [
   { path: "/events", element: <EventsPage /> },
   { path: "/event-category/:type?", element: <EventCategoryPage /> },
   { path: "/my-tickets", element: <TicketDashboardPage /> },
+  { path: "/account-settings", element: <AccountSettingsPage /> },
 ];
 
 const privateRoutes = [
@@ -38,6 +40,7 @@ const privateRoutes = [
   { path: "/app/events", element: EventsDashboardPage },
   { path: "/app/order", element: OrdersDashboardPage },
   { path: "/app/finance", element: FinancesDashboardPage },
+  { path: "/account-settings", element: AccountSettingsPage },
   {
     path: "/app/organization-settings",
     element: OrganizationSettingsDashboardPage,

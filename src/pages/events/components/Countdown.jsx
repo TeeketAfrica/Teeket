@@ -1,5 +1,4 @@
-// src/Countdown.js
-import { Image, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { Box } from "iconsax-react";
 import { useState, useEffect } from "react";
 import WarningIcon from "../../../assets/icon/Warning.svg";
@@ -42,7 +41,7 @@ export const Countdown = ({ endDate }) => {
 
   return (
     <Box w="100%" display="flex" gap={3} alignItems="center">
-      <Image src={WarningIcon} />
+      <WarningIcon />
       <Text color="gray.600" size={14}>
         Time left: 09:58
       </Text>

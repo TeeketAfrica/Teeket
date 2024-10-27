@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useCategorizeEvents = (allEvents) => {
   const [eventLists, setEventLists] = useState({
@@ -14,9 +14,9 @@ const useCategorizeEvents = (allEvents) => {
     const notTrendingFree = [];
     const notTrendingPaid = [];
 
-    allEvents.forEach((event) => {
+    for (const event of allEvents) {
       const isFree = Number(event.lowest_ticket_price) === 0;
-      const isTrending = event.status.toLowerCase().includes("trending");
+      const isTrending = event.status?.toLowerCase().includes("trending");
 
       if (isTrending) {
         if (isFree) {
@@ -31,7 +31,7 @@ const useCategorizeEvents = (allEvents) => {
           notTrendingPaid.push(event);
         }
       }
-    });
+    }
 
     setEventLists({
       trendingFree,

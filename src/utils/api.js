@@ -5,15 +5,14 @@ import { useStorage } from "./storage";
 // Implementation of the mutex here to prevent multiple concurrent calls.
 let isRefreshing = false;
 let failedQueue = [];
-
 const processQueue = (error, token = null) => {
-  failedQueue.forEach((prom) => {
+  for (const prom of failedQueue) {
     if (error) {
       prom.reject(error);
     } else {
       prom.resolve(token);
     }
-  });
+  }
 
   failedQueue = [];
 };

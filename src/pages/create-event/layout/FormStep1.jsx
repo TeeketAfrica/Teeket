@@ -9,14 +9,11 @@ import {
   Divider,
   Heading,
 } from "@chakra-ui/react";
-
 import { useDispatch } from "react-redux";
 import { setEventDetail } from "../../../features/eventSlice";
-
 import { Stack, Text } from "@chakra-ui/layout";
 import FormLayout from "../components/FormLayout";
-
-import DownIcon from "../../../assets/icon/DownIcon.jsx";
+import DownIcon from "../../../assets/icon/DownIcon.svg";
 
 const FormStep1 = ({ formik }) => {
   const dispatch = useDispatch();

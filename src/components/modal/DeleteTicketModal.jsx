@@ -1,18 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
 import {
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Text,
   Button,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Text,
 } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { useModal } from "../../context/ModalContext";
 import {
   deleteTicket,
   selectEventDetails,
   setEventDetail,
 } from "../../features/eventSlice";
-import { useModal } from "../../context/ModalContext";
 import { teeketApi } from "../../utils/api";
 
 const DeleteTicketModal = () => {

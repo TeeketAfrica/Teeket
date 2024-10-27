@@ -19,7 +19,7 @@ import {
 import Container from "../ui/Container";
 import BrandLogo from "../../assets/img/brandLogo.png";
 import Hamburger from "../../assets/icon/Hamburger.svg";
-import Search from "../../assets/icon/Search";
+import Search from "../../assets/icon/Search.svg";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
@@ -123,12 +123,7 @@ const Header = () => {
               overflowY="scroll"
             >
               <>
-                <Image
-                  src={Hamburger}
-                  ref={btnRef}
-                  onClick={onOpen}
-                  alt="menu-icon"
-                />
+                <Hamburger onClick={onOpen} ref={btnRef} />
                 <Drawer
                   isOpen={isOpen}
                   placement="left"

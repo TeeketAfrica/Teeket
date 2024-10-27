@@ -1,33 +1,32 @@
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
 import {
-  VStack,
+  AbsoluteCenter,
+  Box,
+  Button,
+  Divider,
+  FormControl,
   FormErrorMessage,
   FormLabel,
-  FormControl,
-  Input,
-  Box,
-  Text,
-  Image,
-  Divider,
-  AbsoluteCenter,
-  Button,
-  Spinner,
-  ListItem,
-  UnorderedList,
   HStack,
+  Input,
+  ListItem,
+  Spinner,
+  Text,
+  UnorderedList,
+  VStack,
 } from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import CloudUpload from "../../../assets/icon/CloudUpload.svg";
+import Document from "../../../assets/icon/Document.svg";
+import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
+import Reload from "../../../assets/icon/Reload.svg";
+import { mediaApi } from "../../../utils/api";
+import { IMAGEDIMENSION, IMAGESIZE } from "../../../utils/constants";
 import {
   getImageDimensions,
   isValidImage,
   readAsBinary,
 } from "../../../utils/utils";
-import Document from "../../../assets/icon/Document.svg";
-import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
-import Reload from "../../../assets/icon/Reload.svg";
-import CloudUpload from "../../../assets/icon/CloudUpload.svg";
-import { mediaApi } from "../../../utils/api";
-import { IMAGEDIMENSION, IMAGESIZE } from "../../../utils/constants";
 
 const ImageUpload = ({ handleSetImage }) => {
   const { register } = useForm();
@@ -44,7 +43,7 @@ const ImageUpload = ({ handleSetImage }) => {
   });
 
   const handleImageChange = async (imageFile) => {
-    let selectedImage = imageFile || null;
+    const selectedImage = imageFile || null;
 
     if (!isValidImage(selectedImage)) {
       setImageUploadState({
@@ -102,7 +101,7 @@ const ImageUpload = ({ handleSetImage }) => {
             loading: false,
             error: {
               state: true,
-              message: `Image exceed the recommended size (2160x1080)`,
+              message: "Image exceed the recommended size (2160x1080)",
             },
           });
         }
@@ -144,14 +143,16 @@ const ImageUpload = ({ handleSetImage }) => {
         borderRadius="12px"
         overflow="hidden"
         onDrop={handleDrop}
-        onDragOver={(e) => e.preventDefault()}>
+        onDragOver={(e) => e.preventDefault()}
+      >
         {imageUploadState.default && (
           <FormLabel htmlFor="upload" m="0" cursor="pointer">
             <VStack
               flexDirection="column"
               justifyContent="center"
               gap="5"
-              w="100%">
+              w="100%"
+            >
               <VStack justifyContent="center">
                 <Box
                   display="inline-flex"
@@ -160,7 +161,8 @@ const ImageUpload = ({ handleSetImage }) => {
                   w="56px"
                   h="56px"
                   borderRadius="full"
-                  bg="gray.200">
+                  bg="gray.200"
+                >
                   <Image src={CloudUpload} alt="icon" />
                 </Box>
                 <Box mt="4">
@@ -170,7 +172,8 @@ const ImageUpload = ({ handleSetImage }) => {
                       fontSize="md"
                       fontWeight="semibold"
                       color="green.400"
-                      cursor="pointer">
+                      cursor="pointer"
+                    >
                       Click to upload
                     </Text>{" "}
                     <Text as="span" fontSize="sm" color="gray.600">
@@ -202,11 +205,12 @@ const ImageUpload = ({ handleSetImage }) => {
             justifyContent="center"
             backgroundColor="gray.200"
             width="100%"
-            height="100%">
+            height="100%"
+          >
             {imageUploadState.loading && (
               <>
                 <Box position="relative" marginBottom="2">
-                  <Image src={Document} alt="document" />
+                  <Document />
                   <Box
                     position="absolute"
                     top="35%"
@@ -216,7 +220,8 @@ const ImageUpload = ({ handleSetImage }) => {
                     color="gray.100"
                     width="100%"
                     backgroundColor="#C548F1"
-                    fontSize="2">
+                    fontSize="2"
+                  >
                     <Text>JPG</Text>
                   </Box>
                 </Box>
@@ -224,7 +229,8 @@ const ImageUpload = ({ handleSetImage }) => {
                   justifyContent="center"
                   width="100%"
                   marginTop="2"
-                  marginBottom="4">
+                  marginBottom="4"
+                >
                   <Spinner
                     thickness="4px"
                     speed="0.65s"
@@ -243,42 +249,42 @@ const ImageUpload = ({ handleSetImage }) => {
             )}
 
             {imageUploadState.error.state && (
-              <>
-                <VStack justifyContent="center" marginBottom="2">
-                  <Image src={FileUploadStatus} alt="icon" />
+              <VStack justifyContent="center" marginBottom="2">
+                <FileUploadStatus />
 
-                  <Box textAlign="center">
-                    <Text
-                      fontWeight="semibold"
-                      fontSize="sm"
-                      marginTop="4"
-                      marginBottom="2">
-                      Failed to upload
-                    </Text>
-                    <Text fontWeight="normal" fontSize="xs" maxWidth="60ch">
-                      {imageUploadState.error.message &&
-                        imageUploadState.error.message}
-                    </Text>
-                  </Box>
+                <Box textAlign="center">
+                  <Text
+                    fontWeight="semibold"
+                    fontSize="sm"
+                    marginTop="4"
+                    marginBottom="2"
+                  >
+                    Failed to upload
+                  </Text>
+                  <Text fontWeight="normal" fontSize="xs" maxWidth="60ch">
+                    {imageUploadState.error.message &&
+                      imageUploadState.error.message}
+                  </Text>
+                </Box>
 
-                  <Box marginTop="6">
-                    <Button
-                      leftIcon={<Image src={Reload} alt="icon" />}
-                      type="button"
-                      h="0"
-                      color="red.400"
-                      onClick={() =>
-                        setImageUploadState({
-                          default: true,
-                          loading: false,
-                          error: { state: false, message: "" },
-                        })
-                      }>
-                      Try again
-                    </Button>
-                  </Box>
-                </VStack>
-              </>
+                <Box marginTop="6">
+                  <Button
+                    leftIcon={<Reload />}
+                    type="button"
+                    h="0"
+                    color="red.400"
+                    onClick={() =>
+                      setImageUploadState({
+                        default: true,
+                        loading: false,
+                        error: { state: false, message: "" },
+                      })
+                    }
+                  >
+                    Try again
+                  </Button>
+                </Box>
+              </VStack>
             )}
           </VStack>
         )}
@@ -297,7 +303,8 @@ const ImageUpload = ({ handleSetImage }) => {
         color="gray.600 "
         fontSize="xs"
         marginLeft="18px"
-        marginTop="2">
+        marginTop="2"
+      >
         <ListItem>
           Recommended image size: {IMAGEDIMENSION.width} x
           {IMAGEDIMENSION.height}
@@ -309,7 +316,7 @@ const ImageUpload = ({ handleSetImage }) => {
         <ListItem>Supported image files: JPEG or PNG</ListItem>
       </UnorderedList>
 
-      <FormErrorMessage color="red.500"></FormErrorMessage>
+      <FormErrorMessage color="red.500" />
     </FormControl>
   );
 };

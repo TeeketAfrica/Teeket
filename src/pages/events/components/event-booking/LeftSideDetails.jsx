@@ -1,17 +1,15 @@
 import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
-
-import BoxFrame from "../../../../components/layouts/BoxFrame";
-import EventBadge from "../EventBadge";
-import DetailCard from "../DetailCard";
-import { formatDateAndTime } from "../../../../utils/utils";
-
-import LightingIcon from "../../../../assets/icon/LightingIcon.svg";
 import CalendarIcon from "../../../../assets/icon/Calendar.svg";
 import GPSIcon from "../../../../assets/icon/Gps.svg";
+import LightingIcon from "../../../../assets/icon/LightingIcon.svg";
+import BoxFrame from "../../../../components/layouts/BoxFrame";
+import { formatDateAndTime } from "../../../../utils/utils";
+import DetailCard from "../DetailCard";
+import EventBadge from "../EventBadge";
 
 const LeftSideDetails = ({ event }) => {
-  let startDate = formatDateAndTime(event.start_date, "long");
-  let endDate = formatDateAndTime(event.end_date, "long");
+  const startDate = formatDateAndTime(event.start_date, "long");
+  const endDate = formatDateAndTime(event.end_date, "long");
 
   return (
     <VStack width={{ base: "100%", lg: "60%" }} gap="6" alignItems="flex-start">
@@ -19,7 +17,7 @@ const LeftSideDetails = ({ event }) => {
         <Box>
           <EventBadge
             eventBadgeInfo={{
-              badgeTitle: `${event.status.split("_").join(" ")}`,
+              badgeTitle: `${event.status?.split("_").join(" ")}`,
               state: "trending",
               icon: LightingIcon,
             }}

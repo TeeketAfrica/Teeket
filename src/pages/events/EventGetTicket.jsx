@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Container from "../../components/ui/Container";
-import { Box, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Text, VStack } from "@chakra-ui/react";
 import WarningIcon from "../../assets/icon/Warning.svg";
 import { EventGetTicketHeader } from "../create-event/components/EventGetTicketHeader";
 import { EventGetTicketSummaryBox } from "../create-event/components/EventGetTicketSummaryBox";
@@ -47,7 +47,7 @@ const EventGetTicket = () => {
       ) : (
         <VStack marginY={9} spacing={6}>
           <Box w="100%" display="flex" gap={3} alignItems="center">
-            <Image src={WarningIcon} />
+            <WarningIcon />
             <Text color="gray.600" size={14}>
               Time left: {timeLeft}
             </Text>

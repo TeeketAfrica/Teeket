@@ -8,7 +8,7 @@ import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 import { useState } from "react";
-import BrowseEvents from "../../../assets/icon/BrowseEvents";
+import BrowseEvents from "../../../assets/icon/BrowseEvents.svg";
 import EmptyState from "../../../components/ui/EmptyState";
 
 const PaidEvents = () => {

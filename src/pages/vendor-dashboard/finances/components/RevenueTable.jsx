@@ -22,10 +22,10 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
-import Search from "../../../../assets/icon/Search";
-import Check from "../../../../assets/icon/Check";
-import DownIcon from "../../../../assets/icon/DownIcon";
-import Filter from "../../../../assets/icon/Filter";
+import Search from "../../../../assets/icon/Search.svg";
+import Check from "../../../../assets/icon/Check.svg";
+import DownIcon from "../../../../assets/icon/DownIcon.svg";
+import Filter from "../../../../assets/icon/Filter.svg";
 import SearchIconEmpty from "../../../../assets/icon/SearchIconEmpty.svg";
 import FinanceEmptyState from "../../../../assets/icon/FinanceEmptyState.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
@@ -422,11 +422,7 @@ const RevenueTable = () => {
                             </Td>
                             <Td>
                               <HStack>
-                                <Image
-                                  cursor="pointer"
-                                  src={SupportIcon}
-                                  alt="support"
-                                />
+                                <SupportIcon />
                                 <Text>{td.action}</Text>
                               </HStack>
                             </Td>

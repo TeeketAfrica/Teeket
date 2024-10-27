@@ -4,13 +4,12 @@ import {
   Divider,
   HStack,
   Heading,
-  Image,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import TicketBg from "../../../assets/img/TicketBg.png";
 import TicketCardIcon from "../../../assets/icon/TicketCardIcon.svg";
-import DownloadTicket from "../../../assets/icon/DownloadTicket";
+import DownloadTicket from "../../../assets/icon/DownloadTicket.svg";
 
 const SingleTicket = ({
   eventTitle,
@@ -34,7 +33,7 @@ const SingleTicket = ({
       <Box bgColor="gray.100" w="full" h="full" borderRadius={8} p={[3, 6]}>
         <VStack alignItems="flex-start" spacing={5}>
           <Box>
-            <Image src={TicketCardIcon} alt="single ticket icon" />
+            <TicketCardIcon />
             <Heading fontWeight={700} fontSize={24} lineHeight="28.8px">
               {eventTitle}
             </Heading>

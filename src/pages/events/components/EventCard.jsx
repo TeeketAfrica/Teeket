@@ -19,7 +19,7 @@ const EventCard = ({
   eventImage,
   eventTitle,
   eventTag,
-  eventTagIcon,
+  eventTagIcon: EventTagIcon,
   eventOrganizer,
   eventCommunity,
   eventLocation,
@@ -79,7 +79,7 @@ const EventCard = ({
               w="fit-content"
               borderRadius={16}
             >
-              <Image src={eventTagIcon} />
+              <EventTagIcon />
               <Text
                 fontSize={12}
                 fontWeight={500}
@@ -105,7 +105,7 @@ const EventCard = ({
                 <Text color="gray.600">{eventCommunity}</Text>
               </HStack>
               <HStack spacing={2} mt={2}>
-                <Image src={EventMap} alt="event location" />
+                <EventMap />
                 <Text color="gray.600">{eventLocation}</Text>
               </HStack>
             </Box>
@@ -118,7 +118,7 @@ const EventCard = ({
                 borderColor="green.300"
                 borderRadius={8}
               >
-                <Image src={Cash} alt="event price" />
+                <Cash />
                 <Text color="gray.800" fontSize={12}>
                   {eventPrice > 0 ? `Starts at $${eventPrice}` : "Free event"}
                 </Text>
@@ -131,7 +131,7 @@ const EventCard = ({
                 borderColor="gray.300"
                 borderRadius={8}
               >
-                <Image src={Calendar} alt="event date" />
+                <Calendar />
                 <Text color="gray.800" fontSize={12}>
                   {formatedDate}
                 </Text>
