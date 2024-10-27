@@ -3,22 +3,49 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 import {
-  HStack,
-  VStack,
   Box,
-  Heading,
-  Text,
   Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  Heading,
+  Input,
+  Portal,
+  Text,
+  VStack,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import RenderFormControl from "../renderFormControl";
-
+import {
+  Popover,
+  PopoverAnchor,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
+  PopoverHeader,
+  PopoverTrigger,
+} from "@chakra-ui/react";
+import { Command } from "cmdk";
+import { Loader2, LoaderPinwheel, Search } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { useModal } from "../../../../context/ModalContext";
-import { useEffect, useState } from "react";
+import RenderFormControl from "../renderFormControl";
+import { AccountNameField } from "./bank-detail-fields/account-name-field";
+import { AccountNumberField } from "./bank-detail-fields/account-number-field";
+import { BankNameField } from "./bank-detail-fields/bank-name-field";
 
 const BankDetailTab = () => {
   const { openModal } = useModal();
   const toast = useToast();
+
+  const [selectedBankDetails, setSelectedBankDetails] = useState(false);
+  const [verifiedBankDetails, setVerifiedBankDetails] = useState();
+  const [verifiedBankDetailsLoading, setVerifiedBankDetailsLoading] =
+    useState(false);
+
   const [bankFormValues, setBankFormValues] = useState({
     acctName: "",
     acctNumber: "",
@@ -80,85 +107,81 @@ const BankDetailTab = () => {
           handleModal("editBankDetail", values);
         }}
       >
-        {(formik) => (
-          <form onSubmit={formik.handleSubmit}>
-            <VStack gap="4" pb="6">
-              {[
-                {
-                  name: "bankName",
-                  label: "Bank name",
-                  type: "text",
-                  placeholder: "Bank name",
-                },
-                {
-                  name: "acctNumber",
-                  label: "Account number",
-                  type: "number",
-                  placeholder: "Your account number",
-                },
-                {
-                  name: "acctName",
-                  label: "Account name",
-                  type: "text",
-                  placeholder: "Account name",
-                },
-              ].map((formData) => RenderFormControl(formik, formData))}
-
-              <Text fontSize="sm" fontWeight="semibold" color="yellow.400">
-                Be sure of your bank information. To change it next time you
-                will have to contact us to request a change.
-              </Text>
-            </VStack>
-            {formik.values.bankName === "" ? (
-              <Button
-                type="submit"
-                size="lg"
-                variant="primary"
-                w="fit-content"
-                onClick={() => {
-                  formik.isValid &&
-                    formik.dirty &&
-                    handleModal("saveBankDetail", [
-                      {
-                        title: "Bank Name",
-                        value: formik.values.bankName,
-                      },
-                      {
-                        title: "Account Number",
-                        value: formik.values.acctNumber,
-                      },
-                      {
-                        title: "Account Name",
-                        value: formik.values.acctName,
-                      },
-                    ]);
-                }}
-                // isDisabled={!(formik.isValid && formik.dirty)}
-              >
-                Save changes
-              </Button>
-            ) : (
-              <HStack>
+        {(formik) => {
+          return (
+            <form onSubmit={formik.handleSubmit}>
+              <VStack gap="4" pb="6">
+                <BankNameField
+                  formik={formik}
+                  setSelectedBankDetails={setSelectedBankDetails}
+                />
+                <AccountNumberField
+                  formik={formik}
+                  setVerifiedBankDetailsLoading={setVerifiedBankDetailsLoading}
+                  setVerifiedBankDetails={setVerifiedBankDetails}
+                  selectedBankDetails={selectedBankDetails}
+                />
+                <AccountNameField
+                  formik={formik}
+                  loading={verifiedBankDetailsLoading}
+                  details={verifiedBankDetails}
+                />
+                <Text fontSize="sm" fontWeight="semibold" color="yellow.400">
+                  Be sure of your bank information. To change it next time you
+                  will have to contact us to request a change.
+                </Text>
+              </VStack>
+              {formik.values.bankName === "" ? (
                 <Button
-                  size="lg"
-                  variant="secondary"
-                  w="fit-content"
-                  onClick={() => handleModal("deleteBankDetail", {})}
-                >
-                  Remove bank account
-                </Button>
-                <Button
+                  type="submit"
                   size="lg"
                   variant="primary"
                   w="fit-content"
-                  onClick={() => formik.handleSubmit()}
+                  onClick={() => {
+                    formik.isValid &&
+                      formik.dirty &&
+                      handleModal("saveBankDetail", [
+                        {
+                          title: "Bank Name",
+                          value: formik.values.bankName,
+                        },
+                        {
+                          title: "Account Number",
+                          value: formik.values.acctNumber,
+                        },
+                        {
+                          title: "Account Name",
+                          value: formik.values.acctName,
+                        },
+                      ]);
+                  }}
+                  // isDisabled={!(formik.isValid && formik.dirty)}
                 >
-                  Request change
+                  Save changes
                 </Button>
-              </HStack>
-            )}
-          </form>
-        )}
+              ) : (
+                <HStack>
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    w="fit-content"
+                    onClick={() => handleModal("deleteBankDetail", {})}
+                  >
+                    Remove bank account
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="primary"
+                    w="fit-content"
+                    onClick={() => formik.handleSubmit()}
+                  >
+                    Request change
+                  </Button>
+                </HStack>
+              )}
+            </form>
+          );
+        }}
       </Formik>
     </VStack>
   );
