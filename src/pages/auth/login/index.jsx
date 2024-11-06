@@ -14,6 +14,8 @@ const LoginPage = () => {
   const theme = useTheme();
   const toast = useToast();
 
+  console.log("Hello");
+
   const googleLogin = async (res) => {
     try {
       const response = await authApi.post("/google/login", {
