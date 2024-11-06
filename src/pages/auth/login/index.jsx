@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Box, Divider, Text } from "@chakra-ui/layout";
+// import { Box, Divider, Text } from "@chakra-ui/layout";
 import { useTheme } from "@chakra-ui/system";
 
 import AuthLayout from "../../../components/auth/AuthLayout";
@@ -7,7 +7,7 @@ import AuthHeader from "../../../components/auth/AuthHeader";
 import GoogleBtn from "../../../components/auth/GoogleBtn";
 
 import LoginForm from "./components/LoginForm";
-import { useToast } from "@chakra-ui/react";
+import { Box, Divider, Text, useToast } from "@chakra-ui/react";
 import { authApi } from "../../../utils/api";
 
 const LoginPage = () => {
