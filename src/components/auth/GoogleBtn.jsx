@@ -1,10 +1,10 @@
 import { Button } from "@chakra-ui/button";
 import { Image } from "@chakra-ui/image";
 import { Text } from "@chakra-ui/layout";
-import GoogleIcon from "../../assets/icon/GoogleIcon.svg";
 import { useTheme } from "@chakra-ui/system";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import GoogleIcon from "../../assets/icon/GoogleIcon.svg";
 import { clientId } from "../../utils/constants";
 
 const GoogleBtn = ({ title, handleGoogleResponse }) => {
@@ -109,7 +109,7 @@ const GoogleBtn = ({ title, handleGoogleResponse }) => {
       gap="4"
       onClick={() => googleLogin()}
     >
-      <Image src={GoogleIcon} alt="Register with google" />
+      <GoogleIcon />
       <Text fontWeight="semibold" color={theme.colors.gray[800]}>
         {title}
       </Text>
