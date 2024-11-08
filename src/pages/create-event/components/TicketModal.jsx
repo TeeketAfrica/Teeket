@@ -1,32 +1,34 @@
-import * as Yup from "yup";
-import { useFormik } from "formik";
 import {
-  Slide,
   Box,
+  Button,
+  Divider,
   FormControl,
-  FormLabel,
   FormErrorMessage,
+  FormLabel,
   HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Radio,
   RadioGroup,
-  Divider,
+  Slide,
   Text,
-  InputGroup,
-  InputRightElement,
-  InputLeftElement,
-  Input,
-  Button,
 } from "@chakra-ui/react";
+import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import * as Yup from "yup";
+import DollarIcon from "../../../assets/icon/Dollar.svg";
+import MultiplyIcon from "../../../assets/icon/Multiply.svg";
+import PriceIcon from "../../../assets/icon/Price.svg";
+import TicketIcon from "../../../assets/icon/Ticket.svg";
+import TrashIcon from "../../../assets/icon/Trash.svg";
+import { useModal } from "../../../context/ModalContext";
 import {
   setTicketDetails,
   updateTicketDetails,
 } from "../../../features/eventSlice";
-import TicketIcon from "../../../assets/icon/Ticket.svg";
-import PriceIcon from "../../../assets/icon/Price.svg";
-import DollarIcon from "../../../assets/icon/Dollar.svg";
-import TrashIcon from "../../../assets/icon/Trash.svg";
-import MultiplyIcon from "../../../assets/icon/Multiply.svg";
 
 const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
   const dispatch = useDispatch();

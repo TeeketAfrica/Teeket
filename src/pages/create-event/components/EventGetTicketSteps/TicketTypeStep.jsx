@@ -22,9 +22,11 @@ export const TicketTypeStep = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  console.log(eventDataTickets);
+
   const [date, setDate] = useState("");
   const [timeRange, setTimeRange] = useState("");
-  const [eventTitle] = useState(eventDataTickets[0]?.event?.title);
+  // const [eventTitle] = useState(eventDataTickets[0]?.event?.title);
 
   const [isTicketError, setIsTicketError] = useState(false);
 
@@ -81,7 +83,7 @@ export const TicketTypeStep = () => {
           maxW="700px"
           pb={5}
         >
-          {eventTitle}
+          {eventDataTickets?.[0]?.event?.title}
         </Text>
         <HStack>
           <CalendarIcon />
