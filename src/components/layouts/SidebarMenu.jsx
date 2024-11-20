@@ -107,7 +107,7 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                 borderColor="gray.800"
                 color="gray.800"
                 name={data?.name || data?.email}
-                src={data?.imageURL}
+                src={data?.profile_image}
                 bgColor="transparent"
               >
                 <AvatarBadge boxSize="20px" bg="greenSuccess" />
@@ -190,7 +190,7 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                     borderColor="gray.800"
                     color="gray.800"
                     name={data?.name || data?.email}
-                    src={data?.imageURL}
+                    src={data?.profile_image}
                     bgColor="transparent"
                   >
                     <AvatarBadge boxSize="20px" bg="greenSuccess" />
