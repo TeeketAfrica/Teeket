@@ -14,6 +14,7 @@ import {
     MenuItem,
     MenuGroup,
     MenuDivider,
+    useDisclosure,
 } from "@chakra-ui/react";
 
 import Search from "../../assets/icon/Search.svg";
@@ -28,9 +29,17 @@ import BrandLogo from "../../assets/img/brandLogo.png";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserDetails } from "../../features/userSlice";
+import LogoutModal from "../auth/LogoutModal";
 
 const DashboardHeader = ({ onOpen }) => {
     const { data } = useSelector(selectUserDetails);
+
+    const {
+        isOpen: isOpenModal,
+        onOpen: onOpenModal,
+        onClose: onCloseModal,
+    } = useDisclosure();
+
     return (
         <Box
             py={[3, 6]}
@@ -123,6 +132,7 @@ const DashboardHeader = ({ onOpen }) => {
                                     icon={<SignOutIcon color="#5E665E" />}
                                     color="gray.600"
                                     fontSize={14}
+                                    onClick={onOpenModal}
                                 >
                                     Log out
                                 </MenuItem>
@@ -138,6 +148,7 @@ const DashboardHeader = ({ onOpen }) => {
                     </Box>
                 </HStack>
             </Stack>
+            <LogoutModal isOpen={isOpenModal} onClose={onCloseModal} />
         </Box>
     );
 };
