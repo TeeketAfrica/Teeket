@@ -44,11 +44,9 @@ const initialState = {
     ticketQuantity: 0,
     isBookedTicket: false,
     isSetDetails: false,
-    ticketUserDetails: {
-        firstName: "",
-        lastName: "",
-        email: "",
-    },
+    ticketSummaryDetails: null,
+    referenceId: null,
+    ticketUserDetails: {},
 };
 
 const eventSlice = createSlice({
@@ -106,9 +104,9 @@ const eventSlice = createSlice({
 
             state.totalTicketQuantities = sumTicketQuantity(state.tickets);
         },
-        setTicketUserDetails: (state, action) => {
-            state.ticketUserDetails = {
-                ...state.ticketUserDetails,
+        setTicketSummaryDetails: (state, action) => {
+            state.ticketSummaryDetails = {
+                ...state.ticketSummaryDetails,
                 ...action.payload,
             };
         },
@@ -180,9 +178,6 @@ const eventSlice = createSlice({
                 });
             }
         },
-        resetEventTicketBooking: (state) => {
-            state.eventTicketBooking = [];
-        },
         changeTicketStep: (state, action) => {
             state.ticketStep = action.payload;
         },
@@ -194,6 +189,20 @@ const eventSlice = createSlice({
         },
         setIsSetDetails: (state, action) => {
             state.isBookedTicket = action.payload;
+        },
+        setReferenceId: (state, action) => {
+            state.referenceId = action.payload;
+        },
+        setTicketUserDetails: (state, action) => {
+            state.ticketUserDetails = {
+                ...state.ticketUserDetails,
+                ...action.payload,
+            };
+        },
+        resetEventTicketBooking: (state) => {
+            state.eventTicketBooking = [];
+            state.referenceId = null;
+            state.ticketSummaryDetails = null;
         },
     },
 });
@@ -216,6 +225,8 @@ export const {
     setIsBookedTicket,
     setIsSetDetailst,
     resetEventTicketBooking,
+    setTicketSummaryDetails,
+    setReferenceId,
     setTicketUserDetails,
 } = eventSlice.actions;
 

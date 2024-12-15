@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, useToast, VStack } from "@chakra-ui/react";
 import { format, parseISO } from "date-fns";
 import { TickCircle } from "iconsax-react";
 import { useEffect, useState } from "react";
@@ -10,6 +10,10 @@ import {
     setEventDataTicketsError,
     setEventDataTicketsLoading,
     resetEventTicketBooking,
+    changeTicketStep,
+    setIsBookedTicket,
+    setReferenceId,
+    setTicketSummaryDetails,
 } from "../../../../features/eventSlice";
 import { teeketApi } from "../../../../utils/api";
 import { TicketTypeBox } from "../TicketTypeBox";
@@ -22,8 +26,7 @@ export const TicketTypeStep = () => {
     } = useSelector((state) => state.event);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-    console.log(eventDataTickets);
+    const toast = useToast();
 
     const [date, setDate] = useState("");
     const [timeRange, setTimeRange] = useState("");
@@ -31,13 +34,18 @@ export const TicketTypeStep = () => {
 
     const [isTicketError, setIsTicketError] = useState(false);
 
+    const { eventTicketBooking, ticketStep } = useSelector(
+        (state) => state.event
+    );
+    const [isLoading, setIsLoading] = useState();
+
     useEffect(() => {
         if (!eventData) {
             navigate("/auth/login");
             return;
         }
         // Reset ticket list
-        dispatch(resetEventTicketBooking());
+        // dispatch(resetEventTicketBooking());
 
         const fetchEvent = async () => {
             try {
@@ -78,6 +86,45 @@ export const TicketTypeStep = () => {
             }
         }
     }, [eventData, isTicketError, ticketQuantity]);
+
+    // get the request id for checkout
+    const handleBookingTickets = async () => {
+        if (ticketQuantity === 0) {
+            setIsTicketError(true);
+            return;
+        }
+        const tickets = eventTicketBooking.map(({ id, quantity }) => ({
+            ticket_id: id,
+            quantity: quantity,
+        }));
+
+        try {
+            setIsLoading(true);
+            const response = await teeketApi.post(
+                `/events/${eventData.id}/tickets/book`,
+                {
+                    ticket_orders: tickets,
+                }
+            );
+
+            if (response && response.status === 200) {
+                dispatch(setReferenceId(response.data.reference_id));
+                dispatch(setTicketSummaryDetails(response.data));
+                toast({
+                    title: "Booking Successful.",
+                    description: "You have successfully booked your ticket.",
+                    status: "success",
+                    duration: 4000,
+                    isClosable: true,
+                    position: "top",
+                });
+            }
+        } catch (error) {
+            console.log("Failed to create ticket:", error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <>
@@ -124,11 +171,8 @@ export const TicketTypeStep = () => {
                 fontWeight={600}
                 w="max"
                 variant="primary"
-                onClick={() => {
-                    if (ticketQuantity === 0) {
-                        setIsTicketError(true);
-                    }
-                }}
+                onClick={handleBookingTickets}
+                isDisabled={isLoading}
             >
                 Continue
             </Button>

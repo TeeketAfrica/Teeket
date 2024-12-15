@@ -20,11 +20,18 @@ import UserAvatar from "../../../../assets/img/Avatars.png";
 import BoxFrame from "../../../../components/layouts/BoxFrame";
 import DetailCard from "../DetailCard";
 import { useDispatch } from "react-redux";
-import { changeTicketStep } from "../../../../features/eventSlice";
+import {
+    changeTicketStep,
+    resetEventTicketBooking,
+} from "../../../../features/eventSlice";
 
 const RightSIdeDetails = ({ event, isRegistered }) => {
     const dispatch = useDispatch();
 
+    const getTicket = () => {
+        dispatch(changeTicketStep(1));
+        dispatch(resetEventTicketBooking());
+    };
     return (
         <VStack
             width={{ base: "100%", lg: "40%" }}
@@ -85,7 +92,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
                             variant="primary"
                             size="lg"
                             width="100%"
-                            onClick={() => dispatch(changeTicketStep(1))}
+                            onClick={getTicket}
                         >
                             {!isRegistered
                                 ? "Get Your Ticket"

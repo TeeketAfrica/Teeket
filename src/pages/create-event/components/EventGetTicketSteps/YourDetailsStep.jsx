@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as z from "zod";
 import { selectActiveUser } from "../../../../features/activeUserSlice";
+import { setTicketUserDetails } from "../../../../features/eventSlice";
 
 const visitorsFormSchema = z
     .object({
@@ -65,10 +66,9 @@ export const YourDetailsStep = () => {
         console.log(data);
     };
 
-    console.log(activeUser);
-
     const handleInputChange = (e) => {
-        console.log(e.target.value);
+        const { name, value } = e.target;
+        dispatch(setTicketUserDetails({ [name]: value }));
     };
     return (
         <>
@@ -119,6 +119,8 @@ export const YourDetailsStep = () => {
                                     {...register("email")}
                                     isInvalid={!!errors.email}
                                     errorBorderColor="red.300"
+                                    onChange={handleInputChange}
+                                    name="email"
                                 />
                                 {errors.email && (
                                     <Text color="red.500" fontSize="sm">
@@ -185,6 +187,8 @@ export const YourDetailsStep = () => {
                                 {...register("firstName")}
                                 isInvalid={!!errors.firstName}
                                 errorBorderColor="red.300"
+                                name="firstName"
+                                onChange={handleInputChange}
                             />
                             {errors.firstName && (
                                 <Text color="red.500" fontSize="sm">
@@ -198,6 +202,8 @@ export const YourDetailsStep = () => {
                                 {...register("lastName")}
                                 isInvalid={!!errors.lastName}
                                 errorBorderColor="red.300"
+                                name="lastName"
+                                onChange={handleInputChange}
                             />
                             {errors.lastName && (
                                 <Text color="red.500" fontSize="sm">
@@ -211,6 +217,8 @@ export const YourDetailsStep = () => {
                                 {...register("email")}
                                 isInvalid={!!errors.email}
                                 errorBorderColor="red.300"
+                                name="lastName"
+                                onChange={handleInputChange}
                             />
                             {errors.email && (
                                 <Text color="red.500" fontSize="sm">
@@ -224,6 +232,8 @@ export const YourDetailsStep = () => {
                                 {...register("confirmEmail")}
                                 isInvalid={!!errors.confirmEmail}
                                 errorBorderColor="red.300"
+                                name="lastName"
+                                onChange={handleInputChange}
                             />
                             {errors.confirmEmail && (
                                 <Text color="red.500" fontSize="sm">
@@ -231,7 +241,7 @@ export const YourDetailsStep = () => {
                                 </Text>
                             )}
                         </GridItem>
-                        <GridItem colSpan={5}>
+                        {/* <GridItem colSpan={5}>
                             <Button
                                 type="submit"
                                 bg="gray.800"
@@ -240,7 +250,7 @@ export const YourDetailsStep = () => {
                             >
                                 Submit
                             </Button>
-                        </GridItem>
+                        </GridItem> */}
                     </Grid>
                 </Box>
             )}

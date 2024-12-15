@@ -24,17 +24,22 @@ const FinancesDashboardPage = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [requestPayment] = useState(true);
 
+    const [revenueData, setRevenueData] = useState(null);
+    const [revenueSummary, setRevenueSummary] = useState(null);
+
     useEffect(() => {
-        const handleFetchEvents = async () => {
+        const handleFetchRevenueSummary = async () => {
             try {
-                let url = "/revenue/overview";
+                let url = "/revenue/summary";
 
                 const response = await teeketApi.get(url);
                 const res = response.data;
-                console.log(res);
+                setRevenueSummary(res);
+                setRevenueData(res.overview);
             } catch (error) {
                 const errorMessage =
-                    error?.response?.data?.message || "Unable to fetch revenue";
+                    error?.response?.data?.message ||
+                    "Unable to fetch revenue summary";
                 toast({
                     title: "Failed to fetch revenue",
                     description: `${errorMessage}`,
@@ -46,9 +51,28 @@ const FinancesDashboardPage = () => {
             }
         };
 
-        handleFetchEvents();
-    }, [toast]);
+        handleFetchRevenueSummary();
+    }, []);
 
+    const exportToExcel = async () => {
+        try {
+            let url = "/revenue/export-csv";
+
+            const response = await teeketApi.get(url);
+            const res = response.data;
+        } catch (error) {
+            const errorMessage =
+                error?.response?.data?.message || "Unable to export";
+            toast({
+                title: "Failed to export revenue",
+                description: `${errorMessage}`,
+                status: "error",
+                duration: 3000,
+                position: "top-right",
+                isClosable: true,
+            });
+        }
+    };
     return (
         <DashboardLayout>
             <Stack
@@ -66,11 +90,21 @@ const FinancesDashboardPage = () => {
                     subTitle="Get an overview of all event-related revenue"
                 />
                 <HStack spacing="12px">
-                    <Button spacing={2} variant="secondary" p={2}>
+                    <Button
+                        spacing={2}
+                        variant="secondary"
+                        p={2}
+                        onClick={exportToExcel}
+                    >
                         <Export />
                         Export
                     </Button>
-                    <Button variant="primary" p={2} onClick={onOpen}>
+                    <Button
+                        variant="primary"
+                        p={2}
+                        onClick={onOpen}
+                        isDisabled={!revenueData?.total_revenue}
+                    >
                         $ Request payment
                     </Button>
                 </HStack>
@@ -87,22 +121,25 @@ const FinancesDashboardPage = () => {
                 <RevenueCard
                     icon={TotalRevenue}
                     revenueTitle="Total revenue made"
-                    revenueTotal="$40,000"
-                    percentIncrease="20%"
-                    desc="increase vs last revenue"
+                    revenueTotal={revenueData?.total_revenue || 0}
+                    percentIncrease={revenueSummary?.percentage_change}
+                    desc={`${
+                        revenueSummary?.gain_or_loss ? "increase" : "decrease"
+                    } vs last revenue`}
+                    growthRate={revenueSummary?.gain_or_loss}
                     color="grey500"
                 />
                 <RevenueCard
                     icon={AvailableRevenue}
                     revenueTitle="Available revenue"
-                    revenueTotal="$10,000"
+                    revenueTotal={revenueData?.available_revenue || 0}
                     desc="You can request payment in 4days time"
                     color="blue.400"
                 />
                 <RevenueCard
                     icon={RemittedRevenue}
-                    revenueTitle="Remiited revenue"
-                    revenueTotal="$40,000"
+                    revenueTitle="Remitted revenue"
+                    revenueTotal={revenueData?.remitted_revenue || 0}
                 />
             </SimpleGrid>
             <RevenueTable />

@@ -24,52 +24,25 @@ export const EventGetTicketSummaryBox = () => {
     const dispatch = useDispatch();
     const toast = useToast();
 
-    const { eventData, eventTicketBooking, ticketStep } = useSelector(
-        (state) => state.event
-    );
+    const {
+        eventData,
+        eventTicketBooking,
+        ticketStep,
+        referenceId,
+        ticketSummaryDetails,
+        ticketUserDetails,
+    } = useSelector((state) => state.event);
 
     const { subTotalPrice, transactionFee, totalPrice } =
         useSelector(selectPriceDetails);
 
     const [isLoading, setIsLoading] = useState();
-    const [referenceId, setReferenceId] = useState(null);
 
     const activeUser = useSelector(selectActiveUser);
 
-    const handleBookingTickets = async () => {
-        const tickets = eventTicketBooking.map(({ id, quantity }) => ({
-            ticket_id: id,
-            quantity: quantity,
-        }));
-
-        try {
-            setIsLoading(true);
-            const response = await teeketApi.post(
-                `/events/${eventData.id}/tickets/book`,
-                {
-                    ticket_orders: tickets,
-                }
-            );
-            console.log(response, "response");
-
-            if (response && response.status === 200) {
-                setReferenceId(response.data.reference_id);
-                toast({
-                    title: "Booking Successful.",
-                    description: "You have successfully booked your ticket.",
-                    status: "success",
-                    duration: 4000,
-                    isClosable: true,
-                    position: "top",
-                });
-                dispatch(changeTicketStep(ticketStep + 1));
-                dispatch(setIsBookedTicket(true));
-            }
-        } catch (error) {
-            console.log("Failed to create ticket:", error.message);
-        } finally {
-            setIsLoading(false);
-        }
+    const moveToCheckout = async () => {
+        dispatch(changeTicketStep(ticketStep + 1));
+        dispatch(setIsBookedTicket(true));
     };
     const handleOrderCheckout = async () => {
         try {
@@ -94,12 +67,10 @@ export const EventGetTicketSummaryBox = () => {
                           email: "",
                       },
                   };
-            console.log(payload, "oioj");
 
             const response = await teeketApi.post(paymentUrl, payload);
 
             if (response && response.status === 200) {
-                console.log(response);
                 location.href = response.data?.data?.authorization_url;
             }
         } catch (error) {
@@ -108,8 +79,51 @@ export const EventGetTicketSummaryBox = () => {
             setIsLoading(false);
         }
     };
-    console.log(location);
+    const handleFreeTicketOrder = async () => {
+        try {
+            setIsLoading(true);
+            let url = `/events/tickets/complete/free-booking`;
 
+            const payload = activeUser
+                ? {
+                      reference_id: referenceId,
+
+                      user_data: {
+                          first_name: ticketUserDetails.firstName,
+                          last_name: ticketUserDetails.lastName,
+                          email: ticketUserDetails.email || activeUser.email,
+                      },
+                  }
+                : {
+                      reference_id: referenceId,
+
+                      user_data: {
+                          first_name: ticketUserDetails.firstName,
+                          last_name: ticketUserDetails.lastName,
+                          email: ticketUserDetails.email,
+                      },
+                  };
+
+            const response = await teeketApi.post(url, payload);
+
+            if (response && response.status === 200) {
+                dispatch(changeTicketStep(3));
+            }
+        } catch (error) {
+            console.log("Failed to create ticket:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const completeOrder = () => {
+        if (ticketSummaryDetails) {
+            if (Math.floor(Number(ticketSummaryDetails.sub_total)) === 0)
+                // use subtotal to determine free and paid order
+                handleFreeTicketOrder();
+            else handleOrderCheckout();
+        }
+    };
     return (
         <VStack
             bg="gray.200"
@@ -252,7 +266,7 @@ export const EventGetTicketSummaryBox = () => {
                             variant="primary"
                             w="100%"
                             padding={4}
-                            onClick={handleOrderCheckout}
+                            onClick={completeOrder}
                         >
                             Checkout
                         </Button>
@@ -271,8 +285,8 @@ export const EventGetTicketSummaryBox = () => {
                     </>
                 ) : (
                     <Button
-                        onClick={handleBookingTickets}
-                        isDisabled={isLoading}
+                        onClick={moveToCheckout}
+                        isDisabled={isLoading | !referenceId}
                         variant="primary"
                         w="100%"
                         padding={4}
