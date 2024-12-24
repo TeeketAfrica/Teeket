@@ -1,52 +1,96 @@
-import { useForm } from 'react-hook-form';
-import {
-  VStack,
-  FormErrorMessage,
-  FormLabel,
-  FormControl,
-  Input,
-  Box,
-  Text,
-  Image,
-  Divider,
-  AbsoluteCenter,
-  Button,
-  // Progress,
-  ListItem,
-  UnorderedList,
-} from '@chakra-ui/react';
-
-import { getImageDimensions, isValidImage } from '../../../utils/utils';
-
-// import Document from '../../../assets/icon/Document.svg';
-// import FileUploadStatus from '../../../assets/icon/FileUploadStatus.svg';
-// import Reload from '../../../assets/icon/Reload.svg';
-import CloudUpload from '../../../assets/icon/CloudUpload.svg';
+import { AbsoluteCenter, Box, Button, Divider, FormControl, FormErrorMessage, FormLabel, HStack, Input, ListItem, Spinner, Text, Image, UnorderedList, VStack } from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import CloudUpload from "../../../assets/icon/CloudUpload.svg";
+import Document from "../../../assets/icon/Document.svg";
+import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
+import Reload from "../../../assets/icon/Reload.svg";
+import { mediaApi } from "../../../utils/api";
+import { IMAGEDIMENSION, IMAGESIZE } from "../../../utils/constants";
+import { getImageDimensions, isValidImage, readAsBinary } from "../../../utils/utils";
 
 const ImageUpload = ({ handleSetImage }) => {
   const { register } = useForm();
+  const fileInputRef = useRef(null);
+  const [imageData, setImageData] = useState("");
 
-  const handleImageChange = async (e) => {
-    const selectedImage =
-      e.target.files && e.target.files.length > 0 ? e.target.files[0] : null;
+  const [imageUploadState, setImageUploadState] = useState({
+    default: true,
+    loading: false,
+    error: {
+      state: false,
+      message: "",
+    },
+  });
+
+  const handleImageChange = async (imageFile) => {
+    const selectedImage = imageFile || null;
+
+    if (!isValidImage(selectedImage)) {
+      setImageUploadState({
+        default: false,
+        loading: false,
+        error: {
+          state: true,
+          message: "The file you uploaded is not recognized as a valid image format. Please use formats like JPEG, PNG, or GIF.",
+        },
+      });
+      return;
+    }
+
+    if (selectedImage && selectedImage.size > IMAGESIZE.size) {
+      setImageUploadState({
+        default: false,
+        loading: false,
+        error: {
+          state: true,
+          message: `Image exceeds the maximum file size of ${IMAGESIZE.size / 1024}${IMAGESIZE.unit}`,
+        },
+      });
+      return;
+    }
+
     if (selectedImage) {
       try {
         const dimensions = await getImageDimensions(selectedImage);
 
-        if (
-          isValidImage(selectedImage) &&
-          dimensions.width <= 800 &&
-          dimensions.height <= 400
-        ) {
-          const imageUrl = await readAndConvertImage(selectedImage);
-          handleSetImage(imageUrl);
+        setImageData(selectedImage);
+
+        if (dimensions.width <= IMAGEDIMENSION.width && dimensions.height <= IMAGEDIMENSION.height) {
+          setImageUploadState({
+            default: false,
+            loading: true,
+            error: { state: false },
+          });
+
+          const imageBinary = await readAsBinary(selectedImage);
+
+          const res = await mediaApi.post("/upload/picture", {
+            file: imageBinary,
+          });
+
+          handleSetImage(res.data);
         } else {
-          console.error(
-            'Invalid image type or dimensions exceed the maximum size (800x400)'
-          );
+          setImageUploadState({
+            default: false,
+            loading: false,
+            error: {
+              state: true,
+              message: "Image exceed the recommended size (2160x1080)",
+            },
+          });
         }
       } catch (error) {
-        console.error('Error reading or converting the selected image:', error);
+        setImageUploadState({
+          default: false,
+          loading: false,
+          error: {
+            state: true,
+            message: "Error uploading image, try again",
+          },
+        });
+      } finally {
+        fileInputRef.current.value = "";
       }
     }
   };
@@ -54,48 +98,10 @@ const ImageUpload = ({ handleSetImage }) => {
   const handleDrop = async (e) => {
     e.preventDefault();
 
-    const droppedImage = e.dataTransfer.files[0];
-
-    if (droppedImage) {
-      try {
-        const dimensions = await getImageDimensions(droppedImage);
-
-        if (
-          isValidImage(droppedImage) &&
-          dimensions.width <= 800 &&
-          dimensions.height <= 400
-        ) {
-          const imageUrl = await readAndConvertImage(droppedImage);
-          handleSetImage(imageUrl);
-        } else {
-          console.error(
-            'Invalid image type or dimensions exceed the maximum size (800x400)'
-          );
-        }
-      } catch (error) {
-        console.error('Error reading or converting the dropped image:', error);
-      }
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      handleImageChange(droppedFile);
     }
-  };
-
-  const readAndConvertImage = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-
-      reader.onerror = () => {
-        reject(new Error('Failed to read the image.'));
-      };
-
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const preventDefault = (e) => {
-    e.preventDefault();
   };
 
   return (
@@ -103,166 +109,111 @@ const ImageUpload = ({ handleSetImage }) => {
       <Text marginBottom="2" color="gray.600">
         Upload a banner image
       </Text>
-      <VStack
-        justifyContent="center"
-        h="264px"
-        w="100%"
-        border="1.5px dashed"
-        borderColor="gray.300"
-        borderRadius="12px"
-        overflow="hidden"
-        onDrop={handleDrop}
-        onDragOver={preventDefault}
-      >
-        <FormLabel htmlFor="upload" m="0" cursor="pointer">
-          <VStack
-            flexDirection="column"
-            justifyContent="center"
-            gap="5"
-            w="100%"
-          >
-            <VStack justifyContent="center">
-              <Box
-                display="inline-flex"
-                alignItems="center"
-                justifyContent="center"
-                w="56px"
-                h="56px"
-                borderRadius="full"
-                bg="gray.200"
-              >
-                <Image src={CloudUpload} alt="icon" />
-              </Box>
-              <Box mt="4">
-                <Text fontWeight="normal">
-                  <Text
-                    as="span"
-                    fontSize="md"
-                    fontWeight="semibold"
-                    color="green.400"
-                    cursor="pointer"
-                  >
-                    Click to upload
-                  </Text>{' '}
-                  <Text as="span" fontSize="sm" color="gray.600">
-                    or drag and drop
+      <VStack justifyContent="center" h="264px" w="100%" border="1.5px dashed" borderColor="gray.300" borderRadius="12px" overflow="hidden" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+        {imageUploadState.default && (
+          <FormLabel htmlFor="upload" m="0" cursor="pointer">
+            <VStack flexDirection="column" justifyContent="center" gap="5" w="100%">
+              <VStack justifyContent="center">
+                <Box display="inline-flex" alignItems="center" justifyContent="center" w="56px" h="56px" borderRadius="full" bg="gray.200">
+                  <Image src={CloudUpload} alt="icon" />
+                </Box>
+                <Box mt="4">
+                  <Text fontWeight="normal">
+                    <Text as="span" fontSize="md" fontWeight="semibold" color="green.400" cursor="pointer">
+                      Click to upload
+                    </Text>{" "}
+                    <Text as="span" fontSize="sm" color="gray.600">
+                      or drag and drop
+                    </Text>
                   </Text>
-                </Text>
-                <Text fontSize="xs" color="gray.400">
-                  SVG, PNG, JPG or GIF (max. 800x400px)
-                </Text>
+                  <Text fontSize="xs" color="gray.400">
+                    SVG, PNG, JPG or GIF (max. {IMAGEDIMENSION.width}x{IMAGEDIMENSION.height})
+                  </Text>
+                </Box>
+              </VStack>
+              <Box position="relative" w="100%">
+                <Divider />
+                <AbsoluteCenter bg="white" px="4">
+                  Or
+                </AbsoluteCenter>
               </Box>
+              <Button size="sm">
+                <FormLabel htmlFor="upload" m="0" cursor="pointer">
+                  Browse files
+                </FormLabel>
+              </Button>
             </VStack>
-            <Box position="relative" w="100%">
-              <Divider />
-              <AbsoluteCenter bg="white" px="4">
-                Or
-              </AbsoluteCenter>
-            </Box>
-            <Button size="sm">
-              <FormLabel htmlFor="upload" m="0" cursor="pointer">
-                Browse files
-              </FormLabel>
-            </Button>
-          </VStack>
-        </FormLabel>
-        {/* <VStack
-          justifyContent="center"
-          backgroundColor="gray.200"
-          width="100%"
-          height="100%"
-        >
-          <>
-            <Box position="relative" marginBottom="2">
-              <Image src={Document} alt="document" />
-              <Box
-                position="absolute"
-                top="35%"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                color="gray.100"
-                width="100%"
-                backgroundColor="#C548F1"
-                fontSize="2"
-              >
-                <Text>JPG</Text>
-              </Box>
-            </Box>
-            <Text fontWeight="semibold" fontSize="md" color="gray.500">
-              65%
-            </Text>
-            <Box maxW="300px" width="100%" marginTop="2" marginBottom="4">
-              <Progress
-                value={30}
-                height="6px"
-                colorScheme="red"
-                borderRadius="16px"
-              />
-            </Box>
-            <Text fontWeight="semibold" fontSize="sm">
-              Uploading Document...
-            </Text>
-            <Text fontWeight="normal" fontSize="xs">
-              Name of document
-            </Text>
-          </>
-          <>
-            <VStack justifyContent="center" marginBottom="2">
-              <Image src={FileUploadStatus} alt="icon" />
-
-              <Box textAlign="center">
-                <Text
-                  fontWeight="semibold"
-                  fontSize="sm"
-                  marginTop="4"
-                  marginBottom="2"
-                >
-                  Failed to upload
+          </FormLabel>
+        )}
+        {(imageUploadState.error.state || imageUploadState.loading) && (
+          <VStack justifyContent="center" backgroundColor="gray.200" width="100%" height="100%">
+            {imageUploadState.loading && (
+              <>
+                <Box position="relative" marginBottom="2">
+                  <Document />
+                  <Box position="absolute" top="35%" display="flex" alignItems="center" justifyContent="center" color="gray.100" width="100%" backgroundColor="#C548F1" fontSize="2">
+                    <Text>JPG</Text>
+                  </Box>
+                </Box>
+                <HStack justifyContent="center" width="100%" marginTop="2" marginBottom="4">
+                  <Spinner thickness="4px" speed="0.65s" emptyColor="gray.300" color="green.500" size="xl" />
+                </HStack>
+                <Text fontWeight="semibold" fontSize="sm">
+                  Uploading Document...
                 </Text>
                 <Text fontWeight="normal" fontSize="xs">
-                  Error message
+                  {imageData?.name}
                 </Text>
-              </Box>
+              </>
+            )}
 
-              <Box marginTop="6">
-                <Button
-                  leftIcon={<Image src={Reload} alt="icon" />}
-                  type="button"
-                  h="0"
-                  color="red.400"
-                >
-                  Try again
-                </Button>
-              </Box>
-            </VStack>
-          </>
-        </VStack> */}
+            {imageUploadState.error.state && (
+              <VStack justifyContent="center" marginBottom="2">
+                <FileUploadStatus />
+
+                <Box textAlign="center">
+                  <Text fontWeight="semibold" fontSize="sm" marginTop="4" marginBottom="2">
+                    Failed to upload
+                  </Text>
+                  <Text fontWeight="normal" fontSize="xs" maxWidth="60ch">
+                    {imageUploadState.error.message && imageUploadState.error.message}
+                  </Text>
+                </Box>
+
+                <Box marginTop="6">
+                  <Button
+                    leftIcon={<Reload />}
+                    type="button"
+                    h="0"
+                    color="red.400"
+                    onClick={() =>
+                      setImageUploadState({
+                        default: true,
+                        loading: false,
+                        error: { state: false, message: "" },
+                      })
+                    }>
+                    Try again
+                  </Button>
+                </Box>
+              </VStack>
+            )}
+          </VStack>
+        )}
       </VStack>
-      <Input
-        id="upload"
-        type="file"
-        accept="image/*"
-        {...register('upload', {
-          required: 'This is required',
-        })}
-        size="lg"
-        border="none"
-        display="none"
-        onChange={handleImageChange}
-      />
-      <UnorderedList
-        color="gray.600 "
-        fontSize="xs"
-        marginLeft="18px"
-        marginTop="2"
-      >
-        <ListItem>Recommended image size: 2160 x 1080px</ListItem>
-        <ListItem>Maximum file size: 10MB</ListItem>
+      <Input id="upload" type="file" accept="image/*" size="lg" border="none" display="none" onChange={(e) => handleImageChange(e.target.files[0])} ref={fileInputRef} />
+      <UnorderedList color="gray.600 " fontSize="xs" marginLeft="18px" marginTop="2">
+        <ListItem>
+          Recommended image size: {IMAGEDIMENSION.width} x{IMAGEDIMENSION.height}
+        </ListItem>
+        <ListItem>
+          Maximum file size: {IMAGESIZE.size / 1024}
+          {IMAGESIZE.unit}
+        </ListItem>
         <ListItem>Supported image files: JPEG or PNG</ListItem>
       </UnorderedList>
 
-      <FormErrorMessage color="red.500"></FormErrorMessage>
+      <FormErrorMessage color="red.500" />
     </FormControl>
   );
 };

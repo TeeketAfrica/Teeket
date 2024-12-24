@@ -1,31 +1,74 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
-import { Stack } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
-
-// Importing icons
-import EmailInput from '../../components/EmailInput';
-import PasswordInput from '../../components/PasswordInput';
+import * as Yup from "yup";
+import { useState } from "react";
+import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { authApi } from "../../../../utils/api";
+import { setUserDetails } from "../../../../features/userSlice";
+import { Stack } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/react";
+import EmailInput from "../../components/EmailInput";
+import PasswordInput from "../../components/PasswordInput";
+import { useStorage } from "../../../../utils/storage";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { setAccessToken, setRefreshToken, getAccessToken } = useStorage();
+
+  const token = getAccessToken();
+  console.log(token);
+
   // Validation schema using Yup
   const validationSchema = Yup.object({
     email: Yup.string()
-      .email('Invalid email address')
-      .required('Please input your email address'),
-    password: Yup.string().required('Please input your password'),
+      .email("Invalid email address")
+      .required("Please input your email address"),
+    password: Yup.string().required("Please input your password"),
   });
+
+  const [error, setError] = useState("");
 
   // Formik initialization
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        const response = await authApi.post("/login", {
+          email: values.email,
+          password: values.password,
+        });
+
+        const access_token = response.data.access_token;
+        const refresh_token = response.data.refresh_token;
+
+        if (access_token) {
+          // set the refresh token and access token to cookie storage
+          setAccessToken(access_token);
+          setRefreshToken(refresh_token);
+
+          dispatch(setUserDetails(values));
+
+          const path = sessionStorage.getItem("REDIRECT");
+          if (path) {
+            sessionStorage.removeItem("REDIRECT");
+            navigate(path);
+          } else {
+            navigate("/app/overview");
+          }
+        }
+      } catch (err) {
+        if (err.message == "Network Error") {
+          alert("Check your internet connection!.");
+        } else {
+          setError("Invalid username or password");
+        }
+        console.log("Failed to login", err.message);
+      }
     },
   });
 
@@ -33,10 +76,34 @@ const LoginForm = () => {
     <form onSubmit={formik.handleSubmit}>
       <Stack spacing={4}>
         {/* Email Address */}
-        <EmailInput formik={formik} label="Email address" inputName="email" />
+        <EmailInput
+          formik={{
+            handleChange: formik.handleChange,
+            values: formik.values,
+            touched: formik.touched,
+            errors: formik.errors,
+            setFieldTouched: formik.setFieldTouched,
+          }}
+          label="Email address"
+          inputName="email"
+          error={error}
+          handleError={setError}
+        />
 
         {/* Password */}
-        <PasswordInput formik={formik} label="Password" inputName="password" />
+        <PasswordInput
+          formik={{
+            handleChange: formik.handleChange,
+            values: formik.values,
+            touched: formik.touched,
+            errors: formik.errors,
+            setFieldTouched: formik.setFieldTouched,
+          }}
+          label="Password"
+          inputName="password"
+          error={error}
+          handleError={setError}
+        />
 
         {/* Submit button */}
         <Button

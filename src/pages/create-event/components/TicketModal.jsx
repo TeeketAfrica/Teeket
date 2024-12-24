@@ -1,49 +1,40 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
 import {
-  Slide,
   Box,
+  Button,
+  Divider,
   FormControl,
-  FormLabel,
   FormErrorMessage,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
+  FormLabel,
   HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Radio,
   RadioGroup,
-  Divider,
+  Slide,
   Text,
-  Image,
-  InputGroup,
-  InputRightElement,
-  InputLeftElement,
-  Input,
-  Button,
-} from '@chakra-ui/react';
-import { useDisclosure } from '@chakra-ui/react';
-
-import { useDispatch } from 'react-redux';
+} from "@chakra-ui/react";
+import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import * as Yup from "yup";
+import DollarIcon from "../../../assets/icon/Dollar.svg";
+import MultiplyIcon from "../../../assets/icon/Multiply.svg";
+import PriceIcon from "../../../assets/icon/Price.svg";
+import TicketIcon from "../../../assets/icon/Ticket.svg";
+import TrashIcon from "../../../assets/icon/Trash.svg";
+import { useModal } from "../../../context/ModalContext";
 import {
   setTicketDetails,
   updateTicketDetails,
-  deleteTicket,
-} from '../../../features/eventSlice';
-
-import TicketIcon from '../../../assets/icon/Ticket.svg';
-import PriceIcon from '../../../assets/icon/Price.svg';
-import DollarIcon from '../../../assets/icon/Dollar.svg';
-import TrashIcon from '../../../assets/icon/Trash.svg';
-import MultiplyIcon from '../../../assets/icon/Multiply.svg';
+} from "../../../features/eventSlice";
 
 const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
   const dispatch = useDispatch();
   const { isModalOpen, data } = ticketState;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { openModal } = useModal();
+  const { id } = useParams();
 
   const ticketQuantity = data
     ? selectedQuantity + data.ticketQuantity
@@ -51,27 +42,27 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
 
   const validationSchema = Yup.object({
     ticketType: Yup.string().required(
-      'Please specify if the ticket will be free or paid'
+      "Please specify if the ticket will be free or paid"
     ),
-    ticketName: Yup.string().required('Please enter ticket name'),
-    ticketPrice: Yup.number().min(1, 'Ticket price must be greater than'),
+    ticketName: Yup.string().required("Please enter ticket name"),
+    ticketPrice: Yup.number().min(1, "Ticket price must be greater than"),
     ticketQuantity: Yup.number()
-      .min(1, 'Ticket quantity for sale must be greater than 0')
+      .min(1, "Ticket quantity for sale must be greater than 0")
       .max(
         ticketQuantity,
         `Ticket quantity for sale must be less than or equal to ${ticketQuantity}`
       )
-      .required('Please enter ticket quantity for sale'),
+      .required("Please enter ticket quantity for sale"),
   });
 
   // Formik initialization
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      ticketType: data?.ticketType || '',
-      ticketName: data?.ticketName || '',
-      ticketPrice: data?.ticketPrice || '',
-      ticketQuantity: data?.ticketQuantity || '',
+      ticketType: data?.ticketType || "",
+      ticketName: data?.ticketName || "",
+      ticketPrice: Number.parseInt(data?.ticketPrice) || "",
+      ticketQuantity: data?.ticketQuantity || "",
     },
 
     validationSchema: validationSchema,
@@ -82,35 +73,36 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
     onCloseModal({ isModalOpen: false });
   };
 
-  const handleSaveTicketDetails = () => {
+  const handleTicketDetails = (id = null) => {
     if (formik.isValid) {
-      dispatch(setTicketDetails(formik.values));
+      const { values } = formik;
+      const ticketType = values.ticketType;
+      const updatedValues = {
+        ...values,
+        ticketPrice: ticketType === "free" ? 0 : values.ticketPrice,
+      };
 
-      formik.resetForm();
-      onCloseModal({ isModalOpen: false });
+      if (id) {
+        dispatch(updateTicketDetails({ id, ...updatedValues }));
+      } else {
+        dispatch(setTicketDetails(updatedValues));
+      }
+
+      handlerOnClose();
     }
   };
 
-  const handleUpdateTicketDetails = (id) => {
-    if (formik.isValid && data) {
-      dispatch(updateTicketDetails({ id, ...formik.values }));
-    }
-    formik.resetForm();
-    onCloseModal({ isModalOpen: false });
-  };
-
-  const handleDeleteTicket = (id) => {
-    if (data) {
-      dispatch(deleteTicket(id));
-
-      formik.resetForm();
-      onClose();
-      onCloseModal({ isModalOpen: false });
-    }
+  const handleOpenDeleteModal = () => {
+    openModal("deleteTicket", {
+      event_id: id,
+      id: data.id,
+      formik: formik,
+      closeParentModal: onCloseModal,
+    });
   };
 
   return (
-    <Slide in={isModalOpen} direction="right" style={{ zIndex: '999999' }}>
+    <Slide in={isModalOpen} direction="right" style={{ zIndex: "999999" }}>
       <Box
         maxW="567px"
         width="100%"
@@ -143,7 +135,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             Manage your ticket
           </Text>
           <Box onClick={handlerOnClose}>
-            <Image src={MultiplyIcon} alt="icon" />
+            <MultiplyIcon />
           </Box>
         </Box>
 
@@ -165,8 +157,8 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             <RadioGroup
               name="ticketType"
               value={formik.values.ticketType}
-              onChange={(value) => formik.setFieldValue('ticketType', value)}
-              onBlur={() => formik.setFieldTouched('ticketType', true)}
+              onChange={(value) => formik.setFieldValue("ticketType", value)}
+              onBlur={() => formik.setFieldTouched("ticketType", true)}
               marginTop="4"
             >
               <HStack color="gray.800" fontWeight="medium" flexWrap="wrap">
@@ -192,7 +184,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
 
             <InputGroup size="lg">
               <InputRightElement pointerEvents="none">
-                <Image src={TicketIcon} alt="icon" />
+                <TicketIcon />
               </InputRightElement>
 
               <Input
@@ -202,7 +194,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
                 placeholder="e.g. Regular"
                 value={formik.values.ticketName}
                 onChange={formik.handleChange}
-                onBlur={() => formik.setFieldTouched('ticketName', true)}
+                onBlur={() => formik.setFieldTouched("ticketName", true)}
               />
             </InputGroup>
 
@@ -211,39 +203,43 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl
-            isInvalid={formik.touched.ticketPrice && formik.errors.ticketPrice}
-          >
-            <FormLabel htmlFor="ticketPrice">Ticket price</FormLabel>
+          {formik.values.ticketType !== "free" && (
+            <FormControl
+              isInvalid={
+                formik.touched.ticketPrice && formik.errors.ticketPrice
+              }
+            >
+              <FormLabel htmlFor="ticketPrice">Ticket price</FormLabel>
 
-            <InputGroup size="lg">
-              <InputRightElement pointerEvents="none">
-                <Image src={PriceIcon} alt="icon" />
-              </InputRightElement>
-              <InputLeftElement pointerEvents="none">
-                <Image src={DollarIcon} alt="icon" />
-              </InputLeftElement>
+              <InputGroup size="lg">
+                <InputRightElement pointerEvents="none">
+                  <PriceIcon />
+                </InputRightElement>
+                <InputLeftElement pointerEvents="none">
+                  <DollarIcon />
+                </InputLeftElement>
 
-              <Input
-                id="ticketPrice"
-                name="ticketPrice"
-                type="number"
-                placeholder="set ticket price"
-                value={formik.values.ticketPrice}
-                onChange={formik.handleChange}
-                onBlur={() => formik.setFieldTouched('ticketPrice', true)}
-              />
-            </InputGroup>
-            {formik.values.ticketPrice && (
-              <Text fontSize="sm" fontWeight="normal" color="gray.600">
-                Our 2% commission will taken from each tickets sold
-              </Text>
-            )}
+                <Input
+                  id="ticketPrice"
+                  name="ticketPrice"
+                  type="number"
+                  placeholder="set ticket price"
+                  value={formik.values.ticketPrice}
+                  onChange={formik.handleChange}
+                  onBlur={() => formik.setFieldTouched("ticketPrice", true)}
+                />
+              </InputGroup>
+              {formik.values.ticketPrice && (
+                <Text fontSize="sm" fontWeight="normal" color="gray.600">
+                  Our 2% commission will taken from each tickets sold
+                </Text>
+              )}
 
-            <FormErrorMessage>
-              {formik.touched.ticketPrice && formik.errors.ticketPrice}
-            </FormErrorMessage>
-          </FormControl>
+              <FormErrorMessage>
+                {formik.touched.ticketPrice && formik.errors.ticketPrice}
+              </FormErrorMessage>
+            </FormControl>
+          )}
 
           <FormControl
             isInvalid={
@@ -251,16 +247,16 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             }
           >
             <FormLabel htmlFor="ticketQuantity">
-              How{' '}
+              How many{" "}
               <Text as="span" textTransform="lowercase">
                 {formik.values.ticketName}
-              </Text>{' '}
+              </Text>{" "}
               tickets should be sold
             </FormLabel>
 
             <InputGroup size="lg">
               <InputLeftElement pointerEvents="none">
-                <Image src={DollarIcon} alt="icon" />
+                <DollarIcon />
               </InputLeftElement>
 
               <Input
@@ -271,7 +267,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
                 min={0}
                 value={formik.values.ticketQuantity}
                 onChange={formik.handleChange}
-                onBlur={() => formik.setFieldTouched('ticketQuantity', true)}
+                onBlur={() => formik.setFieldTouched("ticketQuantity", true)}
               />
             </InputGroup>
 
@@ -280,14 +276,17 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
             </FormErrorMessage>
 
             <Text fontSize="sm" fontWeight="normal" color="gray.600">
-              {ticketQuantity - formik.values.ticketQuantity} tickets available
+              {ticketQuantity - formik.values.ticketQuantity < -1
+                ? "0"
+                : ticketQuantity - formik.values.ticketQuantity}{" "}
+              tickets available
             </Text>
           </FormControl>
 
           {data && (
             <Button
-              onClick={onOpen}
-              leftIcon={<Image src={TrashIcon} alt="icon" />}
+              onClick={() => handleOpenDeleteModal()}
+              leftIcon={<TrashIcon />}
               variant="ghost"
               color="red.400"
               size="sm"
@@ -314,7 +313,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           </Button>
           {!data ? (
             <Button
-              onClick={() => handleSaveTicketDetails()}
+              onClick={() => handleTicketDetails()}
               size="lg"
               variant="primary"
             >
@@ -331,32 +330,6 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           )}
         </Box>
       </Box>
-
-      {/* Delete Ticket Modal */}
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay bg="rgba(20, 23, 20, 0.5)" />
-        <ModalContent>
-          <ModalHeader>Are you absolutely sure?</ModalHeader>
-          <ModalBody>
-            <Text>
-              This action cannot be undone. This will permanently delete this
-              ticket
-            </Text>
-          </ModalBody>
-          <ModalFooter gap="2">
-            <Button onClick={onClose} variant="secondary" size="sm">
-              Cancel
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => handleDeleteTicket(data.id)}
-            >
-              Continue
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </Slide>
   );
 };

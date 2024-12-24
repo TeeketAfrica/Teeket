@@ -1,44 +1,39 @@
-import { useState } from 'react';
-
 import {
-  Image,
   Box,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  VStack,
-  Stack,
-  HStack,
-  Radio,
-  RadioGroup,
-  Divider,
-  Text,
   Button,
+  Divider,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-} from '@chakra-ui/react';
-
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+  Radio,
+  RadioGroup,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import CircleCheckIcon from "../../../assets/icon/CircleCheck.svg";
+import DownArrowIcon from "../../../assets/icon/DownArrow.svg";
+import InfoTriangleIcon from "../../../assets/icon/InfoTriangle.svg";
+import Notebook from "../../../assets/icon/Notebook.svg";
+import PlusIcon from "../../../assets/icon/Plus.svg";
+import PlusLightIcon from "../../../assets/icon/PlusLight.svg";
+import UpArrowIcon from "../../../assets/icon/UpArrow.svg";
 import {
-  setEventDetail,
   selectEventDetails,
-} from '../../../features/eventSlice';
-
-import FormLayout from '../components/FormLayout';
-import Ticket from '../components/Ticket';
-import TicketModal from '../components/TicketModal';
-
-import PlusIcon from '../../../assets/icon/Plus.svg';
-import PlusLightIcon from '../../../assets/icon/PlusLight.svg';
-import Notebook from '../../../assets/icon/Notebook.svg';
-import DownArrowIcon from '../../../assets/icon/DownArrow.svg';
-import UpArrowIcon from '../../../assets/icon/UpArrow.svg';
-import CircleCheckIcon from '../../../assets/icon/CircleCheck.svg';
-import InfoTriangleIcon from '../../../assets/icon/InfoTriangle.svg';
+  setEventDetail,
+} from "../../../features/eventSlice";
+import FormLayout from "../components/FormLayout";
+import Ticket from "../components/Ticket";
+import TicketModal from "../components/TicketModal";
 
 const FormStep3 = ({ formik }) => {
   const dispatch = useDispatch();
@@ -79,11 +74,11 @@ const FormStep3 = ({ formik }) => {
             name="eventEstimatedSoldTicket"
             value={formik.values.eventEstimatedSoldTicket}
             onChange={(value) => {
-              formik.setFieldValue('eventEstimatedSoldTicket', value),
-                handleInputChange('eventEstimatedSoldTicket', value);
+              formik.setFieldValue("eventEstimatedSoldTicket", value);
+              handleInputChange("eventEstimatedSoldTicket", value);
             }}
             onBlur={() =>
-              formik.setFieldTouched('eventEstimatedSoldTicket', true)
+              formik.setFieldTouched("eventEstimatedSoldTicket", true)
             }
             marginTop="4"
           >
@@ -100,22 +95,23 @@ const FormStep3 = ({ formik }) => {
               <NumberInput
                 min={0}
                 value={formik.values.eventEstimatedSoldTicket}
-                onChange={(valueString, valueNumber) =>
+                onChange={(valueString, valueNumber) => {
                   formik.setFieldValue(
-                    'eventEstimatedSoldTicket',
-                    valueNumber || ''
-                  )
-                }
+                    "eventEstimatedSoldTicket",
+                    valueNumber || ""
+                  );
+                  handleInputChange("eventEstimatedSoldTicket", valueNumber);
+                }}
                 onFocus={() => setIsInputFocused(true)}
                 onBlur={() => setIsInputFocused(false)}
               >
                 <NumberInputField backgroundColor="transparent" zIndex="2" />
                 <NumberInputStepper marginRight="8px" zIndex="3">
                   <NumberIncrementStepper>
-                    <Image src={UpArrowIcon} alt="up-arrow" />
+                    <UpArrowIcon />
                   </NumberIncrementStepper>
                   <NumberDecrementStepper>
-                    <Image src={DownArrowIcon} alt="down-arrow" />
+                    <DownArrowIcon />
                   </NumberDecrementStepper>
                 </NumberInputStepper>
                 {!formik.values.eventEstimatedSoldTicket && !isInputFocused && (
@@ -150,7 +146,7 @@ const FormStep3 = ({ formik }) => {
                   Build your tickets
                 </Text>
                 <Button
-                  leftIcon={<Image src={PlusIcon} alt="icon" />}
+                  leftIcon={<PlusIcon />}
                   variant="secondary"
                   size="sm"
                   onClick={() => setIsTicketOpen({ isModalOpen: true })}
@@ -176,11 +172,7 @@ const FormStep3 = ({ formik }) => {
               color="gray.800"
               marginTop="8"
             >
-              {ticketQuantity > 0 ? (
-                <Image src={CircleCheckIcon} alt="circle-check" />
-              ) : (
-                <Image src={InfoTriangleIcon} alt="info-triangle" />
-              )}{' '}
+              {ticketQuantity > 0 ? <CircleCheckIcon /> : <InfoTriangleIcon />}{" "}
               <Text as="span">
                 You have {ticketQuantity > -1 ? ticketQuantity : 0} tickets left
                 to allocate
@@ -190,14 +182,14 @@ const FormStep3 = ({ formik }) => {
         ) : (
           <VStack gap="4">
             <VStack>
-              <Image src={Notebook} alt="icon" />
+              <Notebook />
               <Text fontSize="lg" fontWeight="semibold" color="gray.600">
                 Build your various ticket category here
               </Text>
             </VStack>
             {formik.values.eventEstimatedSoldTicket ? (
               <Button
-                leftIcon={<Image src={PlusLightIcon} alt="icon" />}
+                leftIcon={<PlusLightIcon />}
                 size="lg"
                 variant="primary"
                 onClick={() => setIsTicketOpen({ isModalOpen: true })}
@@ -206,7 +198,7 @@ const FormStep3 = ({ formik }) => {
               </Button>
             ) : (
               <Text fontSize="lg" fontWeight="semibold" color="gray.800">
-                {' '}
+                {" "}
                 Select the estimated number of tickets to be sold
               </Text>
             )}

@@ -1,20 +1,16 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Box } from '@chakra-ui/layout';
-import { Button, Image } from '@chakra-ui/react';
-
-import AuthLayout from '../../../components/auth/AuthLayout';
-import AuthHeader from '../../../components/auth/AuthHeader';
-
-import PasswordResetForm from './components/PasswordResetForm';
-
-import DoubleCheckMark from '../../../assets/icon/DoubleCheckMark.svg';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Box } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/react";
+import AuthLayout from "../../../components/auth/AuthLayout";
+import AuthHeader from "../../../components/auth/AuthHeader";
+import PasswordResetForm from "./components/PasswordResetForm";
+import DoubleCheckMark from "../../../assets/icon/DoubleCheckMark.svg";
 
 const PasswordResetPage = () => {
   const [passwordReset, setPasswordReset] = useState(false);
 
-  const handleOnSubmit = (data) => {
-    console.log(data);
+  const handleOnSubmit = () => {
     setPasswordReset(true);
   };
 
@@ -24,7 +20,7 @@ const PasswordResetPage = () => {
         {passwordReset ? (
           <>
             <Box textAlign="center">
-              <Image display="inline-block" src={DoubleCheckMark} alt="Icon" />
+              <DoubleCheckMark />
             </Box>
             <AuthHeader
               heading="Password reset"
