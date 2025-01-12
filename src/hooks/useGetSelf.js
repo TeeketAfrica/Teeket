@@ -12,12 +12,13 @@ export default function useGetSelf() {
   async function handleGetSelf() {
     const { getAccessToken } = useStorage();
     const token = getAccessToken();
-    
 
     if (token) {
       try {
         const response = await teeketApi.get("/user/profile");
         const userData = response.data;
+        console.log("userData", userData);
+
         dispatch(setActiveUser(userData));
       } catch (error) {
         const errorMessage =
