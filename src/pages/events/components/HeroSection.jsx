@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Stack,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -19,6 +20,7 @@ import EventBg from "../../../assets/img/eventsBg.png";
 import DownIcon from "../../../assets/icon/DownIcon.svg";
 import SearchWhite from "../../../assets/icon/SearchWhite.svg";
 import { SearchContext } from "../../../context/SearchContext";
+import { Filter, ListFilter } from "lucide-react";
 
 const HeroSection = () => {
   const { searchTerm, category, setSearchTerm, setCategory } =
@@ -56,27 +58,30 @@ const HeroSection = () => {
     <section>
       <Box>
         <Container>
-          <Box px={109}>
+          <Box px={[5, null, 109]}>
             <Box
               bgImage={`url(${EventBg})`}
               bgSize="cover"
               bgPosition="bottom center"
               h="425px"
-              w="100%">
+              w="100%"
+            >
               <Box h="full" maxW="692px" w="full" mx="auto">
                 <Center h="full" w="full">
                   <VStack w="full" spacing={8}>
                     <Box maxW="519px" w="full" mx="auto">
                       <Heading
-                        fontSize={56}
+                        fontSize={[40, null, 56]}
                         fontWeight={700}
-                        textAlign="center">
+                        textAlign="center"
+                      >
                         Browse
                         <Text
                           as="span"
                           fontStyle="italic"
                           bgGradient="linear(to-r, #06CC06, #C2F2C2)"
-                          bgClip="text">
+                          bgClip="text"
+                        >
                           {" "}
                           events{" "}
                         </Text>
@@ -84,17 +89,21 @@ const HeroSection = () => {
                       </Heading>
                     </Box>
                     <Box maxW="692px" w="full">
-                      <HStack
+                      <Stack
+                        direction={["column", null, "row"]}
                         w="full"
                         justifyContent="center"
-                        alignItems="center">
+                        alignItems="center"
+                      >
                         <Box
                           maxW="545px"
                           w="full"
                           border="1px solid"
                           borderColor="gray.300"
                           borderRadius="12px"
-                          bgColor="gray.100">
+                          bgColor="gray.100"
+                          display={["none", null, null, "block"]}
+                        >
                           <HStack spacing={3} p={2}>
                             <Input
                               placeholder="Search for an event or location"
@@ -106,6 +115,7 @@ const HeroSection = () => {
                               flexShrink="0"
                               style={{ boxShadow: "none" }}
                             />
+
                             <Center height="34px">
                               <Divider
                                 borderColor="gray.300"
@@ -122,7 +132,8 @@ const HeroSection = () => {
                                 width="100%"
                                 textAlign="left"
                                 paddingLeft="10px"
-                                _hover={{ bg: "transparent" }}>
+                                _hover={{ bg: "transparent" }}
+                              >
                                 {category == null
                                   ? "Choose category"
                                   : category}
@@ -131,7 +142,8 @@ const HeroSection = () => {
                                 {categories.map((category) => (
                                   <MenuItem
                                     key={category}
-                                    onClick={() => setCategory(category)}>
+                                    onClick={() => setCategory(category)}
+                                  >
                                     {category}
                                   </MenuItem>
                                 ))}
@@ -140,13 +152,77 @@ const HeroSection = () => {
                           </HStack>
                         </Box>
                         <Button
+                          display={["none", null, null, "block"]}
                           leftIcon={<SearchWhite />}
                           variant="primary"
                           style={{ height: "56px" }}
-                          onClick={handleButtonClick}>
+                          onClick={handleButtonClick}
+                        >
                           Search
                         </Button>
-                      </HStack>
+
+                        {/* Mobile */}
+                        <HStack
+                          flexDirection="row"
+                          display={["flex", null, null, "none"]}
+                          alignItems="inherit"
+                          w="full"
+                        >
+                          <Box
+                            maxW="545px"
+                            w="full"
+                            border="1px solid"
+                            borderColor="gray.300"
+                            borderRadius="12px"
+                            bgColor="gray.100"
+                            px={4}
+                            display={["block", null, null, "none"]}
+                          >
+                            <Input
+                              placeholder="Search for an event or location"
+                              px={0}
+                              border="none"
+                              outline="none"
+                              value={inputValue}
+                              onChange={handleInputChange}
+                              maxW="320px"
+                              w="full"
+                              flexShrink="0"
+                              style={{ boxShadow: "none" }}
+                            />
+                          </Box>
+                          <Button variant="primary" onClick={handleButtonClick}>
+                            <SearchWhite />
+                          </Button>
+                          <Menu>
+                            <MenuButton
+                              display={["flex", null, null, "none"]}
+                              border="1px solid"
+                              as={Button}
+                              color="gray.400"
+                              variant="link"
+                              h="40px"
+                              _hover={{ bg: "transparent" }}
+                              justifyContent="center"
+                              alignItems="center"
+                            >
+                              <Center>
+                                {category == null ? <ListFilter /> : category}
+                              </Center>
+                            </MenuButton>
+                            <MenuList>
+                              {categories.map((category) => (
+                                <MenuItem
+                                  key={category}
+                                  onClick={() => setCategory(category)}
+                                >
+                                  {category}
+                                </MenuItem>
+                              ))}
+                            </MenuList>
+                          </Menu>
+                        </HStack>
+                      </Stack>
                     </Box>
                   </VStack>
                 </Center>
