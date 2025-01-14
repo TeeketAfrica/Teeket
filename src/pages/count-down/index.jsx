@@ -83,10 +83,13 @@ export const Index = () => {
                 px={5}
                 w="full"
               >
-                <Link to="/">
+                <Link to="/home">
                   <Image w="full" src={BrandLogo} alt="logo" />
                 </Link>
                 <HStack spacing={6}>
+                  <Link href="/home" fontWeight={600} fontSize={14}>
+                    Home
+                  </Link>
                   <Link href="/auth/create-account">
                     <Button variant="accent" size="sm">
                       Sign up

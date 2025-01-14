@@ -15,6 +15,12 @@ import {
   Text,
   VStack,
   useDisclosure,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuGroup,
+  MenuDivider,
 } from "@chakra-ui/react";
 import Container from "../ui/Container";
 import BrandLogo from "../../assets/img/brandLogo.png";
@@ -24,11 +30,27 @@ import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/activeUserSlice";
+import {
+  CirclePlus,
+  GridIcon,
+  PlusIcon,
+  SettingsIcon,
+  TicketIcon,
+} from "lucide-react";
+import SignOutIcon from "../../assets/icon/sign-out-2.svg";
+import LogoutModal from "../auth/LogoutModal";
+
+// import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu";
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const activeUser = useSelector(selectActiveUser);
+  const {
+    isOpen: isOpenModal,
+    onOpen: onOpenModal,
+    onClose: onCloseModal,
+  } = useDisclosure();
 
   const menu = [
     {
@@ -84,16 +106,93 @@ const Header = () => {
                   </Link>
                 ))}
                 {activeUser ? (
-                  <Box cursor="pointer">
-                    <Avatar
-                      border="1px solid"
-                      borderColor="gray.800"
-                      color="gray.800"
-                      name={activeUser?.name || activeUser?.email}
-                      src={activeUser?.imageURL}
-                      bgColor="transparent"
-                    />
-                  </Box>
+                  // <MenuRoot>
+                  //   <MenuTrigger asChild>
+                  //     {/* <Box cursor="pointer"> */}
+                  // <Avatar
+                  //   border="1px solid"
+                  //   borderColor="gray.800"
+                  //   color="gray.800"
+                  //   name={activeUser?.name || activeUser?.email}
+                  //   src={activeUser?.imageURL}
+                  //   bgColor="transparent"
+                  // />
+                  //     {/* </Box> */}
+                  //   </MenuTrigger>
+                  //   <MenuContent>
+                  //     <MenuItem value="new-txt">New Text File</MenuItem>
+                  //     <MenuItem value="new-file">New File...</MenuItem>
+                  //     <MenuItem value="new-win">New Window</MenuItem>
+                  //     <MenuItem value="open-file">Open File...</MenuItem>
+                  //     <MenuItem value="export">Export</MenuItem>
+                  //   </MenuContent>
+                  // </MenuRoot>
+                  <Menu>
+                    <MenuButton>
+                      <Avatar
+                        border="1px solid"
+                        borderColor="gray.800"
+                        color="gray.800"
+                        name={activeUser?.name || activeUser?.email}
+                        src={activeUser?.imageURL}
+                        bgColor="transparent"
+                      />
+                    </MenuButton>
+                    <MenuList>
+                      <MenuGroup title={activeUser?.email}>
+                        <MenuItem
+                          icon={<TicketIcon />}
+                          color="gray.600"
+                          fontSize={14}
+                        >
+                          My Account
+                        </MenuItem>
+                      </MenuGroup>
+                      <MenuDivider />
+                      <MenuGroup>
+                        <Link to="/create-event">
+                          <MenuItem
+                            icon={<CirclePlus />}
+                            color="gray.600"
+                            fontSize={14}
+                            command="⌘N"
+                          >
+                            Create Event
+                          </MenuItem>
+                        </Link>
+
+                        <Link to="/app/overview">
+                          <MenuItem
+                            icon={<GridIcon />}
+                            color="gray.600"
+                            fontSize={14}
+                          >
+                            My dashboard
+                          </MenuItem>
+                        </Link>
+                      </MenuGroup>
+                      <MenuDivider />
+                      <MenuGroup>
+                        <Link to="/account-settings">
+                          <MenuItem
+                            icon={<SettingsIcon />}
+                            color="gray.600"
+                            fontSize={14}
+                          >
+                            Account settings
+                          </MenuItem>
+                        </Link>
+                        <MenuItem
+                          icon={<SignOutIcon color="#5E665E" />}
+                          color="gray.600"
+                          fontSize={14}
+                          onClick={onOpenModal}
+                        >
+                          Log out
+                        </MenuItem>
+                      </MenuGroup>
+                    </MenuList>
+                  </Menu>
                 ) : (
                   <>
                     <Link to="/auth/login">
@@ -182,6 +281,7 @@ const Header = () => {
           </Stack>
         </Container>
       </Box>
+      <LogoutModal isOpen={isOpenModal} onClose={onCloseModal} />
     </header>
   );
 };
