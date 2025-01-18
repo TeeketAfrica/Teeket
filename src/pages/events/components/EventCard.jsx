@@ -109,9 +109,9 @@ const EventCard = ({
                 <Text color="gray.600">{eventLocation}</Text>
               </HStack>
             </Box>
-            <HStack mt={4} justifyContent="space-between" gap={0}>
+            <HStack mt={4} justifyContent="space-between" gap={2}>
               <HStack
-                p={2}
+                p={[1, null, null, 2]}
                 spacing={2}
                 bgColor="green.100"
                 border="1px solid"
@@ -124,7 +124,7 @@ const EventCard = ({
                 </Text>
               </HStack>
               <HStack
-                p={2}
+                p={[1, null, null, 2]}
                 spacing={2}
                 bgColor="gray.200"
                 border="1px solid"

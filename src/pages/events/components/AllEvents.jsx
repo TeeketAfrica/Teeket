@@ -25,7 +25,7 @@ const AllEvents = ({ events, type }) => {
   const { searchTerm, clearSearch } = useContext(SearchContext);
 
   const renderEventSection = (title, events, link) => (
-    <Box>
+    <Box px={5}>
       <HStack pt={6} justifyContent="space-between" alignItems="center">
         <Text fontSize={28} fontWeight={700}>
           {title}
@@ -34,7 +34,16 @@ const AllEvents = ({ events, type }) => {
           <Link to={link}>See more</Link>
         </Button>
       </HStack>
-      <Grid templateColumns="repeat(4, 1fr)" gap={6} py={6}>
+      <Grid
+        templateColumns={[
+          "repeat(1, 1fr)",
+          "repeat(2, 1fr)",
+          "repeat(3, 1fr)",
+          "repeat(4, 1fr)",
+        ]}
+        gap={6}
+        py={6}
+      >
         {events.map((event) => (
           <EventCard
             key={event.id}

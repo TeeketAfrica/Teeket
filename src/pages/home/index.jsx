@@ -539,7 +539,9 @@ const HomePage = () => {
                               {data.question}
                             </Box>
                             {isExpanded ? (
-                              <MinusCircle size="24" />
+                              <Box w={5}>
+                                <MinusCircle />
+                              </Box>
                             ) : (
                               <PlusCircle fillColor="#06CC06" size="24" />
                             )}
