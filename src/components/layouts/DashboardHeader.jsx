@@ -28,11 +28,13 @@ import Hamburger from "../../assets/icon/Hamburger.svg";
 import BrandLogo from "../../assets/img/brandLogo.png";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUserDetails } from "../../features/userSlice";
 import LogoutModal from "../auth/LogoutModal";
+import { selectActiveUser } from "../../features/activeUserSlice";
 
 const DashboardHeader = ({ onOpen }) => {
-    const { data } = useSelector(selectUserDetails);
+    const activeUser = useSelector(selectActiveUser);
+
+    console.log(activeUser, "selectuser");
 
     const {
         isOpen: isOpenModal,
@@ -84,13 +86,13 @@ const DashboardHeader = ({ onOpen }) => {
                                 border="1px solid"
                                 borderColor="gray.800"
                                 color="gray.800"
-                                name={data?.name || data?.email}
-                                src={data?.imageURL}
+                                name={activeUser?.name || activeUser?.email}
+                                src={activeUser?.profile_imag}
                                 bgColor="transparent"
                             />
                         </MenuButton>
                         <MenuList>
-                            <MenuGroup title={data?.email}>
+                            <MenuGroup title={activeUser?.email}>
                                 <MenuItem
                                     icon={<TicketIcon />}
                                     color="gray.600"
