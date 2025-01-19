@@ -27,6 +27,7 @@
     "date-fns": "^3.6.0",
     "formik": "^2.4.5",
     "framer-motion": "^10.16.16",
+    "google-auth-library": "^9.15.0",
     "iconsax-react": "^0.0.8",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.453.0",

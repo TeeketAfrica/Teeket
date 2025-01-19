@@ -17,6 +17,7 @@ import FormStep2 from "./layout/FormStep2";
 import FormStep3 from "./layout/FormStep3";
 import PublishEvent from "./layout/PublishEvent";
 import { DEFAULTBANNERIMAGE } from "../../utils/constants";
+import { convertUrlToHttpFormat } from "../../utils/utils";
 
 // Validation schemas for each step
 const validationSchemas = [
@@ -234,7 +235,7 @@ const VendorPage = () => {
                             : null,
                     event_link:
                         data.eventHosting === "online"
-                            ? data.eventLocation
+                            ? convertUrlToHttpFormat(data.eventLocation)
                             : null,
                     number_of_tickets: data.totalTicketQuantities,
                 };

@@ -2,119 +2,86 @@ import { Button } from "@chakra-ui/button";
 import { Image } from "@chakra-ui/image";
 import { Text } from "@chakra-ui/layout";
 import { useTheme } from "@chakra-ui/system";
-import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
+import {
+    useGoogleLogin,
+    GoogleOAuthProvider,
+    GoogleLogin,
+} from "@react-oauth/google";
 import GoogleIcon from "../../assets/icon/GoogleIcon.svg";
-import { clientId } from "../../utils/constants";
+import { clientId, googleClientSecretKey } from "../../utils/constants";
+import { authApi } from "../../utils/api";
+import { useEffect, useState } from "react";
+import useStorage from "../../utils/storage";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { setUserDetails } from "../../features/userSlice";
 
 const GoogleBtn = ({ title, handleGoogleResponse }) => {
-  const theme = useTheme();
+    const theme = useTheme();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-  // const googleLogin = useGoogleLogin({
-  //   flow: "auth-code",
-  //   onSuccess: async (response) => {
-  //     console.log("response", response);
+    console.log(location, "location");
 
-  //     const tokens = await authApi.post("/google/signup", {
-  //       auth_token: response.code,
-  //     });
+    const { setAccessToken, setRefreshToken, getAccessToken } = useStorage();
+    const [error, setError] = useState("");
 
-  //     console.log(tokens);
+    const handleGoogleLogin = async (credentialResponse, isSignup) => {
+        const endpoint = isSignup ? "/google/signup" : "/google/login";
+        try {
+            const response = await authApi.post(endpoint, {
+                code: credentialResponse.code,
+            });
+            const { access_token, refresh_token } = response?.data;
 
-  //     if (handleGoogleResponse) {
-  //       handleGoogleResponse(response);
-  //     }
-  //   },
-  //   onError: (error) => {
-  //     console.error("Google Login failed:", error);
-  //   },
-  // });
+            if (access_token && refresh_token) {
+                setAccessToken(access_token);
+                setRefreshToken(refresh_token);
 
-  // const googleLogin = useGoogleLogin({
-  //   flow: "auth-code",
-  //   onSuccess: async (response) => {
-  //     console.log("Google OAuth Response:", response);
-
-  //     try {
-  //       const accessToken = response.access_token;
-
-  //       const tokenInfo = await axios.get(
-  //         `https://www.googleapis.com/oauth2/v2/tokeninfo?access_token=${accessToken}`
-  //       );
-  //       const idToken = tokenInfo.data.id_token;
-
-  //       console.log("token", tokenInfo);
-
-  //       if (handleGoogleResponse) {
-  //         handleGoogleResponse({ id_token: idToken });
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching id_token:", error);
-  //     }
-  //   },
-  //   onError: (error) => {
-  //     console.error("Google Login failed:", error);
-  //   },
-  // });
-
-  const googleLogin = useGoogleLogin({
-    flow: "auth-code",
-    onSuccess: async (response) => {
-      console.log("Google OAuth Response:", response);
-      // https://accounts.google.com/o/oauth2/v2/auth
-      try {
-        // Exchanging the auth code for tokens
-        const { code } = response;
-        const data = {
-          code,
-          client_id: clientId,
-          client_secret: "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",
-          redirect_uri: "https://www.teeketafrica.com",
-          grant_type: "authorization_code",
-        };
-
-        const tokenResponse = await axios.post(
-          "https://oauth2.googleapis.com/token",
-          data
-        );
-
-        const { id_token, access_token } = tokenResponse.data;
-
-        console.log("Token response:", tokenResponse.data);
-
-        // Optionally, get token info
-        const tokenInfo = await axios.get(
-          `https://www.googleapis.com/oauth2/v2/tokeninfo?access_token=${access_token}`
-        );
-
-        console.log("Token Info:", tokenInfo.data);
-
-        if (handleGoogleResponse) {
-          handleGoogleResponse({ id_token, access_token });
+                const redirectPath = sessionStorage.getItem("REDIRECT");
+                if (redirectPath) {
+                    sessionStorage.removeItem("REDIRECT");
+                    navigate(redirectPath);
+                } else {
+                    navigate("/app/overview");
+                }
+            }
+        } catch (err) {
+            setError(err.message || "Login failed. Please try again.");
+            if (err.message === "Network Error") {
+                alert("Please check your internet connection.");
+            }
         }
-      } catch (error) {
-        console.error("Error exchanging auth code for tokens:", error);
-      }
-    },
-    onError: (error) => {
-      console.error("Google Login failed:", error);
-    },
-  });
+    };
 
-  return (
-    <Button
-      w="100%"
-      size="lg"
-      variant="secondary"
-      gap="4"
-      onClick={() => googleLogin()}
-    >
-      <GoogleIcon />
-      <Text fontWeight="semibold" color={theme.colors.gray[800]}>
-        {title}
-      </Text>
-    </Button>
-  );
+    const googleLogin = useGoogleLogin({
+        flow: "auth-code",
+        onSuccess: async (credentialResponse) => {
+            const isSignup = location.pathname === "/auth/create-account";
+            handleGoogleLogin(credentialResponse, isSignup);
+        },
+        onError: () => {
+            console.log("Login Failed");
+        },
+    });
+
+    return (
+        <GoogleOAuthProvider clientId={clientId}>
+            <Button
+                w="100%"
+                size="lg"
+                variant="secondary"
+                gap="4"
+                onClick={() => googleLogin()}
+            >
+                <GoogleIcon />
+                <Text fontWeight="semibold" color={theme.colors.gray[800]}>
+                    {title}
+                </Text>
+            </Button>
+        </GoogleOAuthProvider>
+    );
 };
 
 export default GoogleBtn;
