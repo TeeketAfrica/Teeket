@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { Stack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 
-import PasswordInput from "../../components/PasswordInput";
+import PasswordInput from "../../../../components/shared/PasswordInput";
 
 const PasswordResetForm = ({ onSubmitData }) => {
   // Validation schema using Yup

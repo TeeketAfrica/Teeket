@@ -1,8 +1,4 @@
 import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
   AvatarGroup,
   Avatar,
   Grid,
@@ -13,7 +9,6 @@ import {
   Image,
   Button,
   Text,
-  Heading,
   Link,
   Center,
 } from "@chakra-ui/react";
@@ -22,22 +17,8 @@ import Header from "../../components/layouts/Header";
 import Masonry from "./components/Masonry";
 import Container from "../../components/ui/Container";
 import Card from "./components/Card";
-import {
-  BrowseEventInfo,
-  CatergoryInfo,
-  ContactInfo,
-  FAQSInfo,
-  StepsInfo,
-} from "./config";
-import MailIcon from "../../assets/icon/MailIcon.svg";
-import PhoneIcon from "../../assets/icon/Phone.svg";
-import LocationIcon from "../../assets/icon/Location.svg";
-import MinusCircle from "../../assets/icon/MinusCircle.svg";
-import PlusCircle from "../../assets/icon/PlusCircle.svg";
+import { BrowseEventInfo, CatergoryInfo, StepsInfo } from "./config";
 import Curves from "../../assets/icon/curves.svg";
-import Faq1Image from "../../assets/img/faqs_1.webp";
-import Faq2Image from "../../assets/img/faqs_2.webp";
-import Faq3Image from "../../assets/img/faqs_3.webp";
 import StepBackground from "../../assets/img/steps_bg.webp";
 import EventBg from "../../assets/img/eventsBg.png";
 import Masonry1 from "../../assets/img/masonry_1.webp";
@@ -48,17 +29,17 @@ import Masonry5 from "../../assets/img/masonry_5.webp";
 import Masonry6 from "../../assets/img/masonry_6.webp";
 import Masonry7 from "../../assets/img/masonry_7.webp";
 import Masonry8 from "../../assets/img/masonry_8.webp";
+import Faq1Image from "@/assets/img/faqs_1.webp";
+import Faq2Image from "@/assets/img/faqs_2.webp";
+import Faq3Image from "@/assets/img/faqs_3.webp";
+
 import { useStorage } from "../../utils/storage";
+import { Faq } from "../../components/shared/Faq";
+import GetInTouch from "../../components/shared/GetInTouch";
 
 const HomePage = () => {
   const { getAccessToken } = useStorage();
   const token = getAccessToken();
-
-  const iconMap = {
-    email: <MailIcon fillColor="#ffffff" size="24px" />,
-    office: <LocationIcon />,
-    phone: <PhoneIcon />,
-  };
 
   return (
     <>
@@ -486,249 +467,71 @@ const HomePage = () => {
         </Box>
 
         {/* Frequently Asked Questions */}
-        <Box backgroundColor="gray.200" py={{ base: "11", md: "13" }}>
-          <Container padding={"16px"}>
-            <VStack gap="5" marginBottom="11" textAlign="center">
+        <Faq>
+          <VStack
+            gap="8"
+            backgroundColor="gray.300"
+            minHeight="300px"
+            width="100%"
+            border="none"
+            borderRadius="16px"
+            padding="8"
+            textAlign="center"
+          >
+            <AvatarGroup max={3}>
+              <Avatar
+                name="FAQ Image"
+                src={Faq2Image}
+                width="52px"
+                height="52px"
+              />
+              <Avatar
+                name="FAQ Image"
+                src={Faq1Image}
+                zIndex="4"
+                width="60px"
+                height="60px"
+              />
+              <AvatarGroup
+                name="FAQ Image"
+                src={Faq3Image}
+                width="52px"
+                height="52px"
+              />
+            </AvatarGroup>
+
+            <VStack gap="2">
               <Text
-                as="h2"
+                as="h3"
                 fontWeight="bold"
-                fontSize={{ base: "xl", md: "6xl" }}
-                lineHeight={{ base: "6", md: "10" }}
+                fontSize="2xl"
+                lineHeight="7"
                 color="gray.800"
               >
-                Frequently asked questions
+                Still have questions?
               </Text>
+
               <Text
-                color="gray.600"
                 fontWeight="normal"
-                fontSize={{ base: "md", md: "xl" }}
-                lineHeight={{ base: "6", md: "26px" }}
+                fontSize="md"
+                lineHeight="6"
+                color="gray.600"
               >
-                Everything you need to know about the product and billing.
+                Can’t find the answer you’re looking for? Please chat to our
+                friendly team.
               </Text>
             </VStack>
 
-            <Box maxWidth="768px" marginX="auto" marginBottom="11">
-              <Accordion allowToggle>
-                {FAQSInfo.map((data, idx) => (
-                  <AccordionItem
-                    key={data.question}
-                    borderColor="#EAECF0"
-                    borderTop={idx === 0 && "none"}
-                    borderBottom={idx === FAQSInfo.length - 1 && "none"}
-                  >
-                    {({ isExpanded }) => (
-                      <>
-                        <h2>
-                          <AccordionButton
-                            _hover={{ bg: "none" }}
-                            _expanded={{ bg: "none", pb: "0" }}
-                            pt={6}
-                            pb={8}
-                            pl={0}
-                          >
-                            <Box
-                              as="span"
-                              flex="1"
-                              textAlign="left"
-                              fontWeight="medium"
-                              fontSize={{ base: "md", md: "lg" }}
-                              color="gray.800"
-                              lineHeight={{ base: "6", md: "7" }}
-                            >
-                              {data.question}
-                            </Box>
-                            {isExpanded ? (
-                              <Box w={5}>
-                                <MinusCircle />
-                              </Box>
-                            ) : (
-                              <PlusCircle fillColor="#06CC06" size="24" />
-                            )}
-                          </AccordionButton>
-                        </h2>
-                        <AccordionPanel
-                          pt={2}
-                          pb={8}
-                          pl={0}
-                          fontWeight="normal"
-                          fontSize={{ base: "sm", md: "md" }}
-                          color="gray.600"
-                          lineHeight={{ base: "5", md: "6" }}
-                        >
-                          {data.answer}
-                        </AccordionPanel>
-                      </>
-                    )}
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </Box>
-
-            <VStack
-              gap="8"
-              backgroundColor="gray.300"
-              minHeight="300px"
-              width="100%"
-              border="none"
-              borderRadius="16px"
-              padding="8"
-              textAlign="center"
-            >
-              <AvatarGroup max={3}>
-                <Avatar
-                  name="FAQ Image"
-                  src={Faq2Image}
-                  width="52px"
-                  height="52px"
-                />
-                <Avatar
-                  name="FAQ Image"
-                  src={Faq1Image}
-                  zIndex="4"
-                  width="60px"
-                  height="60px"
-                />
-                <Avatar
-                  name="FAQ Image"
-                  src={Faq3Image}
-                  width="52px"
-                  height="52px"
-                />
-              </AvatarGroup>
-
-              <VStack gap="2">
-                <Text
-                  as="h3"
-                  fontWeight="bold"
-                  fontSize="2xl"
-                  lineHeight="7"
-                  color="gray.800"
-                >
-                  Still have questions?
-                </Text>
-
-                <Text
-                  fontWeight="normal"
-                  fontSize="md"
-                  lineHeight="6"
-                  color="gray.600"
-                >
-                  Can’t find the answer you’re looking for? Please chat to our
-                  friendly team.
-                </Text>
-              </VStack>
-
-              <Button variant="accent" size="lg">
-                <Link href="/" _hover={{ textDecoration: "none" }}>
-                  Get in Touch
-                </Link>
-              </Button>
-            </VStack>
-          </Container>
-        </Box>
+            <Button variant="accent" size="lg">
+              <Link href="/" _hover={{ textDecoration: "none" }}>
+                Get in Touch
+              </Link>
+            </Button>
+          </VStack>
+        </Faq>
 
         {/* Contact us */}
-        <Box
-          backgroundColor="black"
-          color="#EAECF0"
-          textAlign="center"
-          py={{ base: "11", md: "13" }}
-        >
-          <Container padding={"16px"}>
-            <VStack gap={{ base: "10", md: "11" }}>
-              <VStack gap="3">
-                <Text
-                  fontSize={{ base: "sm", md: "md" }}
-                  fontWeight="semibold"
-                  lineHeight={{ base: "5", md: "6" }}
-                >
-                  Contact us
-                </Text>
-                <Heading
-                  as="h3"
-                  pb={{ base: "1", md: "2" }}
-                  fontWeight="semibold"
-                  fontSize={{ base: "30px", md: "5xl" }}
-                  lineHeight={{ base: "38px", md: "44px" }}
-                  color="white"
-                >
-                  Get in touch
-                </Heading>
-                <Text
-                  fontWeight="normal"
-                  fontSize={{ base: "lg", md: "xl" }}
-                  lineHeight={{ base: "28px", md: "30px" }}
-                >
-                  Our friendly team is always here to chat.
-                </Text>
-              </VStack>
-              <Grid
-                templateColumns={{
-                  base: "1fr",
-                  md: "repeat(2, 1fr)",
-                  lg: "repeat(3, 1fr)",
-                }}
-                alignItems="center"
-                width="100%"
-                gap="9"
-              >
-                {ContactInfo.map((data) => (
-                  <VStack
-                    key={data.type}
-                    gap={["4", "5"]}
-                    maxWidth="360px"
-                    marginX="auto"
-                  >
-                    <Box
-                      p="12px"
-                      backgroundColor="gray.600"
-                      border="8px solid"
-                      borderColor="gray.400"
-                      borderRadius="full"
-                    >
-                      {iconMap[data.type]}
-                    </Box>
-                    <VStack gap={["1", "2"]}>
-                      <Text
-                        color="white"
-                        fontWeight="semibold"
-                        fontSize={["lg", "xl"]}
-                        lineHeight={["7", "30px"]}
-                        textTransform="capitalize"
-                      >
-                        {data.type}
-                      </Text>
-                      <Text
-                        color="#EAECF0"
-                        fontWeight="normal"
-                        fontSize="md"
-                        lineHeight="6"
-                      >
-                        {data.content}
-                      </Text>
-                    </VStack>
-                    {data.type === "email" ? (
-                      <Link
-                        href={`mailto:${data.address}`}
-                        _hover={{ textDecoration: "none" }}
-                        fontWeight="semibold"
-                        fontSize="md"
-                        lineHeight="6"
-                      >
-                        {data.address}
-                      </Link>
-                    ) : (
-                      <Text fontWeight="semibold" fontSize="md" lineHeight="6">
-                        {data.address}
-                      </Text>
-                    )}
-                  </VStack>
-                ))}
-              </Grid>
-            </VStack>
-          </Container>
-        </Box>
+        <GetInTouch />
       </main>
       <Footer border={false} />
     </>

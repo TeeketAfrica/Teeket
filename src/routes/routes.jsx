@@ -19,6 +19,8 @@ import {
   SendOTPPage,
   TicketDashboardPage,
   VendorPage,
+  AboutPage,
+  ContactPage,
 } from "../pages";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
@@ -27,6 +29,8 @@ const publicRoutes = [
   { path: "/", element: <CounterDownPage /> },
   { path: "/home", element: <HomePage /> },
   { path: "/help-and-support", element: <HelpAndSupportPage /> },
+  { path: "/contact", element: <ContactPage /> },
+  { path: "/about", element: <AboutPage /> },
   { path: "/events", element: <EventsPage /> },
   { path: "/event-category/:type?", element: <EventCategoryPage /> },
   { path: "/my-tickets", element: <TicketDashboardPage /> },

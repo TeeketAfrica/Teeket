@@ -5,8 +5,8 @@ import * as Yup from "yup";
 import { Stack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 
-import EmailInput from "../../components/EmailInput";
-import PasswordInput from "../../components/PasswordInput";
+import EmailInput from "../../../../components/shared/EmailInput";
+import PasswordInput from "../../../../components/shared/PasswordInput";
 import { authApi } from "../../../../utils/api";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "../../../../features/userSlice";
@@ -51,6 +51,7 @@ const CreateAccountForm = () => {
         });
 
         const token = response.data.access_token;
+        console.log(token);
 
         if (token) {
           try {
@@ -58,13 +59,14 @@ const CreateAccountForm = () => {
               email: values.email,
               kind: "verify",
             });
-
+            console.log(sendOTP);
             if (sendOTP.status === 200) {
               dispatch(setUserDetails(values));
 
-              navigate("/auth/send-otp", {
-                state: { value: values.email, token: token },
-              });
+              // navigate("/auth/send-otp", {
+              //   state: { value: values.email, token: token },
+              // });
+              navigate("/app/overview");
             }
           } catch (err) {
             console.log("Error sending OTP", err);

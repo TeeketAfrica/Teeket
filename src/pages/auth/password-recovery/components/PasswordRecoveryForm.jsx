@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { Stack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 
-import EmailInput from "../../components/EmailInput";
+import EmailInput from "../../../../components/shared/EmailInput";
 
 const PasswordRecoveryForm = ({ onSubmitData }) => {
   // Validation schema using Yup
