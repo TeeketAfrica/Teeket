@@ -5,7 +5,9 @@ import GetInTouch from "@/components/shared/GetInTouch";
 
 import EventBg from "@/assets/img/eventsBg.png";
 
-import { Container, VStack, Text, Center, Box } from "@chakra-ui/react";
+import { Container, VStack, Text, Center, Box, Flex } from "@chakra-ui/react";
+import React from "react";
+import ContactForm from "./components/ContactForm";
 
 const ContactPage = () => {
   return (
@@ -17,7 +19,6 @@ const ContactPage = () => {
             bgImage={`url(${EventBg})`}
             bgSize="cover"
             bgPosition="bottom center"
-            h="425px"
             w="100%"
             pt="100px"
           >
@@ -58,6 +59,13 @@ const ContactPage = () => {
             </Container>
           </Box>
         </Center>
+        <Flex flexDirection="column" alignItems="center">
+          <Box w="100%" maxWidth="xl" pb="100px">
+            <Container>
+              <ContactForm />
+            </Container>
+          </Box>
+        </Flex>
         <Faq />
         <GetInTouch />
       </main>

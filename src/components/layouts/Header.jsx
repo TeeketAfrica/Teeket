@@ -59,7 +59,7 @@ const Header = () => {
     },
     {
       link: "Contact us",
-      url: "contact-us",
+      url: "contact",
     },
     {
       link: "About",

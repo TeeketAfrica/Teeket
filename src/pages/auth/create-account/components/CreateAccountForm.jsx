@@ -5,11 +5,11 @@ import * as Yup from "yup";
 import { Stack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 
-import EmailInput from "../../../../components/shared/EmailInput";
-import PasswordInput from "../../../../components/shared/PasswordInput";
-import { authApi } from "../../../../utils/api";
+import PasswordInput from "@/components/shared/PasswordInput";
+import { authApi } from "@/utils/api";
 import { useDispatch } from "react-redux";
-import { setUserDetails } from "../../../../features/userSlice";
+import { setUserDetails } from "@/features/userSlice";
+import TextInput from "@/components/shared/TextInput";
 
 const CreateAccountForm = () => {
   const dispatch = useDispatch();
@@ -82,7 +82,7 @@ const CreateAccountForm = () => {
     <form onSubmit={formik.handleSubmit}>
       <Stack spacing={4}>
         {/* Email Address */}
-        <EmailInput formik={formik} label="Email address" inputName="email" />
+        <TextInput formik={formik} label="Email address" inputName="email" />
 
         {/* Password */}
         <PasswordInput

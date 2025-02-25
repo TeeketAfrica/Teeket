@@ -21,7 +21,6 @@ import { useDispatch, useSelector } from "react-redux";
 import * as z from "zod";
 import { setActiveUser } from "../../../features/activeUserSlice";
 import { teeketApi } from "../../../utils/api";
-import EmailInput from "../../../components/shared/EmailInput";
 
 const formSchema = z.object({
   firstName: z

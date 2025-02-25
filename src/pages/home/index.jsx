@@ -12,30 +12,30 @@ import {
   Link,
   Center,
 } from "@chakra-ui/react";
-import Footer from "../../components/layouts/Footer";
-import Header from "../../components/layouts/Header";
+import Footer from "@/components/layouts/Footer";
+import Header from "@/components/layouts/Header";
 import Masonry from "./components/Masonry";
-import Container from "../../components/ui/Container";
+import Container from "@/components/ui/Container";
 import Card from "./components/Card";
 import { BrowseEventInfo, CatergoryInfo, StepsInfo } from "./config";
-import Curves from "../../assets/icon/curves.svg";
-import StepBackground from "../../assets/img/steps_bg.webp";
-import EventBg from "../../assets/img/eventsBg.png";
-import Masonry1 from "../../assets/img/masonry_1.webp";
-import Masonry2 from "../../assets/img/masonry_2.webp";
-import Masonry3 from "../../assets/img/masonry_3.webp";
-import Masonry4 from "../../assets/img/masonry_4.webp";
-import Masonry5 from "../../assets/img/masonry_5.webp";
-import Masonry6 from "../../assets/img/masonry_6.webp";
-import Masonry7 from "../../assets/img/masonry_7.webp";
-import Masonry8 from "../../assets/img/masonry_8.webp";
+import Curves from "@/assets/icon/curves.svg";
+import StepBackground from "@/assets/img/steps_bg.webp";
+import EventBg from "@/assets/img/eventsBg.png";
+import Masonry1 from "@/assets/img/masonry_1.webp";
+import Masonry2 from "@/assets/img/masonry_2.webp";
+import Masonry3 from "@/assets/img/masonry_3.webp";
+import Masonry4 from "@/assets/img/masonry_4.webp";
+import Masonry5 from "@/assets/img/masonry_5.webp";
+import Masonry6 from "@/assets/img/masonry_6.webp";
+import Masonry7 from "@/assets/img/masonry_7.webp";
+import Masonry8 from "@/assets/img/masonry_8.webp";
 import Faq1Image from "@/assets/img/faqs_1.webp";
 import Faq2Image from "@/assets/img/faqs_2.webp";
 import Faq3Image from "@/assets/img/faqs_3.webp";
 
 import { useStorage } from "../../utils/storage";
-import { Faq } from "../../components/shared/Faq";
-import GetInTouch from "../../components/shared/GetInTouch";
+import { Faq } from "@/components/shared/Faq";
+import GetInTouch from "@/components/shared/GetInTouch";
 
 const HomePage = () => {
   const { getAccessToken } = useStorage();

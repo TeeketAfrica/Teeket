@@ -2,14 +2,14 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
+  Textarea,
   Input,
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import MailIcon from "../../../assets/icon/MailIcon.svg";
-import CloseIcon from "../../../assets/icon/CloseIcon.svg";
+import { Mail, X } from "lucide-react";
 
-const EmailInput = ({ formik, label, inputName, error, handleError }) => {
+const TextInput = ({ formik, label, inputName, error, handleError, type }) => {
   const isInvalid =
     (formik.touched[inputName] && formik.errors[inputName]) || error;
 
@@ -17,24 +17,41 @@ const EmailInput = ({ formik, label, inputName, error, handleError }) => {
     <FormControl isInvalid={isInvalid}>
       <FormLabel>{label}</FormLabel>
       <InputGroup size="lg">
-        <InputRightElement pointerEvents="none">
-          {isInvalid || error ? (
-            <CloseIcon />
-          ) : (
-            <MailIcon fillColor="#5E665E" />
-          )}
-        </InputRightElement>
-        <Input
-          id={inputName}
-          name={inputName}
-          type="text"
-          value={formik.values[inputName]}
-          onChange={formik.handleChange}
-          onFocus={() => {
-            formik.setFieldTouched(inputName, false),
-              handleError && handleError("");
-          }}
-        />
+        {type === "email" && (
+          <InputRightElement pointerEvents="none">
+            {isInvalid || error ? (
+              <X size={20} />
+            ) : (
+              <Mail size={20} fillColor="#5E665E" />
+            )}
+          </InputRightElement>
+        )}
+        {type === "textarea" ? (
+          <Textarea
+            id={inputName}
+            name={inputName}
+            type="text"
+            rows={6}
+            value={formik.values[inputName]}
+            onChange={formik.handleChange}
+            onFocus={() => {
+              formik.setFieldTouched(inputName, false),
+                handleError && handleError("");
+            }}
+          />
+        ) : (
+          <Input
+            id={inputName}
+            name={inputName}
+            type={type === "email" ? "email" : "text"}
+            value={formik.values[inputName]}
+            onChange={formik.handleChange}
+            onFocus={() => {
+              formik.setFieldTouched(inputName, false),
+                handleError && handleError("");
+            }}
+          />
+        )}
       </InputGroup>
       <FormErrorMessage>
         {isInvalid && !error && <div>{formik.errors[inputName]}</div>}
@@ -44,4 +61,4 @@ const EmailInput = ({ formik, label, inputName, error, handleError }) => {
   );
 };
 
-export default EmailInput;
+export default TextInput;
