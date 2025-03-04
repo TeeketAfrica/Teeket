@@ -5,35 +5,47 @@ import DashboardPageHeaders from "../../../components/layouts/DashboardPageHeade
 import OrganizationTab from "./tab-panel/organizationTab";
 import BankDetailTab from "./tab-panel/bankDetailTab";
 import NotificationTab from "./tab-panel/notificationTab";
+import { selectActiveUser } from "../../../features/activeUserSlice";
+import { useSelector } from "react-redux";
 
 const OrganizationSettingsDashboardPage = () => {
+  const activeUser = useSelector(selectActiveUser);
   return (
     <DashboardLayout>
-      <DashboardPageHeaders
-        pageTitle="Organization settings"
-        subTitle="Manage core settings for your organization"
-      />
-      <Box marginTop={6}>
-        <Tabs isLazy isManual variant="line" size="md">
-          <TabList pl="8">
-            <Tab>Organization profile</Tab>
-            <Tab>Bank account</Tab>
-            <Tab>Notifcations</Tab>
-          </TabList>
+      {
+        activeUser.is_creator?
+        <>
+          <DashboardPageHeaders
+            pageTitle="Organization settings"
+            subTitle="Manage core settings for your organization"
+          />
+          <Box marginTop={6}>
+            <Tabs isLazy isManual variant="line" size="md">
+              <TabList pl="8">
+                <Tab>Organization profile</Tab>
+                <Tab>Bank account</Tab>
+                <Tab>Notifcations</Tab>
+              </TabList>
 
-          <TabPanels marginTop={8}>
-            <TabPanel>
-              <OrganizationTab />
-            </TabPanel>
-            <TabPanel>
-              <BankDetailTab />
-            </TabPanel>
-            <TabPanel>
-              <NotificationTab />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Box>
+              <TabPanels marginTop={8}>
+                <TabPanel>
+                  <OrganizationTab />
+                </TabPanel>
+                <TabPanel>
+                  <BankDetailTab />
+                </TabPanel>
+                <TabPanel>
+                  <NotificationTab />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Box>
+        </>:
+        <DashboardPageHeaders
+          pageTitle="You are not an Organizer Yet"
+          subTitle="Please Endeavor to create an event to get started"
+        />
+      }
     </DashboardLayout>
   );
 };

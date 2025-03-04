@@ -35,9 +35,11 @@ import SignOut from "../../assets/icon/sign-out.svg";
 import BrandLogo from "../../assets/img/brandLogo.png";
 import { Link } from "react-router-dom";
 import LogoutModal from "../auth/LogoutModal";
+import { selectActiveUser } from "../../features/activeUserSlice";
 const SidebarMenu = ({ onClose, isOpen }) => {
     const [placement] = useState("left");
     const { data } = useSelector(selectUserDetails);
+    const activeUser = useSelector(selectActiveUser);
 
     const {
         isOpen: isOpenModal,
@@ -92,12 +94,14 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                     </VStack>
                     <VStack spacing={6}>
                         <Box>
-                            <SidebarOptions
-                                icon={Settings}
-                                darkIcon={DarkOverviewIcon}
-                                title="Organization settings"
-                                link="/app/organization-settings"
-                            />
+                            { activeUser?.is_creator && 
+                                (<SidebarOptions
+                                    icon={Settings}
+                                    darkIcon={DarkOverviewIcon}
+                                    title="Organization settings"
+                                    link="/app/organization-settings"
+                                />)
+                            }
                             <SidebarOptions
                                 icon={Help}
                                 darkIcon={DarkOverviewIcon}
