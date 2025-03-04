@@ -37,6 +37,7 @@ import LogoutModal from "../auth/LogoutModal";
 import { selectActiveUser } from "../../features/activeUserSlice";
 const SidebarMenu = ({ onClose, isOpen }) => {
     const [placement] = useState("left");
+    const { data } = useSelector(selectUserDetails);
     const activeUser = useSelector(selectActiveUser);
 
     const {
@@ -92,12 +93,14 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                     </VStack>
                     <VStack spacing={6}>
                         <Box>
-                            <SidebarOptions
-                                icon={Settings}
-                                darkIcon={DarkOverviewIcon}
-                                title="Organization settings"
-                                link="/app/organization-settings"
-                            />
+                            { activeUser?.is_creator && 
+                                (<SidebarOptions
+                                    icon={Settings}
+                                    darkIcon={DarkOverviewIcon}
+                                    title="Organization settings"
+                                    link="/app/organization-settings"
+                                />)
+                            }
                             <SidebarOptions
                                 icon={Help}
                                 darkIcon={DarkOverviewIcon}

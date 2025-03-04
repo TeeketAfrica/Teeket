@@ -8,9 +8,14 @@ const activeUserSlice = createSlice({
       return action.payload;
     },
     clearActiveUser: () => null,
+    setIsCreator: (state, action) => {
+      if (state) {
+        state.is_creator = action.payload;
+      }
+    },
   },
 });
 
-export const { setActiveUser, clearActiveUser } = activeUserSlice.actions;
-export const selectActiveUser = (state) => state.activeUser;  
+export const { setActiveUser, clearActiveUser, setIsCreator } = activeUserSlice.actions;
+export const selectActiveUser = (state) => state.activeUser;
 export default activeUserSlice.reducer;
