@@ -17,7 +17,6 @@ import {
     VStack,
 } from "@chakra-ui/react";
 
-import { selectUserDetails } from "../../features/userSlice";
 import { maskEmail } from "../../utils/utils";
 
 import SidebarOptions from "./SidebarOptions";
@@ -35,9 +34,10 @@ import SignOut from "../../assets/icon/sign-out.svg";
 import BrandLogo from "../../assets/img/brandLogo.png";
 import { Link } from "react-router-dom";
 import LogoutModal from "../auth/LogoutModal";
+import { selectActiveUser } from "../../features/activeUserSlice";
 const SidebarMenu = ({ onClose, isOpen }) => {
     const [placement] = useState("left");
-    const { data } = useSelector(selectUserDetails);
+    const activeUser = useSelector(selectActiveUser);
 
     const {
         isOpen: isOpenModal,
@@ -110,17 +110,17 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                                 border="1px solid"
                                 borderColor="gray.800"
                                 color="gray.800"
-                                name={data?.name || data?.email}
-                                src={data?.profile_image}
+                                name={activeUser?.name || activeUser?.email}
+                                src={activeUser?.profile_image}
                                 bgColor="transparent"
                             >
                                 <AvatarBadge boxSize="20px" bg="greenSuccess" />
                             </Avatar>
                             <Box>
                                 <Text fontWeight="semibold" fontSize="sm">
-                                    {data?.name}
+                                    {activeUser?.name}
                                 </Text>
-                                <Text>{maskEmail(data?.email)}</Text>
+                                <Text>{maskEmail(activeUser?.email)}</Text>
                             </Box>
                             <SignOut onClick={onOpenModal} />
                         </HStack>
@@ -196,8 +196,11 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                                         border="1px solid"
                                         borderColor="gray.800"
                                         color="gray.800"
-                                        name={data?.name || data?.email}
-                                        src={data?.profile_image}
+                                        name={
+                                            activeUser?.name ||
+                                            activeUser?.email
+                                        }
+                                        src={activeUser?.profile_image}
                                         bgColor="transparent"
                                     >
                                         <AvatarBadge
@@ -210,9 +213,11 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                                             fontWeight="semibold"
                                             fontSize="sm"
                                         >
-                                            {data?.name}
+                                            {activeUser?.name}
                                         </Text>
-                                        <Text>{maskEmail(data?.email)}</Text>
+                                        <Text>
+                                            {maskEmail(activeUser?.email)}
+                                        </Text>
                                     </Box>
                                     <SignOut onClick={onOpenModal} />
                                 </HStack>

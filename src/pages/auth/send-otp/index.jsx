@@ -64,6 +64,8 @@ const CreateAccountPage = () => {
                     kind: "verify",
                 });
                 if (verifyOTPResponse.status === 200) {
+                    console.log(verifyOTPResponse);
+
                     navigate("/app/overview");
                 }
             } catch (err) {
