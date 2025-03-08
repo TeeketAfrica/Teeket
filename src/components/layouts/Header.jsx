@@ -27,7 +27,7 @@ import BrandLogo from "../../assets/img/brandLogo.png";
 import Hamburger from "../../assets/icon/Hamburger.svg";
 import Search from "../../assets/icon/Search.svg";
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/activeUserSlice";
 import {
@@ -45,13 +45,8 @@ import LogoutModal from "../auth/LogoutModal";
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
-  const activeUser = useSelector(selectActiveUser);
-  const [user, setUser] = useState(null);
-  useEffect(()=>{
-    if(activeUser){
-      setUser(activeUser)
-    }
-  }, [activeUser])
+  const user = useSelector(selectActiveUser);
+  console.log(user)
   const {
     isOpen: isOpenModal,
     onOpen: onOpenModal,
