@@ -92,12 +92,14 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                     </VStack>
                     <VStack spacing={6}>
                         <Box>
-                            <SidebarOptions
-                                icon={Settings}
-                                darkIcon={DarkOverviewIcon}
-                                title="Organization settings"
-                                link="/app/organization-settings"
-                            />
+                            { activeUser?.is_creator && 
+                                (<SidebarOptions
+                                    icon={Settings}
+                                    darkIcon={DarkOverviewIcon}
+                                    title="Organization settings"
+                                    link="/app/organization-settings"
+                                />)
+                            }
                             <SidebarOptions
                                 icon={Help}
                                 darkIcon={DarkOverviewIcon}
@@ -178,12 +180,15 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                             </VStack>
                             <VStack spacing={6}>
                                 <Box>
-                                    <SidebarOptions
-                                        icon={Settings}
-                                        darkIcon={DarkOverviewIcon}
-                                        title="Organization settings"
-                                        link="/app/organization-settings"
-                                    />
+                                    {
+                                        activeUser.is_creator && 
+                                        <SidebarOptions
+                                            icon={Settings}
+                                            darkIcon={DarkOverviewIcon}
+                                            title="Organization settings"
+                                            link="/app/organization-settings"
+                                        /> 
+                                    }
                                     <SidebarOptions
                                         icon={Help}
                                         darkIcon={DarkOverviewIcon}

@@ -5,12 +5,27 @@ import Export from "../../../assets/icon/Export.svg";
 import AddEvent from "../../../assets/icon/AddEvent.svg";
 import EventTable from "./components/EventTable";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 import * as XLSX from "xlsx";
+import { useSelector, useDispatch } from "react-redux";
+import { selectActiveUser, setIsCreator } from "../../../features/activeUserSlice";
 
 const EventsDashboardPage = () => {
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const activeUser = useSelector(selectActiveUser);
+
+   useEffect(() => {
+          if (activeUser) {
+            if (data.length > 0) {
+              dispatch(setIsCreator(true));
+            } else {
+              dispatch(setIsCreator(false));
+            }
+          }
+          console.log("events", activeUser)
+        }, [data, dispatch, activeUser]);
 
   const exportToExcel = () => {
     const exportData = data.map((event) => ({

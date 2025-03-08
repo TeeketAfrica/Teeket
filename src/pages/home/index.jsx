@@ -13,7 +13,6 @@ import {
   Center,
 } from "@chakra-ui/react";
 import Footer from "@/components/layouts/Footer";
-import Header from "@/components/layouts/Header";
 import Masonry from "./components/Masonry";
 import Container from "@/components/ui/Container";
 import Card from "./components/Card";
@@ -43,7 +42,6 @@ const HomePage = () => {
 
   return (
     <>
-      <Header />
       <main>
         <Center>
           <Box

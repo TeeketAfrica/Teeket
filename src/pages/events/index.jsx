@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Text, useDisclosure } from "@chakra-ui/react";
 import Footer from "../../components/layouts/Footer";
-import Header from "../../components/layouts/Header";
 import EventPreference from "./components/EventPreference";
 import EventTabs from "./components/EventTabs";
 import HeroSection from "./components/HeroSection";
@@ -13,16 +12,20 @@ import ScrollToTop from "../../utils/ScrollToTop";
 import { SearchContext } from "../../context/SearchContext";
 import { useStorage } from "../../utils/storage";
 import { teeketApi } from "../../utils/api";
+import { useSelector } from "react-redux";
+import { selectActiveUser } from "../../features/activeUserSlice";
 
 const EventsPage = () => {
     const navigate = useNavigate();
     const { getAccessToken } = useStorage();
+    const activeUser = useSelector(selectActiveUser);
 
     const token = getAccessToken();
     const { onOpen, isOpen, onClose } = useDisclosure();
     const { searchTerm, category, clearSearch } = useContext(SearchContext);
 
     const [events, setEvents] = useState([]);
+
     const [displayEventPreference, setDisplayEventPreference] = useState(false);
     const [preloader, setPreLoader] = useState(true);
     const [fetchError, setFetchError] = useState(false);
@@ -37,6 +40,18 @@ const EventsPage = () => {
             onOpen();
         }
     }, [token, displayEventPreference, onOpen]);
+
+
+    // useEffect(() => {
+    //     if (activeUser) {
+    //       if (events.length > 0) {
+    //         dispatch(setIsCreator(true));
+    //       } else {
+    //         dispatch(setIsCreator(false));
+    //       }
+    //     }
+    //     console.log("events", events.length)
+    //   }, [events, dispatch, activeUser]);
 
     const fetchEvents = async (title) => {
         try {
@@ -59,7 +74,6 @@ const EventsPage = () => {
     return (
         <main>
             <ScrollToTop />
-            <Header />
             {displayEventPreference && (
                 <EventPreference isOpen={isOpen} onClose={onClose} />
             )}

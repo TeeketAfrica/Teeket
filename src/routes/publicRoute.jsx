@@ -1,16 +1,16 @@
 import { Navigate } from "react-router-dom";
 import { useStorage } from "../utils/storage";
+import Header from "../components/layouts/Header";
 
 const PublicRoute = ({ children }) => {
-  const { getAccessToken } = useStorage();
 
   try {
-    const token = getAccessToken();
-    if (!token) {
-      return children;
-    } else {
-      return <Navigate to="/app/overview" />;
-    }
+    return (
+      <>
+        <Header/>
+        {children}
+      </>
+    )
   } catch (err) {
     return <Navigate to="/home" />;
   }

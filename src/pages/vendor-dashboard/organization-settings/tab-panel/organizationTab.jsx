@@ -6,8 +6,11 @@ import { VStack, Box, Heading, Text, Button, useToast } from "@chakra-ui/react";
 import RenderFormControl from "../renderFormControl";
 import { useEffect, useState } from "react";
 import { teeketApi } from "../../../../utils/api";
+import { selectActiveUser } from "../../../../features/activeUserSlice";
+import { useSelector } from "react-redux";
 
-const OrganizationTab = () => {
+const OrganizationTab = ({isOrganizer}) => {
+  const activeUser = useSelector(selectActiveUser);
   const toast = useToast();
   const [organizationFormValues, setOrganizationFormValues] = useState({
     orgName: "",
@@ -39,24 +42,26 @@ const OrganizationTab = () => {
   // FETCH ORGANIZATION DETAILS
   useEffect(() => {
     const fetchOrganizationDetails = async (values) => {
-      try {
-        const response = await teeketApi.get("/organization");
-        const res = response.data;
-        setOrganizationFormValues({
-          orgName: res.name,
-          orgEmail: res.email,
-          orgDescription: res.description,
-        });
-      } catch (error) {
-        const errorMessage = error?.message || "An error occured";
-        toast({
-          title: "Failed to fetch",
-          description: `${errorMessage}`,
-          status: "error",
-          duration: 3000,
-          position: "top-right",
-          isClosable: true,
-        });
+      if(isOrganizer){
+        try {
+          const response = await teeketApi.get("/organization");
+          const res = response.data;
+          setOrganizationFormValues({
+            orgName: res.name,
+            orgEmail: res.email,
+            orgDescription: res.description,
+          });
+        } catch (error) {
+          const errorMessage = error?.message || "An error occured";
+          toast({
+            title: "Failed to fetch",
+            description: `${errorMessage}`,
+            status: "error",
+            duration: 3000,
+            position: "top-right",
+            isClosable: true,
+          });
+        }
       }
     };
 
