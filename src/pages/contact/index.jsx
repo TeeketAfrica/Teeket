@@ -1,5 +1,4 @@
 import Footer from "@/components/layouts/Footer";
-import Header from "@/components/layouts/Header";
 import { Faq } from "@/components/shared/Faq";
 import GetInTouch from "@/components/shared/GetInTouch";
 
@@ -12,7 +11,6 @@ import ContactForm from "./components/ContactForm";
 const ContactPage = () => {
   return (
     <>
-      <Header />
       <main>
         <Center>
           <Box

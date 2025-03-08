@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Text, useDisclosure } from "@chakra-ui/react";
 import Footer from "../../components/layouts/Footer";
-import Header from "../../components/layouts/Header";
 import EventPreference from "./components/EventPreference";
 import EventTabs from "./components/EventTabs";
 import HeroSection from "./components/HeroSection";
@@ -75,7 +74,6 @@ const EventsPage = () => {
     return (
         <main>
             <ScrollToTop />
-            <Header />
             {displayEventPreference && (
                 <EventPreference isOpen={isOpen} onClose={onClose} />
             )}

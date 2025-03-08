@@ -27,7 +27,7 @@ import BrandLogo from "../../assets/img/brandLogo.png";
 import Hamburger from "../../assets/icon/Hamburger.svg";
 import Search from "../../assets/icon/Search.svg";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/activeUserSlice";
 import {
@@ -46,6 +46,12 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const activeUser = useSelector(selectActiveUser);
+  const [user, setUser] = useState(null);
+  useEffect(()=>{
+    if(activeUser){
+      setUser(activeUser)
+    }
+  }, [activeUser])
   const {
     isOpen: isOpenModal,
     onOpen: onOpenModal,
@@ -105,7 +111,7 @@ const Header = () => {
                     </Text>
                   </Link>
                 ))}
-                {activeUser ? (
+                {user ? (
                   // <MenuRoot>
                   //   <MenuTrigger asChild>
                   //     {/* <Box cursor="pointer"> */}
@@ -133,13 +139,13 @@ const Header = () => {
                         border="1px solid"
                         borderColor="gray.800"
                         color="gray.800"
-                        name={activeUser?.name || activeUser?.email}
-                        src={activeUser?.imageURL}
+                        name={user?.name || user?.email}
+                        src={user?.imageURL}
                         bgColor="transparent"
                       />
                     </MenuButton>
                     <MenuList>
-                      <MenuGroup title={activeUser?.email}>
+                      <MenuGroup title={user?.email}>
                         <MenuItem
                           icon={<TicketIcon />}
                           color="gray.600"

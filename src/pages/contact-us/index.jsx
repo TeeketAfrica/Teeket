@@ -1,6 +1,5 @@
 import { Box, VStack } from "@chakra-ui/react";
 import Footer from "../../components/layouts/Footer";
-import Header from "../../components/layouts/Header";
 import Container from "../../components/ui/Container";
 import Faqs from "../../components/ui/Faqs";
 import GetInTouch from "../../components/ui/GetInTouch";
@@ -12,7 +11,6 @@ import ContactForm from "../../components/ui/ContactForm";
 const ContactUsPage = () => {
     return (
         <main>
-            <Header />
             <Box
                 bgImage={`url(${EventBg})`}
                 bgSize="cover"
