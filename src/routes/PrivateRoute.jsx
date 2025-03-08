@@ -9,10 +9,11 @@ const PrivateRoute = ({ children }) => {
     if (token) {
       return children;
     } else {
-      return <Navigate to="/home" />;
+      return <Navigate to="/auth/login" />;
     }
   } catch (err) {
-    return <Navigate to="/home" />;
+    console.log(err)
+    return <Navigate to="/auth/login" />;
   }
 };
 
