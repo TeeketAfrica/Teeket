@@ -37,7 +37,6 @@ import LogoutModal from "../auth/LogoutModal";
 import { selectActiveUser } from "../../features/activeUserSlice";
 const SidebarMenu = ({ onClose, isOpen }) => {
     const [placement] = useState("left");
-    const { data } = useSelector(selectUserDetails);
     const activeUser = useSelector(selectActiveUser);
 
     const {
