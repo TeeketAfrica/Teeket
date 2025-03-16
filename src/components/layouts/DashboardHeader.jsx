@@ -34,8 +34,6 @@ import { selectActiveUser } from "../../features/activeUserSlice";
 const DashboardHeader = ({ onOpen }) => {
     const activeUser = useSelector(selectActiveUser);
 
-    console.log(activeUser, "selectuser");
-
     const {
         isOpen: isOpenModal,
         onOpen: onOpenModal,
