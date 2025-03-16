@@ -67,46 +67,47 @@ const EventTable = ({ setData }) => {
         };
     }, []);
 
+    const handleFetchEvents = async () => {
+        try {
+            let url = "/events/user";
+            const queryParams = [];
+
+            if (search) {
+                queryParams.push(`search=${search}`);
+            }
+
+            if (statusFilter) {
+                queryParams.push(`status=${statusFilter}`);
+            }
+
+            if (queryParams.length > 0) {
+                url += `?${queryParams.join("&")}`;
+            }
+            const response = await teeketApi.get(url);
+            const res = response.data;
+
+            setData(res.data);
+            setTotalItems(res.total);
+            setEventTableData(res.data);
+            setPaginatedData(res.data.slice(0, itemsPerPage));
+            setTotalPages(Math.ceil(res.total / itemsPerPage));
+        } catch (error) {
+            const errorMessage =
+                error?.response?.data?.message || "An error occured";
+            toast({
+                title: "Events failed to fetch.",
+                description: `${errorMessage}`,
+                status: "error",
+                duration: 3000,
+                position: "top-right",
+                isClosable: true,
+            });
+        }
+    };
+
     // FECTH EVENTS
 
     useEffect(() => {
-        const handleFetchEvents = async () => {
-            try {
-                let url = "/events/user";
-                const queryParams = [];
-
-                if (search) {
-                    queryParams.push(`search=${search}`);
-                }
-
-                if (statusFilter) {
-                    queryParams.push(`status=${statusFilter}`);
-                }
-
-                if (queryParams.length > 0) {
-                    url += `?${queryParams.join("&")}`;
-                }
-                const response = await teeketApi.get(url);
-                const res = response.data;
-
-                setData(res.data);
-                setTotalItems(res.total);
-                setEventTableData(res.data);
-                setPaginatedData(res.data.slice(0, itemsPerPage));
-                setTotalPages(Math.ceil(res.total / itemsPerPage));
-            } catch (error) {
-                const errorMessage =
-                    error?.response?.data?.message || "An error occured";
-                toast({
-                    title: "Events failed to fetch.",
-                    description: `${errorMessage}`,
-                    status: "error",
-                    duration: 3000,
-                    position: "top-right",
-                    isClosable: true,
-                });
-            }
-        };
 
         handleFetchEvents();
     }, [toast, itemsPerPage, setData, search, statusFilter]);
@@ -129,8 +130,7 @@ const EventTable = ({ setData }) => {
     // DUPLICATE EVENT
     const handleDuplicateEvent = async (eventId) => {
         try {
-            await teeketApi.post(`/events/${eventId}`);
-            window.location.reload();
+            await teeketApi.post(`/events/${eventId}`);;
             toast({
                 title: "Event duplicated.",
                 status: "success",
@@ -138,6 +138,8 @@ const EventTable = ({ setData }) => {
                 position: "top-right",
                 isClosable: true,
             });
+
+            await handleFetchEvents();
         } catch (error) {
             const errorMessage =
                 error?.response?.data?.message || "An error occured";
@@ -184,13 +186,21 @@ const EventTable = ({ setData }) => {
             const response = await teeketApi.delete(`/events/${eventId}`);
 
             if (response.status === 204) {
-                window.location.reload();
+                await handleFetchEvents()
+
+                toast({
+                    title: "Event deleted.",
+                    status: "success",
+                    duration: 3000,
+                    position: "top-right",
+                    isClosable: true,
+                });
             }
         } catch (error) {
             const errorMessage =
                 error?.response?.data?.message || "An error occured";
             toast({
-                title: "Events failed to fetch.",
+                title: "Events failed to delete.",
                 description: `${errorMessage}`,
                 status: "error",
                 duration: 3000,
