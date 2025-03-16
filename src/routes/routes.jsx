@@ -23,11 +23,10 @@ import {
   ContactPage,
 } from "../pages";
 import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
+import PublicRoute from "./publicRoute";
 import PublicRouteWithoutHeader from "./PublicRoutesWithoutHeader";
 
 const publicRoutes = [
-  { path: "/", element: CounterDownPage },
   { path: "/home", element: HomePage},
   { path: "/help-and-support", element: HelpAndSupportPage },
   { path: "/contact", element: ContactPage },
@@ -55,6 +54,7 @@ const privateRoutes = [
 ];
 
 const publicRoutesWithoutAuth = [
+  { path: "/", element: CounterDownPage },
   { path: "/auth/login", element: LoginPage },
   { path: "/auth/create-account", element: CreateAccountPage },
   { path: "/auth/password-recovery", element: PasswordRecoveryPage },

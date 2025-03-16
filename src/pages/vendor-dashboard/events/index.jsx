@@ -14,6 +14,7 @@ import { selectActiveUser, setIsCreator } from "../../../features/activeUserSlic
 const EventsDashboardPage = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const [loading, setIsLoading] = useState(true);
   const activeUser = useSelector(selectActiveUser);
 
    useEffect(() => {
@@ -24,7 +25,6 @@ const EventsDashboardPage = () => {
               dispatch(setIsCreator(false));
             }
           }
-          console.log("events", activeUser)
         }, [data, dispatch, activeUser]);
 
   const exportToExcel = () => {
@@ -62,7 +62,7 @@ const EventsDashboardPage = () => {
           <Button variant="secondary" p={2} onClick={exportToExcel}>
             <Export />
             Export
-          </Button>
+          </Button> 
           <Link to="/create-event">
             <Button variant="primary" p={2}>
               <AddEvent />
@@ -71,7 +71,7 @@ const EventsDashboardPage = () => {
           </Link>
         </HStack>
       </Stack>
-      <EventTable setData={setData} />
+    <EventTable setData={setData} loading={loading} setIsLoading={setIsLoading}/>  
     </DashboardLayout>
   );
 };
