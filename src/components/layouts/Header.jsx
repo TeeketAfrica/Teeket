@@ -135,7 +135,7 @@ const Header = () => {
                         borderColor="gray.800"
                         color="gray.800"
                         name={user?.name || user?.email}
-                        src={user?.imageURL}
+                        src={user?.profile_image}
                         bgColor="transparent"
                       />
                     </MenuButton>

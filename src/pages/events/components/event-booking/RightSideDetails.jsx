@@ -24,9 +24,21 @@ import {
     changeTicketStep,
     resetEventTicketBooking,
 } from "../../../../features/eventSlice";
+import { teeketApi } from "../../../../utils/api";
+import { useEffect } from "react";
 
 const RightSIdeDetails = ({ event, isRegistered }) => {
     const dispatch = useDispatch();
+    
+    const getEventAttendees = async()=>{
+        const event_attendees = await teeketApi.get(`events/${event?.id}/attendees`)
+        console.log("EA", event_attendees)
+        return event_attendees;
+    }
+
+    useEffect(()=>{
+        getEventAttendees()
+    }, [])
 
     const getTicket = () => {
         dispatch(changeTicketStep(1));
@@ -106,16 +118,18 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
                     <HStack justifyContent="space-between" width="100%">
                         <Flex gap="2">
                             <Box
-                                width="40px"
-                                height="40px"
+                                width="auto"
+                                height="auto"
                                 borderRadius="100%"
                                 overflow="hidden"
                             >
-                                <Image
-                                    src={UserAvatar}
-                                    alt="avatar icon"
-                                    objectFit="cover"
-                                    width="100%"
+                                <Avatar
+                                    border="1px solid"
+                                    borderColor="gray.800"
+                                    color="gray.800"
+                                    name={event?.user?.name || event?.user?.email}
+                                    src={event?.user?.profile_image}
+                                    bgColor="transparent"
                                 />
                             </Box>
                             <Box>
