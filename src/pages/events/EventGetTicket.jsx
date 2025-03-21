@@ -12,6 +12,7 @@ import Footer from "../../components/layouts/Footer";
 
 const EventGetTicket = () => {
     const { ticketStep, eventData } = useSelector((state) => state.event);
+    const [paid, setPaid] = useState(false);
 
     const [timeLeft, setTimeLeft] = useState("");
     const timerInterval = useRef(null);
@@ -63,7 +64,7 @@ const EventGetTicket = () => {
 
     return (
         <Container padding="16px">
-            <EventGetTicketHeader />
+            <EventGetTicketHeader paid={paid} />
             {ticketStep === 3 ? (
                 <Payment />
             ) : (
@@ -91,7 +92,7 @@ const EventGetTicket = () => {
                             {ticketStep === 2 && <YourDetailsStep />}
                         </VStack>
                         <Box gridColumn="span 1 / span 1" />
-                        <EventGetTicketSummaryBox />
+                        <EventGetTicketSummaryBox setPaid={setPaid}/>
                     </Box>
                 </VStack>
             )}

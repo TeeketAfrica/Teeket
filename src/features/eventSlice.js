@@ -188,7 +188,7 @@ const eventSlice = createSlice({
             state.isBookedTicket = action.payload;
         },
         setIsSetDetails: (state, action) => {
-            state.isBookedTicket = action.payload;
+            state.isSetDetails = action.payload;
         },
         setReferenceId: (state, action) => {
             state.referenceId = action.payload;
@@ -223,7 +223,7 @@ export const {
     changeTicketStep,
     setTicketQuantity,
     setIsBookedTicket,
-    setIsSetDetailst,
+    setIsSetDetails,
     resetEventTicketBooking,
     setTicketSummaryDetails,
     setReferenceId,

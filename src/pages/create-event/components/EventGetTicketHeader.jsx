@@ -16,7 +16,7 @@ import { useEffect } from "react";
 import { changeTicketStep } from "../../../features/eventSlice";
 import { TickCircle } from "iconsax-react";
 
-export const EventGetTicketHeader = () => {
+export const EventGetTicketHeader = ({paid}) => {
     const { ticketStep, isBookedTicket, isSetDetails } = useSelector(
         (state) => state.event
     );
@@ -150,7 +150,7 @@ export const EventGetTicketHeader = () => {
                         <Text fontSize={16} fontWeight={600} color="gray.500">
                             Payment
                         </Text>
-                        {isSetDetails && isBookedTicket && (
+                        {isSetDetails && isBookedTicket && ticketStep ===  3 && paid && (
                             <TickCircle
                                 variant="Bold"
                                 color="#06CC06"

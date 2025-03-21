@@ -9,13 +9,13 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as z from "zod";
 import { selectActiveUser } from "../../../../features/activeUserSlice";
-import { setTicketUserDetails } from "../../../../features/eventSlice";
+import { selectEventDetails, setIsSetDetails, setTicketUserDetails } from "../../../../features/eventSlice";
 
 const visitorsFormSchema = z
     .object({
@@ -51,6 +51,13 @@ export const YourDetailsStep = () => {
     const dispatch = useDispatch();
 
     const activeUser = useSelector(selectActiveUser);
+    const eventDetails = useSelector(selectEventDetails);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    useEffect(()=>{
+        dispatch(setTicketUserDetails({firstName: "", lastName: "", email: ""}))
+    })
 
     const {
         register,
@@ -62,13 +69,24 @@ export const YourDetailsStep = () => {
 
     const [showEmailBox, setShowEmailBox] = useState(false);
 
-    const onSubmit = (data) => {
-        console.log(data);
-    };
+    const userTicketDetailSubmit = ()=>{
+        email? dispatch(setTicketUserDetails({firstName: firstName, lastName: lastName, email: email})) : dispatch(setTicketUserDetails({firstName: firstName, lastName: lastName}));
+        dispatch(setIsSetDetails(true));
+        console.log("ticcckkkss", eventDetails)
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        dispatch(setTicketUserDetails({ [name]: value }));
+    };
+
+    const handleFirstInputChange = (e) => {
+        setFirstName(e.target.value)
+    };
+    const handleLastInputChange = (e) => {
+        setLastName(e.target.value)
+    };
+    const handleEmailInputChange = (e)=>{
+        setEmail(e.target.value)
     };
     return (
         <>
@@ -110,7 +128,7 @@ export const YourDetailsStep = () => {
                 )}
             </VStack>
             {activeUser ? (
-                <Box as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
+                <Box as="form" onSubmit={handleSubmit(userTicketDetailSubmit)} width="100%">
                     <Grid templateColumns="repeat(6, 1fr)" gap={6}>
                         {showEmailBox && (
                             <GridItem colSpan={6}>
@@ -141,8 +159,9 @@ export const YourDetailsStep = () => {
                                 {...register("firstName")}
                                 isInvalid={!!errors.firstName}
                                 errorBorderColor="red.300"
+                                value={eventDetails?.ticketUserDetails?.firstName}
                                 name="firstName"
-                                onChange={handleInputChange}
+                                onChange={handleFirstInputChange}
                             />
 
                             {errors.firstName && (
@@ -156,7 +175,8 @@ export const YourDetailsStep = () => {
                                 placeholder="Last Name"
                                 {...register("lastName")}
                                 name="lastName"
-                                onChange={handleInputChange}
+                                value={eventDetails?.ticketUserDetails?.lastName}
+                                onChange={handleLastInputChange}
                                 isInvalid={!!errors.lastName}
                                 errorBorderColor="red.300"
                             />
@@ -172,6 +192,7 @@ export const YourDetailsStep = () => {
                                 bg="gray.800"
                                 width="full"
                                 variant="primary"
+                                onClick={userTicketDetailSubmit}
                             >
                                 Submit
                             </Button>
@@ -179,7 +200,7 @@ export const YourDetailsStep = () => {
                     </Grid>
                 </Box>
             ) : (
-                <Box as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
+                <Box as="form" onSubmit={userTicketDetailSubmit} width="100%">
                     <Grid templateColumns="repeat(6, 1fr)" gap={6} mt={4}>
                         <GridItem colSpan={3}>
                             <Input
@@ -188,7 +209,8 @@ export const YourDetailsStep = () => {
                                 isInvalid={!!errors.firstName}
                                 errorBorderColor="red.300"
                                 name="firstName"
-                                onChange={handleInputChange}
+                                value={eventDetails?.ticketUserDetails?.firstName}
+                                onChange={handleFirstInputChange}
                             />
                             {errors.firstName && (
                                 <Text color="red.500" fontSize="sm">
@@ -203,7 +225,8 @@ export const YourDetailsStep = () => {
                                 isInvalid={!!errors.lastName}
                                 errorBorderColor="red.300"
                                 name="lastName"
-                                onChange={handleInputChange}
+                                value={eventDetails?.ticketUserDetails?.lastName}
+                                onChange={handleLastInputChange}
                             />
                             {errors.lastName && (
                                 <Text color="red.500" fontSize="sm">
@@ -217,8 +240,9 @@ export const YourDetailsStep = () => {
                                 {...register("email")}
                                 isInvalid={!!errors.email}
                                 errorBorderColor="red.300"
+                                value={eventDetails?.ticketUserDetails?.email}
                                 name="lastName"
-                                onChange={handleInputChange}
+                                onChange={handleEmailInputChange}
                             />
                             {errors.email && (
                                 <Text color="red.500" fontSize="sm">

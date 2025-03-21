@@ -20,7 +20,7 @@ import {
 import { teeketApi } from "../../../utils/api";
 import { selectActiveUser } from "../../../features/activeUserSlice";
 
-export const EventGetTicketSummaryBox = () => {
+export const EventGetTicketSummaryBox = ({setPaid}) => {
     const dispatch = useDispatch();
     const toast = useToast();
 
@@ -31,6 +31,7 @@ export const EventGetTicketSummaryBox = () => {
         referenceId,
         ticketSummaryDetails,
         ticketUserDetails,
+        isSetDetails
     } = useSelector((state) => state.event);
 
     const { subTotalPrice, transactionFee, totalPrice } =
@@ -72,6 +73,7 @@ export const EventGetTicketSummaryBox = () => {
 
             if (response && response.status === 200) {
                 location.href = response.data?.data?.authorization_url;
+                setPaid(true);
             }
         } catch (error) {
             console.log("Failed to create ticket:", error);
@@ -108,6 +110,7 @@ export const EventGetTicketSummaryBox = () => {
 
             if (response && response.status === 200) {
                 dispatch(changeTicketStep(3));
+                setPaid(true);
             }
         } catch (error) {
             console.log("Failed to create ticket:", error);
@@ -262,7 +265,7 @@ export const EventGetTicketSummaryBox = () => {
                         <Button
                             // Implement logic for checkout here
                             // onClick={() => {}}
-                            isDisabled={isLoading}
+                            isDisabled={isLoading || !isSetDetails}
                             variant="primary"
                             w="100%"
                             padding={4}

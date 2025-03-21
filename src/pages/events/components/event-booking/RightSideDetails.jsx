@@ -16,7 +16,6 @@ import GPSIcon from "../../../../assets/icon/Gps.svg";
 import LightingOutlineIcon from "../../../../assets/icon/LightingOutline.svg";
 import EventMap from "../../../../assets/icon/PlaceMarkMap.svg";
 import TicketIcon from "../../../../assets/icon/Ticket.svg";
-import UserAvatar from "../../../../assets/img/Avatars.png";
 import BoxFrame from "../../../../components/layouts/BoxFrame";
 import DetailCard from "../DetailCard";
 import { useDispatch } from "react-redux";
