@@ -11,18 +11,16 @@ import Payment from "../create-event/components/EventGetTicketSteps/Payment";
 import Footer from "../../components/layouts/Footer";
 
 const EventGetTicket = () => {
-    const { ticketStep, eventData } = useSelector((state) => state.event);
-    const [paid, setPaid] = useState(false);
+    const { ticketStep, eventData, paid } = useSelector((state) => state.event);  
+    
 
     const [timeLeft, setTimeLeft] = useState("");
     const timerInterval = useRef(null);
 
     const calculateTimeLeft = (endDate) => {
-        console.log(endDate);
 
         const now = new Date();
         const difference = new Date(endDate) - now;
-        console.log(difference);
 
         if (difference <= 0) {
             setTimeLeft("00:00:00");
@@ -37,7 +35,6 @@ const EventGetTicket = () => {
             (difference % (1000 * 60 * 60)) / (1000 * 60)
         );
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-        console.log(hours, seconds, minutes, difference, "okj");
 
         setTimeLeft(
             `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
@@ -64,7 +61,7 @@ const EventGetTicket = () => {
 
     return (
         <Container padding="16px">
-            <EventGetTicketHeader paid={paid} />
+            <EventGetTicketHeader paid={paid} profile={eventData?.user}/>
             {ticketStep === 3 ? (
                 <Payment />
             ) : (
@@ -92,7 +89,7 @@ const EventGetTicket = () => {
                             {ticketStep === 2 && <YourDetailsStep />}
                         </VStack>
                         <Box gridColumn="span 1 / span 1" />
-                        <EventGetTicketSummaryBox setPaid={setPaid}/>
+                        <EventGetTicketSummaryBox />
                     </Box>
                 </VStack>
             )}

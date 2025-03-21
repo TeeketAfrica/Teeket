@@ -16,11 +16,12 @@ import {
     changeTicketStep,
     selectPriceDetails,
     setIsBookedTicket,
+    setIsPaid,
 } from "../../../features/eventSlice";
 import { teeketApi } from "../../../utils/api";
 import { selectActiveUser } from "../../../features/activeUserSlice";
 
-export const EventGetTicketSummaryBox = ({setPaid}) => {
+export const EventGetTicketSummaryBox = ({}) => {
     const dispatch = useDispatch();
     const toast = useToast();
 
@@ -42,8 +43,8 @@ export const EventGetTicketSummaryBox = ({setPaid}) => {
     const activeUser = useSelector(selectActiveUser);
 
     const moveToCheckout = async () => {
-        dispatch(changeTicketStep(ticketStep + 1));
-        dispatch(setIsBookedTicket(true));
+        dispatch(changeTicketStep(2));
+        console.log("ticket step", ticketStep)  
     };
     const handleOrderCheckout = async () => {
         try {
@@ -73,7 +74,7 @@ export const EventGetTicketSummaryBox = ({setPaid}) => {
 
             if (response && response.status === 200) {
                 location.href = response.data?.data?.authorization_url;
-                setPaid(true);
+                dispatch(setIsPaid(true));
             }
         } catch (error) {
             console.log("Failed to create ticket:", error);
@@ -110,7 +111,7 @@ export const EventGetTicketSummaryBox = ({setPaid}) => {
 
             if (response && response.status === 200) {
                 dispatch(changeTicketStep(3));
-                setPaid(true);
+                dispatch(setIsPaid(true));
             }
         } catch (error) {
             console.log("Failed to create ticket:", error);

@@ -28,7 +28,7 @@ const Payment = () => {
             padding={4}
             height="auto"
           >
-            Go to your dashboard
+            View your tickets
           </Button>
           <Button
             onClick={() => navigate("/events")}

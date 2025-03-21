@@ -14,12 +14,14 @@ import {
     setIsBookedTicket,
     setReferenceId,
     setTicketSummaryDetails,
+    selectEventDetails,
 } from "../../../../features/eventSlice";
 import { teeketApi } from "../../../../utils/api";
 import { TicketTypeBox } from "../TicketTypeBox";
 
 export const TicketTypeStep = () => {
     const {
+        isBookedTicket,
         eventData,
         eventDataTickets: { data: eventDataTickets, eventDataLoading },
         ticketQuantity,
@@ -33,11 +35,13 @@ export const TicketTypeStep = () => {
     // const [eventTitle] = useState(eventDataTickets[0]?.event?.title);
 
     const [isTicketError, setIsTicketError] = useState(false);
+    const [ticketError, setTicketError] = useState("");
 
     const { eventTicketBooking, ticketStep } = useSelector(
         (state) => state.event
     );
     const [isLoading, setIsLoading] = useState();
+    const ed = useSelector(selectEventDetails);
 
     useEffect(() => {
         if (!eventData) {
@@ -89,30 +93,30 @@ export const TicketTypeStep = () => {
 
     // get the request id for checkout
     const handleBookingTickets = async () => {
-        if (ticketQuantity === 0) {
+        if (ed?.ticketQuantity === 0) {
             setIsTicketError(true);
+            setTicketError("You havent Booked any tickets")
             return;
         }
         const tickets = eventTicketBooking.map(({ id, quantity }) => ({
             ticket_id: id,
             quantity: quantity,
         }));
-
+        setIsLoading(true);
         try {
-            setIsLoading(true);
             const response = await teeketApi.post(
                 `/events/${eventData.id}/tickets/book`,
                 {
                     ticket_orders: tickets,
                 }
             );
-
             if (response && response.status === 200) {
                 dispatch(setReferenceId(response.data.reference_id));
                 dispatch(setTicketSummaryDetails(response.data));
+                dispatch(setIsBookedTicket(true));
                 toast({
                     title: "Booking Successful.",
-                    description: "You have successfully booked your ticket.",
+                    description: "You have successfully booked your ticket. You can continue",
                     status: "success",
                     duration: 4000,
                     isClosable: true,
@@ -120,7 +124,9 @@ export const TicketTypeStep = () => {
                 });
             }
         } catch (error) {
-            console.log("Failed to create ticket:", error.message);
+            console.log("Failed to create ticket:", error.message + error.response.data.message);
+            setIsTicketError(true)
+            setTicketError(error.response.data.message)
         } finally {
             setIsLoading(false);
         }
@@ -172,7 +178,7 @@ export const TicketTypeStep = () => {
                 w="max"
                 variant="primary"
                 onClick={handleBookingTickets}
-                isDisabled={isLoading}
+                isDisabled={isLoading || isBookedTicket}
             >
                 Continue
             </Button>
@@ -189,7 +195,7 @@ export const TicketTypeStep = () => {
                         <TickCircle size="24" color="#CB1A14" variant="Bold" />
                     </Box>
                     <Text fontSize={14} color="gray.600">
-                        You have to pick a ticket before checking out
+                        {ticketError}
                     </Text>
                 </HStack>
             )}

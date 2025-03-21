@@ -6,6 +6,7 @@ import {
     HStack,
     Input,
     Text,
+    useToast,
     VStack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as z from "zod";
-import { selectActiveUser } from "../../../../features/activeUserSlice";
+import { selectActiveUser, setUserFirstName, setUserLastName } from "../../../../features/activeUserSlice";
 import { selectEventDetails, setIsSetDetails, setTicketUserDetails } from "../../../../features/eventSlice";
 
 const visitorsFormSchema = z
@@ -49,16 +50,22 @@ const userFormSchema = z.object({
 
 export const YourDetailsStep = () => {
     const dispatch = useDispatch();
+    const toast = useToast();
 
     const activeUser = useSelector(selectActiveUser);
     const eventDetails = useSelector(selectEventDetails);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+    const [showEmailBox, setShowEmailBox] = useState(false);
+    const [isSubmited, setIsSubmited ] = useState(false);
     useEffect(()=>{
         dispatch(setTicketUserDetails({firstName: "", lastName: "", email: ""}))
-    })
+    }, [])
 
+    useEffect(()=>{
+        setIsSubmited(false);
+    }, [firstName, lastName, email])
     const {
         register,
         handleSubmit,
@@ -67,12 +74,28 @@ export const YourDetailsStep = () => {
         resolver: zodResolver(activeUser ? userFormSchema : visitorsFormSchema),
     });
 
-    const [showEmailBox, setShowEmailBox] = useState(false);
-
     const userTicketDetailSubmit = ()=>{
-        email? dispatch(setTicketUserDetails({firstName: firstName, lastName: lastName, email: email})) : dispatch(setTicketUserDetails({firstName: firstName, lastName: lastName}));
-        dispatch(setIsSetDetails(true));
-        console.log("ticcckkkss", eventDetails)
+        if(Object.keys(errors).length === 0){
+            if (email) {
+                dispatch(setTicketUserDetails({ firstName, lastName, email }));
+              } else {
+                dispatch(setTicketUserDetails({ firstName, lastName }));
+              }
+            dispatch(setIsSetDetails(true));
+            if(activeUser && firstName && lastName){
+                dispatch(setUserFirstName(firstName));
+                dispatch(setUserLastName(lastName));
+            }
+            setIsSubmited(true);
+            toast({
+                title: "Names Set.",
+                description: "You have successfully set your first and last name. You can proceed to checkout",
+                status: "success",
+                duration: 7000,
+                isClosable: true,
+                position: "top",
+            });
+        }
     }
 
     const handleInputChange = (e) => {
@@ -159,7 +182,7 @@ export const YourDetailsStep = () => {
                                 {...register("firstName")}
                                 isInvalid={!!errors.firstName}
                                 errorBorderColor="red.300"
-                                value={eventDetails?.ticketUserDetails?.firstName}
+                                value={activeUser?.first_name || firstName || eventDetails?.ticketUserDetails?.firstName}
                                 name="firstName"
                                 onChange={handleFirstInputChange}
                             />
@@ -175,7 +198,7 @@ export const YourDetailsStep = () => {
                                 placeholder="Last Name"
                                 {...register("lastName")}
                                 name="lastName"
-                                value={eventDetails?.ticketUserDetails?.lastName}
+                                value={activeUser?.last_name || lastName || eventDetails?.ticketUserDetails?.lastName}
                                 onChange={handleLastInputChange}
                                 isInvalid={!!errors.lastName}
                                 errorBorderColor="red.300"
@@ -193,6 +216,7 @@ export const YourDetailsStep = () => {
                                 width="full"
                                 variant="primary"
                                 onClick={userTicketDetailSubmit}
+                                disabled={isSubmited}
                             >
                                 Submit
                             </Button>
@@ -209,7 +233,7 @@ export const YourDetailsStep = () => {
                                 isInvalid={!!errors.firstName}
                                 errorBorderColor="red.300"
                                 name="firstName"
-                                value={eventDetails?.ticketUserDetails?.firstName}
+                                value={firstName || eventDetails?.ticketUserDetails?.firstName}
                                 onChange={handleFirstInputChange}
                             />
                             {errors.firstName && (
@@ -225,7 +249,7 @@ export const YourDetailsStep = () => {
                                 isInvalid={!!errors.lastName}
                                 errorBorderColor="red.300"
                                 name="lastName"
-                                value={eventDetails?.ticketUserDetails?.lastName}
+                                value={lastName || eventDetails?.ticketUserDetails?.lastName}
                                 onChange={handleLastInputChange}
                             />
                             {errors.lastName && (
@@ -240,7 +264,7 @@ export const YourDetailsStep = () => {
                                 {...register("email")}
                                 isInvalid={!!errors.email}
                                 errorBorderColor="red.300"
-                                value={eventDetails?.ticketUserDetails?.email}
+                                value={email || eventDetails?.ticketUserDetails?.email}
                                 name="lastName"
                                 onChange={handleEmailInputChange}
                             />

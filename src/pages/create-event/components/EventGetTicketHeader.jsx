@@ -16,7 +16,7 @@ import { useEffect } from "react";
 import { changeTicketStep } from "../../../features/eventSlice";
 import { TickCircle } from "iconsax-react";
 
-export const EventGetTicketHeader = ({paid}) => {
+export const EventGetTicketHeader = ({paid, profile}) => {
     const { ticketStep, isBookedTicket, isSetDetails } = useSelector(
         (state) => state.event
     );
@@ -73,6 +73,7 @@ export const EventGetTicketHeader = ({paid}) => {
                         onClick={() => {
                             dispatch(changeTicketStep(1));
                         }}
+                        disabled={paid}
                     >
                         <Text
                             fontSize={12}
@@ -108,7 +109,7 @@ export const EventGetTicketHeader = ({paid}) => {
                         onClick={() => {
                             dispatch(changeTicketStep(2));
                         }}
-                        isDisabled={!isBookedTicket}
+                        isDisabled={!isBookedTicket || paid}
                     >
                         <Text
                             fontSize={12}
@@ -161,7 +162,14 @@ export const EventGetTicketHeader = ({paid}) => {
                 </HStack>
 
                 <Box cursor="pointer">
-                    <Avatar src={Avatars} />
+                <Avatar
+                    border="1px solid"
+                    borderColor="gray.800"
+                    color="gray.800"
+                    name={profile?.name || profile?.email}
+                    src={profile?.profile_image}
+                    bgColor="transparent"
+                />
                 </Box>
             </Stack>
         </Box>
