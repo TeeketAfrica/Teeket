@@ -24,20 +24,29 @@ import {
     resetEventTicketBooking,
 } from "../../../../features/eventSlice";
 import { teeketApi } from "../../../../utils/api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getBookingMessage } from "../../../../utils/formatAttendees";
 
 const RightSIdeDetails = ({ event, isRegistered }) => {
     const dispatch = useDispatch();
+    const [eventAttendees, setEventAttendees] = useState([]);
     
-    const getEventAttendees = async()=>{
-        const event_attendees = await teeketApi.get(`events/${event?.id}/attendees`)
-        console.log("EA", event_attendees)
-        return event_attendees;
-    }
+    useEffect(() => {
+        const fetchAttendees = async () => {
+            try {
+                const response = await teeketApi.get(`events/${event?.id}/attendees`);
+                setEventAttendees(response.data?.data || []); // Store the attendees in state
+            } catch (error) {
+                console.error("Error fetching attendees:", error);
+                setEventAttendees([]); // Set empty array on error
+            }
+        };
 
-    useEffect(()=>{
-        getEventAttendees()
-    }, [])
+        fetchAttendees();
+    }, [event?.id]);
+
+    const attendeesQuantity = getBookingMessage(eventAttendees.length);
+    console.log("EA", eventAttendees)
 
     const getTicket = () => {
         dispatch(changeTicketStep(1));
@@ -69,23 +78,22 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
 
                     <HStack gap="10px" alignItems="center">
                         <AvatarGroup size="sm" max={3}>
-                            <Avatar
-                                name="Ryan Florence"
-                                src="https://bit.ly/ryan-florence"
-                            />
-                            <Avatar
-                                name="Segun Adebayo"
-                                src="https://bit.ly/sage-adebayo"
-                                zIndex={2}
-                            />
-                            <Avatar
-                                name="Kent Dodds"
-                                src="https://bit.ly/kent-c-dodds"
-                                zIndex={3}
-                            />
+                            {
+                                eventAttendees.slice(0, 3).map((attendees, i)=>(
+                                    <Avatar
+                                        key={i}
+                                        border="1px solid"
+                                        borderColor="gray.800"
+                                        color="gray.800"
+                                        name={attendees?.name || attendees?.email}
+                                        src={attendees?.profile_image}
+                                        bgColor="transparent"
+                                    />
+                                ))
+                            }
                         </AvatarGroup>
                         <Text fontSize="sm" lineHeight="5" color="gray.600">
-                            <Text as="span">40</Text>+ people are going already
+                            {attendeesQuantity}
                         </Text>
                     </HStack>
 

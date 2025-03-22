@@ -1,4 +1,4 @@
-function getBookingMessage(length) {
+export function getBookingMessage(length) {
     if (length < 10) {
         return "Be among the first 10 people to book, hurry up!";
     }

@@ -8,7 +8,6 @@ import {
     Text,
 } from "@chakra-ui/react";
 import BrandLogo from "../../../assets/img/brandLogo.png";
-import Avatars from "../../../assets/img/Avatars.png";
 
 import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
