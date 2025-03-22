@@ -17,6 +17,8 @@ import { Link } from "react-router-dom";
 import * as z from "zod";
 import { selectActiveUser, setUserFirstName, setUserLastName } from "../../../../features/activeUserSlice";
 import { selectEventDetails, setIsSetDetails, setTicketUserDetails } from "../../../../features/eventSlice";
+import useStorage from "../../../../utils/storage";
+import { teeketApi } from "../../../../utils/api";
 
 const visitorsFormSchema = z
     .object({
@@ -59,43 +61,88 @@ export const YourDetailsStep = () => {
     const [email, setEmail] = useState("");
     const [showEmailBox, setShowEmailBox] = useState(false);
     const [isSubmited, setIsSubmited ] = useState(false);
+
     useEffect(()=>{
-        dispatch(setTicketUserDetails({firstName: "", lastName: "", email: ""}))
-    }, [])
+        if(activeUser){
+            setFirstName(activeUser?.first_name)
+            setValue("firstName", firstName)
+            setLastName(activeUser?.last_name)
+            setValue("lastName", lastName)
+            setEmail(activeUser?.email)
+        }
+        else{
+            setFirstName(eventDetails?.ticketUserDetails?.firstName)
+            setValue("firstName", firstName)
+            setLastName(eventDetails?.ticketUserDetails?.lastName)
+            setValue("lastName", lastName)
+            setEmail(eventDetails?.ticketUserDetails?.email)    
+            setValue("email", email)
+        }
+    }, [activeUser])
 
     useEffect(()=>{
         setIsSubmited(false);
     }, [firstName, lastName, email])
+
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(activeUser ? userFormSchema : visitorsFormSchema),
     });
 
-    const userTicketDetailSubmit = ()=>{
+    const userTicketDetailSubmit = async ()=> {
+        const { getAccessToken } = useStorage();
+        const token = getAccessToken();
+
         if(Object.keys(errors).length === 0){
-            if (email) {
-                dispatch(setTicketUserDetails({ firstName, lastName, email }));
-              } else {
-                dispatch(setTicketUserDetails({ firstName, lastName }));
-              }
-            dispatch(setIsSetDetails(true));
             if(activeUser && firstName && lastName){
-                dispatch(setUserFirstName(firstName));
-                dispatch(setUserLastName(lastName));
+                try{
+                    const response = await teeketApi.patch("/user/profile", 
+                        {first_name: firstName, last_name: lastName},
+                        {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    console.log("Profile Updated", response); 
+                    dispatch(setTicketUserDetails({ firstName: firstName, lastName: lastName, email: email }));
+                    setIsSubmited(true);
+                    dispatch(setIsSetDetails(true));
+                    toast({
+                        title: "Names Set.",
+                        description: "You have successfully set your first and last name. You can proceed to checkout",
+                        status: "success",
+                        duration: 7000,
+                        isClosable: true,
+                        position: "top",
+                    });
+                }
+                catch(error){
+                    console.error("Error updating profile:", error?.message);
+                }
             }
-            setIsSubmited(true);
-            toast({
-                title: "Names Set.",
-                description: "You have successfully set your first and last name. You can proceed to checkout",
-                status: "success",
-                duration: 7000,
-                isClosable: true,
-                position: "top",
-            });
+            else{
+                if (email) {
+                    dispatch(setTicketUserDetails({ firstName: firstName, lastName: lastName, email: email }));
+                  } else {
+                    dispatch(setTicketUserDetails({ firstName: firstName, lastName: lastName }));
+                  }
+                dispatch(setIsSetDetails(true));
+                setIsSubmited(true);
+                toast({
+                    title: "Names Set.",
+                    description: "You have successfully set your first and last name. You can proceed to checkout",
+                    status: "success",
+                    duration: 7000,
+                    isClosable: true,
+                    position: "top",
+                });
+            }
         }
+        console.log(" ED ",eventDetails)
     }
 
     const handleInputChange = (e) => {
@@ -182,7 +229,7 @@ export const YourDetailsStep = () => {
                                 {...register("firstName")}
                                 isInvalid={!!errors.firstName}
                                 errorBorderColor="red.300"
-                                value={activeUser?.first_name || firstName || eventDetails?.ticketUserDetails?.firstName}
+                                value={firstName}
                                 name="firstName"
                                 onChange={handleFirstInputChange}
                             />
@@ -198,7 +245,7 @@ export const YourDetailsStep = () => {
                                 placeholder="Last Name"
                                 {...register("lastName")}
                                 name="lastName"
-                                value={activeUser?.last_name || lastName || eventDetails?.ticketUserDetails?.lastName}
+                                value={lastName}
                                 onChange={handleLastInputChange}
                                 isInvalid={!!errors.lastName}
                                 errorBorderColor="red.300"
@@ -215,7 +262,6 @@ export const YourDetailsStep = () => {
                                 bg="gray.800"
                                 width="full"
                                 variant="primary"
-                                onClick={userTicketDetailSubmit}
                                 disabled={isSubmited}
                             >
                                 Submit
@@ -233,7 +279,7 @@ export const YourDetailsStep = () => {
                                 isInvalid={!!errors.firstName}
                                 errorBorderColor="red.300"
                                 name="firstName"
-                                value={firstName || eventDetails?.ticketUserDetails?.firstName}
+                                value={firstName}
                                 onChange={handleFirstInputChange}
                             />
                             {errors.firstName && (
@@ -249,7 +295,7 @@ export const YourDetailsStep = () => {
                                 isInvalid={!!errors.lastName}
                                 errorBorderColor="red.300"
                                 name="lastName"
-                                value={lastName || eventDetails?.ticketUserDetails?.lastName}
+                                value={lastName}
                                 onChange={handleLastInputChange}
                             />
                             {errors.lastName && (
@@ -264,7 +310,7 @@ export const YourDetailsStep = () => {
                                 {...register("email")}
                                 isInvalid={!!errors.email}
                                 errorBorderColor="red.300"
-                                value={email || eventDetails?.ticketUserDetails?.email}
+                                value={email}
                                 name="lastName"
                                 onChange={handleEmailInputChange}
                             />

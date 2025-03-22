@@ -22,7 +22,7 @@ const Payment = () => {
         </VStack>
         <VStack w="100%">
           <Button
-            onClick={() => navigate("/app/overview")}
+            onClick={() => navigate("/my-tickets")}
             variant="primary"
             w="100%"
             padding={4}

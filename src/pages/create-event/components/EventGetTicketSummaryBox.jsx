@@ -15,7 +15,6 @@ import ListSummary from "../../../assets/icon/ListSummary.svg";
 import {
     changeTicketStep,
     selectPriceDetails,
-    setIsBookedTicket,
     setIsPaid,
 } from "../../../features/eventSlice";
 import { teeketApi } from "../../../utils/api";
@@ -35,6 +34,8 @@ export const EventGetTicketSummaryBox = ({}) => {
         isSetDetails
     } = useSelector((state) => state.event);
 
+    console.log("TICKS", ticketUserDetails)
+
     const { subTotalPrice, transactionFee, totalPrice } =
         useSelector(selectPriceDetails);
 
@@ -44,8 +45,8 @@ export const EventGetTicketSummaryBox = ({}) => {
 
     const moveToCheckout = async () => {
         dispatch(changeTicketStep(2));
-        console.log("ticket step", ticketStep)  
     };
+
     const handleOrderCheckout = async () => {
         try {
             setIsLoading(true);
@@ -62,11 +63,11 @@ export const EventGetTicketSummaryBox = ({}) => {
                       payment_gateway: "paystack",
                       callback_url: `http://${location.host}/${location.pathname}?step=payment`,
                       reference_id: referenceId,
-                      email: "",
+                      email: ticketUserDetails?.email,
                       user: {
-                          first_name: "",
-                          last_name: "",
-                          email: "",
+                          first_name: ticketUserDetails?.first_name,
+                          last_name: ticketUserDetails?.last_name,
+                          email: ticketUserDetails?.email
                       },
                   };
 

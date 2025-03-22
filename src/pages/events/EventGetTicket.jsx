@@ -9,9 +9,11 @@ import { TicketTypeStep } from "../create-event/components/EventGetTicketSteps/T
 import { YourDetailsStep } from "../create-event/components/EventGetTicketSteps/YourDetailsStep";
 import Payment from "../create-event/components/EventGetTicketSteps/Payment";
 import Footer from "../../components/layouts/Footer";
+import { selectActiveUser } from "../../features/activeUserSlice";
 
 const EventGetTicket = () => {
-    const { ticketStep, eventData, paid } = useSelector((state) => state.event);  
+    const { ticketStep, eventData, paid } = useSelector((state) => state.event);
+    const activeUser = useSelector(selectActiveUser);  
     
 
     const [timeLeft, setTimeLeft] = useState("");
@@ -61,7 +63,7 @@ const EventGetTicket = () => {
 
     return (
         <Container padding="16px">
-            <EventGetTicketHeader paid={paid} profile={eventData?.user}/>
+            <EventGetTicketHeader paid={paid} profile={activeUser}/>
             {ticketStep === 3 ? (
                 <Payment />
             ) : (

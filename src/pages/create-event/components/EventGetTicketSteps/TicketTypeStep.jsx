@@ -84,11 +84,7 @@ export const TicketTypeStep = () => {
             setTimeRange(`${formattedStartTime} - ${formattedEndTime}`);
         }
 
-        if (isTicketError) {
-            if (ticketQuantity > 0) {
-                setIsTicketError(false);
-            }
-        }
+        
     }, [eventData, isTicketError, ticketQuantity]);
 
     // get the request id for checkout

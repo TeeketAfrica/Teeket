@@ -165,7 +165,7 @@ export const EventGetTicketHeader = ({paid, profile}) => {
                     border="1px solid"
                     borderColor="gray.800"
                     color="gray.800"
-                    name={profile?.name || profile?.email}
+                    name={profile?.first_name || profile?.email}
                     src={profile?.profile_image}
                     bgColor="transparent"
                 />
