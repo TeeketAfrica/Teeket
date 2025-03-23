@@ -28,10 +28,10 @@ const HeroSection = () => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    if (searchTerm === "") {
-      setInputValue("");
+    if(inputValue === ""){
+      setSearchTerm("")
     }
-  }, [searchTerm]);
+  }, [inputValue]);
 
   const categories = [
     "Anime",

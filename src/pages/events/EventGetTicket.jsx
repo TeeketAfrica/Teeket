@@ -9,19 +9,20 @@ import { TicketTypeStep } from "../create-event/components/EventGetTicketSteps/T
 import { YourDetailsStep } from "../create-event/components/EventGetTicketSteps/YourDetailsStep";
 import Payment from "../create-event/components/EventGetTicketSteps/Payment";
 import Footer from "../../components/layouts/Footer";
+import { selectActiveUser } from "../../features/activeUserSlice";
 
 const EventGetTicket = () => {
-    const { ticketStep, eventData } = useSelector((state) => state.event);
+    const { ticketStep, eventData, paid } = useSelector((state) => state.event);
+    const activeUser = useSelector(selectActiveUser);  
+    
 
     const [timeLeft, setTimeLeft] = useState("");
     const timerInterval = useRef(null);
 
     const calculateTimeLeft = (endDate) => {
-        console.log(endDate);
 
         const now = new Date();
         const difference = new Date(endDate) - now;
-        console.log(difference);
 
         if (difference <= 0) {
             setTimeLeft("00:00:00");
@@ -36,7 +37,6 @@ const EventGetTicket = () => {
             (difference % (1000 * 60 * 60)) / (1000 * 60)
         );
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-        console.log(hours, seconds, minutes, difference, "okj");
 
         setTimeLeft(
             `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
@@ -63,7 +63,7 @@ const EventGetTicket = () => {
 
     return (
         <Container padding="16px">
-            <EventGetTicketHeader />
+            <EventGetTicketHeader paid={paid} profile={activeUser}/>
             {ticketStep === 3 ? (
                 <Payment />
             ) : (

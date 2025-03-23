@@ -16,7 +16,7 @@ export const TicketTypeBox = ({ data }) => {
 
     const currentQuantity =
         eventTicketBooking.find((ticket) => ticket.id === data.id)?.quantity ||
-        1;
+        0;
 
     const handleInputChange = (e) => {
         let value = parseInt(e.target.value, 10);
@@ -29,7 +29,7 @@ export const TicketTypeBox = ({ data }) => {
             setError("");
         }
 
-        if (value < 1) value = 1;
+        if (value < 1) value = 0;
         dispatch(setTicketQuantity(value));
 
         dispatch(
@@ -75,8 +75,9 @@ export const TicketTypeBox = ({ data }) => {
                             onClick={() => {
                                 const newQuantity = Math.max(
                                     currentQuantity - 1,
-                                    1
+                                    0
                                 );
+                                dispatch(setTicketQuantity(newQuantity))
                                 dispatch(
                                     changeEventDataTicketsQuantity({
                                         id: data.id,
@@ -86,9 +87,9 @@ export const TicketTypeBox = ({ data }) => {
                                     })
                                 );
                             }}
-                            isDisabled={currentQuantity <= 1}
+                            isDisabled={currentQuantity < 1}
                             variant={
-                                currentQuantity <= 1 ? "secondary" : "primary"
+                                currentQuantity < 1 ? "secondary" : "primary"
                             }
                             padding={2}
                         >
@@ -107,7 +108,7 @@ export const TicketTypeBox = ({ data }) => {
                                     currentQuantity + 1,
                                     data.quantity
                                 );
-
+                                dispatch(setTicketQuantity(newQuantity))
                                 dispatch(
                                     changeEventDataTicketsQuantity({
                                         id: data.id,

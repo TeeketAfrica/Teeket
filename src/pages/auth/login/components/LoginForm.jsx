@@ -49,8 +49,6 @@ const LoginForm = () => {
         const refresh_token = response.data.refresh_token;
         // const userData = response2.data;
 
-        console.log("Login successful:", response);
-
         if (access_token) {
           // set the refresh token and access token to cookie storage
           setAccessToken(access_token);

@@ -85,7 +85,7 @@ const DashboardHeader = ({ onOpen }) => {
                                 borderColor="gray.800"
                                 color="gray.800"
                                 name={activeUser?.name || activeUser?.email}
-                                src={activeUser?.profile_imag}
+                                src={activeUser?.profile_image}
                                 bgColor="transparent"
                             />
                         </MenuButton>

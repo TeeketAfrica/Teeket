@@ -15,12 +15,12 @@ import ListSummary from "../../../assets/icon/ListSummary.svg";
 import {
     changeTicketStep,
     selectPriceDetails,
-    setIsBookedTicket,
+    setIsPaid,
 } from "../../../features/eventSlice";
 import { teeketApi } from "../../../utils/api";
 import { selectActiveUser } from "../../../features/activeUserSlice";
 
-export const EventGetTicketSummaryBox = () => {
+export const EventGetTicketSummaryBox = ({}) => {
     const dispatch = useDispatch();
     const toast = useToast();
 
@@ -31,7 +31,10 @@ export const EventGetTicketSummaryBox = () => {
         referenceId,
         ticketSummaryDetails,
         ticketUserDetails,
+        isSetDetails
     } = useSelector((state) => state.event);
+
+    console.log("TICKS", ticketUserDetails)
 
     const { subTotalPrice, transactionFee, totalPrice } =
         useSelector(selectPriceDetails);
@@ -41,9 +44,9 @@ export const EventGetTicketSummaryBox = () => {
     const activeUser = useSelector(selectActiveUser);
 
     const moveToCheckout = async () => {
-        dispatch(changeTicketStep(ticketStep + 1));
-        dispatch(setIsBookedTicket(true));
+        dispatch(changeTicketStep(2));
     };
+
     const handleOrderCheckout = async () => {
         try {
             setIsLoading(true);
@@ -60,11 +63,11 @@ export const EventGetTicketSummaryBox = () => {
                       payment_gateway: "paystack",
                       callback_url: `http://${location.host}/${location.pathname}?step=payment`,
                       reference_id: referenceId,
-                      email: "",
+                      email: ticketUserDetails?.email,
                       user: {
-                          first_name: "",
-                          last_name: "",
-                          email: "",
+                          first_name: ticketUserDetails?.first_name,
+                          last_name: ticketUserDetails?.last_name,
+                          email: ticketUserDetails?.email
                       },
                   };
 
@@ -72,6 +75,7 @@ export const EventGetTicketSummaryBox = () => {
 
             if (response && response.status === 200) {
                 location.href = response.data?.data?.authorization_url;
+                dispatch(setIsPaid(true));
             }
         } catch (error) {
             console.log("Failed to create ticket:", error);
@@ -108,6 +112,7 @@ export const EventGetTicketSummaryBox = () => {
 
             if (response && response.status === 200) {
                 dispatch(changeTicketStep(3));
+                dispatch(setIsPaid(true));
             }
         } catch (error) {
             console.log("Failed to create ticket:", error);
@@ -262,7 +267,7 @@ export const EventGetTicketSummaryBox = () => {
                         <Button
                             // Implement logic for checkout here
                             // onClick={() => {}}
-                            isDisabled={isLoading}
+                            isDisabled={isLoading || !isSetDetails}
                             variant="primary"
                             w="100%"
                             padding={4}
