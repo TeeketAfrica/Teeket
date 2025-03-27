@@ -162,7 +162,7 @@ const Header = () => {
                           </MenuItem>
                         </Link>
 
-                        <Link to="/app/overview">
+                        <Link to={user?.is_creator? "/app/overview": "/my-tickets"}>
                           <MenuItem
                             icon={<GridIcon />}
                             color="gray.600"

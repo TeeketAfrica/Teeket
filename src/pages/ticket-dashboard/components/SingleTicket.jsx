@@ -27,7 +27,6 @@ const SingleTicket = ({
       borderRadius={16}
       p={[2, 3]}
       h="414px"
-      maxW="389.33px"
       w="full"
     >
       <Box bgColor="gray.100" w="full" h="full" borderRadius={8} p={[3, 6]}>

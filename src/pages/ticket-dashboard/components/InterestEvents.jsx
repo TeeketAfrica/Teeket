@@ -15,12 +15,19 @@ const InterestEvents = () => {
       {event && (
         <>
           <Grid
-            templateColumns="repeat(4, 1fr)"
+            gridTemplateColumns={[
+              "1fr",
+              null,
+              "repeat(4, 1fr)",
+              null,
+              "repeat(4, 1fr)",
+            ]}
             gap={6}
             borderBottom="1px solid"
             borderColor="gray.300"
             pt={6}
             pb={9}
+            paddingX={7}
           >
             <EventCard
               eventImage={Event1}
@@ -31,7 +38,10 @@ const InterestEvents = () => {
               eventCommunity="By Web3 and co"
               eventLocation="Online event"
               eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
+              eventDate={{
+                startDate: "2024-03-27T14:30:00Z",
+                endDate: "2024-03-27T14:30:00Z",
+              }}
             />
             <EventCard
               eventImage={Event2}
@@ -42,7 +52,10 @@ const InterestEvents = () => {
               eventCommunity="by the_brush"
               eventLocation="Online event"
               eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
+              eventDate={{
+                startDate: "2024-03-27T14:30:00Z",
+                endDate: "2024-03-27T14:30:00Z",
+              }}
             />
             <EventCard
               eventImage={Event3}
@@ -53,7 +66,10 @@ const InterestEvents = () => {
               eventCommunity="by the_brush"
               eventLocation="Life camp, Abuja"
               eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
+              eventDate={{
+                startDate: "2024-03-27T14:30:00Z",
+                endDate: "2024-03-27T14:30:00Z",
+              }}
             />
             <EventCard
               eventImage={Event4}
@@ -64,7 +80,10 @@ const InterestEvents = () => {
               eventCommunity="by the_brush"
               eventLocation="Online event"
               eventPrice="Starts at $10"
-              eventDate="9th-17th Feb"
+              eventDate={{
+                startDate: "2024-03-27T14:30:00Z",
+                endDate: "2024-03-27T14:30:00Z",
+              }}
             />
           </Grid>
         </>

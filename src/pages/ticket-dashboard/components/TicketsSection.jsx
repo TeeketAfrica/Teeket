@@ -25,8 +25,9 @@ const TicketsSection = () => {
             "repeat(3, 1fr)",
           ]}
           gap={6}
+          paddingX={5}
         >
-          <GridItem justifySelf="center">
+          <GridItem justifySelf="center" width={"100%"}>
             <SingleTicket
               eventTitle="The vintage art event africa"
               eventTime="23 Jan, 2024, 8;00pm - 10:00pm"
@@ -35,7 +36,7 @@ const TicketsSection = () => {
               ticketVipQuantity="2x"
             />
           </GridItem>
-          <GridItem justifySelf="center">
+          <GridItem justifySelf="center" width={"100%"}>
             <SingleTicket
               eventTitle="The vintage art event africa"
               eventTime="23 Jan, 2024, 8;00pm - 10:00pm"
@@ -44,7 +45,7 @@ const TicketsSection = () => {
               ticketVipQuantity="2x"
             />
           </GridItem>
-          <GridItem justifySelf="center">
+          <GridItem justifySelf="center" width={"100%"}>
             <SingleTicket
               eventTitle="The vintage art event africa"
               eventTime="23 Jan, 2024, 8;00pm - 10:00pm"
@@ -53,7 +54,7 @@ const TicketsSection = () => {
               ticketVipQuantity="2x"
             />
           </GridItem>
-          <GridItem justifySelf="center">
+          <GridItem justifySelf="center" width={"100%"}>
             <SingleTicket
               eventTitle="The vintage art event africa"
               eventTime="23 Jan, 2024, 8;00pm - 10:00pm"
@@ -62,7 +63,7 @@ const TicketsSection = () => {
               ticketVipQuantity="2x"
             />
           </GridItem>
-          <GridItem justifySelf="center">
+          <GridItem justifySelf="center" width={"100%"}>
             <SingleTicket
               eventTitle="The vintage art event africa"
               eventTime="23 Jan, 2024, 8;00pm - 10:00pm"
@@ -71,7 +72,7 @@ const TicketsSection = () => {
               ticketVipQuantity="2x"
             />
           </GridItem>
-          <GridItem justifySelf="center">
+          <GridItem justifySelf="center" width={"100%"}>
             <SingleTicket
               eventTitle="The vintage art event africa"
               eventTime="23 Jan, 2024, 8;00pm - 10:00pm"

@@ -8,7 +8,6 @@ import TicketsSection from "./components/TicketsSection";
 const TicketDashboardPage = () => {
   return (
     <main>
-      <Header />
       <Container>
         <TicketsHeroSection />
         <TicketsSection />
