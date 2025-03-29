@@ -33,7 +33,6 @@ const publicRoutes = [
   { path: "/about", element: AboutPage },
   { path: "/events", element: EventsPage },
   { path: "/event-category/:type?", element: EventCategoryPage },
-  { path: "/my-tickets", element: TicketDashboardPage },
   { path: "/account-settings", element: AccountSettingsPage },
 ];
 
@@ -45,6 +44,7 @@ const privateRoutes = [
   { path: "/app/order", element: OrdersDashboardPage },
   { path: "/app/finance", element: FinancesDashboardPage },
   { path: "/account-settings", element: AccountSettingsPage },
+  { path: "/my-tickets", element: TicketDashboardPage },
   {
     path: "/app/organization-settings",
     element: OrganizationSettingsDashboardPage,

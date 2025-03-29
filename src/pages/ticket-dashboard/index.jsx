@@ -9,6 +9,7 @@ const TicketDashboardPage = () => {
   return (
     <main>
       <Container>
+        <Header/>
         <TicketsHeroSection />
         <TicketsSection />
         <EventList />
