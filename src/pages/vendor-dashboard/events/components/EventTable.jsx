@@ -245,7 +245,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
     const handleFilterByStatus = (selectedStatus) => {
         setStatusFilter(statusMap[selectedStatus]);
     };
-
+    console.log("paginated data", paginatedData)
     return (
         <Box px={[4, 8]}>
             <Stack

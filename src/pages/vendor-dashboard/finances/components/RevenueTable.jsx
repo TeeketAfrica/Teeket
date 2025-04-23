@@ -165,7 +165,7 @@ const RevenueTable = () => {
 
         handleFetchEvents();
     }, [toast, itemsPerPage, search]);
-
+    console.log(" rev tab data ", revenueTableData)
     return (
         <Box px={[4, 8]}>
             <Stack
@@ -351,9 +351,9 @@ const RevenueTable = () => {
                                                         <Td>
                                                             <HStack spacing={3}>
                                                                 <Image
-                                                                    src={td.img}
+                                                                    src={td.event.banner_image}
                                                                     alt={
-                                                                        td.eventTitle
+                                                                        td.iitle
                                                                     }
                                                                     w={10}
                                                                     h={10}
@@ -366,12 +366,12 @@ const RevenueTable = () => {
                                                                         color="gray.800"
                                                                     >
                                                                         {
-                                                                            td.eventTitle
+                                                                            td.event.title
                                                                         }
                                                                     </Text>
                                                                     <Text color="gray.600">
                                                                         {
-                                                                            td.eventCategory
+                                                                            td.event.organizer
                                                                         }
                                                                     </Text>
                                                                 </Box>
@@ -381,8 +381,8 @@ const RevenueTable = () => {
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.ticketSold}/
-                                                            {td.ticketTotal}
+                                                            {td.total_tickets_sold}/
+                                                            {td.total_tickets}
                                                         </Td>
                                                         <Td
                                                             color="gray.600"
