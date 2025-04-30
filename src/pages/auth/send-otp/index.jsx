@@ -7,14 +7,17 @@ import { Box, HStack } from "@chakra-ui/layout";
 import AuthLayout from "../../../components/auth/AuthLayout";
 import AuthHeader from "../../../components/auth/AuthHeader";
 import { maskEmail } from "../../../utils/utils";
-import { authApi } from "../../../utils/api";
+import { authApi, teeketApi } from "../../../utils/api";
 import { useStorage } from "../../../utils/storage";
+import { useDispatch } from "react-redux";
+import { setActiveUser } from "../../../features/activeUserSlice";
 
 const CreateAccountPage = () => {
     const location = useLocation();
     const { value, token } = location.state || {};
     const navigate = useNavigate();
     const { setAccessToken } = useStorage();
+    const dispatch = useDispatch();
 
     const formatEmail = value && maskEmail(value);
 
@@ -63,9 +66,15 @@ const CreateAccountPage = () => {
                     otp: otp,
                     kind: "verify",
                 });
+                const userData = await teeketApi.get("/user/profile", {
+                    headers: {
+                         Authorization: `Bearer ${token}`
+                    }
+                })
+                console.log("US", userData.data)
                 if (verifyOTPResponse.status === 200) {
                     console.log(verifyOTPResponse);
-
+                    dispatch(setActiveUser(userData.data));
                     navigate("/app/overview");
                 }
             } catch (err) {
