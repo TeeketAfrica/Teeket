@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid } from "@chakra-ui/react";
 import EventCard from "../../events/components/EventCard";
 import Event1 from "../../../assets/img/e1.png";
@@ -7,9 +7,27 @@ import Event3 from "../../../assets/img/e3.png";
 import Event4 from "../../../assets/img/e4.png";
 import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
+import { teeketApi } from "../../../utils/api";
 
 const InterestEvents = () => {
-  const [event] = useState(true);
+  const [event, setEvents] = useState([]);
+  useEffect(()=>{
+    const fetchEvents = async ()=>{
+      try {
+          const response = await teeketApi.get(`/events`, {
+              nullAuth: true,
+          });
+          const eventList = response.data.data;
+    
+          setEvents(eventList);
+      }
+      catch(err){
+        console.log(`Error fetching similar events: ${err}`)
+      }
+    }
+    fetchEvents();
+  }, []);
+
   return (
     <>
       {event && (
@@ -18,7 +36,7 @@ const InterestEvents = () => {
             gridTemplateColumns={[
               "1fr",
               null,
-              "repeat(4, 1fr)",
+              "repeat(3, 1fr)",
               null,
               "repeat(4, 1fr)",
             ]}
@@ -29,62 +47,25 @@ const InterestEvents = () => {
             pb={9}
             paddingX={7}
           >
-            <EventCard
-              eventImage={Event1}
-              eventTitle="The Dao unveiling event"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="By Web3 and co"
-              eventLocation="Online event"
-              eventPrice="Starts at $10"
-              eventDate={{
-                startDate: "2024-03-27T14:30:00Z",
-                endDate: "2024-03-27T14:30:00Z",
-              }}
-            />
-            <EventCard
-              eventImage={Event2}
-              eventTitle="Art exhibition show down: For enthusiast and newbies"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="by the_brush"
-              eventLocation="Online event"
-              eventPrice="Starts at $10"
-              eventDate={{
-                startDate: "2024-03-27T14:30:00Z",
-                endDate: "2024-03-27T14:30:00Z",
-              }}
-            />
-            <EventCard
-              eventImage={Event3}
-              eventTitle="Art exhibition show down: For enthusiast and newbies"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="by the_brush"
-              eventLocation="Life camp, Abuja"
-              eventPrice="Starts at $10"
-              eventDate={{
-                startDate: "2024-03-27T14:30:00Z",
-                endDate: "2024-03-27T14:30:00Z",
-              }}
-            />
-            <EventCard
-              eventImage={Event4}
-              eventTitle="Vintage all out party"
-              eventTag="Trending"
-              eventTagIcon={EventTagIcon}
-              eventOrganizer={Avatars}
-              eventCommunity="by the_brush"
-              eventLocation="Online event"
-              eventPrice="Starts at $10"
-              eventDate={{
-                startDate: "2024-03-27T14:30:00Z",
-                endDate: "2024-03-27T14:30:00Z",
-              }}
-            />
+            {
+              event.slice(0, 4).map((event, i)=>(
+                <EventCard
+                  key={i}
+                  eventImage={event.banner_image}
+                  eventTitle={event.title}
+                  eventTag={event.status}
+                  eventTagIcon={EventTagIcon}
+                  eventOrganizer={Avatars}
+                  eventCommunity={`by ${event.organizer}`}
+                  eventLocation={event.hosting_site}
+                  eventPrice="Starts at $10"
+                  eventDate={{
+                    startDate: `${event.start_date}`,
+                    endDate: "2024-03-27T14:30:00Z",
+                  }}
+                />  
+              ))
+            }
           </Grid>
         </>
       )}

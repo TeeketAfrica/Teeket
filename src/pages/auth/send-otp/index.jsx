@@ -75,7 +75,11 @@ const CreateAccountPage = () => {
                 if (verifyOTPResponse.status === 200) {
                     console.log(verifyOTPResponse);
                     dispatch(setActiveUser(userData.data));
-                    navigate("/app/overview");
+                    if (!userData.data.is_creator) {
+                        navigate("/events");
+                      } else {
+                        navigate("/app/overview");
+                    }
                 }
             } catch (err) {
                 setOtpError(true);

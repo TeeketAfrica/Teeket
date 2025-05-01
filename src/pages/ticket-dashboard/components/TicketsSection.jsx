@@ -68,6 +68,7 @@ const TicketsSection = () => {
                   ticketQuantity={ticket?.quantity}
                   ticketType={ticket?.ticket.name}
                   ticketPrice={ticket?.ticket.price}
+                  eventId={ticket?.event.id}
                 />
               </GridItem>
             ))
