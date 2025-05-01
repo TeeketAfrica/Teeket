@@ -18,14 +18,16 @@ const EventGetTicket = () => {
 
     const [timeLeft, setTimeLeft] = useState("");
     const timerInterval = useRef(null);
+ 
 
-    // Function to calculate the time left until the event ends
+    // Function to calculate time left until the event ends
+
     const calculateTimeLeft = (endDate, setTimeLeft, timerIntervalRef) => {
         const now = new Date();
         const end = new Date(endDate);
     
         if (end <= now) {
-            setTimeLeft("00y 00m 00d 00h 00m 00s");
+            setTimeLeft("00h 00m 00s");
             if (timerIntervalRef.current) {
                 clearInterval(timerIntervalRef.current);
             }
@@ -52,8 +54,6 @@ const EventGetTicket = () => {
             days--;
         }
         if (days < 0) {
-         
-            
             const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
             days += prevMonth.getDate();
             months--;
@@ -65,11 +65,20 @@ const EventGetTicket = () => {
     
         const pad = (n) => String(n).padStart(2, "0");
     
-        setTimeLeft(
-            `${pad(years)}y ${pad(months)}m ${pad(days)}d ${pad(hours)}h ${pad(
-                minutes
-            )}m ${pad(seconds)}s`
-        );
+    //    How to dispaly what is left on time 
+        let display = "";
+    
+        if (years > 0) {
+            display = `${pad(years)}y ${pad(months)}m`;
+        } else if (months > 0) {
+            display = `${pad(months)}m ${pad(days)}d`;
+        } else if (days > 0) {
+            display = `${pad(days)}d ${pad(hours)}h`;
+        } else {
+            display = `${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+        }
+    
+        setTimeLeft(display);
     };
     
 
