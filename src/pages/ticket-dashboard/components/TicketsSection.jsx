@@ -6,6 +6,7 @@ import EmptyCard from "../../../assets/icon/EmptyCard.svg";
 import SingleTicket from "./SingleTicket";
 import { teeketApi } from "../../../utils/api";
 import useStorage from "../../../utils/storage";
+import { formatDate } from "../../../features/formatDate";
 
 const TicketsSection = () => {
   const [availableTickets, setAvailableTickets] = useState(true);
@@ -17,14 +18,14 @@ const TicketsSection = () => {
   useEffect(()=>{
       const fetchTickets = async ()=> {
         try {
-          const response = await teeketApi.get(`events/tickets/me`,
+          const response = await teeketApi.get(`orders/me`,
             {
               headers: {
                   Authorization: `Bearer ${token}`
               }
             } 
           );
-          setTickets(response?.data?.data)
+          setTickets(response?.data.data)
           console.log("ticccksss", tickets);
           setAvailableTickets(true);
         }
@@ -62,10 +63,11 @@ const TicketsSection = () => {
               <GridItem justifySelf="center" width={"100%"}>
                 <SingleTicket
                   eventTitle={ticket?.event?.title}
-                  eventTime="23 Jan, 2024, 8;00pm - 10:00pm"
-                  eventLocation="The rink, prince and princess estate, Abuja Nigeria"
-                  ticketRegularQuantity="2x"
-                  ticketVipQuantity="2x"
+                  eventTime={`${formatDate(ticket?.event.start_date)}`}
+                  eventLocation={ticket?.event.hosting_site === "physical"? `${ticket?.event.event_location}`: `Event Link:${ticket?.event.event_link}`}
+                  ticketQuantity={ticket?.quantity}
+                  ticketType={ticket?.ticket.name}
+                  ticketPrice={ticket?.ticket.price}
                 />
               </GridItem>
             ))

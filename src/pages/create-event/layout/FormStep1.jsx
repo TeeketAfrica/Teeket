@@ -37,7 +37,7 @@ const FormStep1 = ({ formik }) => {
         const data = { fieldName: fieldName, value: e.target.value };
         console.log(data);
 
-        dispatch(setEventDetail(data));
+        // dispatch(setEventDetail(data));
     };
 
     const toast = useToast();
@@ -71,7 +71,7 @@ const FormStep1 = ({ formik }) => {
                     fieldName: fieldName,
                     value: updatedTags, // send only id
                 };
-                dispatch(setEventDetail(data));
+                // dispatch(setEventDetail(data));
             }
             setInputTag("");
         };
@@ -82,7 +82,7 @@ const FormStep1 = ({ formik }) => {
             );
             setTags(updatedTags);
             const data = { fieldName: fieldName, value: updatedTags };
-            dispatch(setEventDetail(data));
+            // dispatch(setEventDetail(data));
         };
 
         const handleTagInputChange = (e) => {

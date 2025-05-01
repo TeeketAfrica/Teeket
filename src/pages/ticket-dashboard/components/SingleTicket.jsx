@@ -15,8 +15,9 @@ const SingleTicket = ({
   eventTitle,
   eventTime,
   eventLocation,
-  ticketRegularQuantity,
-  ticketVipQuantity,
+  ticketQuantity,
+  ticketType,
+  ticketPrice
 }) => {
   return (
     <Box
@@ -43,13 +44,12 @@ const SingleTicket = ({
           <Box>
             <Text color="gray.600">Ticket purchased</Text>
             <Text color="gray.600" fontWeight={600}>
-              {ticketRegularQuantity}{" "}
+              {ticketQuantity}{" "} X {" "}
               <Text color="gray.800" as="span">
-                Regular
+                {ticketType}{" "}
               </Text>
-              , {ticketVipQuantity}{" "}
               <Text color="gray.800" as="span">
-                VIP
+              {"@$"}{ticketPrice}
               </Text>
             </Text>
           </Box>
