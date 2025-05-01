@@ -1,0 +1,92 @@
+import {
+  AccountSettingsPage,
+  CounterDownPage,
+  CreateAccountPage,
+  EventBookingPage,
+  EventCategoryPage,
+  EventGetTicket,
+  EventsDashboardPage,
+  EventsPage,
+  FinancesDashboardPage,
+  HelpAndSupportPage,
+  HomePage,
+  LoginPage,
+  OrdersDashboardPage,
+  OrganizationSettingsDashboardPage,
+  OverviewDashboardPage,
+  PasswordRecoveryPage,
+  PasswordResetPage,
+  SendOTPPage,
+  TicketDashboardPage,
+  VendorPage,
+  AboutPage,
+  ContactPage,
+} from "../pages";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./publicRoute";
+import PublicRouteWithoutHeader from "./PublicRoutesWithoutHeader";
+
+const publicRoutes = [
+  { path: "/home", element: HomePage},
+  { path: "/help-and-support", element: HelpAndSupportPage },
+  { path: "/contact", element: ContactPage },
+  { path: "/about", element: AboutPage },
+  { path: "/events", element: EventsPage },
+  { path: "/event-category/:type?", element: EventCategoryPage },
+  { path: "/my-tickets", element: TicketDashboardPage },
+  { path: "/account-settings", element: AccountSettingsPage },
+];
+
+const privateRoutes = [
+  { path: "/create-event", element: VendorPage },
+  { path: "/edit-event/:id?", element: VendorPage },
+  { path: "/app/overview", element: OverviewDashboardPage },
+  { path: "/app/events", element: EventsDashboardPage },
+  { path: "/app/order", element: OrdersDashboardPage },
+  { path: "/app/finance", element: FinancesDashboardPage },
+  { path: "/account-settings", element: AccountSettingsPage },
+  {
+    path: "/app/organization-settings",
+    element: OrganizationSettingsDashboardPage,
+  },
+  { path: "/event-booking/:id?", element: EventBookingPage },
+  { path: "/event-booking/:id?/get-ticket", element: EventGetTicket },
+];
+
+const publicRoutesWithoutAuth = [
+  { path: "/", element: CounterDownPage },
+  { path: "/auth/login", element: LoginPage },
+  { path: "/auth/create-account", element: CreateAccountPage },
+  { path: "/auth/password-recovery", element: PasswordRecoveryPage },
+  { path: "/auth/password-reset", element: PasswordResetPage },
+  { path: "/auth/send-otp", element: SendOTPPage },
+];
+
+const routes = [
+  ...publicRoutes.map((route) => ({
+    path: route.path,
+    element: (
+      <PublicRoute>
+        <route.element />
+      </PublicRoute>
+    ),
+  })),
+  ...publicRoutesWithoutAuth.map((route) => ({
+    path: route.path,
+    element: (
+      <PublicRouteWithoutHeader>
+        <route.element />
+      </PublicRouteWithoutHeader>
+    ),
+  })),
+  ...privateRoutes.map((route) => ({
+    path: route.path,
+    element: (
+      <PrivateRoute>
+        <route.element />
+      </PrivateRoute>
+    ),
+  })),
+];
+
+export default routes;
