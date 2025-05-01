@@ -25,6 +25,7 @@ const TicketsSection = () => {
             } 
           );
           setTickets(response?.data?.data)
+          console.log("ticccksss", tickets);
           setAvailableTickets(true);
         }
         catch(err){

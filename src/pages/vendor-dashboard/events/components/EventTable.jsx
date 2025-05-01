@@ -416,19 +416,19 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                                                         <Tag
                                                             bg={
                                                                 td.status ===
-                                                                "Coming soon"
+                                                                "coming_soon"
                                                                     ? "gray.200"
                                                                     : td.status ===
-                                                                    "Ongoing"
+                                                                    "on_going"
                                                                     ? "green.100"
                                                                     : "red.100"
                                                             }
                                                             color={
                                                                 td.status ===
-                                                                "Coming soon"
+                                                                "coming_soon"
                                                                     ? "gray.700"
                                                                     : td.status ===
-                                                                    "Ongoing"
+                                                                    "on_going"
                                                                     ? "green.500"
                                                                     : "red.400"
                                                             }
@@ -438,7 +438,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                                                             fontWeight={500}
                                                             fontSize={12}
                                                         >
-                                                            {td.status}
+                                                            {td.status === "on_going"? "On Going": td.status === "coming_soon"? "Coming Soon": td.status === "past_event"? "Past Event": ""}
                                                         </Tag>
                                                     </Td>
                                                     <Td>

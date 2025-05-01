@@ -41,6 +41,7 @@ import {
 import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
 import { teeketApi } from "../../../../utils/api";
+import { formatDate } from "../../../../utils/formatDate";
 
 const RevenueTable = () => {
     const [setSelectedStatusFilter] = useState(null);
@@ -388,37 +389,37 @@ const RevenueTable = () => {
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.revenue}
+                                                            {td.amount === null? "$0": `${td.amount}`}
                                                         </Td>
                                                         <Td
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.dateCreated}
+                                                            {formatDate(td.date_created)}
                                                         </Td>
                                                         <Td>
                                                             <Tag
                                                                 bg={
                                                                     td.status ===
-                                                                    "Ongoing event"
+                                                                    "ongoing_event"
                                                                         ? "gray.200"
                                                                         : td.status ===
-                                                                          "Remitted"
+                                                                          "remitted"
                                                                         ? "green.100"
                                                                         : td.status ===
-                                                                          "Due"
+                                                                          "due"
                                                                         ? "blue.100"
                                                                         : "red.100"
                                                                 }
                                                                 color={
                                                                     td.status ===
-                                                                    "Ongoing event"
+                                                                    "ongoing_event"
                                                                         ? "gray.700"
                                                                         : td.status ===
-                                                                          "Remitted"
+                                                                          "remitted"
                                                                         ? "green.500"
                                                                         : td.status ===
-                                                                          "Due"
+                                                                          "due"
                                                                         ? "blue.400"
                                                                         : "red.400"
                                                                 }
@@ -430,7 +431,7 @@ const RevenueTable = () => {
                                                                 fontWeight={500}
                                                                 fontSize={12}
                                                             >
-                                                                {td.status}
+                                                                {td.status === "on_going"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": ""}
                                                             </Tag>
                                                         </Td>
                                                     </Tr>
@@ -507,7 +508,7 @@ const RevenueTable = () => {
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.revenue}
+                                                                {td.amount === null? "0": td.amount}
                                                             </Td>
                                                             <Td
                                                                 color="gray.600"
