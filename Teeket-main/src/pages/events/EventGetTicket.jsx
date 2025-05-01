@@ -96,7 +96,7 @@ const EventGetTicket = () => {
         };
     }, [eventData?.end_date]);
     
-    
+//    this is just a change  
 
     return (
         <Container padding="16px">
