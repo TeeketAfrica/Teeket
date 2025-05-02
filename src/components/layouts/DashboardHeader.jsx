@@ -101,21 +101,25 @@ const DashboardHeader = ({ onOpen }) => {
                             </MenuGroup>
                             <MenuDivider />
                             <MenuGroup>
-                                <MenuItem
-                                    icon={<PlusIcon />}
-                                    color="gray.600"
-                                    fontSize={14}
-                                >
-                                    Create Event
-                                </MenuItem>
-                                <MenuItem
-                                    icon={<GridIcon />}
-                                    color="gray.600"
-                                    fontSize={14}
-                                    command="⌘N"
-                                >
-                                    My dashboard
-                                </MenuItem>
+                                <Link to={"/create-event"}>
+                                    <MenuItem
+                                        icon={<PlusIcon />}
+                                        color="gray.600"
+                                        fontSize={14}
+                                    >
+                                        Create Event
+                                    </MenuItem>
+                                </Link>
+                                <Link to={activeUser.is_creator? "/app/overview": "/my-tickets"}>
+                                    <MenuItem
+                                        icon={<GridIcon />}
+                                        color="gray.600"
+                                        fontSize={14}
+                                        command="⌘N"
+                                    >
+                                        My dashboard
+                                    </MenuItem>
+                                </Link>
                             </MenuGroup>
                             <MenuDivider />
                             <MenuGroup>

@@ -45,7 +45,6 @@ const EventCategoryPage = () => {
   return (
     <main>
       <ScrollToTop />
-      <Header />
       <EventCategoryHeroSection eventType={type} />
       <Container>
         <Box pt={9} pb={6} borderTop="1px solid" borderColor="gray.300">

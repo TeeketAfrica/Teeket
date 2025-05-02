@@ -12,8 +12,8 @@ import { setUserDetails } from "@/features/userSlice";
 import TextInput from "@/components/shared/TextInput";
 
 const CreateAccountForm = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -51,7 +51,6 @@ const CreateAccountForm = () => {
         });
 
         const token = response.data.access_token;
-        console.log(token);
 
         if (token) {
           try {
@@ -63,10 +62,10 @@ const CreateAccountForm = () => {
             if (sendOTP.status === 200) {
               dispatch(setUserDetails(values));
 
-              // navigate("/auth/send-otp", {
-              //   state: { value: values.email, token: token },
-              // });
-              navigate("/app/overview");
+              navigate("/auth/send-otp", {
+                state: { value: values.email, token: token },
+              });
+              // navigate("/app/overview");
             }
           } catch (err) {
             console.log("Error sending OTP", err);

@@ -60,6 +60,7 @@ const AllEvents = ({ events, type }) => {
               startDate: event.start_date,
               endDate: event.end_date,
             }}
+            isFree={event.is_free}
           />
         ))}
       </Grid>

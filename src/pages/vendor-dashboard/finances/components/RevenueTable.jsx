@@ -41,6 +41,7 @@ import {
 import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
 import { teeketApi } from "../../../../utils/api";
+import { formatDate } from "../../../../utils/formatDate";
 
 const RevenueTable = () => {
     const [setSelectedStatusFilter] = useState(null);
@@ -165,7 +166,7 @@ const RevenueTable = () => {
 
         handleFetchEvents();
     }, [toast, itemsPerPage, search]);
-
+    console.log(" rev tab data ", revenueTableData)
     return (
         <Box px={[4, 8]}>
             <Stack
@@ -351,9 +352,9 @@ const RevenueTable = () => {
                                                         <Td>
                                                             <HStack spacing={3}>
                                                                 <Image
-                                                                    src={td.img}
+                                                                    src={td.event.banner_image}
                                                                     alt={
-                                                                        td.eventTitle
+                                                                        td.iitle
                                                                     }
                                                                     w={10}
                                                                     h={10}
@@ -366,12 +367,12 @@ const RevenueTable = () => {
                                                                         color="gray.800"
                                                                     >
                                                                         {
-                                                                            td.eventTitle
+                                                                            td.event.title
                                                                         }
                                                                     </Text>
                                                                     <Text color="gray.600">
                                                                         {
-                                                                            td.eventCategory
+                                                                            td.event.organizer
                                                                         }
                                                                     </Text>
                                                                 </Box>
@@ -381,44 +382,44 @@ const RevenueTable = () => {
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.ticketSold}/
-                                                            {td.ticketTotal}
+                                                            {td.total_tickets_sold}/
+                                                            {td.total_tickets}
                                                         </Td>
                                                         <Td
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.revenue}
+                                                            {td.amount === null? "$0": `$${td.amount}`}
                                                         </Td>
                                                         <Td
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.dateCreated}
+                                                            {formatDate(td.date_created)}
                                                         </Td>
                                                         <Td>
                                                             <Tag
                                                                 bg={
                                                                     td.status ===
-                                                                    "Ongoing event"
+                                                                    "ongoing_event"
                                                                         ? "gray.200"
                                                                         : td.status ===
-                                                                          "Remitted"
+                                                                          "remitted"
                                                                         ? "green.100"
                                                                         : td.status ===
-                                                                          "Due"
+                                                                          "due"
                                                                         ? "blue.100"
                                                                         : "red.100"
                                                                 }
                                                                 color={
                                                                     td.status ===
-                                                                    "Ongoing event"
+                                                                    "ongoing_event"
                                                                         ? "gray.700"
                                                                         : td.status ===
-                                                                          "Remitted"
+                                                                          "remitted"
                                                                         ? "green.500"
                                                                         : td.status ===
-                                                                          "Due"
+                                                                          "due"
                                                                         ? "blue.400"
                                                                         : "red.400"
                                                                 }
@@ -430,7 +431,7 @@ const RevenueTable = () => {
                                                                 fontWeight={500}
                                                                 fontSize={12}
                                                             >
-                                                                {td.status}
+                                                                {td.status === "on_going"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
                                                             </Tag>
                                                         </Td>
                                                     </Tr>
@@ -507,7 +508,7 @@ const RevenueTable = () => {
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.revenue}
+                                                                {td.amount === null? "0": td.amount}
                                                             </Td>
                                                             <Td
                                                                 color="gray.600"

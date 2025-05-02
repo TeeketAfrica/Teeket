@@ -25,6 +25,7 @@ const EventCard = ({
   eventLocation,
   eventPrice,
   eventDate,
+  isFree
 }) => {
   const navigate = useNavigate();
   const { getAccessToken } = useStorage();
@@ -120,7 +121,7 @@ const EventCard = ({
               >
                 <Cash />
                 <Text color="gray.800" fontSize={12}>
-                  {eventPrice > 0 ? `Starts at $${eventPrice}` : "Free event"}
+                  {!isFree? `Starts at $${eventPrice}` : "Free event"}
                 </Text>
               </HStack>
               <HStack

@@ -24,6 +24,7 @@ import {
 } from "../pages";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
+import PublicTokenRoute from "./publicRoutes";
 import PublicRouteWithoutHeader from "./PublicRoutesWithoutHeader";
 
 const publicRoutes = [
@@ -33,7 +34,6 @@ const publicRoutes = [
   { path: "/about", element: AboutPage },
   { path: "/events", element: EventsPage },
   { path: "/event-category/:type?", element: EventCategoryPage },
-  { path: "/my-tickets", element: TicketDashboardPage },
   { path: "/account-settings", element: AccountSettingsPage },
 ];
 
@@ -45,6 +45,7 @@ const privateRoutes = [
   { path: "/app/order", element: OrdersDashboardPage },
   { path: "/app/finance", element: FinancesDashboardPage },
   { path: "/account-settings", element: AccountSettingsPage },
+  { path: "/my-tickets", element: TicketDashboardPage },
   {
     path: "/app/organization-settings",
     element: OrganizationSettingsDashboardPage,
@@ -55,11 +56,14 @@ const privateRoutes = [
 
 const publicRoutesWithoutAuth = [
   { path: "/", element: CounterDownPage },
-  { path: "/auth/login", element: LoginPage },
-  { path: "/auth/create-account", element: CreateAccountPage },
   { path: "/auth/password-recovery", element: PasswordRecoveryPage },
   { path: "/auth/password-reset", element: PasswordResetPage },
   { path: "/auth/send-otp", element: SendOTPPage },
+];
+
+const publicRoutesWithTokenRedirect = [
+  { path: "/auth/login", element: LoginPage },
+  { path: "/auth/create-account", element: CreateAccountPage },
 ];
 
 const routes = [
@@ -85,6 +89,16 @@ const routes = [
       <PrivateRoute>
         <route.element />
       </PrivateRoute>
+    ),
+  })),
+  ...publicRoutesWithTokenRedirect.map((route) => ({
+    path: route.path,
+    element: (
+      <PublicTokenRoute element={
+        <PublicRouteWithoutHeader>
+          <route.element />
+        </PublicRouteWithoutHeader>
+      } />
     ),
   })),
 ];
