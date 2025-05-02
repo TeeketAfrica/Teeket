@@ -19,9 +19,11 @@ import { useDispatch } from "react-redux";
 import { Stack, Text } from "@chakra-ui/layout";
 import FormLayout from "../components/FormLayout";
 import DownIcon from "../../../assets/icon/DownIcon.svg";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { teeketApi } from "../../../utils/api";
 import { setEventDetail } from "../../../features/eventSlice";
+import debounce from 'lodash.debounce';
+import { useCallback } from "react";
 
 const FormStep1 = ({ formik }) => {
     const dispatch = useDispatch();
@@ -32,12 +34,18 @@ const FormStep1 = ({ formik }) => {
         { value: "party", label: "Party" },
         { value: "naming", label: "Naming" },
     ];
+
+    const debouncedDispatch = useCallback(
+        debounce((data) => {
+            dispatch(setEventDetail(data));
+        }, 600),
+        [dispatch]
+    );
+
     const handleInputChange = (fieldName, e) => {
         formik.handleChange(e);
         const data = { fieldName: fieldName, value: e.target.value };
-        console.log(data);
-
-        // dispatch(setEventDetail(data));
+        debouncedDispatch(data);
     };
 
     const toast = useToast();
@@ -62,28 +70,44 @@ const FormStep1 = ({ formik }) => {
 
         const [filteredTags, setFilteredTags] = useState(options);
 
-        const handleAddValue = (fieldName, newValue) => {
-            const tagToAdd = newValue;
-            if (tagToAdd && !tags.includes(tagToAdd)) {
-                const updatedTags = [...tags, tagToAdd];
-                setTags(updatedTags);
-                const data = {
-                    fieldName: fieldName,
-                    value: updatedTags, // send only id
-                };
-                // dispatch(setEventDetail(data));
-            }
-            setInputTag("");
-        };
+        const debouncedAddValue = useMemo(
+            () =>
+              debounce((fieldName, tagToAdd, tags, setTags, dispatch, setInputTag) => {
+                if (tagToAdd && !tags.some(tag => tag.id === tagToAdd.id)) {
+                  const updatedTags = [...tags, tagToAdd];
+                  setTags(updatedTags);
+                  dispatch(setEventDetail({ fieldName, value: updatedTags }));
+                }
+                setInputTag("");
+              }, 300),
+            []
+          );
 
-        const handleRemoveValue = (fieldName, valueToRemove) => {
-            const updatedTags = tags.filter(
-                (tag) => tag.id !== valueToRemove.id
-            );
-            setTags(updatedTags);
-            const data = { fieldName: fieldName, value: updatedTags };
-            // dispatch(setEventDetail(data));
-        };
+          const debouncedRemoveValue = useMemo(
+            () =>
+              debounce((fieldName, valueToRemove, tags, setTags, dispatch) => {
+                const updatedTags = tags.filter(tag => tag.id !== valueToRemove.id);
+                setTags(updatedTags);
+                dispatch(setEventDetail({ fieldName, value: updatedTags }));
+              }, 300),
+            []
+          );
+
+          const handleAddValue = (fieldName, newValue) => {
+            debouncedAddValue(fieldName, newValue, tags, setTags, dispatch, setInputTag);
+          };
+          
+          const handleRemoveValue = (fieldName, valueToRemove) => {
+            debouncedRemoveValue(fieldName, valueToRemove, tags, setTags, dispatch);
+          };
+
+        useEffect(() => {
+            return () => {
+                debouncedDispatch.cancel();
+                debouncedAddValue.cancel();
+                debouncedRemoveValue.cancel();
+            };
+        }, [debouncedDispatch, debouncedAddValue, debouncedRemoveValue]);
 
         const handleTagInputChange = (e) => {
             const value = e.target.value;

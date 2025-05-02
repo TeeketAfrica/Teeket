@@ -58,11 +58,12 @@ const InterestEvents = () => {
                   eventOrganizer={Avatars}
                   eventCommunity={`by ${event.organizer}`}
                   eventLocation={event.hosting_site}
-                  eventPrice="Starts at $10"
+                  eventPrice={Number(event.lowest_ticket_price)}
                   eventDate={{
                     startDate: `${event.start_date}`,
-                    endDate: "2024-03-27T14:30:00Z",
+                    endDate: `${event.end_date}`,
                   }}
+                  isFree={event.is_free}
                 />  
               ))
             }
