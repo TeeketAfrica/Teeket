@@ -19,47 +19,81 @@ const EventGetTicket = () => {
     const [timeLeft, setTimeLeft] = useState("");
     const timerInterval = useRef(null);
 
-    const calculateTimeLeft = (endDate) => {
+    // Function to calculate time left until the event ends
 
+    const calculateTimeLeft = (endDate, setTimeLeft, timerIntervalRef) => {
         const now = new Date();
-        const difference = new Date(endDate) - now;
-
-        if (difference <= 0) {
-            setTimeLeft("00:00:00");
-            if (timerInterval.current) {
-                clearInterval(timerInterval.current);
+        const end = new Date(endDate);
+    
+        if (end <= now) {
+            setTimeLeft("00h 00m 00s");
+            if (timerIntervalRef.current) {
+                clearInterval(timerIntervalRef.current);
             }
             return;
         }
-
-        const hours = Math.floor(difference / (1000 * 60 * 60));
-        const minutes = Math.floor(
-            (difference % (1000 * 60 * 60)) / (1000 * 60)
-        );
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        setTimeLeft(
-            `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
-                2,
-                "0"
-            )}:${String(seconds).padStart(2, "0")}`
-        );
+    
+        let years = end.getFullYear() - now.getFullYear();
+        let months = end.getMonth() - now.getMonth();
+        let days = end.getDate() - now.getDate();
+        let hours = end.getHours() - now.getHours();
+        let minutes = end.getMinutes() - now.getMinutes();
+        let seconds = end.getSeconds() - now.getSeconds();
+    
+        if (seconds < 0) {
+            seconds += 60;
+            minutes--;
+        }
+        if (minutes < 0) {
+            minutes += 60;
+            hours--;
+        }
+        if (hours < 0) {
+            hours += 24;
+            days--;
+        }
+        if (days < 0) {
+            const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+            days += prevMonth.getDate();
+            months--;
+        }
+        if (months < 0) {
+            months += 12;
+            years--;
+        }
+    
+        const pad = (n) => String(n).padStart(2, "0");
+    
+    //    How to dispaly what is left on time 
+        let display = "";
+    
+        if (years > 0) {
+            display = `${pad(years)}y ${pad(months)}m ${pad(days)}d`;
+        } else if (months > 0) {
+            display = `${pad(months)}m ${pad(days)}d ${pad(hours)}h`;
+        } else if (days > 0) {
+            display = `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m`;
+        } else {
+            display = `${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+        }
+    
+        setTimeLeft(display);
     };
+    
 
     useEffect(() => {
-        calculateTimeLeft(eventData?.end_date);
-
-        // Update every second
+        if (!eventData?.end_date) return;
+    
         timerInterval.current = setInterval(() => {
-            calculateTimeLeft(eventData?.end_date);
+            calculateTimeLeft(eventData.end_date, setTimeLeft, timerInterval);
         }, 1000);
-
+    
         return () => {
             if (timerInterval.current) {
                 clearInterval(timerInterval.current);
             }
         };
-    }, []);
+    }, [eventData?.end_date]);
 
     return (
         <Container padding="16px">
