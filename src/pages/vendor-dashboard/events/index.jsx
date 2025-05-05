@@ -5,12 +5,27 @@ import Export from "../../../assets/icon/Export.svg";
 import AddEvent from "../../../assets/icon/AddEvent.svg";
 import EventTable from "./components/EventTable";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 import * as XLSX from "xlsx";
+import { useSelector, useDispatch } from "react-redux";
+import { selectActiveUser, setIsCreator } from "../../../features/activeUserSlice";
 
 const EventsDashboardPage = () => {
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const [loading, setIsLoading] = useState(true);
+  const activeUser = useSelector(selectActiveUser);
+
+   useEffect(() => {
+          if (activeUser) {
+            if (data.length > 0) {
+              dispatch(setIsCreator(true));
+            } else {
+              dispatch(setIsCreator(false));
+            }
+          }
+        }, [data, dispatch, activeUser]);
 
   const exportToExcel = () => {
     const exportData = data.map((event) => ({
@@ -47,7 +62,7 @@ const EventsDashboardPage = () => {
           <Button variant="secondary" p={2} onClick={exportToExcel}>
             <Export />
             Export
-          </Button>
+          </Button> 
           <Link to="/create-event">
             <Button variant="primary" p={2}>
               <AddEvent />
@@ -56,7 +71,7 @@ const EventsDashboardPage = () => {
           </Link>
         </HStack>
       </Stack>
-      <EventTable setData={setData} />
+    <EventTable setData={setData} loading={loading} setIsLoading={setIsLoading}/>  
     </DashboardLayout>
   );
 };

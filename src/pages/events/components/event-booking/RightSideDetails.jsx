@@ -16,7 +16,6 @@ import GPSIcon from "../../../../assets/icon/Gps.svg";
 import LightingOutlineIcon from "../../../../assets/icon/LightingOutline.svg";
 import EventMap from "../../../../assets/icon/PlaceMarkMap.svg";
 import TicketIcon from "../../../../assets/icon/Ticket.svg";
-import UserAvatar from "../../../../assets/img/Avatars.png";
 import BoxFrame from "../../../../components/layouts/BoxFrame";
 import DetailCard from "../DetailCard";
 import { useDispatch } from "react-redux";
@@ -24,9 +23,30 @@ import {
     changeTicketStep,
     resetEventTicketBooking,
 } from "../../../../features/eventSlice";
+import { teeketApi } from "../../../../utils/api";
+import { useEffect, useState } from "react";
+import { getBookingMessage } from "../../../../utils/formatAttendees";
 
 const RightSIdeDetails = ({ event, isRegistered }) => {
     const dispatch = useDispatch();
+    const [eventAttendees, setEventAttendees] = useState([]);
+    
+    useEffect(() => {
+        const fetchAttendees = async () => {
+            try {
+                const response = await teeketApi.get(`events/${event?.id}/attendees`);
+                setEventAttendees(response.data?.data || []); // Store the attendees in state
+            } catch (error) {
+                console.error("Error fetching attendees:", error);
+                setEventAttendees([]); // Set empty array on error
+            }
+        };
+
+        fetchAttendees();
+    }, [event?.id]);
+
+    const attendeesQuantity = getBookingMessage(eventAttendees.length);
+    console.log("EA", eventAttendees)
 
     const getTicket = () => {
         dispatch(changeTicketStep(1));
@@ -58,23 +78,22 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
 
                     <HStack gap="10px" alignItems="center">
                         <AvatarGroup size="sm" max={3}>
-                            <Avatar
-                                name="Ryan Florence"
-                                src="https://bit.ly/ryan-florence"
-                            />
-                            <Avatar
-                                name="Segun Adebayo"
-                                src="https://bit.ly/sage-adebayo"
-                                zIndex={2}
-                            />
-                            <Avatar
-                                name="Kent Dodds"
-                                src="https://bit.ly/kent-c-dodds"
-                                zIndex={3}
-                            />
+                            {
+                                eventAttendees.slice(0, 3).map((attendees, i)=>(
+                                    <Avatar
+                                        key={i}
+                                        border="1px solid"
+                                        borderColor="gray.800"
+                                        color="gray.800"
+                                        name={attendees?.name || attendees?.email}
+                                        src={attendees?.profile_image}
+                                        bgColor="transparent"
+                                    />
+                                ))
+                            }
                         </AvatarGroup>
                         <Text fontSize="sm" lineHeight="5" color="gray.600">
-                            <Text as="span">40</Text>+ people are going already
+                            {attendeesQuantity}
                         </Text>
                     </HStack>
 
@@ -106,16 +125,18 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
                     <HStack justifyContent="space-between" width="100%">
                         <Flex gap="2">
                             <Box
-                                width="40px"
-                                height="40px"
+                                width="auto"
+                                height="auto"
                                 borderRadius="100%"
                                 overflow="hidden"
                             >
-                                <Image
-                                    src={UserAvatar}
-                                    alt="avatar icon"
-                                    objectFit="cover"
-                                    width="100%"
+                                <Avatar
+                                    border="1px solid"
+                                    borderColor="gray.800"
+                                    color="gray.800"
+                                    name={event?.user?.name || event?.user?.email}
+                                    src={event?.user?.profile_image}
+                                    bgColor="transparent"
                                 />
                             </Box>
                             <Box>

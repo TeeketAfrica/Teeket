@@ -1,11 +1,13 @@
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom"; // Adjust the import path
+import { Navigate, useLocation } from "react-router-dom"; // Adjust the import path
 import { selectUserDetails } from "../features/userSlice";
 
-const PublicRoute = ({ element }) => {
-  const token = useSelector(selectUserDetails)["token"];
+const PublicTokenRoute = ({ element }) => {
+  const location = useLocation();
+  const { value, token } = location.state || {};
+  console.log("tokennn",  token)
 
   return token ? <Navigate to="/auth/send-otp" replace /> : element;
 };
 
-export default PublicRoute;
+export default PublicTokenRoute;

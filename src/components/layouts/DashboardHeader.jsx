@@ -34,8 +34,6 @@ import { selectActiveUser } from "../../features/activeUserSlice";
 const DashboardHeader = ({ onOpen }) => {
     const activeUser = useSelector(selectActiveUser);
 
-    console.log(activeUser, "selectuser");
-
     const {
         isOpen: isOpenModal,
         onOpen: onOpenModal,
@@ -87,7 +85,7 @@ const DashboardHeader = ({ onOpen }) => {
                                 borderColor="gray.800"
                                 color="gray.800"
                                 name={activeUser?.name || activeUser?.email}
-                                src={activeUser?.profile_imag}
+                                src={activeUser?.profile_image}
                                 bgColor="transparent"
                             />
                         </MenuButton>
@@ -103,21 +101,25 @@ const DashboardHeader = ({ onOpen }) => {
                             </MenuGroup>
                             <MenuDivider />
                             <MenuGroup>
-                                <MenuItem
-                                    icon={<PlusIcon />}
-                                    color="gray.600"
-                                    fontSize={14}
-                                >
-                                    Create Event
-                                </MenuItem>
-                                <MenuItem
-                                    icon={<GridIcon />}
-                                    color="gray.600"
-                                    fontSize={14}
-                                    command="⌘N"
-                                >
-                                    My dashboard
-                                </MenuItem>
+                                <Link to={"/create-event"}>
+                                    <MenuItem
+                                        icon={<PlusIcon />}
+                                        color="gray.600"
+                                        fontSize={14}
+                                    >
+                                        Create Event
+                                    </MenuItem>
+                                </Link>
+                                <Link to={activeUser.is_creator? "/app/overview": "/my-tickets"}>
+                                    <MenuItem
+                                        icon={<GridIcon />}
+                                        color="gray.600"
+                                        fontSize={14}
+                                        command="⌘N"
+                                    >
+                                        My dashboard
+                                    </MenuItem>
+                                </Link>
                             </MenuGroup>
                             <MenuDivider />
                             <MenuGroup>

@@ -46,6 +46,7 @@ const initialState = {
     isSetDetails: false,
     ticketSummaryDetails: null,
     referenceId: null,
+    paid: false,
     ticketUserDetails: {},
 };
 
@@ -188,7 +189,7 @@ const eventSlice = createSlice({
             state.isBookedTicket = action.payload;
         },
         setIsSetDetails: (state, action) => {
-            state.isBookedTicket = action.payload;
+            state.isSetDetails = action.payload;
         },
         setReferenceId: (state, action) => {
             state.referenceId = action.payload;
@@ -198,6 +199,9 @@ const eventSlice = createSlice({
                 ...state.ticketUserDetails,
                 ...action.payload,
             };
+        },
+        setIsPaid: (state, action)=>{
+            state.paid = action.payload
         },
         resetEventTicketBooking: (state) => {
             state.eventTicketBooking = [];
@@ -223,11 +227,12 @@ export const {
     changeTicketStep,
     setTicketQuantity,
     setIsBookedTicket,
-    setIsSetDetailst,
+    setIsSetDetails,
     resetEventTicketBooking,
     setTicketSummaryDetails,
     setReferenceId,
     setTicketUserDetails,
+    setIsPaid
 } = eventSlice.actions;
 
 const TRANSACTION_FEE_RATE = 0.01;

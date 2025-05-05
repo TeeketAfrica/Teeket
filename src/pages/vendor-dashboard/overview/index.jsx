@@ -25,21 +25,33 @@ const OverviewDashboardPage = () => {
   const navigate = useNavigate();
 
   const [events, setEvents] = useState([]);
+  const [summary, setSummary] = useState([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const userEventData = await teeketApi.get("/events/user");
         setEvents(userEventData.data);
-
-        console.log(userEventData);
       } catch (error) {
         console.error("Error fetching events:", error);
         setEvents([]);
       }
     };
 
+    const fetchOrganizationSummary = async ()=> {
+      try{
+        const organizationSummary = await teeketApi.get("/revenue/summary");
+        setSummary(organizationSummary.data);
+        console.log("OS" ,organizationSummary)
+      }
+      catch (error){
+        console.error("Error fetching events:", error);
+        setEvents([]);
+      }
+    }
+
     fetchEvents();
+    fetchOrganizationSummary();
   }, []);
 
   const totalTicketsSold = useMemo(
@@ -78,13 +90,15 @@ const OverviewDashboardPage = () => {
                   <Text fontSize="md">Your earnings</Text>
                   <Text fontSize="5xl" fontWeight="bold">
                     <Text as="span">$</Text>
-                    <Text as="span">40,000</Text>
+                    <Text as="span">{summary?.overview?.available_revenue.toLocaleString('en-US')}</Text>
                   </Text>
                   <HStack fontSize="sm" fontWeight="medium" marginTop="auto">
                     <HStack>
-                      <Gain />
-                      <Text as="span" color="green.400">
-                        40%
+                      {
+                        summary.percentage_change > 0 && <Gain />
+                      }
+                      <Text as="span" color={summary.percentage_change < 0? "red.400": summary.percentage_change>0? "green.400": "gray.100"}>
+                        {`${summary.percentage_change}%`}
                       </Text>
                     </HStack>
                     <Text>vs last month</Text>

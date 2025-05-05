@@ -6,16 +6,19 @@ import {
     HStack,
     Input,
     Text,
+    useToast,
     VStack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as z from "zod";
-import { selectActiveUser } from "../../../../features/activeUserSlice";
-import { setTicketUserDetails } from "../../../../features/eventSlice";
+import { selectActiveUser, setUserFirstName, setUserLastName } from "../../../../features/activeUserSlice";
+import { selectEventDetails, setIsSetDetails, setTicketUserDetails } from "../../../../features/eventSlice";
+import useStorage from "../../../../utils/storage";
+import { teeketApi } from "../../../../utils/api";
 
 const visitorsFormSchema = z
     .object({
@@ -49,26 +52,111 @@ const userFormSchema = z.object({
 
 export const YourDetailsStep = () => {
     const dispatch = useDispatch();
+    const toast = useToast();
 
     const activeUser = useSelector(selectActiveUser);
+    const eventDetails = useSelector(selectEventDetails);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [showEmailBox, setShowEmailBox] = useState(false);
+    const [isSubmited, setIsSubmited ] = useState(false);
+
+    useEffect(()=>{
+        if(activeUser){
+            setFirstName(activeUser?.first_name)
+            setValue("firstName", firstName)
+            setLastName(activeUser?.last_name)
+            setValue("lastName", lastName)
+            setEmail(activeUser?.email)
+        }
+        else{
+            setFirstName(eventDetails?.ticketUserDetails?.firstName)
+            setValue("firstName", firstName)
+            setLastName(eventDetails?.ticketUserDetails?.lastName)
+            setValue("lastName", lastName)
+            setEmail(eventDetails?.ticketUserDetails?.email)    
+            setValue("email", email)
+        }
+    }, [activeUser])
+
+    useEffect(()=>{
+        setIsSubmited(false);
+    }, [firstName, lastName, email])
 
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(activeUser ? userFormSchema : visitorsFormSchema),
     });
 
-    const [showEmailBox, setShowEmailBox] = useState(false);
+    const userTicketDetailSubmit = async ()=> {
+        const { getAccessToken } = useStorage();
+        const token = getAccessToken();
 
-    const onSubmit = (data) => {
-        console.log(data);
-    };
+        if(Object.keys(errors).length === 0){
+            if(activeUser && firstName && lastName){
+                try{
+                    const response = await teeketApi.patch("/user/profile", 
+                        {first_name: firstName, last_name: lastName},
+                        {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    console.log("Profile Updated", response); 
+                    dispatch(setTicketUserDetails({ firstName: firstName, lastName: lastName, email: email }));
+                    setIsSubmited(true);
+                    dispatch(setIsSetDetails(true));
+                    toast({
+                        title: "Names Set.",
+                        description: "You have successfully set your first and last name. You can proceed to checkout",
+                        status: "success",
+                        duration: 7000,
+                        isClosable: true,
+                        position: "top",
+                    });
+                }
+                catch(error){
+                    console.error("Error updating profile:", error?.message);
+                }
+            }
+            else{
+                if (email) {
+                    dispatch(setTicketUserDetails({ firstName: firstName, lastName: lastName, email: email }));
+                  } else {
+                    dispatch(setTicketUserDetails({ firstName: firstName, lastName: lastName }));
+                  }
+                dispatch(setIsSetDetails(true));
+                setIsSubmited(true);
+                toast({
+                    title: "Names Set.",
+                    description: "You have successfully set your first and last name. You can proceed to checkout",
+                    status: "success",
+                    duration: 7000,
+                    isClosable: true,
+                    position: "top",
+                });
+            }
+        }
+        console.log(" ED ",eventDetails)
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        dispatch(setTicketUserDetails({ [name]: value }));
+    };
+
+    const handleFirstInputChange = (e) => {
+        setFirstName(e.target.value)
+    };
+    const handleLastInputChange = (e) => {
+        setLastName(e.target.value)
+    };
+    const handleEmailInputChange = (e)=>{
+        setEmail(e.target.value)
     };
     return (
         <>
@@ -110,7 +198,7 @@ export const YourDetailsStep = () => {
                 )}
             </VStack>
             {activeUser ? (
-                <Box as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
+                <Box as="form" onSubmit={handleSubmit(userTicketDetailSubmit)} width="100%">
                     <Grid templateColumns="repeat(6, 1fr)" gap={6}>
                         {showEmailBox && (
                             <GridItem colSpan={6}>
@@ -141,8 +229,9 @@ export const YourDetailsStep = () => {
                                 {...register("firstName")}
                                 isInvalid={!!errors.firstName}
                                 errorBorderColor="red.300"
+                                value={firstName}
                                 name="firstName"
-                                onChange={handleInputChange}
+                                onChange={handleFirstInputChange}
                             />
 
                             {errors.firstName && (
@@ -156,7 +245,8 @@ export const YourDetailsStep = () => {
                                 placeholder="Last Name"
                                 {...register("lastName")}
                                 name="lastName"
-                                onChange={handleInputChange}
+                                value={lastName}
+                                onChange={handleLastInputChange}
                                 isInvalid={!!errors.lastName}
                                 errorBorderColor="red.300"
                             />
@@ -172,6 +262,7 @@ export const YourDetailsStep = () => {
                                 bg="gray.800"
                                 width="full"
                                 variant="primary"
+                                disabled={isSubmited}
                             >
                                 Submit
                             </Button>
@@ -179,7 +270,7 @@ export const YourDetailsStep = () => {
                     </Grid>
                 </Box>
             ) : (
-                <Box as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
+                <Box as="form" onSubmit={userTicketDetailSubmit} width="100%">
                     <Grid templateColumns="repeat(6, 1fr)" gap={6} mt={4}>
                         <GridItem colSpan={3}>
                             <Input
@@ -188,7 +279,8 @@ export const YourDetailsStep = () => {
                                 isInvalid={!!errors.firstName}
                                 errorBorderColor="red.300"
                                 name="firstName"
-                                onChange={handleInputChange}
+                                value={firstName}
+                                onChange={handleFirstInputChange}
                             />
                             {errors.firstName && (
                                 <Text color="red.500" fontSize="sm">
@@ -203,7 +295,8 @@ export const YourDetailsStep = () => {
                                 isInvalid={!!errors.lastName}
                                 errorBorderColor="red.300"
                                 name="lastName"
-                                onChange={handleInputChange}
+                                value={lastName}
+                                onChange={handleLastInputChange}
                             />
                             {errors.lastName && (
                                 <Text color="red.500" fontSize="sm">
@@ -217,8 +310,9 @@ export const YourDetailsStep = () => {
                                 {...register("email")}
                                 isInvalid={!!errors.email}
                                 errorBorderColor="red.300"
+                                value={email}
                                 name="lastName"
-                                onChange={handleInputChange}
+                                onChange={handleEmailInputChange}
                             />
                             {errors.email && (
                                 <Text color="red.500" fontSize="sm">

@@ -1,5 +1,6 @@
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
+import * as jwt_decode from "jwt-decode";
 import {
   ACCESS_TOKEN_EXPIRY_SECONDS,
   REFRESH_TOKEN_EXPIRY_SECONDS,
@@ -47,7 +48,7 @@ export const useStorage = () => {
       if (encryptedValue === null) {
         throw new Error("Encryption failed");
       }
-      Cookies.set(token, value, options);
+      Cookies.set(token, encryptedValue, options);
     } catch (error) {
       console.error(`Error setting cookie ${token}:`, error);
     }
@@ -102,7 +103,27 @@ export const useStorage = () => {
   };
 
   const getAccessToken = () => {
-    return getCookie("access_token");
+    const encryptedTokenData = getCookie("access_token");
+  if (encryptedTokenData) {
+    const tokenData = decrypt(encryptedTokenData); // Decrypt the data
+    if (tokenData) {
+      try {
+        const decodedToken = jwt_decode.jwtDecode(tokenData); // Correct usage
+        const now = Math.floor(Date.now() / 1000); // Current time in seconds
+
+        if (decodedToken.exp > now) {
+          return tokenData; // Token is valid
+        } else {
+          removeAccessToken(); // Token is expired
+          return null;
+        }
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        return null;
+      }
+    }
+  }
+  return null;
   };
 
   const getRefreshToken = () => {

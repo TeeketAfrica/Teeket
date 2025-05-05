@@ -10,14 +10,19 @@ import {
 import TicketBg from "../../../assets/img/TicketBg.png";
 import TicketCardIcon from "../../../assets/icon/TicketCardIcon.svg";
 import DownloadTicket from "../../../assets/icon/DownloadTicket.svg";
+import { useNavigate } from "react-router-dom";
 
 const SingleTicket = ({
   eventTitle,
   eventTime,
   eventLocation,
-  ticketRegularQuantity,
-  ticketVipQuantity,
+  ticketQuantity,
+  ticketType,
+  ticketPrice,
+  eventId
 }) => {
+  const navigate = useNavigate();
+
   return (
     <Box
       bgImage={`url(${TicketBg})`}
@@ -27,7 +32,6 @@ const SingleTicket = ({
       borderRadius={16}
       p={[2, 3]}
       h="414px"
-      maxW="389.33px"
       w="full"
     >
       <Box bgColor="gray.100" w="full" h="full" borderRadius={8} p={[3, 6]}>
@@ -44,13 +48,12 @@ const SingleTicket = ({
           <Box>
             <Text color="gray.600">Ticket purchased</Text>
             <Text color="gray.600" fontWeight={600}>
-              {ticketRegularQuantity}{" "}
+              {ticketQuantity}{" "} X {" "}
               <Text color="gray.800" as="span">
-                Regular
+                {ticketType}{" "}
               </Text>
-              , {ticketVipQuantity}{" "}
               <Text color="gray.800" as="span">
-                VIP
+              {"@$"}{ticketPrice}
               </Text>
             </Text>
           </Box>
@@ -59,7 +62,15 @@ const SingleTicket = ({
             <Button leftIcon={<DownloadTicket />} w="50%" variant="primary">
               Get ticket
             </Button>
-            <Button w="50%" variant="outline">
+            <Button 
+              w="50%" 
+              variant="outline"
+              onClick={
+                ()=>{
+                  navigate(`/event-booking/${eventId}`)
+                }
+              }  
+            >
               View event
             </Button>
           </HStack>

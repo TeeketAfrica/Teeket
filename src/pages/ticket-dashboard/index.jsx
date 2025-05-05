@@ -8,8 +8,8 @@ import TicketsSection from "./components/TicketsSection";
 const TicketDashboardPage = () => {
   return (
     <main>
-      <Header />
       <Container>
+        <Header/>
         <TicketsHeroSection />
         <TicketsSection />
         <EventList />

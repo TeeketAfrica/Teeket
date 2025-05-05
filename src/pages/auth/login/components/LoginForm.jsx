@@ -11,6 +11,9 @@ import PasswordInput from "@/components/shared/PasswordInput";
 import { useStorage } from "@/utils/storage";
 import { selectActiveUser } from "@/features/activeUserSlice";
 import TextInput from "@/components/shared/TextInput";
+import { setActiveUser } from "../../../../features/activeUserSlice";
+import useGetSelf from "../../../../hooks/useGetSelf";
+import { teeketApi } from "../../../../utils/api";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -44,15 +47,21 @@ const LoginForm = () => {
 
         const access_token = response.data.access_token;
         const refresh_token = response.data.refresh_token;
-
-        console.log("Login successful:", response);
+        // const userData = response2.data;
 
         if (access_token) {
           // set the refresh token and access token to cookie storage
           setAccessToken(access_token);
           setRefreshToken(refresh_token);
+          const response2 = await teeketApi.get("/user/profile", {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+          })
 
           dispatch(setUserDetails(values));
+          dispatch(setActiveUser(response2.data));
+
 
           const path = sessionStorage.getItem("REDIRECT");
           if (path) {

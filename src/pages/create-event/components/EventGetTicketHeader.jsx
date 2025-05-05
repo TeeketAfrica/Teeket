@@ -8,7 +8,6 @@ import {
     Text,
 } from "@chakra-ui/react";
 import BrandLogo from "../../../assets/img/brandLogo.png";
-import Avatars from "../../../assets/img/Avatars.png";
 
 import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +15,7 @@ import { useEffect } from "react";
 import { changeTicketStep } from "../../../features/eventSlice";
 import { TickCircle } from "iconsax-react";
 
-export const EventGetTicketHeader = () => {
+export const EventGetTicketHeader = ({paid, profile}) => {
     const { ticketStep, isBookedTicket, isSetDetails } = useSelector(
         (state) => state.event
     );
@@ -73,6 +72,7 @@ export const EventGetTicketHeader = () => {
                         onClick={() => {
                             dispatch(changeTicketStep(1));
                         }}
+                        disabled={paid}
                     >
                         <Text
                             fontSize={12}
@@ -108,7 +108,7 @@ export const EventGetTicketHeader = () => {
                         onClick={() => {
                             dispatch(changeTicketStep(2));
                         }}
-                        isDisabled={!isBookedTicket}
+                        isDisabled={!isBookedTicket || paid}
                     >
                         <Text
                             fontSize={12}
@@ -150,7 +150,7 @@ export const EventGetTicketHeader = () => {
                         <Text fontSize={16} fontWeight={600} color="gray.500">
                             Payment
                         </Text>
-                        {isSetDetails && isBookedTicket && (
+                        {isSetDetails && isBookedTicket && ticketStep ===  3 && paid && (
                             <TickCircle
                                 variant="Bold"
                                 color="#06CC06"
@@ -161,7 +161,14 @@ export const EventGetTicketHeader = () => {
                 </HStack>
 
                 <Box cursor="pointer">
-                    <Avatar src={Avatars} />
+                <Avatar
+                    border="1px solid"
+                    borderColor="gray.800"
+                    color="gray.800"
+                    name={profile?.first_name || profile?.email}
+                    src={profile?.profile_image}
+                    bgColor="transparent"
+                />
                 </Box>
             </Stack>
         </Box>

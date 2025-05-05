@@ -28,10 +28,10 @@ const HeroSection = () => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    if (searchTerm === "") {
-      setInputValue("");
+    if(inputValue === ""){
+      setSearchTerm("")
     }
-  }, [searchTerm]);
+  }, [inputValue]);
 
   const categories = [
     "Anime",
@@ -155,7 +155,7 @@ const HeroSection = () => {
                           display={["none", null, null, "block"]}
                           leftIcon={<SearchWhite />}
                           variant="primary"
-                          style={{ height: "56px" }}
+                          style={{ height: "56px",  display: "flex", justifyItems: "center", alignItems: "center", width: "100%"}}
                           onClick={handleButtonClick}
                         >
                           Search

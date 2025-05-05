@@ -34,6 +34,8 @@ import {
 import FormLayout from "../components/FormLayout";
 import Ticket from "../components/Ticket";
 import TicketModal from "../components/TicketModal";
+import { Formik } from "formik";
+import { formStep3Schema } from "./formSchemas"; 
 
 const FormStep3 = ({ formik }) => {
   const dispatch = useDispatch();
