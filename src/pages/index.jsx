@@ -21,6 +21,8 @@ import CounterDownPage from "./count-down";
 import NotFoundPage from "./not-found";
 import AccountSettingsPage from "./account-settings";
 import EventGetTicket from "./events/EventGetTicket";
+import AboutPage from "./about";
+import ContactPage from "./contact";
 
 export {
   HomePage,
@@ -30,6 +32,8 @@ export {
   PasswordRecoveryPage,
   PasswordResetPage,
   VendorPage,
+  AboutPage,
+  ContactPage,
   HelpAndSupportPage,
   AboutPage,
   ContactUsPage,

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Stack, Box } from "@chakra-ui/layout";
 import {
   FormLabel,
@@ -9,9 +9,9 @@ import {
   InputRightElement,
   Checkbox,
 } from "@chakra-ui/react";
-import CloseIcon from "../../../assets/icon/CloseIcon.svg";
-import EyeIcon from "../../../assets/icon/eye.svg";
-import EyeSlashIcon from "../../../assets/icon/EyeSlashIcon.svg";
+import CloseIcon from "@/assets/icon/CloseIcon.svg";
+import EyeIcon from "@/assets/icon/eye.svg";
+import EyeSlashIcon from "@/assets/icon/EyeSlashIcon.svg";
 
 const PasswordInput = ({
   formik,

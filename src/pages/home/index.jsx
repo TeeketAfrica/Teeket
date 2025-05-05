@@ -1,4 +1,6 @@
 import {
+  AvatarGroup,
+  Avatar,
   Grid,
   Flex,
   HStack,
@@ -10,31 +12,30 @@ import {
   Link,
   Center,
 } from "@chakra-ui/react";
-import Footer from "../../components/layouts/Footer";
-import Header from "../../components/layouts/Header";
+import Footer from "@/components/layouts/Footer";
+import Header from "@/components/layouts/Header";
 import Masonry from "./components/Masonry";
-import Container from "../../components/ui/Container";
+import Container from "@/components/ui/Container";
 import Card from "./components/Card";
-import {
-  BrowseEventInfo,
-  CatergoryInfo,
-  StepsInfo,
-} from "./config";
-import Curves from "../../assets/icon/curves.svg";
-import StepBackground from "../../assets/img/steps_bg.webp";
-import EventBg from "../../assets/img/eventsBg.png";
-import Masonry1 from "../../assets/img/masonry_1.webp";
-import Masonry2 from "../../assets/img/masonry_2.webp";
-import Masonry3 from "../../assets/img/masonry_3.webp";
-import Masonry4 from "../../assets/img/masonry_4.webp";
-import Masonry5 from "../../assets/img/masonry_5.webp";
-import Masonry6 from "../../assets/img/masonry_6.webp";
-import Masonry7 from "../../assets/img/masonry_7.webp";
-import Masonry8 from "../../assets/img/masonry_8.webp";
+import { BrowseEventInfo, CatergoryInfo, StepsInfo } from "./config";
+import Curves from "@/assets/icon/curves.svg";
+import StepBackground from "@/assets/img/steps_bg.webp";
+import EventBg from "@/assets/img/eventsBg.png";
+import Masonry1 from "@/assets/img/masonry_1.webp";
+import Masonry2 from "@/assets/img/masonry_2.webp";
+import Masonry3 from "@/assets/img/masonry_3.webp";
+import Masonry4 from "@/assets/img/masonry_4.webp";
+import Masonry5 from "@/assets/img/masonry_5.webp";
+import Masonry6 from "@/assets/img/masonry_6.webp";
+import Masonry7 from "@/assets/img/masonry_7.webp";
+import Masonry8 from "@/assets/img/masonry_8.webp";
+import Faq1Image from "@/assets/img/faqs_1.webp";
+import Faq2Image from "@/assets/img/faqs_2.webp";
+import Faq3Image from "@/assets/img/faqs_3.webp";
+
 import { useStorage } from "../../utils/storage";
-import FaqWrapper from "../../components/ui/FaqWrapper";
-import GetInTouchWrapper from "../../components/ui/GetInTouchWrapper";
-import GridBg from "../../components/ui/GridBg";
+import { Faq } from "@/components/shared/Faq";
+import GetInTouch from "@/components/shared/GetInTouch";
 
 const HomePage = () => {
   const { getAccessToken } = useStorage();
@@ -54,12 +55,40 @@ const HomePage = () => {
             pt="100px"
           >
             <Container padding="16px">
-              <GridBg
-                colouredText={"Events"}
-                firstSubHeading={'for everyone.'}
-                secondSubHeading={'Browse, create, and share'}
-                paragraph={'Say goodbye to event planning stress. Browse countless options, create events with ease, and manage everything in one place.'}
-              />
+              <VStack gap="3" textAlign="center" marginBottom="10">
+                <Text
+                  as="h1"
+                  fontWeight="semibold"
+                  fontStyle="italic"
+                  fontSize={{ base: "3xl", md: "8xl" }}
+                  lineHeight={{ base: "34px", md: "56px" }}
+                  bgGradient="linear(to-r, #06CC06, #C2F2C2)"
+                  bgClip="text"
+                >
+                  Events{" "}
+                  <Text
+                    as="span"
+                    fontStyle="normal"
+                    fontSize={{ md: "7xl" }}
+                    lineHeight={{ md: "10" }}
+                    color="gray.800"
+                  >
+                    for everyone. <br /> Browse, create, and share
+                  </Text>
+                </Text>
+                <Text
+                  fontWeight="normal"
+                  fontSize={{ base: "sm", md: "lg" }}
+                  lineHeight={{ base: "5", md: "7" }}
+                  color="gray.600"
+                  maxWidth="54ch"
+                  marginX="auto"
+                >
+                  Say goodbye to event planning stress. Browse countless
+                  options, create events with ease, and manage everything in one
+                  place.{" "}
+                </Text>
+              </VStack>
               <HStack justifyContent="center" marginBottom="8" width="100%">
                 <Link
                   href={token ? "/create-event" : "/auth/login"}
@@ -438,10 +467,71 @@ const HomePage = () => {
         </Box>
 
         {/* Frequently Asked Questions */}
-        <FaqWrapper />
+        <Faq>
+          <VStack
+            gap="8"
+            backgroundColor="gray.300"
+            minHeight="300px"
+            width="100%"
+            border="none"
+            borderRadius="16px"
+            padding="8"
+            textAlign="center"
+          >
+            <AvatarGroup max={3}>
+              <Avatar
+                name="FAQ Image"
+                src={Faq2Image}
+                width="52px"
+                height="52px"
+              />
+              <Avatar
+                name="FAQ Image"
+                src={Faq1Image}
+                zIndex="4"
+                width="60px"
+                height="60px"
+              />
+              <AvatarGroup
+                name="FAQ Image"
+                src={Faq3Image}
+                width="52px"
+                height="52px"
+              />
+            </AvatarGroup>
 
-        {/* Get in touch */}
-        <GetInTouchWrapper />
+            <VStack gap="2">
+              <Text
+                as="h3"
+                fontWeight="bold"
+                fontSize="2xl"
+                lineHeight="7"
+                color="gray.800"
+              >
+                Still have questions?
+              </Text>
+
+              <Text
+                fontWeight="normal"
+                fontSize="md"
+                lineHeight="6"
+                color="gray.600"
+              >
+                Can’t find the answer you’re looking for? Please chat to our
+                friendly team.
+              </Text>
+            </VStack>
+
+            <Button variant="accent" size="lg">
+              <Link href="/" _hover={{ textDecoration: "none" }}>
+                Get in Touch
+              </Link>
+            </Button>
+          </VStack>
+        </Faq>
+
+        {/* Contact us */}
+        <GetInTouch />
       </main>
       <Footer border={false} />
     </>
