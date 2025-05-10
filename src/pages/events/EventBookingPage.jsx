@@ -69,7 +69,16 @@ const EventBooking = () => {
             <Text fontSize="3xl" fontWeight="bold" lineHeight="33px">
               Similar event you can attend to
             </Text>
-            <Button variant="secondary" size="sm" width="fit-content">
+            <Button 
+              variant="secondary" 
+              size="sm" 
+              width="fit-content"
+              onClick={()=>{
+                navigate(`/events/similar-events/${id}`, {
+                state: { similarEvents: similarEvents },
+              })
+              }}
+            >
               See more
             </Button>
           </Flex>
