@@ -91,7 +91,7 @@ const EventBooking = () => {
                 gridTemplateColumns={[
                   "1fr",
                   null,
-                  "repeat(3, 1fr)",
+                  "repeat(4, 1fr)",
                   null,
                   "repeat(4, 1fr)",
                 ]}
