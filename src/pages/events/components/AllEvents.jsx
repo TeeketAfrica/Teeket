@@ -52,7 +52,8 @@ const AllEvents = ({ events, type }) => {
             eventTitle={event.title}
             eventTag={event.status?.split("_").join(" ")}
             eventTagIcon={EventTagIcon}
-            eventOrganizer={Avatars}
+            eventOrganizer={event.user.profile_image}
+            eventOrganizerName={ event.user.first_name || event.user.email}
             eventCommunity={`By ${event.organizer}`}
             eventLocation={event.hosting_site}
             eventPrice={Number(event.lowest_ticket_price)}

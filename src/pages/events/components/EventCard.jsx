@@ -21,6 +21,7 @@ const EventCard = ({
   eventTag,
   eventTagIcon: EventTagIcon,
   eventOrganizer,
+  eventOrganizerName,
   eventCommunity,
   eventLocation,
   eventPrice,
@@ -98,7 +99,12 @@ const EventCard = ({
             <Box textTransform="capitalize">
               <HStack spacing={2}>
                 <Avatar
+                  name={eventOrganizerName}
                   src={eventOrganizer}
+                  border="1px solid"
+                  borderColor="gray.800"
+                  color="gray.800"
+                  bgColor="transparent"
                   w={6}
                   h={6}
                   alt="event organizer"

@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { Grid } from "@chakra-ui/react";
 import EventCard from "../../events/components/EventCard";
-import Event1 from "../../../assets/img/e1.png";
-import Event2 from "../../../assets/img/e2.png";
-import Event3 from "../../../assets/img/e3.png";
-import Event4 from "../../../assets/img/e4.png";
-import Avatars from "../../../assets/img/Avatars.png";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
 import { teeketApi } from "../../../utils/api";
 
@@ -55,7 +50,8 @@ const InterestEvents = () => {
                   eventTitle={event.title}
                   eventTag={event.status}
                   eventTagIcon={EventTagIcon}
-                  eventOrganizer={Avatars}
+                  eventOrganizer={event.user.profile_image}
+                  eventOrganizerName={ event.user.first_name || event.user.email}
                   eventCommunity={`by ${event.organizer}`}
                   eventLocation={event.hosting_site}
                   eventPrice={Number(event.lowest_ticket_price)}

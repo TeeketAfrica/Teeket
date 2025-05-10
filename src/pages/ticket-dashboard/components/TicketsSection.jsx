@@ -9,7 +9,6 @@ import useStorage from "../../../utils/storage";
 import { formatDate } from "../../../features/formatDate";
 
 const TicketsSection = () => {
-  const [availableTickets, setAvailableTickets] = useState(true);
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([]);
   const { getAccessToken } = useStorage();
@@ -46,7 +45,7 @@ const TicketsSection = () => {
       borderColor="gray.300"
       py={9}
     >
-      {availableTickets ? (
+      {tickets.length > 0 ? (
         <Grid
           gridTemplateColumns={[
             "1fr",

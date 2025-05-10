@@ -22,6 +22,7 @@ import {
   AboutPage,
   ContactPage,
 } from "../pages";
+import SimilarEvents from "../pages/events/SimilarEvents";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
 import PublicTokenRoute from "./publicRoutes";
@@ -35,6 +36,7 @@ const publicRoutes = [
   { path: "/events", element: EventsPage },
   { path: "/event-category/:type?", element: EventCategoryPage },
   { path: "/account-settings", element: AccountSettingsPage },
+  { path: "/events/similar-events/:id?", element: SimilarEvents}
 ];
 
 const privateRoutes = [
