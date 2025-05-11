@@ -110,7 +110,11 @@ const EventGetTicket = () => {
                     </Box>
                     <Box
                         display="grid"
-                        gridTemplateColumns="repeat(8, minmax(0, 1fr))"
+                        gridTemplateColumns={{
+                            base: "repeat(1, 1fr)", // 1 column on base (mobile)
+                            md: "repeat(1, 1fr)",   // 1 column on medium
+                            lg: "repeat(8, minmax(0, 1fr))", // 8 columns on large and up
+                        }}
                         w="100%"
                         justifyItems="between"
                         alignItems="stretch"
@@ -125,8 +129,11 @@ const EventGetTicket = () => {
                             {ticketStep === 2 && <YourDetailsStep />}
                         </VStack>
                         <Box gridColumn="span 1 / span 1" />
-                        <EventGetTicketSummaryBox />
-                    </Box>
+                        
+                            <Box gridColumn={{ base: "1 / -1", lg: "span 3" }}>
+                                <EventGetTicketSummaryBox />
+                            </Box>
+                        </Box>
                 </VStack>
             )}
             <Footer />
