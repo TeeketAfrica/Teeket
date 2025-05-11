@@ -204,4 +204,7 @@ html {
   .searchbar{
     display: none !important;
   }
+  .mobileCreateEventSideBar{
+    margin-top: 5rem;
+  }
 }
