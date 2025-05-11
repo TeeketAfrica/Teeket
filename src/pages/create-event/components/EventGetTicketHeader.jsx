@@ -75,16 +75,17 @@ export const EventGetTicketHeader = ({paid, profile}) => {
                         disabled={paid}
                     >
                         <Text
-                            fontSize={12}
+                            fontSize={{ base: 10, md: 12 }}
                             fontWeight={600}
                             color={ticketStep == 1 ? "gray.800" : "gray.500"}
                         >
                             1/
                         </Text>
                         <Text
-                            fontSize={16}
+                            fontSize={{ base: 12, md: 16 }}
                             fontWeight={600}
                             color={ticketStep == 1 ? "gray.800" : "gray.500"}
+                            display={{ base: "none", sm: "initial", md: "initial" }}
                         >
                             Ticket type
                         </Text>
@@ -111,16 +112,17 @@ export const EventGetTicketHeader = ({paid, profile}) => {
                         isDisabled={!isBookedTicket || paid}
                     >
                         <Text
-                            fontSize={12}
+                            fontSize={{ base: 10, md: 12 }}
                             fontWeight={600}
                             color={ticketStep == 2 ? "gray.800" : "gray.500"}
                         >
                             2/
                         </Text>
                         <Text
-                            fontSize={16}
+                            fontSize={{ base: 12, md: 16 }}
                             fontWeight={600}
                             color={ticketStep == 2 ? "gray.800" : "gray.500"}
+                            display={{ base: "none", sm: "initial", md: "initial" }}
                         >
                             Your details
                         </Text>
@@ -144,10 +146,10 @@ export const EventGetTicketHeader = ({paid, profile}) => {
                         }}
                         isDisabled={true} // implement !isBookedTicket && !isSetDetails here so users can only click on this if they have a details set and have booked a ticket
                     >
-                        <Text fontSize={12} fontWeight={600} color="gray.500">
+                        <Text fontSize={{ base: 10, md: 12 }} fontWeight={600} color="gray.500">
                             3/
                         </Text>
-                        <Text fontSize={16} fontWeight={600} color="gray.500">
+                        <Text fontSize={{ base: 12, md: 16 }} fontWeight={600} color="gray.500" display={{ base: "none", sm: "initial", md: "initial" }}>
                             Payment
                         </Text>
                         {isSetDetails && isBookedTicket && ticketStep ===  3 && paid && (

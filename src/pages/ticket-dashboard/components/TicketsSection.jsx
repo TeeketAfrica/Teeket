@@ -26,7 +26,6 @@ const TicketsSection = () => {
           );
           setTickets(response?.data.data)
           console.log("ticccksss", tickets);
-          setAvailableTickets(true);
         }
         catch(err){
           console.log("Error fetching tickets:", err);
