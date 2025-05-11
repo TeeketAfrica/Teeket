@@ -200,3 +200,11 @@ html {
   bottom: 15px;
   opacity: 0.5;
 }
+@media (max-width: 991px) {
+  .searchbar{
+    display: none !important;
+  }
+  .mobileCreateEventSideBar{
+    margin-top: 5rem;
+  }
+}

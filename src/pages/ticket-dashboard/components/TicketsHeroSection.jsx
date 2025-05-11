@@ -6,7 +6,7 @@ const TicketsHeroSection = () => {
     <section>
       <Box>
         <HStack h="335px" w="full" spacing={8} alignItems="center">
-          <Heading fontSize={56} fontWeight={700} textAlign="center" paddingX={5}>
+          <Heading fontSize={{ base: 32, md: 56 }} fontWeight={700} textAlign="center" paddingX={5}>
             My tickets
           </Heading>
           <YellowRectangle />

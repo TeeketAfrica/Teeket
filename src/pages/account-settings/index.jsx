@@ -85,7 +85,6 @@ const AccountSettingsPage = () => {
 
     return (
         <main>
-            <Header />
             <Container alignItems="start" padding={4}>
                 <VStack
                     spacing={md ? 9 : 3}

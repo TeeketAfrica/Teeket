@@ -10,11 +10,11 @@ import {
     Text,
     Link,
     useOutsideClick,
+    Avatar,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 
 import Logo from "../../../assets/img/brandLogo.png";
-import Avatar from "../../../assets/img/Avatars.png";
 import Preview from "../../../assets/icon/eye.svg";
 import CloseIcon from "../../../assets/icon/CloseButton.svg";
 import Rocket from "../../../assets/icon/rocket-alt.svg";
@@ -28,6 +28,7 @@ import Container from "../../../components/ui/Container";
 import SideNav from "./SideNav";
 import useSignOut from "../../../utils/signOut";
 import { resetEventState } from "../../../features/eventSlice";
+import { selectActiveUser } from "../../../features/activeUserSlice";
 
 const Layout = ({
     children,
@@ -41,6 +42,7 @@ const Layout = ({
     const ref = useRef();
     const { signOut } = useSignOut();
     const dispatch = useDispatch();
+    const user = useSelector(selectActiveUser);
 
     const { email } = useSelector(selectUserDetails).data;
 
@@ -144,7 +146,14 @@ const Layout = ({
                                     cursor="pointer"
                                     onClick={() => setMenuToggle(!menuToggle)}
                                 >
-                                    <Image src={Avatar} alt="avatar" />
+                                    <Avatar
+                                        border="1px solid"
+                                        borderColor="gray.800"
+                                        color="gray.800"
+                                        name={user?.first_name || user?.email}
+                                        src={user?.profile_image}
+                                        bgColor="transparent"
+                                    />
                                 </Box>
                                 <Fade in={menuToggle}>
                                     <Box
@@ -176,19 +185,7 @@ const Layout = ({
                                             >
                                                 {email}
                                             </Text>
-                                            <Link
-                                                href=""
-                                                display="flex"
-                                                gap="3"
-                                                py="2"
-                                                _hover={{
-                                                    textDecoration: "none",
-                                                }}
-                                                onClick={resetEvent}
-                                            >
-                                                <Ticket />
-                                                <Text>My tickets</Text>
-                                            </Link>
+                                            
                                         </Box>
                                         <Box
                                             w="100%"
@@ -210,7 +207,7 @@ const Layout = ({
                                                 <Text>Create events</Text>
                                             </Link>
                                             <Link
-                                                href="/app/overview"
+                                                href={user.is_creator? "/app/overview": "/my-tickets"}
                                                 display="flex"
                                                 gap="3"
                                                 py="2"
@@ -281,10 +278,10 @@ const Layout = ({
                         Event creation
                     </Heading>
                     <Box display={{ base: "flex", lg: "none" }} gap={6}>
-                        <Box onClick={() => setMobileToggle(true)}>
-                            <Hamburger />
-                        </Box>
                         <Box display="inline-flex" gap={2}>
+                            <Box onClick={() => setMobileToggle(true)} style={{zIndex: 20}}>
+                                <Hamburger />
+                            </Box>
                             {steps.map((step, i) => (
                                 <Text
                                     key={step.stepInfo}
@@ -329,7 +326,8 @@ const Layout = ({
                             <Slide
                                 direction="left"
                                 in={mobileToggle}
-                                style={{ zIndex: 10 }}
+                                className="mobileCreateEventSideBar"
+                                style={{ zIndex: 10}}
                             >
                                 <SideNav
                                     activeStep={activeStepColor}

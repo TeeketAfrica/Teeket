@@ -67,7 +67,7 @@ const OverviewDashboardPage = () => {
       />
       <HStack
         alignItems="flex-start"
-        flexDirection={{ sm: "column", xl: "row" }}
+        flexDirection={{ base: "column", md: "column", xl: "row" }}
         gap="5"
         padding="8"
       >

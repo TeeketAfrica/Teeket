@@ -12,7 +12,7 @@ export const TicketTypeBox = ({ data }) => {
     // const [quantity, setQuantity] = useState(0);
     const [error, setError] = useState("");
     const dispatch = useDispatch();
-    const { eventTicketBooking } = useSelector((state) => state.event);
+    const { eventTicketBooking, isBookedTicket } = useSelector((state) => state.event);
 
     const currentQuantity =
         eventTicketBooking.find((ticket) => ticket.id === data.id)?.quantity ||
@@ -22,24 +22,26 @@ export const TicketTypeBox = ({ data }) => {
         let value = parseInt(e.target.value, 10);
         if (isNaN(value)) value = 1;
 
-        if (value > data.quantity) {
-            setError(`Must be less than or equal to ${data.quantity}`);
-            value = data.quantity;
-        } else {
-            setError("");
+        if(!isBookedTicket){
+            if (value > data.quantity) {
+                setError(`Must be less than or equal to ${data.quantity}`);
+                value = data.quantity;
+            } else {
+                setError("");
+            }
+    
+            if (value < 1) value = 0;
+            dispatch(setTicketQuantity(value));
+    
+            dispatch(
+                changeEventDataTicketsQuantity({
+                    id: data.id,
+                    name: data.name,
+                    quantity: value,
+                    price: data.price,
+                })
+            );
         }
-
-        if (value < 1) value = 0;
-        dispatch(setTicketQuantity(value));
-
-        dispatch(
-            changeEventDataTicketsQuantity({
-                id: data.id,
-                name: data.name,
-                quantity: value,
-                price: data.price,
-            })
-        );
     };
 
     return (
@@ -87,7 +89,7 @@ export const TicketTypeBox = ({ data }) => {
                                     })
                                 );
                             }}
-                            isDisabled={currentQuantity < 1}
+                            isDisabled={currentQuantity < 1 || isBookedTicket}
                             variant={
                                 currentQuantity < 1 ? "secondary" : "primary"
                             }
@@ -101,6 +103,7 @@ export const TicketTypeBox = ({ data }) => {
                             w={50}
                             value={currentQuantity}
                             onChange={handleInputChange}
+                            isDisabled={isBookedTicket}
                         />
                         <Button
                             onClick={() => {
@@ -118,7 +121,7 @@ export const TicketTypeBox = ({ data }) => {
                                     })
                                 );
                             }}
-                            isDisabled={currentQuantity >= data.quantity}
+                            isDisabled={currentQuantity >= data.quantity || isBookedTicket}
                             variant={"primary"}
                             bgColor="gray.800"
                             padding={2}
