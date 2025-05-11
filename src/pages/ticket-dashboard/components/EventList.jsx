@@ -11,7 +11,7 @@ const EventList = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Text fontSize={28} fontWeight={700}>
+        <Text fontSize={{ base: 18, md: 28 }} fontWeight={700}>
           Events that might interest you
         </Text>
         <Button variant="outline">
