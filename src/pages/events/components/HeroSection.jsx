@@ -122,7 +122,7 @@ const HeroSection = () => {
                                 orientation="vertical"
                               />
                             </Center>
-                            <Menu>
+                            {/* <Menu>
                               <MenuButton
                                 as={Button}
                                 rightIcon={<DownIcon />}
@@ -148,12 +148,13 @@ const HeroSection = () => {
                                   </MenuItem>
                                 ))}
                               </MenuList>
-                            </Menu>
+                            </Menu> */}
                           </HStack>
                         </Box>
                         <Button
-                          display={["none", null, null, "block"]}
+                          display={["none", "none", "none", "block"]}
                           leftIcon={<SearchWhite />}
+                          className="searchbar"
                           variant="primary"
                           style={{ height: "56px",  display: "flex", justifyItems: "center", alignItems: "center", width: "100%"}}
                           onClick={handleButtonClick}
@@ -194,7 +195,7 @@ const HeroSection = () => {
                           <Button variant="primary" onClick={handleButtonClick}>
                             <SearchWhite />
                           </Button>
-                          <Menu>
+                          {/* <Menu>
                             <MenuButton
                               display={["flex", null, null, "none"]}
                               border="1px solid"
@@ -220,7 +221,7 @@ const HeroSection = () => {
                                 </MenuItem>
                               ))}
                             </MenuList>
-                          </Menu>
+                          </Menu> */}
                         </HStack>
                       </Stack>
                     </Box>

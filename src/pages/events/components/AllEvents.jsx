@@ -12,7 +12,6 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
-import Avatars from "../../../assets/img/Avatars.png";
 import EmptyState from "../../../components/ui/EmptyState";
 import { SearchContext } from "../../../context/SearchContext";
 import useCategorizeEvents from "../../../hooks/useCategorizeEvents";
@@ -23,9 +22,10 @@ const AllEvents = ({ events, type }) => {
   const { trendingFree, trendingPaid, notTrendingFree, notTrendingPaid } =
     useCategorizeEvents(events);
   const { searchTerm, clearSearch } = useContext(SearchContext);
+  console.log(events)
 
   const renderEventSection = (title, events, link) => (
-    <Box px={5}>
+    <Box px={5} style={{width: "100%"}}>
       <HStack pt={6} justifyContent="space-between" alignItems="center">
         <Text fontSize={28} fontWeight={700}>
           {title}

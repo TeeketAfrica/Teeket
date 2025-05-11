@@ -243,36 +243,93 @@ const Header = () => {
 
                     <DrawerBody>
                       <VStack spacing={6}>
-                        {menu.map((link, i) => (
-                          <Link key={i} to={`/${link.url}`}>
-                            <Text fontWeight={600} fontSize={14}>
-                              {link.link}
-                            </Text>
-                          </Link>
-                        ))}
-                        <>
-                          <Link to="/auth/login">
-                            <Text
-                              fontWeight={600}
-                              fontSize={14}
-                              color="textSuccess"
-                            >
-                              Login
-                            </Text>
-                          </Link>
-                          <Link to="/auth/create-account">
-                            <Text
-                              p={2}
-                              borderRadius={16}
-                              bgColor="textSuccess"
-                              color="white"
-                              fontWeight={600}
-                              fontSize={14}
-                            >
-                              Try Teeket
-                            </Text>
-                          </Link>
-                        </>
+                      <>
+                          {
+                            user? (
+                              <>
+                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px"}}>
+                                  <Avatar
+                                    border="1px solid"
+                                    borderColor="gray.800"
+                                    color="gray.800"
+                                    name={user?.first_name || user?.email}
+                                    src={user?.profile_image}
+                                    bgColor="transparent"
+                                  />
+                                  <Text>{user?.email}</Text>
+                                </div>
+                                <Menu>
+                                  {menu.map((link, i) => (
+                                    <Link key={i} to={`/${link.url}`}>
+                                      <MenuItem>
+                                        {link.link}
+                                      </MenuItem>
+                                    </Link>
+                                  ))}
+                                  <Link>
+                                    <MenuItem>
+                                      My Account
+                                    </MenuItem>
+                                  </Link>
+                                  <Link to="/create-event">
+                                    <MenuItem >
+                                      Create Event
+                                    </MenuItem>
+                                  </Link>
+                                  <Link to={user?.is_creator? "/app/overview": "/my-tickets"}>
+                                    <MenuItem>
+                                      My dashboard
+                                    </MenuItem>
+                                  </Link>
+                                  <Link to="/account-settings">
+                                    <MenuItem>
+                                      Account settings
+                                    </MenuItem>
+                                  </Link>
+                                  <Link>
+                                    <MenuItem
+                                      onClick={onOpenModal}
+                                      color={"red.300"}
+                                    >
+                                      Log out
+                                    </MenuItem>
+                                  </Link>
+                                </Menu>
+                              </>
+                            ): (
+                              <>
+                                {menu.map((link, i) => (
+                                  <Text key={i} to={`/${link.url}`}>
+                                    <MenuItem fontWeight={600} fontSize={14}>
+                                      {link.link}
+                                    </MenuItem>
+                                  </Text>
+                                ))}
+                                <Link to="/auth/login">
+                                  <Text
+                                    fontWeight={600}
+                                    fontSize={14}
+                                    color="textSuccess"
+                                  >
+                                    Login
+                                  </Text>
+                                </Link>
+                                <Link to="/auth/create-account">
+                                  <Text
+                                    p={2}
+                                    borderRadius={16}
+                                    bgColor="textSuccess"
+                                    color="white"
+                                    fontWeight={600}
+                                    fontSize={14}
+                                  >
+                                    Try Teeket
+                                  </Text>
+                                </Link>
+                              </>
+                            )
+                          }
+                        </>  
                       </VStack>
                     </DrawerBody>
                   </DrawerContent>

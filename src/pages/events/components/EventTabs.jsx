@@ -5,9 +5,9 @@ import AllEvents from "./AllEvents";
 const EventTabs = ({ allEvents }) => {
   return (
     <section>
-      <Container>
-        <Box>
-          <Tabs>
+      <Container >
+        <Box >
+          <Tabs style={{ overflowX: "auto", width: "100%"}}>
             <TabList
               borderTop="1px solid"
               borderBottom="1px solid"
