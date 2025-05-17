@@ -6,6 +6,7 @@ import AuthLayout from "../../../components/auth/AuthLayout";
 import AuthHeader from "../../../components/auth/AuthHeader";
 import PasswordResetForm from "./components/PasswordResetForm";
 import DoubleCheckMark from "../../../assets/icon/DoubleCheckMark.svg";
+import { authApi } from "../../../utils/api";
 
 const PasswordResetPage = () => {
   const params = useParams()
@@ -14,8 +15,6 @@ const PasswordResetPage = () => {
   const [passwordReset, setPasswordReset] = useState(false);
 
   const handleOnSubmit = async(value) => {
-    console.log(value)
-
           try {
             const response = await authApi.post("/accounts/reset_password", {
               uidb64: id, token, new_password: value
@@ -25,6 +24,7 @@ const PasswordResetPage = () => {
     
 
           } catch (err) {
+            console.log(err)
             if (err.message == "Network Error") {
               alert("Check your internet connection!.");
             } else {

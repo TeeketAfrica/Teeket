@@ -22,17 +22,21 @@ const GoogleBtn = ({ title, handleGoogleResponse }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    console.log(location, "location");
+    // console.log(location, "location");
 
     const { setAccessToken, setRefreshToken, getAccessToken } = useStorage();
     const [error, setError] = useState("");
 
     const handleGoogleLogin = async (credentialResponse, isSignup) => {
         const endpoint = isSignup ? "/google/signup" : "/google/login";
+        console.log(endpoint)
+        console.log(credentialResponse)
         try {
             const response = await authApi.post(endpoint, {
                 code: credentialResponse.code,
             });
+
+            console.log(response.data)
             const { access_token, refresh_token } = response?.data;
 
             if (access_token && refresh_token) {
@@ -48,6 +52,7 @@ const GoogleBtn = ({ title, handleGoogleResponse }) => {
                 }
             }
         } catch (err) {
+            console.log(error)
             setError(err.message || "Login failed. Please try again.");
             if (err.message === "Network Error") {
                 alert("Please check your internet connection.");
