@@ -197,6 +197,7 @@ const EditEventPage = () => {
 
           if (res.data.id) {
             const eventId = res.data.id;
+            console.log(eventId)
             const createTicketURL = `/api/v1/events/${eventId}/tickets`;
 
             const ticketPromises = tickets.map(async (ticket) => {

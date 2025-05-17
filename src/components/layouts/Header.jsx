@@ -46,7 +46,6 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const user = useSelector(selectActiveUser);
-  console.log(user)
   const {
     isOpen: isOpenModal,
     onOpen: onOpenModal,
