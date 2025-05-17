@@ -29,7 +29,7 @@ import PublicTokenRoute from "./publicRoutes";
 import PublicRouteWithoutHeader from "./PublicRoutesWithoutHeader";
 
 const publicRoutes = [
-  { path: "/home", element: HomePage},
+  { path: "/", element: HomePage},
   { path: "/help-and-support", element: HelpAndSupportPage },
   { path: "/contact", element: ContactPage },
   { path: "/about", element: AboutPage },
@@ -57,7 +57,7 @@ const privateRoutes = [
 ];
 
 const publicRoutesWithoutAuth = [
-  { path: "/", element: CounterDownPage },
+  { path: "/countdown", element: CounterDownPage },
   { path: "/auth/password-recovery", element: PasswordRecoveryPage },
   { path: "/auth/password-reset", element: PasswordResetPage },
   { path: "/auth/send-otp", element: SendOTPPage },

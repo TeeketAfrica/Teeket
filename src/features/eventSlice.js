@@ -48,12 +48,18 @@ const initialState = {
     referenceId: null,
     paid: false,
     ticketUserDetails: {},
+    userEventPreference:null,
 };
 
 const eventSlice = createSlice({
     name: "event",
     initialState,
     reducers: {
+        setUserEventPreference: (state, action) => {
+            // const eventData = action.payload;
+            state.userEventPreference = action.payload;
+            
+        },
         setEventDetails: (state, action) => {
             const eventData = action.payload;
             state.id = eventData.id;
@@ -232,7 +238,8 @@ export const {
     setTicketSummaryDetails,
     setReferenceId,
     setTicketUserDetails,
-    setIsPaid
+    setIsPaid,
+    setUserEventPreference
 } = eventSlice.actions;
 
 const TRANSACTION_FEE_RATE = 0.01;
@@ -256,5 +263,6 @@ export const selectPriceDetails = createSelector(
 );
 
 export const selectEventDetails = (state) => state.event;
+export const selectEventPreference = (state) => state.event.userEventPreference;
 
 export default eventSlice.reducer;
