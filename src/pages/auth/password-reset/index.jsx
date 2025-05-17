@@ -10,7 +10,6 @@ import DoubleCheckMark from "../../../assets/icon/DoubleCheckMark.svg";
 const PasswordResetPage = () => {
   const params = useParams()
   const {id, token} = params
-  console.log(id, token)
 
   const [passwordReset, setPasswordReset] = useState(false);
 

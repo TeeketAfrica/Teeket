@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   HStack,
@@ -102,7 +102,7 @@ const EventPreference = ({ isOpen, onClose }) => {
       fetchAvailablePreference()
     }
   },[availablePrefs])
-  
+
   useEffect(()=>{
     if(userPreferences){
       setSelectedPrefs(userPreferences.map((i)=>i.id))
