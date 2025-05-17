@@ -67,6 +67,7 @@ const RevenueTable = () => {
         revenueTableData.slice(startIndex, endIndex)
     );
     const [historyTableData, setHistoryTableData] = useState([]);
+    const [historyTableData, setHistoryTableData] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -191,8 +192,7 @@ const RevenueTable = () => {
                 }
                 const response = await teeketApi.get(url);
                 const res = response.data;
-                setHistoryTableData(res.data);
-                console.log("payment history", response);
+                console.log("payment history", response)
             }
             catch(error){
                 console.log(error);
@@ -211,6 +211,7 @@ const RevenueTable = () => {
         }
 
         handleFetchEvents();
+        handleFetchPaymentHistory();
         handleFetchPaymentHistory();
     }, [toast, itemsPerPage, search]);
     
@@ -479,6 +480,7 @@ const RevenueTable = () => {
                                                                 fontWeight={500}
                                                                 fontSize={12}
                                                             >
+                                                                {td.status === "ongoing_event"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
                                                                 {td.status === "ongoing_event"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
                                                             </Tag>
                                                         </Td>
