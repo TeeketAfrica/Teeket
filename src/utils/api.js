@@ -74,21 +74,22 @@ export const createApiInstance = (
 
         try {
           const refreshToken = getRefreshToken();
+          console.log(refreshToken)
           const response = await axios.post(`${authBaseUrl}/refresh_token`, {
             refresh_token: refreshToken,
           });
 
-          const access_token = response.data.accessToken;
+          const accessToken = response.data.access_token;
 
           // Update access tokens in storage
-          setAccessToken(access_token);
+          setAccessToken(accessToken);
 
           // Process the queue with the new access token
-          processQueue(null, access_token);
+          processQueue(null, accessToken);
           isRefreshing = false;
 
           // Retry the original request with the new access token
-          originalRequest.headers.Authorization = `Bearer ${access_token}`;
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return axios(originalRequest);
         } catch (refreshError) {
           processQueue(refreshError, null);
