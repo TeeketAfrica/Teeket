@@ -15,7 +15,6 @@ const PasswordResetPage = () => {
   const [passwordReset, setPasswordReset] = useState(false);
 
   const handleOnSubmit = async(value) => {
-
           try {
             const response = await authApi.post("/accounts/reset_password", {
               uidb64: id, token, new_password: value

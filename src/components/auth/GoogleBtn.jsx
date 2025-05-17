@@ -52,6 +52,7 @@ const GoogleBtn = ({ title, handleGoogleResponse }) => {
                 }
             }
         } catch (err) {
+            console.log(error)
             setError(err.message || "Login failed. Please try again.");
             if (err.message === "Network Error") {
                 alert("Please check your internet connection.");
