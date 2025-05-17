@@ -145,7 +145,6 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
               Your current events with due payment brings a total of{" "}
               <Text as="span" fontWeight={700}>
                 ${events.filter(event => event.status === "due").reduce((sum, event) => sum + Number(event?.amount || 0), 0)}
-                ${events.filter(event => event.status === "due").reduce((sum, event) => sum + Number(event?.amount || 0), 0)}
               </Text>
               . All payment will be made within 24hours after your request.
             </Text>
