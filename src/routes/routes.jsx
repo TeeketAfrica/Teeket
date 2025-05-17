@@ -29,14 +29,14 @@ import PublicTokenRoute from "./publicRoutes";
 import PublicRouteWithoutHeader from "./PublicRoutesWithoutHeader";
 
 const publicRoutes = [
-  { path: "/home", element: HomePage},
+  { path: "/home", element: HomePage },
   { path: "/help-and-support", element: HelpAndSupportPage },
   { path: "/contact", element: ContactPage },
   { path: "/about", element: AboutPage },
   { path: "/events", element: EventsPage },
   { path: "/event-category/:type?", element: EventCategoryPage },
   { path: "/account-settings", element: AccountSettingsPage },
-  { path: "/events/similar-events/:id?", element: SimilarEvents}
+  { path: "/events/similar-events/:id?", element: SimilarEvents },
 ];
 
 const privateRoutes = [
@@ -96,11 +96,13 @@ const routes = [
   ...publicRoutesWithTokenRedirect.map((route) => ({
     path: route.path,
     element: (
-      <PublicTokenRoute element={
-        <PublicRouteWithoutHeader>
-          <route.element />
-        </PublicRouteWithoutHeader>
-      } />
+      <PublicTokenRoute
+        element={
+          <PublicRouteWithoutHeader>
+            <route.element />
+          </PublicRouteWithoutHeader>
+        }
+      />
     ),
   })),
 ];

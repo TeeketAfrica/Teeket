@@ -1,7 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Button, Divider, Flex, HStack, Skeleton, SkeletonCircle, SkeletonText, Stack, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Divider,
+  Flex,
+  HStack,
+  Skeleton,
+  SkeletonText,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 
 import Header from "../../components/layouts/Header";
 import Container from "../../components/ui/Container";
@@ -13,7 +23,6 @@ import { useDispatch } from "react-redux";
 import { teeketApi } from "../../utils/api";
 import EventCard from "./components/EventCard";
 import EventTagIcon from "@/assets/icon/EventTagIcon.svg";
-// import AllEvents from "./components/AllEvents";
 
 const EventBooking = () => {
   const { id } = useParams();
@@ -36,18 +45,17 @@ const EventBooking = () => {
       }
     };
 
-    const fetchSimilarEvents = async ()=>{
-      try{
+    const fetchSimilarEvents = async () => {
+      try {
         setLoading(true);
-        const response = await teeketApi.get(`/events/similar/${id}`)
+        const response = await teeketApi.get(`/events/similar/${id}`);
         setSimilarEvents(response.data.data);
         setLoading(false);
-      }
-      catch(err){
+      } catch (err) {
         console.log(`Error fetching Similar events`, err.message);
         setLoading(false);
       }
-    }
+    };
 
     fetchEvent();
     fetchSimilarEvents();
@@ -69,48 +77,45 @@ const EventBooking = () => {
             <Text fontSize="3xl" fontWeight="bold" lineHeight="33px">
               Similar event you can attend to
             </Text>
-            <Button 
-              variant="secondary" 
-              size="sm" 
+            <Button
+              variant="secondary"
+              size="sm"
               width="fit-content"
-              onClick={()=>{
+              onClick={() => {
                 navigate(`/events/similar-events/${id}`, {
-                state: { similarEvents: similarEvents },
-              })
+                  state: { similarEvents: similarEvents },
+                });
               }}
             >
               See more
             </Button>
           </Flex>
           {/* <AllEvents /> */}
-          {
-            loading? 
-            (
+          {loading ? (
+            <Grid
+              style={{ width: "100%" }}
+              gridTemplateColumns={[
+                "1fr",
+                null,
+                "repeat(4, 1fr)",
+                null,
+                "repeat(4, 1fr)",
+              ]}
+              gap={6}
+            >
+              {[0, 1, 2, 3].map((digit, i) => (
+                <Stack gap="6" maxW="xs" key={digit}>
+                  <HStack width="full">
+                    <SkeletonText noOfLines={2} />
+                  </HStack>
+                  <Skeleton height="200px" />
+                </Stack>
+              ))}
+            </Grid>
+          ) : (
+            similarEvents.length > 0 && (
               <Grid
-                style={{width: "100%"}}
-                gridTemplateColumns={[
-                  "1fr",
-                  null,
-                  "repeat(4, 1fr)",
-                  null,
-                  "repeat(4, 1fr)",
-                ]}
-                gap={6}
-                paddingX={7}
-              >
-                {
-                  [0,1,2,3].map((digit, i)=>(
-                    <Stack gap="6" maxW="xs" key={digit}>
-                        <HStack width="full">
-                          <SkeletonText noOfLines={2} />
-                        </HStack>
-                        <Skeleton height="200px" />
-                      </Stack>))}
-              </Grid>    
-            ): 
-            (
-              similarEvents.length > 0 && (
-                <Grid
+                width={"100%"}
                 gridTemplateColumns={[
                   "1fr",
                   null,
@@ -123,34 +128,32 @@ const EventBooking = () => {
                 borderColor="gray.300"
                 pt={6}
                 pb={9}
-                paddingX={7}
               >
-                {
-                  similarEvents.slice(0, 4).map((event)=>(
-                    <EventCard
-                      key={event.id}
-                      eventId={event.id}
-                      eventImage={event.banner_image}
-                      eventTitle={event.title}
-                      eventTag={event.status?.split("_").join(" ")}
-                      eventTagIcon={EventTagIcon}
-                      eventOrganizer={event.user.profile_image}
-                      eventOrganizerName={ event.user.first_name || event.user.email}
-                      eventCommunity={`By ${event.organizer}`}
-                      eventLocation={event.hosting_site}
-                      eventPrice={Number(event.lowest_ticket_price)}
-                      eventDate={{
-                        startDate: event.start_date,
-                        endDate: event.end_date,
-                      }}
-                      isFree={event.is_free}
-                    />
-                  ))
-                }
+                {similarEvents.slice(0, 4).map((event) => (
+                  <EventCard
+                    key={event.id}
+                    eventId={event.id}
+                    eventImage={event.banner_image}
+                    eventTitle={event.title}
+                    eventTag={event.status?.split("_").join(" ")}
+                    eventTagIcon={EventTagIcon}
+                    eventOrganizer={event.user.profile_image}
+                    eventOrganizerName={
+                      event.user.first_name || event.user.email
+                    }
+                    eventCommunity={`By ${event.organizer}`}
+                    eventLocation={event.hosting_site}
+                    eventPrice={Number(event.lowest_ticket_price)}
+                    eventDate={{
+                      startDate: event.start_date,
+                      endDate: event.end_date,
+                    }}
+                    isFree={event.is_free}
+                  />
+                ))}
               </Grid>
-              )
             )
-          }
+          )}
         </VStack>
       </Container>
       <Footer />

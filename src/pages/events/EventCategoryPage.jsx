@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 
 import Footer from "../../components/layouts/Footer";
-import Header from "../../components/layouts/Header";
 import Container from "../../components/ui/Container";
 import EventCategoryHeroSection from "./components/EventCategoryHeroSection";
 import SingleEventCategory from "./components/SingleEventCategory";

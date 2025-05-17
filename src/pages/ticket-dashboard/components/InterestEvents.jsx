@@ -6,20 +6,19 @@ import { teeketApi } from "../../../utils/api";
 
 const InterestEvents = () => {
   const [event, setEvents] = useState([]);
-  useEffect(()=>{
-    const fetchEvents = async ()=>{
+  useEffect(() => {
+    const fetchEvents = async () => {
       try {
-          const response = await teeketApi.get(`/events`, {
-              nullAuth: true,
-          });
-          const eventList = response.data.data;
-    
-          setEvents(eventList);
+        const response = await teeketApi.get(`/events`, {
+          nullAuth: true,
+        });
+        const eventList = response.data.data;
+
+        setEvents(eventList);
+      } catch (err) {
+        console.log(`Error fetching similar events: ${err}`);
       }
-      catch(err){
-        console.log(`Error fetching similar events: ${err}`)
-      }
-    }
+    };
     fetchEvents();
   }, []);
 
@@ -40,29 +39,26 @@ const InterestEvents = () => {
             borderColor="gray.300"
             pt={6}
             pb={9}
-            paddingX={7}
           >
-            {
-              event.slice(0, 4).map((event, i)=>(
-                <EventCard
-                  key={i}
-                  eventImage={event.banner_image}
-                  eventTitle={event.title}
-                  eventTag={event.status}
-                  eventTagIcon={EventTagIcon}
-                  eventOrganizer={event.user.profile_image}
-                  eventOrganizerName={ event.user.first_name || event.user.email}
-                  eventCommunity={`by ${event.organizer}`}
-                  eventLocation={event.hosting_site}
-                  eventPrice={Number(event.lowest_ticket_price)}
-                  eventDate={{
-                    startDate: `${event.start_date}`,
-                    endDate: `${event.end_date}`,
-                  }}
-                  isFree={event.is_free}
-                />  
-              ))
-            }
+            {event.slice(0, 4).map((event, i) => (
+              <EventCard
+                key={i}
+                eventImage={event.banner_image}
+                eventTitle={event.title}
+                eventTag={event.status}
+                eventTagIcon={EventTagIcon}
+                eventOrganizer={event.user.profile_image}
+                eventOrganizerName={event.user.first_name || event.user.email}
+                eventCommunity={`by ${event.organizer}`}
+                eventLocation={event.hosting_site}
+                eventPrice={Number(event.lowest_ticket_price)}
+                eventDate={{
+                  startDate: `${event.start_date}`,
+                  endDate: `${event.end_date}`,
+                }}
+                isFree={event.is_free}
+              />
+            ))}
           </Grid>
         </>
       )}
