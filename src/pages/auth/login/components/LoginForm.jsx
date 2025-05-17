@@ -44,9 +44,6 @@ const LoginForm = () => {
           email: values.email,
           password: values.password,
         });
-
-        console.log(response.data)
-
         const access_token = response.data.access_token;
         const refresh_token = response.data.refresh_token;
         // const userData = response2.data;
