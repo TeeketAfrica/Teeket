@@ -505,6 +505,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 fontSize={12}
                                                             >
                                                                 {td.status === "ongoing_event"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
+                                                                {td.status === "ongoing_event"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
                                                             </Tag>
                                                         </Td>
                                                     </Tr>
