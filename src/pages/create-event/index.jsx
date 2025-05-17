@@ -18,6 +18,7 @@ import FormStep3 from "./layout/FormStep3";
 import PublishEvent from "./layout/PublishEvent";
 import { DEFAULTBANNERIMAGE } from "../../utils/constants";
 import { convertUrlToHttpFormat } from "../../utils/utils";
+import { selectActiveUser, setIsCreator } from "../../features/activeUserSlice";
 
 // Validation schemas for each step
 const validationSchemas = [
@@ -61,11 +62,12 @@ const validationSchemas = [
 ];
 
 const VendorPage = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const toast = useToast();
+    const [activeStep, setActiveStep] = useState(0);
+    const activeUser = useSelector(selectActiveUser);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const toast = useToast();
 
   const {
     eventTitle,
@@ -271,24 +273,31 @@ const VendorPage = () => {
           // Wait for all ticket requests to complete
           await Promise.all(ticketPromises);
 
-          if (formProps.values.publishLive === "eventLive") {
-            try {
-              // Publish event
-              await teeketApi.patch(`events/${eventId}/publish`);
-            } catch (error) {
-              console.log("Failed to publish event", error.message);
+                    if (formProps.values.publishLive === "eventLive") {
+                        try {
+                            // Publish event
+                            await teeketApi.patch(`events/${eventId}/publish`);
+                        } catch (error) {
+                            console.log(
+                                "Failed to publish event",
+                                error.message
+                            );
+                        }
+                    }
+                    //ensure that the user becomes a creator after creating an event
+                    if(!activeUser.is_creator){
+                        dispatch(setIsCreator(true))
+                    }
+                    // Reset state and navigate upon successful creation
+                    navigate("/app/events");
+                    dispatch(resetEventState());
+                } catch (error) {
+                    console.log("Failed to create or update event", error);
+                }
             }
-          }
-          // Reset state and navigate upon successful creation
-          navigate("/app/overview");
-          dispatch(resetEventState());
-        } catch (error) {
-          console.log("Failed to create or update event", error);
-        }
-      }
-    },
-    [dispatch, navigate, id, eventBannerImage]
-  );
+        },
+        [dispatch, navigate, id, eventBannerImage]
+    );
 
   const renderFormStep = useCallback(
     (formProps) => {
