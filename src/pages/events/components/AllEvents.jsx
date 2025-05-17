@@ -22,7 +22,6 @@ const AllEvents = ({ events, type }) => {
   const { trendingFree, trendingPaid, notTrendingFree, notTrendingPaid } =
     useCategorizeEvents(events);
   const { searchTerm, clearSearch } = useContext(SearchContext);
-  console.log(events)
 
   const renderEventSection = (title, events, link) => (
     <Box px={5} style={{width: "100%"}}>
