@@ -241,8 +241,8 @@ export const Index = () => {
                   <Button
                     variant="primary"
                     borderRadius={6}
-                    width="35%"
                     size="lg"
+                    px={6}
                     onClick={handleWaitList}
                   >
                     Join wait list

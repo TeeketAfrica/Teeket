@@ -1,10 +1,11 @@
 import { Box, Button, HStack, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import InterestEvents from "./InterestEvents";
+import Container from "../../../components/ui/Container";
 
 const EventList = () => {
   return (
-    <Box>
+    <Container padding="16px">
       <HStack
         w="full"
         pt={6}
@@ -20,7 +21,7 @@ const EventList = () => {
       </HStack>
 
       <InterestEvents />
-    </Box>
+    </Container>
   );
 };
 
