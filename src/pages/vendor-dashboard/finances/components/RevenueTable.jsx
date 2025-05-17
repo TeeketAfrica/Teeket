@@ -66,6 +66,7 @@ const RevenueTable = () => {
     const [paginatedData, setPaginatedData] = useState(
         revenueTableData.slice(startIndex, endIndex)
     );
+    const [historyTableData, setHistoryTableData] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -162,8 +163,40 @@ const RevenueTable = () => {
             }
         };
 
+        const handleFetchPaymentHistory = async ()=>{
+            try{
+                let url = "/payment-requests";
+                const queryParams = [];
+
+                if (search) {
+                    queryParams.push(`search=${search}`);
+                }
+                if (queryParams.length > 0) {
+                    url += `?${queryParams.join("&")}`;
+                }
+                const response = await teeketApi.get(url);
+                const res = response.data;
+                console.log("payment history", response)
+            }
+            catch(error){
+                console.log(error);
+
+                const errorMessage =
+                    error?.response?.data?.message || "An error occured";
+                toast({
+                    title: "Failed to fetch payment history",
+                    description: `${errorMessage}`,
+                    status: "error",
+                    duration: 3000,
+                    position: "top-right",
+                    isClosable: true,
+                });
+            }
+        }
+
         handleFetchEvents();
-    }, [toast, itemsPerPage, search, currentPage]);
+        handleFetchPaymentHistory();
+    }, [toast, itemsPerPage, search]);
     
     return (
         <Box px={[4, 8]}>
@@ -429,7 +462,7 @@ const RevenueTable = () => {
                                                                 fontWeight={500}
                                                                 fontSize={12}
                                                             >
-                                                                {td.status === "ongoing_event"? "On Going": td.status === "on_going"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
+                                                                {td.status === "ongoing_event"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
                                                             </Tag>
                                                         </Td>
                                                     </Tr>
