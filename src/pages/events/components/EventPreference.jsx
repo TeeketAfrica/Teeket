@@ -56,34 +56,27 @@ const EventPreference = ({ isOpen, onClose }) => {
   };
   const userPreferences  = useSelector(selectEventPreference)
 
-  const fetchAvailablePreference = async()=>{
-        try {
-          const response = await teeketApi.get(`/tags`);
-          console.log('AVA', response.data)
-          if(response.data.success){
-            setAvailablePrefs(response.data.data)
-          }
-          // const preferences = response.data.event_preference;
-          // dispatch(setUserEventPreference(preferences))
-
+  const fetchAvailablePreference = useCallback(async () => {
+    try {
+      const response = await teeketApi.get(`/tags`);
+      if (response.data.success) {
+        setAvailablePrefs(response.data.data);
+      }
     } catch (error) {
-      // setPreLoader(false);
-      // setFetchError(true);
-      console.error("Error fetching events:", error);
+      console.error("Error fetching available preferences:", error);
     }
-  };
-  const fetchUserPreference = async()=>{
-        try {
-          const response = await teeketApi.get(`/user/event_preferences`);
-          const preferences = response.data.event_preference;
-          dispatch(setUserEventPreference(preferences))
+  }, []);
 
+  const fetchUserPreference = useCallback(async () => {
+    try {
+      const response = await teeketApi.get(`/user/event_preferences`);
+      const preferences = response.data.event_preference;
+      dispatch(setUserEventPreference(preferences));
     } catch (error) {
-      // setPreLoader(false);
-      // setFetchError(true);
-      console.error("Error fetching events:", error);
+      console.error("Error fetching user preferences:", error);
     }
-  };
+  }, [dispatch]);
+
   const handleSavePreference = async()=>{
     const params = {event_preference:selectedPrefs}
         try {
@@ -109,6 +102,7 @@ const EventPreference = ({ isOpen, onClose }) => {
       fetchAvailablePreference()
     }
   },[availablePrefs])
+  
   useEffect(()=>{
     if(userPreferences){
       setSelectedPrefs(userPreferences.map((i)=>i.id))

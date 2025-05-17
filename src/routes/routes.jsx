@@ -36,7 +36,7 @@ const publicRoutes = [
   { path: "/events", element: EventsPage },
   { path: "/event-category/:type?", element: EventCategoryPage },
   { path: "/account-settings", element: AccountSettingsPage },
-  { path: "/events/similar-events/:id?", element: SimilarEvents}
+  { path: "/events/similar-events/:id?", element: SimilarEvents },
 ];
 
 const privateRoutes = [
@@ -59,9 +59,10 @@ const privateRoutes = [
 const publicRoutesWithoutAuth = [
   { path: "/countdown", element: CounterDownPage },
   { path: "/auth/password-recovery", element: PasswordRecoveryPage },
-  { path: "/auth/password-reset", element: PasswordResetPage },
+  { path: "/auth/reset-password/:id/:token", element: PasswordResetPage },
   { path: "/auth/send-otp", element: SendOTPPage },
 ];
+
 
 const publicRoutesWithTokenRedirect = [
   { path: "/auth/login", element: LoginPage },
@@ -96,11 +97,13 @@ const routes = [
   ...publicRoutesWithTokenRedirect.map((route) => ({
     path: route.path,
     element: (
-      <PublicTokenRoute element={
-        <PublicRouteWithoutHeader>
-          <route.element />
-        </PublicRouteWithoutHeader>
-      } />
+      <PublicTokenRoute
+        element={
+          <PublicRouteWithoutHeader>
+            <route.element />
+          </PublicRouteWithoutHeader>
+        }
+      />
     ),
   })),
 ];

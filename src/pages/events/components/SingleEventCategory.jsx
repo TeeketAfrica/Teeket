@@ -14,7 +14,14 @@ const SingleEventCategory = ({ allEvents }) => {
       {allEvents.length > 0 ? (
         <>
           <Grid
-            templateColumns="repeat(4, 1fr)"
+            gridTemplateColumns={[
+              "1fr",
+              "repeat(2, 1fr)",
+              "repeat(3, 1fr)",
+              null,
+              "repeat(4, 1fr)",
+            ]}
+            width={"100%"}
             gap={6}
             borderBottom="1px solid"
             borderColor="gray.300"

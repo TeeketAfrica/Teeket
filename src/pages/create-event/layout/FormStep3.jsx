@@ -35,7 +35,7 @@ import FormLayout from "../components/FormLayout";
 import Ticket from "../components/Ticket";
 import TicketModal from "../components/TicketModal";
 import { Formik } from "formik";
-import { formStep3Schema } from "./formSchemas"; 
+import { formStep3Schema } from "./formSchemas";
 
 const FormStep3 = ({ formik }) => {
   const dispatch = useDispatch();
@@ -84,7 +84,12 @@ const FormStep3 = ({ formik }) => {
             }
             marginTop="4"
           >
-            <HStack color="gray.800" fontWeight="medium" flexWrap="wrap">
+            <HStack
+              color="gray.800"
+              fontWeight="medium"
+              flexWrap="wrap"
+              justifyContent="center"
+            >
               <Radio value="25" size="lg" variant="border">
                 25 Tickets
               </Radio>
@@ -157,7 +162,7 @@ const FormStep3 = ({ formik }) => {
                 </Button>
               </HStack>
             )}
-            <HStack gap="6" flexWrap="wrap" marginTop="4">
+            <HStack gap={6} mt={6} flexWrap="wrap">
               {tickets.map((data) => (
                 <Ticket
                   key={data.id}

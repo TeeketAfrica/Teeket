@@ -26,7 +26,7 @@ const EventCard = ({
   eventLocation,
   eventPrice,
   eventDate,
-  isFree
+  isFree,
 }) => {
   const navigate = useNavigate();
   const { getAccessToken } = useStorage();
@@ -54,7 +54,7 @@ const EventCard = ({
   };
 
   return (
-    <Link to="#" onClick={handleRedirect}>
+    <Link w="100%" to="#" onClick={handleRedirect}>
       <GridItem
         w="100%"
         h="100%"
@@ -127,7 +127,7 @@ const EventCard = ({
               >
                 <Cash />
                 <Text color="gray.800" fontSize={12}>
-                  {!isFree? `Starts at $${eventPrice}` : "Free event"}
+                  {!isFree ? `Starts at $${eventPrice}` : "Free event"}
                 </Text>
               </HStack>
               <HStack
