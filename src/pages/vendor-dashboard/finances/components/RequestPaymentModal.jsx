@@ -19,7 +19,6 @@ import RequestDollarFailed from "../../../../assets/icon/RequestDollarFailed.svg
 import { useEffect, useState } from "react";
 import { teeketApi } from "../../../../utils/api";
 import { useToast } from "@chakra-ui/react";
-import { TickCircle } from "iconsax-react";
 
 const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
   const [events, setEvents] = useState([]);
@@ -114,7 +113,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
       }
     };
     handleFetchEvents();
-  }, [loading, isOpen])
+  }, [])
 
   useEffect(()=>{
     if(!isOpen){
@@ -147,6 +146,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
               Your current events with due payment brings a total of{" "}
               <Text as="span" fontWeight={700}>
                 ${events.filter(event => event.status === "due").reduce((sum, event) => sum + Number(event?.amount || 0), 0)}
+                ${events.filter(event => event.status === "due").reduce((sum, event) => sum + Number(event?.amount || 0), 0)}
               </Text>
               . All payment will be made within 24hours after your request.
             </Text>
@@ -154,13 +154,12 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
               events && (
                 events.filter(event => event.status === "due").map((dueEvent, i)=>(
                   <HStack alignItems="flex-start" mb={4} key={i}>
-                    <Checkbox disabled={dueEvent.has_requested_payment} onChange={(e) => handleChecked(dueEvent?.amount, dueEvent?.id, e.target.checked)}/>
+                    <Checkbox onChange={(e) => handleChecked(dueEvent?.amount, dueEvent?.id, e.target.checked)}/>
                     <Box>
                       <Text fontWeight={500}>{dueEvent?.event?.title}</Text>
                       <Text fontSize={14} color="gray.600">
-                        <Text as="span" fontWeight={600} style={{ display: "flex", flexWrap: "nowrap", gap: "5px"}}>
-                          ${dueEvent?.amount} {" "}
-                          {dueEvent.has_requested_payment && <span style={{ display: "flex", flexWrap: "nowrap", gap: "5px"}}>payment requested <TickCircle/></span>}
+                        <Text as="span" fontWeight={600}>
+                          ${dueEvent?.amount}
                         </Text>
                       </Text>
                     </Box>
@@ -174,6 +173,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
                 Total revenue requested
               </Text>
               <Text fontSize={14} fontWeight={500}>
+                ${total || 0}
                 ${total || 0}
               </Text>
             </HStack>
@@ -189,6 +189,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
             >
               Cancel
             </Button>
+            <Button variant="primary" w="100%" onClick={sendRequest} disabled={loading}>
             <Button variant="primary" w="100%" onClick={sendRequest} disabled={loading}>
               Send request
             </Button>
