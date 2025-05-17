@@ -133,7 +133,7 @@ const FinancesDashboardPage = () => {
                     icon={AvailableRevenue}
                     revenueTitle="Available revenue"
                     revenueTotal={revenueData?.available_revenue || 0}
-                    desc="You can request payment in 4days time"
+                    desc="You can request payment in after event completion"
                     color="blue.400"
                 />
                 <RevenueCard

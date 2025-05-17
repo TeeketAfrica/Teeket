@@ -18,6 +18,7 @@ import FormStep3 from "./layout/FormStep3";
 import PublishEvent from "./layout/PublishEvent";
 import { DEFAULTBANNERIMAGE } from "../../utils/constants";
 import { convertUrlToHttpFormat } from "../../utils/utils";
+import { selectActiveUser, setIsCreator } from "../../features/activeUserSlice";
 
 // Validation schemas for each step
 const validationSchemas = [
@@ -64,6 +65,7 @@ const validationSchemas = [
 
 const VendorPage = () => {
     const [activeStep, setActiveStep] = useState(0);
+    const activeUser = useSelector(selectActiveUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
@@ -301,8 +303,12 @@ const VendorPage = () => {
                             );
                         }
                     }
+                    //ensure that the user becomes a creator after creating an event
+                    if(!activeUser.is_creator){
+                        dispatch(setIsCreator(true))
+                    }
                     // Reset state and navigate upon successful creation
-                    navigate("/app/overview");
+                    navigate("/app/events");
                     dispatch(resetEventState());
                 } catch (error) {
                     console.log("Failed to create or update event", error);
