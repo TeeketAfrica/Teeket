@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { setUserDetails } from "../../features/userSlice";
 
-const GoogleBtn = ({ title, handleGoogleResponse }) => {
+const GoogleBtn = ({ title }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,14 +29,10 @@ const GoogleBtn = ({ title, handleGoogleResponse }) => {
 
     const handleGoogleLogin = async (credentialResponse, isSignup) => {
         const endpoint = isSignup ? "/google/signup" : "/google/login";
-        console.log(endpoint)
-        console.log(credentialResponse)
         try {
             const response = await authApi.post(endpoint, {
                 code: credentialResponse.code,
             });
-
-            console.log(response.data)
             const { access_token, refresh_token } = response?.data;
 
             if (access_token && refresh_token) {

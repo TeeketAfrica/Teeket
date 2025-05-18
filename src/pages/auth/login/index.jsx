@@ -14,45 +14,43 @@ const LoginPage = () => {
     const theme = useTheme();
     const toast = useToast();
 
-    console.log("Hello");
+    // const googleLogin = async (res) => {
+    //     try {
+    //         const response = await authApi.post("/google/login", {
+    //             auth_token: res.access_token,
+    //         });
+    //         console.log("Login successful:", response);
 
-    const googleLogin = async (res) => {
-        try {
-            const response = await authApi.post("/google/login", {
-                auth_token: res.access_token,
-            });
-            console.log("Login successful:", response);
+    //         const token = response.data;
 
-            const token = response.data;
+    //         sessionStorage.setItem("TOKEN", token);
 
-            sessionStorage.setItem("TOKEN", token);
+    //         // if (token) {
+    //         //   sessionStorage.setItem("TOKEN", token);
+    //         //   dispatch(setUserDetails(values));
+    //         //   const path = sessionStorage.getItem("REDIRECT");
 
-            // if (token) {
-            //   sessionStorage.setItem("TOKEN", token);
-            //   dispatch(setUserDetails(values));
-            //   const path = sessionStorage.getItem("REDIRECT");
-
-            //   if (path) {
-            //     console.log(path);
-            //     sessionStorage.removeItem("REDIRECT");
-            //     navigate(path);
-            //   } else {
-            //     navigate("/app/overview");
-            //   }
-            // }
-        } catch (error) {
-            const errorMessage =
-                error?.response?.data?.message || "An error occured";
-            toast({
-                title: "Events failed to fetch.",
-                description: `${errorMessage}`,
-                status: "error",
-                duration: 3000,
-                position: "top-right",
-                isClosable: true,
-            });
-        }
-    };
+    //         //   if (path) {
+    //         //     console.log(path);
+    //         //     sessionStorage.removeItem("REDIRECT");
+    //         //     navigate(path);
+    //         //   } else {
+    //         //     navigate("/app/overview");
+    //         //   }
+    //         // }
+    //     } catch (error) {
+    //         const errorMessage =
+    //             error?.response?.data?.message || "An error occured";
+    //         toast({
+    //             title: "Events failed to fetch.",
+    //             description: `${errorMessage}`,
+    //             status: "error",
+    //             duration: 3000,
+    //             position: "top-right",
+    //             isClosable: true,
+    //         });
+    //     }
+    // };
 
     return (
         <div>
@@ -66,7 +64,7 @@ const LoginPage = () => {
                     <Box>
                         <GoogleBtn
                             title="Login with Google"
-                            handleGoogleResponse={googleLogin}
+                            // handleGoogleResponse={googleLogin}
                         />
 
                         <Box display="flex" gap={2} alignItems="center" mt={6}>
