@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Text,
+  Image,
 } from "@chakra-ui/react";
 import DashboardLayout from "../../../components/layouts/DashboardLayout";
 import DashboardPageHeaders from "../../../components/layouts/DashboardPageHeaders";
@@ -20,6 +21,7 @@ import AIStar from "../../../assets/icon/AI-star.svg";
 import Ticket from "../../../assets/icon/Ticket-green.svg";
 import Gain from "../../../assets/icon/Arrow-up.svg";
 import { teeketApi } from "../../../utils/api";
+import chartImg from "../../../assets/img/Chart.png"
 
 const OverviewDashboardPage = () => {
   const navigate = useNavigate();
@@ -104,7 +106,7 @@ const OverviewDashboardPage = () => {
                     <Text>vs last month</Text>
                   </HStack>
                 </VStack>
-                <Box>Chart</Box>
+                <Box><Image src={chartImg} alt="chart" /></Box>
               </HStack>
             </Box>
             <HStack justifyContent="space-between">
