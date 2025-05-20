@@ -5,7 +5,7 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 
 export const AccountNumberField = ({
   formik,
@@ -13,22 +13,16 @@ export const AccountNumberField = ({
   setVerifiedBankDetails,
   selectedBankDetails,
 }) => {
-  const [bankDetailsAcctNumber, setBankDetailsAcctNumber] = useState();
   const toast = useToast();
 
-  const handleAcctNumberChange = (event) => {
-    const value = event.target.value;
-    if (value.length <= 10) {
-      formik.setFieldValue("acctNumber", value);
-      setBankDetailsAcctNumber(value);
-    }
-  };
+  const acctNumber = formik.values.acctNumber;
+  const bankCode = selectedBankDetails?.code;
 
   const handleVerify = useCallback(async () => {
     try {
       setVerifiedBankDetailsLoading(true);
       const response = await fetch(
-        `https://nubapi.com/api/verify?account_number=${bankDetailsAcctNumber}&bank_code=${selectedBankDetails?.code}`,
+        `https://nubapi.com/api/verify?account_number=${acctNumber}&bank_code=${bankCode}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -40,10 +34,10 @@ export const AccountNumberField = ({
       const res = await response.json();
       setVerifiedBankDetails(res);
     } catch (error) {
-      const errorMessage = error?.message || "An error occured";
+      const errorMessage = error?.message || "An error occurred";
       toast({
         title: "Failed to fetch",
-        description: `${errorMessage}`,
+        description: errorMessage,
         status: "error",
         duration: 3000,
         position: "top-right",
@@ -52,37 +46,36 @@ export const AccountNumberField = ({
     } finally {
       setVerifiedBankDetailsLoading(false);
     }
-  }, [
-    selectedBankDetails,
-    toast,
-    bankDetailsAcctNumber,
-    setVerifiedBankDetailsLoading,
-    setVerifiedBankDetails,
-  ]);
+  }, [acctNumber, bankCode]);
 
+  // Debounced effect to verify account
   useEffect(() => {
-    if (bankDetailsAcctNumber?.length === 10 && selectedBankDetails) {
+    if (acctNumber?.length === 10 && bankCode) {
       const timer = setTimeout(() => {
         handleVerify();
       }, 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [bankDetailsAcctNumber, handleVerify, selectedBankDetails]);
+  }, [acctNumber, bankCode, handleVerify]);
 
   return (
-    <FormControl>
+    <FormControl
+      isInvalid={formik.touched.acctNumber && formik.errors.acctNumber}
+    >
       <FormLabel htmlFor="acctNumber">Account Number</FormLabel>
       <Input
         name="acctNumber"
         id="acctNumber"
-        type="number"
+        type="text"
         placeholder="Your account number"
         size="lg"
         maxLength={10}
-        value={formik.values.acctNumber}
-        onChange={handleAcctNumberChange}
-        isInvalid={formik.touched.acctNumber && formik.errors.acctNumber}
+        value={acctNumber}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        inputMode="numeric"
+        pattern="[0-9]*"
       />
       <FormErrorMessage>
         {formik.touched.acctNumber && formik.errors.acctNumber}

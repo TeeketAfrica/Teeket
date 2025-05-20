@@ -84,9 +84,9 @@ const EventsPage = () => {
                 </Text>
             ) : (
                 <>
-                    {events.length > 0 && <EventTabs allEvents={events} />}
+                    {events?.length > 0 && <EventTabs allEvents={events} />}
 
-          {events.length == 0 && fetchError && (
+          {events?.length == 0 && fetchError && (
             <Container maxW="385px" px={0}>
               <EmptyState
                 icon={EventCautionState}

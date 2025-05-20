@@ -8,9 +8,87 @@ import {
   Switch,
   FormControl,
   FormLabel,
+  useToast,
+  Button,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { teeketApi } from "../../../../utils/api";
 
-const NotificationTab = () => {
+const NotificationTab = ({isOrganizer}) => {
+  const toast = useToast();
+  const [organizationFormValues, setOrganizationFormValues] = useState({
+    emailNotification: false,
+    appNotification: false,
+    smsNotification: false,
+  });
+
+
+    useEffect(() => {
+      const fetchOrganizationNotification = async (values) => {
+        if(isOrganizer){
+          try {
+            const response = await teeketApi.get("/notification/settings");
+            const res = response.data;
+            setOrganizationFormValues({
+              emailNotification: res.email_enabled,
+              appNotification: res.push_enabled,
+              smsNotification: res.sms_enabled,
+            });
+  
+            console.log('data', res)
+  
+  
+            
+          } catch (error) {
+            const errorMessage = error?.message || "An error occured";
+            toast({
+              title: "Failed to fetch",
+              description: `${errorMessage}`,
+              status: "error",
+              duration: 3000,
+              position: "top-right",
+              isClosable: true,
+            });
+          }
+        }
+      };
+  
+      fetchOrganizationNotification();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const handleUpdateNotication = async (values) => {
+      console.log(values)
+      const params = {
+        "sms_enabled": values.smsNotification,
+        "push_enabled": values.appNotification,
+        "email_enabled": values.emailNotification
+      }
+      try {
+        const response = await teeketApi.patch("/notification/settings", params);
+        const res = response.data;
+        toast({
+          title: "Notification Updated",
+          description: ``,
+          status: "success",
+          duration: 3000,
+          position: "top-right",
+          isClosable: true,
+        });
+
+      } catch (error) {
+        const errorMessage = error?.message || "An error occured";
+        toast({
+          title: "Failed to fetch",
+          description: `${errorMessage}`,
+          status: "error",
+          duration: 3000,
+          position: "top-right",
+          isClosable: true,
+        });
+      }
+    }
+
   return (
     <VStack alignItems="stretch" maxW="624px" px="4" gap="6">
       <Box>
@@ -24,14 +102,15 @@ const NotificationTab = () => {
 
       <Formik
         enableReinitialize={true}
-        initialValues={{
-          emailNotification: false,
-          appNotification: false,
-        }}
+        initialValues={organizationFormValues}
         validationSchema={Yup.object({
-          bankName: Yup.boolean(),
-          acctNumber: Yup.boolean(),
+          appNotification: Yup.boolean(),
+          smsNotification: Yup.boolean(),
+          emailNotification: Yup.boolean(),
         })}
+        onSubmit={(values) => {
+          handleUpdateNotication(values);
+        }}
       >
         {(formik) => (
           <form onSubmit={formik.handleSubmit}>
@@ -78,7 +157,38 @@ const NotificationTab = () => {
                   }
                 />
               </FormControl>
+              <FormControl
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Box>
+                  <FormLabel htmlFor="smsNotification" mb="0" fontSize="md">
+                    Sms notifcation
+                  </FormLabel>
+                  <Text fontSize="sm" color="gray.600">
+                    Coming soon
+                  </Text>
+                </Box>
+                <Switch
+                  id="smsNotification"
+                  isChecked={formik.values.smsNotification}
+                  onChange={(e) =>
+                    formik.setFieldValue("smsNotification", e.target.checked)
+                  }
+                />
+              </FormControl>
             </VStack>
+                <Button
+                  type="submit"
+                  size="lg"
+                  variant="primary"
+                  w="fit-content"
+
+                  isDisabled={!(formik.isValid && formik.dirty)}
+                >
+                  Save changes
+                </Button>
           </form>
         )}
       </Formik>

@@ -52,6 +52,7 @@ const PasswordRecoveryPage = () => {
                 fontWeight="semibold"
                 cursor="pointer"
                 color="gray.700"
+                onClick={recoveryEmail && handleOnSubmit}
               >
                 Resend link
               </Text>

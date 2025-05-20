@@ -47,8 +47,8 @@ const AccountSettingsPage = () => {
                 const imageUrl = res.data?.url;
 
                 const response = await teeketApi.patch("/user/profile", {
-                    first_name: user?.firstName,
-                    last_name: user?.lastName,
+                    // first_name: user?.firstName,
+                    // last_name: user?.lastName,
                     profile_image: imageUrl,
                 });
 
@@ -114,6 +114,7 @@ const AccountSettingsPage = () => {
                                     </Button>
                                 ) : (
                                     <Button
+                                        onClick={()=>{setProfileImage(null); setSelectedImage(null)}}
                                         as="label"
                                         htmlFor="imageInput"
                                         variant="primary"

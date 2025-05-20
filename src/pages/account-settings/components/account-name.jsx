@@ -67,7 +67,6 @@ export const AccountName = () => {
       const response = await teeketApi.patch("/user/profile", {
         first_name: values.firstName,
         last_name: values.lastName,
-        profile_image: user?.profile_image ?? "",
       });
 
       dispatch(setActiveUser(response));
@@ -129,7 +128,7 @@ export const AccountName = () => {
               <FormLabel>Last Name</FormLabel>
               <InputGroup size="md">
                 <Input
-                  placeholder={user?.first_name ?? "Last Name"}
+                  placeholder={user?.last_name ?? "Last Name"}
                   {...register("lastName")}
                   w="375px"
                   isInvalid={!!errors.lastName}
