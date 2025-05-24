@@ -5,6 +5,25 @@ import Export from "../../../assets/icon/Export.svg";
 import OrdersTable from "./components/OrdersTable";
 
 const OrdersDashboardPage = () => {
+      const exportToExcel = async () => {
+          try {
+              let url = "/orders/export-csv";
+  
+              const response = await teeketApi.get(url);
+              const res = response.data;
+          } catch (error) {
+              const errorMessage =
+                  error?.response?.data?.message || "Unable to export";
+              toast({
+                  title: "Failed to export order",
+                  description: `${errorMessage}`,
+                  status: "error",
+                  duration: 3000,
+                  position: "top-right",
+                  isClosable: true,
+              });
+          }
+      };
   return (
     <DashboardLayout>
       <Stack
@@ -21,7 +40,7 @@ const OrdersDashboardPage = () => {
           pageTitle="Orders"
           subTitle="Explore Your Event Ticket Orders"
         />
-        <Button variant="secondary" p={2}>
+        <Button onClick={exportToExcel} variant="secondary" p={2}>
           <Export />
           Export
         </Button>

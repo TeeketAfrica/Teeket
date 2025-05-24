@@ -31,13 +31,13 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
           <ModalHeader p={0}>
             <HStack gap="11px">
               <Image
-                src={selectedItem.attendeeAvatar}
+                src={selectedItem.attendeeAvatar || selectedItem.attendee.profile_image}
                 alt={selectedItem.attendeeName}
                 w={10}
                 h={10}
               />
               <Text fontWeight={700} fontSize="xl">
-                {selectedItem.attendeeName}’s Order details
+                {selectedItem.attendeeName || selectedItem.attendee.first_name}’s Order details
               </Text>
             </HStack>
           </ModalHeader>
@@ -62,7 +62,7 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                 left={0}
                 width="100%"
                 height="100%"
-                bgImage={`url(${selectedItem.img})`}
+                bgImage={`url(${selectedItem.img || selectedItem.event.banner_image})`}
                 bgSize="cover"
                 bgPosition="center"
                 zIndex={-1}
@@ -84,10 +84,10 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                   zIndex={1}
                 >
                   <Text color="limeGreen" fontWeight={600} fontSize={14}>
-                    {selectedItem.ticketType} ticket
+                    {selectedItem.ticketType || selectedItem.event.type} ticket
                   </Text>
                   <Text fontWeight={700} color="white" fontSize={20}>
-                    {selectedItem.eventTitle}
+                    {selectedItem.eventTitle||selectedItem.event.title}
                   </Text>
                   <Container maxW="300px" px={0} mx={0}>
                     <Text fontSize={14} color="utilityLight200">
@@ -144,17 +144,17 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
             <Box>
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Order ID</Text>
-                <Text color="gray.600">{selectedItem.orderId}</Text>
+                <Text color="gray.600">{selectedItem.orderId || selectedItem.order_no}</Text>
               </HStack>
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Ticket type</Text>
-                <Text color="gray.600">{selectedItem.ticketType}</Text>
+                <Text color="gray.600">{selectedItem.ticketType || selectedItem.ticket.name}</Text>
               </HStack>
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Ticket Cost</Text>
-                <Text color="gray.600">{selectedItem.ticketCost}</Text>
+                <Text color="gray.600">{selectedItem.ticketCost || selectedItem.ticket.price}</Text>
               </HStack>
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">
@@ -164,7 +164,7 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Purchase date</Text>
-                <Text color="gray.600">{selectedItem.created}</Text>
+                <Text color="gray.600">{selectedItem.created || selectedItem.date_created.split('T')[0]}</Text>
               </HStack>
             </Box>
           </ModalBody>

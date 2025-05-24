@@ -106,7 +106,8 @@ const OverviewDashboardPage = () => {
                     <Text>vs last month</Text>
                   </HStack>
                 </VStack>
-                <Box><Image src={chartImg} alt="chart" /></Box>
+                <Box>
+                  <Image src={chartImg} alt="chart" /></Box>
               </HStack>
             </Box>
             <HStack justifyContent="space-between">
