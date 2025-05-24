@@ -71,6 +71,8 @@ const OrdersTable = () => {
         };
     }, []);
 
+    console.log(paginatedData)
+
     // FETCH ORDERS
 
     useEffect(() => {
@@ -153,6 +155,18 @@ const OrdersTable = () => {
 
     const handleFilterByStatus = (selectedStatus) => {
         setStatusFilter(statusMap[selectedStatus]);
+
+        if (selectedStatus === "All events") {
+            setPaginatedData(ordersTableData);
+        } else {
+            const filteredData = ordersTableData.filter(
+                (item) => selectedStatus === filterPolicy[item.status]  
+            );
+            setCurrentPage(0);
+            setTotalItems(filteredData.length);
+            setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+            setPaginatedData(filteredData.slice(0, itemsPerPage));
+        }
     };
 
     return (
@@ -273,13 +287,13 @@ const OrdersTable = () => {
                                                     color="gray.600"
                                                     fontWeight={500}
                                                 >
-                                                    {td.orderId}
+                                                    {td.order_no}
                                                 </Td>
                                                 <Td>
                                                     <HStack spacing={3}>
                                                         <Image
                                                             src={
-                                                                td.attendeeAvatar
+                                                                td.attendeeAvatar || td.attendee.profile_image
                                                             }
                                                             alt={
                                                                 td.attendeeName
@@ -293,7 +307,10 @@ const OrdersTable = () => {
                                                                 color="gray.800"
                                                             >
                                                                 {
-                                                                    td.attendeeName
+                                                                    td.attendee.first_name
+                                                                } 
+                                                                {
+                                                                    td.attendee.last_name
                                                                 }
                                                             </Text>
                                                         </Box>
@@ -303,7 +320,7 @@ const OrdersTable = () => {
                                                     <HStack spacing={3}>
                                                         <Image
                                                             src={td.img}
-                                                            alt={td.eventTitle}
+                                                            alt={td.eventTitle||td.event.banner_image}
                                                             w={10}
                                                             h={10}
                                                         />
@@ -312,11 +329,11 @@ const OrdersTable = () => {
                                                                 fontWeight={500}
                                                                 color="gray.800"
                                                             >
-                                                                {td.eventTitle}
+                                                                {td.eventTitle||td.event.title}
                                                             </Text>
                                                             <Text color="gray.600">
                                                                 {
-                                                                    td.eventCategory
+                                                                    td.eventCategory || td.event.type
                                                                 }
                                                             </Text>
                                                         </Box>
@@ -326,19 +343,19 @@ const OrdersTable = () => {
                                                     color="gray.600"
                                                     fontWeight={500}
                                                 >
-                                                    {td.ticketType}
+                                                    {td.ticket.name}
                                                 </Td>
                                                 <Td
                                                     color="gray.600"
                                                     fontWeight={500}
                                                 >
-                                                    {td.ticketCost}
+                                                    {td.ticket.price}
                                                 </Td>
                                                 <Td
                                                     color="gray.600"
                                                     fontWeight={500}
                                                 >
-                                                    {td.created}
+                                                    {td.date_created.split('T')[0]}
                                                 </Td>
                                                 <Td>
                                                     <HStack

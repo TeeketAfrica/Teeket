@@ -1091,3 +1091,8 @@ export const financeHistoryTableData = [
         action: "Support",
     },
 ];
+
+
+export const filterPolicy = {
+    ongoing_event: 'On going',
+}

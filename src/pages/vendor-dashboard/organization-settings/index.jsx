@@ -29,13 +29,13 @@ const OrganizationSettingsDashboardPage = () => {
 
               <TabPanels marginTop={8}>
                 <TabPanel>
-                  <OrganizationTab />
+                  <OrganizationTab isOrganizer={true}/>
                 </TabPanel>
                 <TabPanel>
-                  <BankDetailTab />
+                  <BankDetailTab isOrganizer={true}/>
                 </TabPanel>
                 <TabPanel>
-                  <NotificationTab />
+                  <NotificationTab isOrganizer={true}/>
                 </TabPanel>
               </TabPanels>
             </Tabs>

@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { setUserDetails } from "../../features/userSlice";
 
-const GoogleBtn = ({ title, handleGoogleResponse }) => {
+const GoogleBtn = ({ title }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();

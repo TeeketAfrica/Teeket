@@ -34,6 +34,8 @@ const FinancesDashboardPage = () => {
 
                 const response = await teeketApi.get(url);
                 const res = response.data;
+
+                console.log(res)
                 setRevenueSummary(res);
                 setRevenueData(res.overview);
             } catch (error) {
@@ -73,6 +75,7 @@ const FinancesDashboardPage = () => {
             });
         }
     };
+
     return (
         <DashboardLayout>
             <Stack

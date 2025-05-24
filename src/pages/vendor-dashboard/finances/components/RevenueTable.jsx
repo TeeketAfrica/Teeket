@@ -34,6 +34,7 @@ import SupportIcon from "../../../../assets/icon/SupportIcon.svg";
 import {
     eventFilter,
     eventTableHead,
+    filterPolicy,
     financeHistoryTableData,
     financeTableData,
     financeTableHistoryHead,
@@ -44,7 +45,7 @@ import { teeketApi } from "../../../../utils/api";
 import { formatDate } from "../../../../utils/formatDate";
 
 const RevenueTable = () => {
-    const [setSelectedStatusFilter] = useState(null);
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
     const [viewHistory, setViewHistory] = useState(false);
     const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
@@ -120,7 +121,7 @@ const RevenueTable = () => {
             setPaginatedData(revenueTableData);
         } else {
             const filteredData = revenueTableData.filter(
-                (item) => item.status === selectedStatus
+                (item) => selectedStatus === filterPolicy[item.status]  
             );
             setCurrentPage(0);
             setTotalItems(filteredData.length);
@@ -431,7 +432,7 @@ const RevenueTable = () => {
                                                                 fontWeight={500}
                                                                 fontSize={12}
                                                             >
-                                                                {td.status === "on_going"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
+                                                                {td.status === "ongoing_event"? "On Going": td.status === "on_going"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
                                                             </Tag>
                                                         </Td>
                                                     </Tr>

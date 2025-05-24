@@ -8,11 +8,12 @@ import { Loader2 } from "lucide-react";
 import React, { useEffect } from "react";
 
 export const AccountNameField = ({ formik, loading, details }) => {
+  console.log(details)
   useEffect(() => {
     if (details?.account_name) {
       formik.setFieldValue("acctName", details.account_name);
     }
-  }, [details, formik]);
+  }, [details]);
   return (
     <FormControl className="relative">
       <FormLabel htmlFor="acctName">Account Name</FormLabel>

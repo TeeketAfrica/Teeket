@@ -30,12 +30,13 @@ import {
 } from "@chakra-ui/react";
 import { Command } from "cmdk";
 import { Loader2, LoaderPinwheel, Search } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useModal } from "../../../../context/ModalContext";
 import RenderFormControl from "../renderFormControl";
 import { AccountNameField } from "./bank-detail-fields/account-name-field";
 import { AccountNumberField } from "./bank-detail-fields/account-number-field";
 import { BankNameField } from "./bank-detail-fields/bank-name-field";
+import { teeketApi } from "../../../../utils/api";
 
 const BankDetailTab = () => {
   const { openModal } = useModal();
@@ -43,8 +44,9 @@ const BankDetailTab = () => {
 
   const [selectedBankDetails, setSelectedBankDetails] = useState(false);
   const [verifiedBankDetails, setVerifiedBankDetails] = useState();
+  const [hasExistingDetails, setHasExistingDetails] = useState(false);
   const [verifiedBankDetailsLoading, setVerifiedBankDetailsLoading] =
-    useState(false);
+  useState(false);
 
   const [bankFormValues, setBankFormValues] = useState({
     acctName: "",
@@ -52,37 +54,53 @@ const BankDetailTab = () => {
     bankName: "",
   });
 
-  // FETCH BANK DETAILS
-  // useEffect(() => {
-  //   const fetchOrganizationDetails = async (values) => {
-  //     try {
-  //       const response = await teeketApi.get("/bank-account");
-  //       const res = response.data;
-  //       setBankFormValues({
-  //         acctName: res.name,
-  //         acctNumber: res.email,
-  //         bankName: res.description,
-  //       });
-  //     } catch (error) {
-  //       const errorMessage = error?.message || "An error occured";
-  //       toast({
-  //         title: "Failed to fetch",
-  //         description: `${errorMessage}`,
-  //         status: "error",
-  //         duration: 3000,
-  //         position: "top-right",
-  //         isClosable: true,
-  //       });
-  //     }
-  //   };
+  const initialFormValues = useMemo(
+  () => ({
+    acctName: bankFormValues.acctName,
+    acctNumber: bankFormValues.acctNumber,
+    bankName: bankFormValues.bankName,
+  }),
+  [bankFormValues.acctName, bankFormValues.acctNumber, bankFormValues.bankName]
+);
 
-  //   fetchOrganizationDetails();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+
+    
+  // FETCH BANK DETAILSfa
+  useEffect(() => {
+    const fetchOrganizationBank = async (values) => {
+      try {
+        const response = await teeketApi.get("/bank-account");
+        const res = response.data;
+        if(res.account_name && res.account_number && res.bank_name){
+          setHasExistingDetails(true)
+          setBankFormValues({
+            acctName: res.account_name,
+            acctNumber: res.account_number,
+            bankName: res.bank_name,
+          });          
+        }
+
+      } catch (error) {
+        const errorMessage = error?.message || "An error occured";
+        toast({
+          title: "Failed to fetch",
+          description: `${errorMessage}`,
+          status: "error",
+          duration: 3000,
+          position: "top-right",
+          isClosable: true,
+        });
+      }
+    };
+
+    fetchOrganizationBank();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleModal = (type, data) => {
     openModal(type, data);
   };
+
 
   return (
     <VStack alignItems="stretch" maxW="624px" px="4" gap="6">
@@ -97,17 +115,33 @@ const BankDetailTab = () => {
 
       <Formik
         enableReinitialize={true}
-        initialValues={bankFormValues}
+        initialValues={initialFormValues}
         validationSchema={Yup.object({
           bankName: Yup.string().required("Please input  bank name"),
           acctNumber: Yup.number().required("Please input account number"),
           acctName: Yup.string().required("Please input account name"),
         })}
+
         onSubmit={(values) => {
-          handleModal("editBankDetail", values);
+          handleModal("saveBankDetail", [
+            {
+              title: "Bank Name",
+              value: values.bankName,
+            },
+            {
+              title: "Account Number",
+              value: values.acctNumber,
+            },
+            {
+              title: "Account Name",
+              value: values.acctName,
+            },
+          ]);
         }}
+
       >
         {(formik) => {
+
           return (
             <form onSubmit={formik.handleSubmit}>
               <VStack gap="4" pb="6">
@@ -126,36 +160,19 @@ const BankDetailTab = () => {
                   loading={verifiedBankDetailsLoading}
                   details={verifiedBankDetails}
                 />
-                <Text fontSize="sm" fontWeight="semibold" color="yellow.400">
+                <Text fontSize="sm" fontWeight="semibold" color="#CC7F13">
                   Be sure of your bank information. To change it next time you
                   will have to contact us to request a change.
                 </Text>
               </VStack>
-              {formik.values.bankName === "" ? (
+              {!hasExistingDetails ? (
                 <Button
                   type="submit"
                   size="lg"
                   variant="primary"
                   w="fit-content"
-                  onClick={() => {
-                    formik.isValid &&
-                      formik.dirty &&
-                      handleModal("saveBankDetail", [
-                        {
-                          title: "Bank Name",
-                          value: formik.values.bankName,
-                        },
-                        {
-                          title: "Account Number",
-                          value: formik.values.acctNumber,
-                        },
-                        {
-                          title: "Account Name",
-                          value: formik.values.acctName,
-                        },
-                      ]);
-                  }}
-                  // isDisabled={!(formik.isValid && formik.dirty)}
+
+                  isDisabled={!(formik.isValid && formik.dirty)}
                 >
                   Save changes
                 </Button>
@@ -173,7 +190,7 @@ const BankDetailTab = () => {
                     size="lg"
                     variant="primary"
                     w="fit-content"
-                    onClick={() => formik.handleSubmit()}
+                    onClick={() => handleModal("editBankDetail", bankFormValues)}
                   >
                     Request change
                   </Button>

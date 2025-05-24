@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Box } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
@@ -7,12 +7,29 @@ import AuthHeader from "../../../components/auth/AuthHeader";
 import PasswordResetForm from "./components/PasswordResetForm";
 import DoubleCheckMark from "../../../assets/icon/DoubleCheckMark.svg";
 import { authApi } from "../../../utils/api";
+import useStorage from "../../../utils/storage";
 
 const PasswordResetPage = () => {
   const params = useParams()
   const {id, token} = params
+ const [passwordReset, setPasswordReset] = useState(false);
+  const { removeAccessToken, removeRefreshToken } = useStorage();
+  
+    const signOut = async () => {
+      try {
+        sessionStorage.clear();
+        removeRefreshToken();
+        removeAccessToken();
+        persistor.purge();
+      } catch (err) {
+        console.log("Error signing out user", err);
+      }
+    };
 
-  const [passwordReset, setPasswordReset] = useState(false);
+    useEffect(()=>{
+      signOut()
+    }, [])
+ 
 
   const handleOnSubmit = async(value) => {
           try {

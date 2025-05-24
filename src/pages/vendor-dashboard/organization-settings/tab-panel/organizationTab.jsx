@@ -26,8 +26,20 @@ const OrganizationTab = ({isOrganizer}) => {
         email: values.orgEmail,
         description: values.orgDescription,
       });
+
+      console.log(response)
+
+          toast({
+            title: "Organisation Details updated successfully",
+            description: `${errorMessage}`,
+            status: "success",
+            duration: 3000,
+            position: "top-right",
+            isClosable: true,
+          });
     } catch (error) {
       const errorMessage = error?.response?.data?.message || "An error occured";
+      console.log(errorMessage)
       toast({
         title: "Failed to update",
         description: `${errorMessage}`,
@@ -51,6 +63,11 @@ const OrganizationTab = ({isOrganizer}) => {
             orgEmail: res.email,
             orgDescription: res.description,
           });
+
+          console.log('data', res)
+
+
+          
         } catch (error) {
           const errorMessage = error?.message || "An error occured";
           toast({
@@ -68,6 +85,8 @@ const OrganizationTab = ({isOrganizer}) => {
     fetchOrganizationDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
 
   return (
     <VStack alignItems="stretch" maxW="624px" px="4" gap="6">

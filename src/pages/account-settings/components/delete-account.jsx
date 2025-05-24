@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import React, { useState } from "react";
+import { teeketApi } from "../../../utils/api";
 
 export const DeleteAccount = () => {
   const [md] = useMediaQuery("(min-width: 768px)");

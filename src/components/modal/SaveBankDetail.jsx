@@ -11,12 +11,49 @@ import {
   Text,
   Button,
   Divider,
+  useToast,
 } from "@chakra-ui/react";
 import { useModal } from "../../context/ModalContext";
 import FeatureIcon from "../../assets/icon/Feature-icon.svg";
+import { teeketApi } from "../../utils/api";
 
 const SaveBankDetail = () => {
   const { closeModal, modalState } = useModal();
+  const toast = useToast()
+  const bankData = modalState.data
+
+     const saveOrganizationBank = async (values) => {
+            const params =  {
+              account_name:(bankData.find((i)=>i.title === 'Account Name'))?.value, 
+              account_number: (bankData.find((i)=>i.title === 'Account Number'))?.value,
+               bank_name: (bankData.find((i)=>i.title === 'Bank Name'))?.value
+              }
+          try {
+            const response = await teeketApi.patch("/bank-account", params);
+            const res = response.data;
+            console.log(res)
+            toast({
+              title: "Bank Details Saved",
+              description: `You have successfully saved the bank details`,
+              status: "success",
+              duration: 3000,
+              position: "top-right",
+              isClosable: true,
+            });
+            closeModal()
+          } catch (error) {
+            const errorMessage = error?.message || "An error occured";
+            toast({
+              title: "Failed to save",
+              description: `${errorMessage}`,
+              status: "error",
+              duration: 3000,
+              position: "top-right",
+              isClosable: true,
+            });
+          }
+        };
+  
 
   return (
     <ModalContent paddingY={2}>
@@ -63,7 +100,7 @@ const SaveBankDetail = () => {
         >
           Cancel
         </Button>
-        <Button width="170px" variant="primary" size="lg">
+        <Button onClick={saveOrganizationBank} width="170px" variant="primary" size="lg">
           Send Request
         </Button>
       </ModalFooter>
