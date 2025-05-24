@@ -262,7 +262,7 @@ const HomePage = () => {
                       overflow="hidden"
                     >
                       <Image
-                        src={`/src/assets/img/${data.imageName}.webp`}
+                         src={`/images/${data.imageName}.webp`}
                         alt="image"
                         objectFit="contain"
                       />
