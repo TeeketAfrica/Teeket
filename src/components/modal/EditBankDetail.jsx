@@ -18,10 +18,12 @@ const EditBankDetail = () => {
   const { closeModal, modalState } = useModal();
   const toast = useToast();
 
+  console.log(modalState)
+
   // UPDATE BANK DETAILS
   const handleUpdateBank = async () => {
     try {
-      const response = await teeketApi.patch("/bank-account", {
+      const response = await teeketApi.patch("/bank-account/change-request", {
         account_name: modalState.data.acctName,
         account_number: modalState.data.acctNumber,
         bank_name: modalState.data.bankName,
