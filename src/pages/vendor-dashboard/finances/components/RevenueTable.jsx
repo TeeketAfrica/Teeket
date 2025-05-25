@@ -179,7 +179,8 @@ const RevenueTable = () => {
                 }
                 const response = await teeketApi.get(url);
                 const res = response.data;
-                console.log("payment history", response)
+                setHistoryTableData(res.data);
+                console.log("payment history", response);
             }
             catch(error){
                 console.log(error);
@@ -350,7 +351,7 @@ const RevenueTable = () => {
                             fontWeight={500}
                             color="gray.700"
                         >
-                            {`${financeHistoryTableData.length} requests`}
+                            {`${historyTableData.length} requests`}
                         </Tag>
                     </HStack>
                 )}
@@ -496,14 +497,14 @@ const RevenueTable = () => {
                                                 </Tr>
                                             </Thead>
                                             <Tbody fontSize={14}>
-                                                {financeHistoryTableData.map(
+                                                {historyTableData.map(
                                                     (td, i) => (
                                                         <Tr key={i}>
                                                             <Td
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.id}
+                                                                {td.request_id}
                                                             </Td>
                                                             <Td>
                                                                 <HStack
@@ -511,11 +512,13 @@ const RevenueTable = () => {
                                                                 >
                                                                     <Image
                                                                         src={
-                                                                            td.img
+                                                                            td.revenue.event.banner_image
                                                                         }
                                                                         alt={
-                                                                            td.eventTitle
+                                                                            td.revenue.event.title
                                                                         }
+                                                                        objectFit={"cover"}
+                                                                        borderRadius={"6px"}
                                                                         w={10}
                                                                         h={10}
                                                                     />
@@ -527,12 +530,12 @@ const RevenueTable = () => {
                                                                             color="gray.800"
                                                                         >
                                                                             {
-                                                                                td.eventTitle
+                                                                                td.revenue.event.title
                                                                             }
                                                                         </Text>
                                                                         <Text color="gray.600">
                                                                             {
-                                                                                td.eventCategory
+                                                                                td.revenue.event.organizer
                                                                             }
                                                                         </Text>
                                                                     </Box>
@@ -542,7 +545,7 @@ const RevenueTable = () => {
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.amount === null? "0": td.amount}
+                                                                {td.revenue.amount === null? "0": td.revenue.amount}
                                                             </Td>
                                                             <Td
                                                                 color="gray.600"
@@ -555,7 +558,7 @@ const RevenueTable = () => {
                                                                 fontWeight={500}
                                                             >
                                                                 {
-                                                                    td.remittedDate
+                                                                    td.date_remitted === null? "Coming soon": formatDate(td.date_remitted)
                                                                 }
                                                             </Td>
                                                             <Td>
