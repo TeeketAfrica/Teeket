@@ -44,6 +44,7 @@ import { useNavigate } from "react-router-dom";
 import { teeketApi } from "../../../../utils/api";
 import { formatDate } from "../../../../utils/formatDate";
 import { formatAmount } from "../../../../utils/utils";
+import { Spinner } from '@chakra-ui/react';
 
 const RevenueTable = () => {
     const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
@@ -52,6 +53,7 @@ const RevenueTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [request] = useState(true);
     const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const toast = useToast();
 
@@ -156,6 +158,7 @@ const RevenueTable = () => {
 
     useEffect(() => {
         const handleFetchEvents = async () => {
+            setLoading(true);
             try {
                 let url = `/revenue?page_index=${currentPage}`;
                 const queryParams = [];
@@ -173,6 +176,7 @@ const RevenueTable = () => {
                 setRevenueTableData(res.data);
                 setPaginatedData(res.data.slice(0, itemsPerPage));
                 setTotalPages(Math.ceil(res.total / itemsPerPage));
+                setLoading(false);
             } catch (error) {
                 console.log(error);
 
@@ -186,10 +190,12 @@ const RevenueTable = () => {
                     position: "top-right",
                     isClosable: true,
                 });
+                setLoading(false);
             }
         };
 
         const handleFetchPaymentHistory = async ()=>{
+            setLoading(true);
             try{
                 let url = "/payment-requests";
                 const queryParams = [];
@@ -203,7 +209,7 @@ const RevenueTable = () => {
                 const response = await teeketApi.get(url);
                 const res = response.data;
                 setHistoryTableData(res.data);
-                console.log("payment history", response);
+                setLoading(false);
             }
             catch(error){
                 console.log(error);
@@ -218,13 +224,20 @@ const RevenueTable = () => {
                     position: "top-right",
                     isClosable: true,
                 });
+                setLoading(false);
             }
         }
 
         handleFetchEvents();
         handleFetchPaymentHistory();
     }, [toast, itemsPerPage]);
-    
+
+    if(loading) return (
+        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem"}}>
+            <Spinner/>
+            Fetching Revenue data Hang on
+        </div>
+    )
     return (
         <Box px={[4, 8]}>
             <Stack
@@ -576,7 +589,7 @@ const RevenueTable = () => {
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.requestDate}
+                                                                {formatDate(td.date_created)}
                                                             </Td>
                                                             <Td
                                                                 color="gray.600"
