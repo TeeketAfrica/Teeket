@@ -13,6 +13,7 @@ export const AccountNumberField = ({
   setVerifiedBankDetails,
   selectedBankDetails,
 }) => {
+  const api_key = import.meta.env.VITE_REACT_NUB_API_KEY
   const toast = useToast();
   const acctNumber = formik.values.acctNumber;
   const bankCode = selectedBankDetails?.code || "";
@@ -32,7 +33,7 @@ useEffect(() => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer yZcY84twWMgoXjdPdG4BPP51gLGsGFkTrGMWghJV651464da`,
+            Authorization: `Bearer ${api_key}`,
           },
         }
       );
