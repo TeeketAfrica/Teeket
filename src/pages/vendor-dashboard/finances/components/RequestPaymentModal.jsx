@@ -19,6 +19,7 @@ import RequestDollarFailed from "../../../../assets/icon/RequestDollarFailed.svg
 import { useEffect, useState } from "react";
 import { teeketApi } from "../../../../utils/api";
 import { useToast } from "@chakra-ui/react";
+import { TickCircle } from "iconsax-react";
 
 const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
   const [events, setEvents] = useState([]);
@@ -113,7 +114,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
       }
     };
     handleFetchEvents();
-  }, [])
+  }, [loading, isOpen])
 
   useEffect(()=>{
     if(!isOpen){
@@ -153,12 +154,13 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
               events && (
                 events.filter(event => event.status === "due").map((dueEvent, i)=>(
                   <HStack alignItems="flex-start" mb={4} key={i}>
-                    <Checkbox onChange={(e) => handleChecked(dueEvent?.amount, dueEvent?.id, e.target.checked)}/>
+                    <Checkbox disabled={dueEvent.has_requested_payment} onChange={(e) => handleChecked(dueEvent?.amount, dueEvent?.id, e.target.checked)}/>
                     <Box>
                       <Text fontWeight={500}>{dueEvent?.event?.title}</Text>
                       <Text fontSize={14} color="gray.600">
-                        <Text as="span" fontWeight={600}>
-                          ${dueEvent?.amount}
+                        <Text as="span" fontWeight={600} style={{ display: "flex", flexWrap: "nowrap", gap: "5px"}}>
+                          ${dueEvent?.amount} {" "}
+                          {dueEvent.has_requested_payment && <span style={{ display: "flex", flexWrap: "nowrap", gap: "5px"}}>payment requested <TickCircle/></span>}
                         </Text>
                       </Text>
                     </Box>
