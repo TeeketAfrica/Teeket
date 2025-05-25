@@ -32,12 +32,12 @@ import FinanceEmptyState from "../../../../assets/icon/FinanceEmptyState.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
 import SupportIcon from "../../../../assets/icon/SupportIcon.svg";
 import {
-    eventFilter,
     eventTableHead,
     filterPolicy,
     financeHistoryTableData,
     financeTableData,
     financeTableHistoryHead,
+    revEventFilter,
 } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
@@ -116,18 +116,33 @@ const RevenueTable = () => {
     //   const handleFilterByStatus = () => {}
 
     const handleFilterByStatus = (selectedStatus) => {
-        setSelectedStatusFilter(selectedStatus);
+        // setSelectedStatusFilter(selectedStatus);
 
-        if (selectedStatus === "All events") {
+        if(!viewHistory){
+            if (selectedStatus === "All events") {
             setPaginatedData(revenueTableData);
-        } else {
-            const filteredData = revenueTableData.filter(
-                (item) => selectedStatus === filterPolicy[item.status]  
-            );
-            setCurrentPage(0);
-            setTotalItems(filteredData.length);
-            setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-            setPaginatedData(filteredData.slice(0, itemsPerPage));
+            } else {
+                const filteredData = revenueTableData.filter(
+                    (item) => item.status === selectedStatus
+                );
+                setCurrentPage(0);
+                setTotalItems(filteredData.length);
+                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+                setPaginatedData(filteredData.slice(0, itemsPerPage));
+            }
+        }else{
+            if(selectedStatus === "All events"){
+                setPaginatedData(historyTableData);
+            }
+            else{
+                const filteredData = historyTableData.filter(
+                    (item) => item.status === selectedStatus
+                );
+                setCurrentPage(0);
+                setTotalItems(filteredData.length);
+                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+                setPaginatedData(filteredData.slice(0, itemsPerPage));
+            }
         }
     };
 
@@ -285,7 +300,7 @@ const RevenueTable = () => {
                             </HStack>
                         </MenuButton>
                         <MenuList>
-                            {(viewHistory ? eventFilter[1] : eventFilter[0]).map((filter, i) => (
+                            {(viewHistory ? revEventFilter[1] : revEventFilter[0]).map((filter, i) => (
                                 <MenuItem
                                     key={i}
                                     justifyContent="space-between"
@@ -293,8 +308,9 @@ const RevenueTable = () => {
                                         setSelectedFilterIndex(i);
                                         handleFilterByStatus(filter.filter);
                                     }}
+                                    style={{textTransform: "capitalize"}}
                                 >
-                                    {filter.filter}{" "}
+                                    {filter.filter === "ongoing_event"? "On Going": filter.filter === "failed_request"? "Failed Requests": filter.filter}{" "}
                                     {selectedFilterIndex === i && <Check />}
                                 </MenuItem>
                             ))}
