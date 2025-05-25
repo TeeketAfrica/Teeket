@@ -16,8 +16,11 @@ import {
 import { useModal } from "../../context/ModalContext";
 import FeatureIcon from "../../assets/icon/Feature-icon.svg";
 import { teeketApi } from "../../utils/api";
+import { setBankDetails } from "../../features/activeUserSlice";
+import { useDispatch } from "react-redux";
 
 const SaveBankDetail = () => {
+  const dispatch = useDispatch()
   const { closeModal, modalState } = useModal();
   const toast = useToast()
   const bankData = modalState.data
@@ -31,7 +34,14 @@ const SaveBankDetail = () => {
           try {
             const response = await teeketApi.patch("/bank-account", params);
             const res = response.data;
-            console.log(res)
+            dispatch(setBankDetails(
+              {
+              id: res.id,
+              acctName: res.account_name,
+              acctNumber: res.account_number,
+              bankName: res.bank_name,
+            }
+            ))    
             toast({
               title: "Bank Details Saved",
               description: `You have successfully saved the bank details`,

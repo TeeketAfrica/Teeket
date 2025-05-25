@@ -90,6 +90,8 @@ const formatDateAndTime = (isoString, type) => {
         return "th";
     };
 
+
+
     let hours = dateObj.getUTCHours();
     const minutes = dateObj.getUTCMinutes();
     const ampm = hours >= 12 ? "PM" : "AM";
@@ -111,6 +113,12 @@ const formatDateAndTime = (isoString, type) => {
         },
     };
 };
+    
+function formatAmount(number) {
+    if(number){
+        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+}
 
 const convertUrlToHttpFormat = (url) => {
     if (!url) return;
@@ -120,6 +128,7 @@ const convertUrlToHttpFormat = (url) => {
 };
 
 export {
+    formatAmount,
     maskEmail,
     isValidImage,
     getImageDimensions,

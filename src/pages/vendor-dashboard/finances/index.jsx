@@ -17,6 +17,7 @@ import RevenueTable from "./components/RevenueTable";
 import RequestPaymentModal from "./components/RequestPaymentModal";
 import { useEffect, useState } from "react";
 import { teeketApi } from "../../../utils/api";
+import { formatAmount } from "../../../utils/utils";
 
 const FinancesDashboardPage = () => {
     const toast = useToast();
@@ -125,7 +126,7 @@ const FinancesDashboardPage = () => {
                     icon={TotalRevenue}
                     revenueTitle="Total revenue made"
                     revenueTotal={revenueData?.total_revenue || 0}
-                    percentIncrease={revenueSummary?.percentage_change}
+                    percentIncrease={formatAmount(revenueSummary?.percentage_change || 0)}
                     desc={`${
                         revenueSummary?.gain_or_loss ? "increase" : "decrease"
                     } vs last revenue`}
