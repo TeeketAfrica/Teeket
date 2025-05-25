@@ -16,8 +16,22 @@ import {
 import Calendar from "../../../../assets/icon/calendar-alt-dark.svg";
 import Clock from "../../../../assets/icon/clock-dark.svg";
 import Ticket from "../../../../assets/icon/ticket-icon.svg";
+import { filterPolicy, formatEventDateRange } from "../../../../utils/constants";
+import { useEffect, useState } from "react";
 
 const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
+
+const [result, setResult] = useState({date:'', time:''});
+
+  useEffect(()=>{
+    if( selectedItem?.event.start_date && selectedItem?.event.end_date){
+      setResult(formatEventDateRange({
+          start_date: selectedItem?.event.start_date,
+          end_date: selectedItem?.event.end_date
+      }))
+    }
+  }, [selectedItem])
+
   return (
     <Modal
       size="xl"
@@ -56,6 +70,7 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
               bgPosition="top left"
               my={8}
             >
+
               <Box
                 position="absolute"
                 top={0}
@@ -91,14 +106,13 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                   </Text>
                   <Container maxW="300px" px={0} mx={0}>
                     <Text fontSize={14} color="utilityLight200">
-                      Join us for the Outdoors Conveyning, an event that
-                      celebrates the beauty of nature...
+                      {selectedItem.event.description}
                     </Text>
                   </Container>
                 </Box>
                 <Box w={149}>
                   <Image
-                    src={selectedItem.img}
+                    src={selectedItem.img || selectedItem.event.banner_image}
                     alt={selectedItem.eventTitle}
                     w={101}
                     h={101}
@@ -122,7 +136,7 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                     color="white"
                   >
                     <Calendar />
-                    5th Jan, 2024
+                    {result.date}
                   </Tag>
                   <Tag
                     borderRadius={8}
@@ -133,7 +147,7 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                     color="white"
                   >
                     <Clock />
-                    6:00PM - 8:00PM
+                   {result.time}
                   </Tag>
                 </HStack>
                 <Box>
@@ -159,7 +173,7 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Event status</Text>
-                <Text color="gray.600">{selectedItem.status}</Text>
+                <Text color="gray.600">{filterPolicy[selectedItem.event_status]}</Text>
               </HStack>
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">

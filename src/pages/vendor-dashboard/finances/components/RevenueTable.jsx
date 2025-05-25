@@ -167,7 +167,7 @@ const RevenueTable = () => {
 
         handleFetchEvents();
     }, [toast, itemsPerPage, search]);
-    console.log(" rev tab data ", revenueTableData)
+    
     return (
         <Box px={[4, 8]}>
             <Stack

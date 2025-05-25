@@ -22,6 +22,7 @@ import Ticket from "../../../assets/icon/Ticket-green.svg";
 import Gain from "../../../assets/icon/Arrow-up.svg";
 import { teeketApi } from "../../../utils/api";
 import chartImg from "../../../assets/img/Chart.png"
+import { OverviewChart } from "./OverviewChart";
 
 const OverviewDashboardPage = () => {
   const navigate = useNavigate();
@@ -60,6 +61,8 @@ const OverviewDashboardPage = () => {
     () => events.data?.reduce((total, event) => total + event.tickets_sold, 0),
     [events.data]
   );
+
+  console.log(summary)
 
   return (
     <DashboardLayout>
@@ -192,7 +195,7 @@ const OverviewDashboardPage = () => {
                       backgroundColor="gray.800"
                     ></Box>
                     <Text fontSize="sm" color="gray.600">
-                      Sales
+                      Ticket Sold
                     </Text>
                   </HStack>
                   <HStack gap="6px">
@@ -203,35 +206,42 @@ const OverviewDashboardPage = () => {
                       backgroundColor="green.500"
                     ></Box>
                     <Text fontSize="sm" color="gray.600">
-                      Visits
+                      Revenue
                     </Text>
                   </HStack>
                 </HStack>
               </HStack>
-              <VStack flexGrow="1" justifyContent="center">
-                <ChartUp />
+              { summary?.plot_data?.length > 0?
+                <Box display={'flex'} justifyContent={'center'} height={250}>
+                  <OverviewChart chartData={summary?.plot_data}/>
+                </Box>
+                :
+                <VStack flexGrow="1" justifyContent="center">
+                  <ChartUp/>
 
-                <Text
-                  as="h4"
-                  fontSize="md"
-                  fontWeight="semibold"
-                  color="gray.800"
-                >
-                  No sales analytics
-                </Text>
-                <Text fontSize="sm">
-                  You will get some analytics here from event sales
-                </Text>
-                <Button
-                  leftIcon={<PlusLight />}
-                  size="sm"
-                  variant="primary"
-                  marginTop={6}
-                  onClick={() => navigate("/create-event")}
-                >
-                  Create Event
-                </Button>
-              </VStack>
+                  <Text
+                    as="h4"
+                    fontSize="md"
+                    fontWeight="semibold"
+                    color="gray.800"
+                  >
+                    No sales analytics
+                  </Text>
+                  <Text fontSize="sm">
+                    You will get some analytics here from event sales
+                  </Text>
+                  <Button
+                    leftIcon={<PlusLight />}
+                    size="sm"
+                    variant="primary"
+                    marginTop={6}
+                    onClick={() => navigate("/create-event")}
+                  >
+                    Create Event
+                  </Button>
+                </VStack>                
+              }
+
             </Stack>
           </BoxFrame>
           <BoxFrame backgroundColor="gray.100" color="gray.800">

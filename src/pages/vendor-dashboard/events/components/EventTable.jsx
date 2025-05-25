@@ -159,7 +159,26 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
     // EXPORT ATTENDEE LIST
     const handleAttendeeExport = async (eventId) => {
         try {
-            await teeketApi.get(`/events/${eventId}/attendees/export-csv`);
+           const res = await teeketApi.get(`/events/${eventId}/attendees/export-csv`, 
+                {
+                    responseType: 'blob', 
+                }
+             );
+             console.log(res)
+            
+                const blob = new Blob([res.data], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+            
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'Attendee-List.csv'; 
+            
+                document.body.appendChild(link);
+                link.click();
+            
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            
             toast({
                 title: "Attendee list exported",
                 status: "success",

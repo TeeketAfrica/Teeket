@@ -16,16 +16,27 @@ import { teeketApi } from "../../utils/api";
 
 const EditBankDetail = () => {
   const { closeModal, modalState } = useModal();
+  console.log(modalState)
   const toast = useToast();
 
   // UPDATE BANK DETAILS
   const handleUpdateBank = async () => {
     try {
-      const response = await teeketApi.patch("/bank-account", {
+      const response = await teeketApi.post(`/bank-account/change-request/${modalState.data.id}`, {
         account_name: modalState.data.acctName,
         account_number: modalState.data.acctNumber,
         bank_name: modalState.data.bankName,
       });
+
+        toast({
+        title: "Change Request",
+        description: `Request to change bank details has be sent successfully`,
+        status: "success",
+        duration: 3000,
+        position: "top-right",
+        isClosable: true,
+      });
+      closeModal()
     } catch (error) {
       const errorMessage = error?.response?.data?.message || "An error occured";
       toast({
