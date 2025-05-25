@@ -192,7 +192,8 @@ const RevenueTable = () => {
                 }
                 const response = await teeketApi.get(url);
                 const res = response.data;
-                console.log("payment history", response)
+                setHistoryTableData(res.data);
+                console.log("payment history", response);
             }
             catch(error){
                 console.log(error);
