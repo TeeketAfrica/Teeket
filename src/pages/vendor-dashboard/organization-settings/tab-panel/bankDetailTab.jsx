@@ -41,7 +41,7 @@ import { teeketApi } from "../../../../utils/api";
 const BankDetailTab = () => {
   const { openModal } = useModal();
   const toast = useToast();
-
+  const [bankDetailId, setBankDetailId] = useState();
   const [selectedBankDetails, setSelectedBankDetails] = useState(false);
   const [verifiedBankDetails, setVerifiedBankDetails] = useState();
   const [hasExistingDetails, setHasExistingDetails] = useState(false);
@@ -73,6 +73,7 @@ const BankDetailTab = () => {
         const res = response.data;
         if(res.account_name && res.account_number && res.bank_name){
           setHasExistingDetails(true)
+          setBankDetailId(res.id)
           setBankFormValues({
             acctName: res.account_name,
             acctNumber: res.account_number,
@@ -190,7 +191,7 @@ const BankDetailTab = () => {
                     size="lg"
                     variant="primary"
                     w="fit-content"
-                    onClick={() => handleModal("editBankDetail", bankFormValues)}
+                    onClick={() => handleModal("editBankDetail", {...bankFormValues, id:bankDetailId})}
                   >
                     Request change
                   </Button>

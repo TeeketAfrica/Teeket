@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+    Avatar,
     Box,
     HStack,
     Image,
@@ -32,7 +33,7 @@ import SearchIconEmpty from "../../../../assets/icon/SearchIconEmpty.svg";
 import OrdersIconEmptyState from "../../../../assets/icon/OrdersIconEmptyState.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
 import MoreDetails from "../../../../assets/icon/MoreDetails.svg";
-import { eventFilter, ordersTableHead } from "../../../../utils/constants";
+import { eventFilter, filterPolicy, ordersTableHead } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
 import MoreDetailsModal from "./MoreDetailsModal";
@@ -70,9 +71,6 @@ const OrdersTable = () => {
             window.removeEventListener("offline", updateNetworkStatus);
         };
     }, []);
-
-    console.log(paginatedData)
-
     // FETCH ORDERS
 
     useEffect(() => {
@@ -92,6 +90,7 @@ const OrdersTable = () => {
                 if (queryParams.length > 0) {
                     url += `?${queryParams.join("&")}`;
                 }
+                console.log(url)
                 const response = await teeketApi.get(url);
                 const res = response.data;
                 // setData(res.data);
@@ -291,16 +290,14 @@ const OrdersTable = () => {
                                                 </Td>
                                                 <Td>
                                                     <HStack spacing={3}>
-                                                        <Image
-                                                            src={
-                                                                td.attendeeAvatar || td.attendee.profile_image
-                                                            }
-                                                            alt={
-                                                                td.attendeeName
-                                                            }
-                                                            w={10}
-                                                            h={10}
-                                                        />
+                                                            <Avatar
+                                                                border="1px solid"
+                                                                borderColor="gray.800"
+                                                                color="gray.800"
+                                                                name={td.attendee?.first_name || td.attendee?.email}
+                                                                src={td.attendee?.profile_image}
+                                                                bgColor="transparent"
+                                                            />
                                                         <Box>
                                                             <Text
                                                                 fontWeight={500}
@@ -318,12 +315,14 @@ const OrdersTable = () => {
                                                 </Td>
                                                 <Td>
                                                     <HStack spacing={3}>
-                                                        <Image
-                                                            src={td.img}
-                                                            alt={td.eventTitle||td.event.banner_image}
-                                                            w={10}
-                                                            h={10}
-                                                        />
+                                                        <Avatar
+                                                                border="1px solid"
+                                                                borderColor="gray.800"
+                                                                color="gray.800"
+                                                                name={td.event?.title || td.event?.organizer}
+                                                                src={td.event?.banner_image}
+                                                                bgColor="transparent"
+                                                            />
                                                         <Box>
                                                             <Text
                                                                 fontWeight={500}

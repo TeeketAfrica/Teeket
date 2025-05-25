@@ -2,16 +2,25 @@ import FacebookIcon from "../assets/icon/FacebookIcon.svg";
 import TwitterIcon from "../assets/icon/TwitterIcon.svg";
 import InstagramIcon from "../assets/icon/InstagramIcon.svg";
 import LinkedInIcon from "../assets/icon/LinkedInIcon.svg";
-
+import { parseISO, isSameDay, format } from 'date-fns';
 export const authBaseUrl = import.meta.env.VITE_REACT_AUTH_BASE_URL;
 export const mediaBaseUrl = import.meta.env.VITE_REACT_MEDIA_BASE_URL;
 export const teeketBaseUrl = import.meta.env.VITE_REACT_TEEKET_BASE_URL;
 export const clientId = import.meta.env.VITE_REACT_GOOGLE_CLIENT_ID;
-export const googleClientSecretKey = import.meta.env
-    .VITE_REACT_GOOGLE_CLIENT_SECRET;
-
+export const googleClientSecretKey = import.meta.env.VITE_REACT_GOOGLE_CLIENT_SECRET;
+import Img1 from "../assets/img/Avatars-8.png";
 export const REFRESH_TOKEN_EXPIRY_SECONDS = 7 * 24 * 60 * 60; // 7 days
 export const ACCESS_TOKEN_EXPIRY_SECONDS = 24 * 60 * 60; // 1 day
+import Img2 from "../assets/img/Avatars-1.png";
+import Img3 from "../assets/img/Avatars-2.png";
+import Img4 from "../assets/img/Avatars-3.png";
+import Img5 from "../assets/img/Avatars-4.png";
+import Img6 from "../assets/img/Avatars-5.png";
+import Img7 from "../assets/img/Avatars-6.png";
+import Img8 from "../assets/img/Avatars-7.png";
+import Avatar from "../assets/img/Avatars.png";
+import ActionBtn from "../assets/icon/ActionBtn.svg";
+
 
 export const SOCIAL_LINKS = [
     {
@@ -31,18 +40,6 @@ export const SOCIAL_LINKS = [
         link: "https://linkedin.com/company/teeketafrica",
     },
 ];
-
-import Img1 from "../assets/img/Avatars-8.png";
-import Img2 from "../assets/img/Avatars-1.png";
-import Img3 from "../assets/img/Avatars-2.png";
-import Img4 from "../assets/img/Avatars-3.png";
-import Img5 from "../assets/img/Avatars-4.png";
-import Img6 from "../assets/img/Avatars-5.png";
-import Img7 from "../assets/img/Avatars-6.png";
-import Img8 from "../assets/img/Avatars-7.png";
-import Avatar from "../assets/img/Avatars.png";
-import ActionBtn from "../assets/icon/ActionBtn.svg";
-
 export const DEFAULTBANNERIMAGE = "https://i.postimg.cc/tC8yTCMc/default.png";
 
 export const IMAGESIZE = {
@@ -1093,6 +1090,26 @@ export const financeHistoryTableData = [
 ];
 
 
+export function formatEventDateRange({ start_date, end_date }) {
+  const start = parseISO(start_date);
+  const end = parseISO(end_date);
+
+  const formattedTime = `${format(start, 'ha').toLowerCase()} - ${format(new Date(start.getTime() + 6 * 60 * 60 * 1000), 'ha').toLowerCase()}`;
+
+  if (isSameDay(start, end)) {
+    return {
+      date: format(start, 'do MMMM, yyyy'), 
+      time: formattedTime, 
+    };
+  } else {
+    return {
+      date: `${format(start, 'do MMMM')} - ${format(end, 'do MMMM, yyyy')}`, 
+      time: `${format(start, 'ha')}`, 
+    };
+  }
+}
+
 export const filterPolicy = {
     ongoing_event: 'On going',
+    on_going: 'On going',
 }
