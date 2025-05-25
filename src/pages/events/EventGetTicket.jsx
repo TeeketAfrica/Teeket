@@ -24,22 +24,22 @@ const EventGetTicket = () => {
      const calculateTimeLeft = (endDate, setTimeLeft, timerIntervalRef) => {
         const now = new Date();
         const end = new Date(endDate);
-    
+
         if (end <= now) {
-            setTimeLeft("00h 00m 00s");
+            setTimeLeft("00y 00m 00d 00h 00m 00s");
             if (timerIntervalRef.current) {
                 clearInterval(timerIntervalRef.current);
             }
             return;
         }
-    
+
         let years = end.getFullYear() - now.getFullYear();
         let months = end.getMonth() - now.getMonth();
         let days = end.getDate() - now.getDate();
         let hours = end.getHours() - now.getHours();
         let minutes = end.getMinutes() - now.getMinutes();
         let seconds = end.getSeconds() - now.getSeconds();
-    
+
         if (seconds < 0) {
             seconds += 60;
             minutes--;
@@ -61,22 +61,11 @@ const EventGetTicket = () => {
             months += 12;
             years--;
         }
-    
+
         const pad = (n) => String(n).padStart(2, "0");
-    
-    //    How to dispaly what is left on time 
-        let display = "";
-    
-        if (years > 0) {
-            display = `${pad(years)}y ${pad(months)}m ${pad(days)}d`;
-        } else if (months > 0) {
-            display = `${pad(months)}m ${pad(days)}d ${pad(hours)}h`;
-        } else if (days > 0) {
-            display = `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m`;
-        } else {
-            display = `${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
-        }
-    
+
+        const display = `${pad(years)}y ${pad(months)}m ${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+
         setTimeLeft(display);
     };
     
