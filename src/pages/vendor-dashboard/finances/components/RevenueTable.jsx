@@ -565,19 +565,19 @@ const RevenueTable = () => {
                                                                 <Tag
                                                                     bg={
                                                                         td.status ===
-                                                                        "Processing"
+                                                                        "processing" || "created"
                                                                             ? "gray.200"
                                                                             : td.status ===
-                                                                              "Remitted"
+                                                                              "remitted"
                                                                             ? "green.100"
                                                                             : "red.100"
                                                                     }
                                                                     color={
                                                                         td.status ===
-                                                                        "Processing"
+                                                                        "processing" || "created"
                                                                             ? "gray.700"
                                                                             : td.status ===
-                                                                              "Remitted"
+                                                                              "remitted"
                                                                             ? "green.500"
                                                                             : "red.400"
                                                                     }
@@ -600,9 +600,7 @@ const RevenueTable = () => {
                                                                 <HStack>
                                                                     <SupportIcon />
                                                                     <Text>
-                                                                        {
-                                                                            td.action
-                                                                        }
+                                                                        support
                                                                     </Text>
                                                                 </HStack>
                                                             </Td>
