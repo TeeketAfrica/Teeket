@@ -299,7 +299,7 @@ const RevenueTable = () => {
                             </HStack>
                         </MenuButton>
                         <MenuList>
-                            {(viewHistory ? revEventFilter[1] : revEventFilter[0]).map((filter, i) => (
+                            {(viewHistory ? eventFilter[1] : eventFilter[0]).map((filter, i) => (
                                 <MenuItem
                                     key={i}
                                     justifyContent="space-between"
