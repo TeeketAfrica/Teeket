@@ -12,8 +12,11 @@ import {
 import { useModal } from "../../context/ModalContext";
 import FeatureIcon from "../../assets/icon/Feature-icon-danger.svg";
 import { teeketApi } from "../../utils/api";
+import { setBankDetails } from "../../features/activeUserSlice";
+import { useDispatch } from "react-redux";
 
 const DeleteBankDetail = () => {
+  const dispatch = useDispatch()
     const toast = useToast();
   const { closeModal } = useModal();
 
@@ -22,6 +25,7 @@ const DeleteBankDetail = () => {
         try {
           const response = await teeketApi.delete("/bank-account");
           const res = response.data;
+          dispatch(setBankDetails(null))
           toast({
             title: "Bank Details Deleted",
             description: `You have successfully deleted the bank details`,

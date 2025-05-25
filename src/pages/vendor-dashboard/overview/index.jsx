@@ -23,6 +23,7 @@ import Gain from "../../../assets/icon/Arrow-up.svg";
 import { teeketApi } from "../../../utils/api";
 import chartImg from "../../../assets/img/Chart.png"
 import { OverviewChart } from "./OverviewChart";
+import { formatAmount } from "../../../utils/utils";
 
 const OverviewDashboardPage = () => {
   const navigate = useNavigate();
@@ -62,8 +63,6 @@ const OverviewDashboardPage = () => {
     [events.data]
   );
 
-  console.log(summary)
-
   return (
     <DashboardLayout>
       <DashboardPageHeaders
@@ -94,7 +93,7 @@ const OverviewDashboardPage = () => {
                 <VStack alignItems="flex-start" gap="0" height="100%">
                   <Text fontSize="md">Your earnings</Text>
                   <Text fontSize="5xl" fontWeight="bold">
-                    <Text as="span">$</Text>
+                    <Text as="span">₦</Text>
                     <Text as="span">{summary?.overview?.available_revenue.toLocaleString('en-US')}</Text>
                   </Text>
                   <HStack fontSize="sm" fontWeight="medium" marginTop="auto">
@@ -103,7 +102,7 @@ const OverviewDashboardPage = () => {
                         summary.percentage_change > 0 && <Gain />
                       }
                       <Text as="span" color={summary.percentage_change < 0? "red.400": summary.percentage_change>0? "green.400": "gray.100"}>
-                        {`${summary.percentage_change}%`}
+                        {formatAmount(summary?.percentage_change || 0) }%
                       </Text>
                     </HStack>
                     <Text>vs last month</Text>
