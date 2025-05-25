@@ -55,7 +55,6 @@ export const IMAGEDIMENSION = {
 };
 
 export const eventFilter = [
-    [
         {
             filter: "All events",
         },
@@ -68,16 +67,35 @@ export const eventFilter = [
         {
             filter: "Past events",
         }
+]
+
+export const revEventFilter = [
+    [
+        {
+            filter: "All events",
+        },
+        {
+            filter: "due",
+        },
+        {
+            filter: "ongoing_event",
+        },
+        {
+            filter: "unavailable",
+        },
     ],
     [
         {
-            filter: "requested",
+            filter: "All events"
+        },
+        {
+            filter: "created",
         },
         {
             filter: "remitted"
         },
         {
-            filter: "failed request"
+            filter: "failed_request"
         }
     ]
     
