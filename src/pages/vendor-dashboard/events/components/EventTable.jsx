@@ -421,7 +421,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                                                         color="gray.600"
                                                         fontWeight={500}
                                                     >
-                                                        ${td.total_revenue}
+                                                        ₦{td.total_revenue}
                                                     </Td>
                                                     <Td
                                                         color="gray.600"

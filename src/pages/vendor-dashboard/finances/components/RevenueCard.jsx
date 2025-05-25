@@ -30,7 +30,7 @@ const RevenueCard = ({
                 </Text>
             </HStack>
             <Text fontSize="36px" fontWeight={700} mb={4}>
-                ${revenueTotal.toLocaleString()}
+                ₦{revenueTotal.toLocaleString()}
             </Text>
             <HStack spacing={2}>
                 {percentIncrease !== undefined && percentIncrease !== null && (

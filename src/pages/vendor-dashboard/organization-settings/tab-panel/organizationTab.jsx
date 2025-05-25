@@ -30,8 +30,8 @@ const OrganizationTab = ({isOrganizer}) => {
       console.log(response)
 
           toast({
-            title: "Organisation Details updated successfully",
-            description: `${errorMessage}`,
+            title: "Update Organisation Details",
+            description: `Organisation Details updated successfully`,
             status: "success",
             duration: 3000,
             position: "top-right",
@@ -39,7 +39,7 @@ const OrganizationTab = ({isOrganizer}) => {
           });
     } catch (error) {
       const errorMessage = error?.response?.data?.message || "An error occured";
-      console.log(errorMessage)
+      console.log(error)
       toast({
         title: "Failed to update",
         description: `${errorMessage}`,

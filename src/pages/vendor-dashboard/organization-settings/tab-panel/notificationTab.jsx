@@ -34,10 +34,6 @@ const NotificationTab = ({isOrganizer}) => {
               appNotification: res.push_enabled,
               smsNotification: res.sms_enabled,
             });
-  
-            console.log('data', res)
-  
-  
             
           } catch (error) {
             const errorMessage = error?.message || "An error occured";

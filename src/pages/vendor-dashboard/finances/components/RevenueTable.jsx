@@ -390,7 +390,7 @@ const RevenueTable = () => {
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.amount === null? "$0": `$${td.amount}`}
+                                                            {td.amount === null? "₦0": `₦${td.amount}`}
                                                         </Td>
                                                         <Td
                                                             color="gray.600"

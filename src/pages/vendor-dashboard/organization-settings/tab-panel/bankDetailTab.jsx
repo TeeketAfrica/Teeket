@@ -37,10 +37,14 @@ import { AccountNameField } from "./bank-detail-fields/account-name-field";
 import { AccountNumberField } from "./bank-detail-fields/account-number-field";
 import { BankNameField } from "./bank-detail-fields/bank-name-field";
 import { teeketApi } from "../../../../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import { selectActiveUser, setBankDetails } from "../../../../features/activeUserSlice";
 
 const BankDetailTab = () => {
   const { openModal } = useModal();
+  const dispatch = useDispatch()
   const toast = useToast();
+  const activeUser = useSelector(selectActiveUser);
   const [bankDetailId, setBankDetailId] = useState();
   const [selectedBankDetails, setSelectedBankDetails] = useState(false);
   const [verifiedBankDetails, setVerifiedBankDetails] = useState();
@@ -64,7 +68,7 @@ const BankDetailTab = () => {
 );
 
 
-    
+
   // FETCH BANK DETAILSfa
   useEffect(() => {
     const fetchOrganizationBank = async (values) => {
@@ -72,13 +76,15 @@ const BankDetailTab = () => {
         const response = await teeketApi.get("/bank-account");
         const res = response.data;
         if(res.account_name && res.account_number && res.bank_name){
-          setHasExistingDetails(true)
-          setBankDetailId(res.id)
-          setBankFormValues({
+
+          dispatch(setBankDetails(
+            {
+            id: res.id,
             acctName: res.account_name,
             acctNumber: res.account_number,
             bankName: res.bank_name,
-          });          
+          }
+          ))    
         }
 
       } catch (error) {
@@ -98,6 +104,29 @@ const BankDetailTab = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(()=>{
+    if(activeUser.bankdetails){
+      const res = activeUser.bankdetails
+        setHasExistingDetails(true)
+        setBankDetailId(res.id)      
+        setBankFormValues({
+          acctName: res.acctName,
+          acctNumber: res.acctNumber,
+          bankName: res.bankName,
+        });      
+    }else{
+      setSelectedBankDetails(null)
+      setVerifiedBankDetails(null)
+      setHasExistingDetails(false)
+      setBankFormValues({
+          acctName: null,
+          acctNumber: null,
+          bankName: null,
+        });   
+    }
+ 
+  }, [activeUser])
+  
   const handleModal = (type, data) => {
     openModal(type, data);
   };
