@@ -11,6 +11,7 @@ import {
   Image,
   Divider,
   Container,
+      Avatar,
   Tag,
 } from "@chakra-ui/react";
 import Calendar from "../../../../assets/icon/calendar-alt-dark.svg";
@@ -44,12 +45,20 @@ const [result, setResult] = useState({date:'', time:''});
         <ModalContent p={6} borderRadius={16}>
           <ModalHeader p={0}>
             <HStack gap="11px">
-              <Image
+              <Avatar
+                   border="1px solid"
+                   borderColor="gray.800"
+                   color="gray.800"
+                   name={selectedItem.attendeeName || selectedItem.attendee.first_name}
+                   src={selectedItem.attendeeAvatar || selectedItem.attendee.profile_image}
+                   bgColor="transparent"
+              />
+              {/* <Image
                 src={selectedItem.attendeeAvatar || selectedItem.attendee.profile_image}
                 alt={selectedItem.attendeeName}
                 w={10}
                 h={10}
-              />
+              /> */}
               <Text fontWeight={700} fontSize="xl">
                 {selectedItem.attendeeName || selectedItem.attendee.first_name}’s Order details
               </Text>

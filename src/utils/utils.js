@@ -114,9 +114,9 @@ const formatDateAndTime = (isoString, type) => {
     };
 };
     
-function formatAmount(number) {
+function formatAmount(number, place) {
     if(number){
-        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return number.toLocaleString('en-US', { minimumFractionDigits: place, maximumFractionDigits: place });
     }
 }
 

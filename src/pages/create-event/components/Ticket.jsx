@@ -1,5 +1,6 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 import Illustration from "../../../assets/icon/Illustration.svg";
+import { formatAmount } from "../../../utils/utils";
 
 const Ticket = ({ data, handleOnclick }) => {
   return (
@@ -36,7 +37,7 @@ const Ticket = ({ data, handleOnclick }) => {
             {data.ticketQuantity} {data.ticketName} tickets
           </Text>
           <Text fontSize="5xl" fontWeight="bold">
-            ₦{Number.parseInt(data.ticketPrice)}
+            ₦{formatAmount(Number.parseInt(data.ticketPrice), 0)}
           </Text>
         </Box>
       </Box>

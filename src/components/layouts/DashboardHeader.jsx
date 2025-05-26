@@ -91,13 +91,15 @@ const DashboardHeader = ({ onOpen }) => {
                         </MenuButton>
                         <MenuList>
                             <MenuGroup title={activeUser?.email}>
-                                <MenuItem
-                                    icon={<TicketIcon />}
-                                    color="gray.600"
-                                    fontSize={14}
-                                >
-                                    My Account
-                                </MenuItem>
+                                <Link to={"/my-tickets"}>
+                                    <MenuItem
+                                        icon={<TicketIcon />}
+                                        color="gray.600"
+                                        fontSize={14}
+                                    >
+                                        My Account
+                                    </MenuItem>
+                                </Link>
                             </MenuGroup>
                             <MenuDivider />
                             <MenuGroup>

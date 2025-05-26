@@ -140,13 +140,15 @@ const Header = () => {
                     </MenuButton>
                     <MenuList>
                       <MenuGroup title={user?.email}>
-                        <MenuItem
-                          icon={<TicketIcon />}
-                          color="gray.600"
-                          fontSize={14}
-                        >
-                          My Account
-                        </MenuItem>
+                                <Link to={"/my-tickets"}>
+                                    <MenuItem
+                                        icon={<TicketIcon />}
+                                        color="gray.600"
+                                        fontSize={14}
+                                    >
+                                        My Account
+                                    </MenuItem>
+                                </Link>
                       </MenuGroup>
                       <MenuDivider />
                       <MenuGroup>
@@ -265,12 +267,12 @@ const Header = () => {
                                       </MenuItem>
                                     </Link>
                                   ))}
-                                  <Link>
+                                  <Link to="/my-tickets">
                                     <MenuItem>
                                       My Account
                                     </MenuItem>
                                   </Link>
-                                  <Link to="/create-event">
+                                  <Link >
                                     <MenuItem >
                                       Create Event
                                     </MenuItem>

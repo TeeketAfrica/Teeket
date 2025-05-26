@@ -127,7 +127,7 @@ const EventCard = ({
               >
                 <Cash />
                 <Text color="gray.800" fontSize={12}>
-                  {!isFree ? `Starts at $${eventPrice}` : "Free event"}
+                  {!isFree && eventPrice !== 0 ? `Starts at ₦${eventPrice}` : "Free event"}
                 </Text>
               </HStack>
               <HStack
