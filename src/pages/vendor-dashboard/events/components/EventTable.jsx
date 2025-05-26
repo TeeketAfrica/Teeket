@@ -39,6 +39,7 @@ import { formatDate } from "../../../../utils/formatDate";
 import ActionBtn from "../../../../assets/icon/ActionBtn.svg";
 import { teeketApi } from "../../../../utils/api";
 import { Spinner } from '@chakra-ui/react';
+import { formatAmount } from "../../../../utils/utils";
 
 const EventTable = ({ setData, loading, setIsLoading }) => {
     const [statusFilter, setStatusFilter] = useState("");
@@ -417,12 +418,21 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                                                         {td.tickets_sold}/
                                                         {td.number_of_tickets}
                                                     </Td>
-                                                    <Td
-                                                        color="gray.600"
-                                                        fontWeight={500}
-                                                    >
-                                                        ₦{td.total_revenue}
-                                                    </Td>
+                                                    {
+                                                        td.total_revenue === 0?
+                                                        <Td
+                                                            color="gray.600"
+                                                            fontWeight={500}
+                                                        >
+                                                            Free
+                                                        </Td>:
+                                                        <Td
+                                                            color="gray.600"
+                                                            fontWeight={500}
+                                                        >
+                                                            ₦{formatAmount(td.total_revenue, 0)}
+                                                        </Td>                                                      
+                                                    }
                                                     <Td
                                                         color="gray.600"
                                                         fontWeight={500}
