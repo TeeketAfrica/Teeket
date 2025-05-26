@@ -10,6 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useToast,
   VStack,
   Wrap,
   WrapItem,
@@ -21,30 +22,10 @@ import { teeketApi } from "../../../utils/api";
 import { set } from "zod";
 
 const EventPreference = ({ isOpen, onClose }) => {
+  const toast = useToast()
   const [selectedPrefs, setSelectedPrefs] = useState([]);
   const [availablePrefs, setAvailablePrefs] = useState([]);
   const dispatch = useDispatch()
-  const preference = [
-    "Anime",
-    "Gaming",
-    "Food",
-    "Cooperate event",
-    "Conferences",
-    "Government",
-    "Entertainment",
-    "Religion",
-    "Fashion",
-    "Sports",
-    "Travel",
-    "Tech",
-    "Outdoors",
-    "Charity",
-    "Art & Craft",
-    "Campus",
-    "Youth",
-    "Crypto",
-    "Attractions",
-  ];
 
   const handleAddPref = (pref) => {
     console.log(pref)
@@ -58,7 +39,8 @@ const EventPreference = ({ isOpen, onClose }) => {
 
   const fetchAvailablePreference = useCallback(async () => {
     try {
-      const response = await teeketApi.get(`/tags`);
+      let url = "/tags?page_size=100";
+      const response = await teeketApi.get(url);
       if (response.data.success) {
         setAvailablePrefs(response.data.data);
       }
@@ -82,14 +64,29 @@ const EventPreference = ({ isOpen, onClose }) => {
         try {
           console.log(params)
           const response = await teeketApi.patch(`/user/event_preferences`, params);
-          console.log(response.data)
+                toast({
+                    title: "Updatd Event Preference",
+                    description: "Your event preferences has been updated successfully.",
+                    status: "success",
+                    duration: 3000,
+                    position: "top-right",
+                    isClosable: true,
+                });
           fetchAvailablePreference()
           onClose();
 
     } catch (error) {
-      // setPreLoader(false);
-      // setFetchError(true);
-      console.error("Error fetching events:", error);
+                const errorMessage =
+                    error?.response?.data?.message || "An error occured";
+                toast({
+                    title: "Failed to save User Preference.",
+                    description: `${errorMessage}`,
+                    status: "error",
+                    duration: 3000,
+                    position: "top-right",
+                    isClosable: true,
+                });
+      console.error("Error saving events preference:", error);
     }
   };
 
@@ -117,7 +114,7 @@ const EventPreference = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       onClose={onClose}
       isCentered
-      size="xl"
+      size="3xl"
     >
       <ModalOverlay />
       <ModalContent>
