@@ -39,6 +39,8 @@ import { useNavigate } from "react-router-dom";
 import MoreDetailsModal from "./MoreDetailsModal";
 import { useEffect } from "react";
 import { teeketApi } from "../../../../utils/api";
+import { Spinner } from '@chakra-ui/react';
+import { formatAmount } from "../../../../utils/utils";
 
 const OrdersTable = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,13 +52,17 @@ const OrdersTable = () => {
     const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
     const [ordersTableData, setOrdersTableData] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [loading, setLoading]= useState(false)
+    const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
     const [totalItems, setTotalItems] = useState(0);
     const [paginatedData, setPaginatedData] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [search, setSearch] = useState("");
+
+
+    console.log(currentPage)
 
     const updateNetworkStatus = () => {
         setIsOnline(navigator.onLine);
@@ -75,8 +81,9 @@ const OrdersTable = () => {
 
     useEffect(() => {
         const handleFetchOrders = async () => {
+            setLoading(true)
             try {
-                let url = "/orders";
+                let url = `/orders?page_index=${currentPage}`;
                 const queryParams = [];
 
                 if (search) {
@@ -90,15 +97,16 @@ const OrdersTable = () => {
                 if (queryParams.length > 0) {
                     url += `?${queryParams.join("&")}`;
                 }
-                console.log(url)
                 const response = await teeketApi.get(url);
                 const res = response.data;
-                // setData(res.data);
+                console.log('alldata', res.data)
                 setTotalItems(res.total);
                 setOrdersTableData(res.data);
                 setPaginatedData(res.data.slice(0, itemsPerPage));
                 setTotalPages(Math.ceil(res.total / itemsPerPage));
+                setLoading(false)
             } catch (error) {
+                setLoading(false)
                 const errorMessage =
                     error?.response?.data?.message || "An error occured";
                 toast({
@@ -113,17 +121,22 @@ const OrdersTable = () => {
         };
 
         handleFetchOrders();
-    }, [toast, itemsPerPage, search, statusFilter]);
+    }, [toast, itemsPerPage, search, statusFilter, currentPage]);
 
-    useEffect(() => {
-        const startIndex = currentPage * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        setPaginatedData(ordersTableData.slice(startIndex, endIndex));
-    }, [currentPage, itemsPerPage, ordersTableData]);
+    // useEffect(() => {
+    //     const startIndex = currentPage * itemsPerPage;
+    //     const endIndex = startIndex + itemsPerPage;
+
+    //     console.log(startIndex, endIndex)
+    //     console.log(ordersTableData)
+    //     setPaginatedData(ordersTableData.slice(startIndex, endIndex));
+    // }, [currentPage, itemsPerPage, ordersTableData]);
+
+    console.log(paginatedData)
 
     // HANDLE PAGE CHANGE
     const handlePageChange = ({ selected }) => {
-        setCurrentPage(selected);
+        setCurrentPage(selected+1);
     };
 
     //   HANDLE CLEAR SEARCH
@@ -257,7 +270,16 @@ const OrdersTable = () => {
                             : `${totalItems} orders`}
                     </Tag>
                 </HStack>
-                {isOnline ? (
+                {isOnline ? 
+                    (
+                    loading ? (
+                        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem"}}>
+                        <Spinner/>
+                        Fetching Your Orders Hang On
+                        </div>
+                    )
+                
+                :(
                     <>
                         {paginatedData.length !== 0 ? (
                             <TableContainer>
@@ -348,7 +370,7 @@ const OrdersTable = () => {
                                                     color="gray.600"
                                                     fontWeight={500}
                                                 >
-                                                    {td.ticket.price}
+                                                    ₦{formatAmount(Number(td.ticket.price), 0)}
                                                 </Td>
                                                 <Td
                                                     color="gray.600"
@@ -425,7 +447,7 @@ const OrdersTable = () => {
                             />
                         )}
                     </>
-                ) : (
+                )) : (
                     <EmptyState
                         icon={EventCautionState}
                         title="Something went wrong"
