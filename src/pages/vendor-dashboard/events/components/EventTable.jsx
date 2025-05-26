@@ -49,7 +49,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
     const [totalItems, setTotalItems] = useState(0);
     const [paginatedData, setPaginatedData] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
@@ -71,7 +71,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
 
     const handleFetchEvents = async () => {
         try {
-            let url = "/events/user";
+            let url = `/events/user?page_index=${currentPage}`;
             const queryParams = [];
 
             if (search) {
@@ -87,7 +87,6 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
             }
             const response = await teeketApi.get(url);
             const res = response.data;
-
             setData(res.data);
             setTotalItems(res.total);
             setEventTableData(res.data);
@@ -113,7 +112,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
     useEffect(() => {
 
         handleFetchEvents();
-    }, [toast, itemsPerPage, setData, search, statusFilter]);
+    }, [toast, itemsPerPage, setData, search, statusFilter, currentPage]);
 
     // COPY EVENT
 
@@ -232,15 +231,15 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
         }
     };
 
-    useEffect(() => {
-        const startIndex = currentPage * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        setPaginatedData(eventTableData.slice(startIndex, endIndex));
-    }, [currentPage, itemsPerPage, eventTableData]);
+    // useEffect(() => {
+    //     const startIndex = currentPage * itemsPerPage;
+    //     const endIndex = startIndex + itemsPerPage;
+    //     setPaginatedData(eventTableData.slice(startIndex, endIndex));
+    // }, [currentPage, itemsPerPage, eventTableData]);
 
     // HANDLE PAGE CHANGE
     const handlePageChange = ({ selected }) => {
-        setCurrentPage(selected);
+        setCurrentPage(selected+1);
     };
 
     //   HANDLE CLEAR SEARCH

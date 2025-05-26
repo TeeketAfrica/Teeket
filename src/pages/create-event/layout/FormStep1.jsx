@@ -285,7 +285,6 @@ const FormStep1 = ({ formik }) => {
                 const response = await teeketApi.get(url);
                 const res = response.data;
                 setTagOptions(res.data);
-                console.log(tagOptions);
             } catch (error) {
                 console.log(error);
 

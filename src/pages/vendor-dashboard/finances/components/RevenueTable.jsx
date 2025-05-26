@@ -49,7 +49,7 @@ const RevenueTable = () => {
     const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
     const [viewHistory, setViewHistory] = useState(false);
     const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [request] = useState(true);
     const [search, setSearch] = useState("");
 
@@ -69,20 +69,16 @@ const RevenueTable = () => {
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
-    useEffect(() => {
-        const startIndex = currentPage * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        setPaginatedData(revenueTableData.slice(startIndex, endIndex));
-    }, [currentPage, itemsPerPage, revenueTableData]);
+    // useEffect(() => {
+    //     const startIndex = currentPage * itemsPerPage;
+    //     const endIndex = startIndex + itemsPerPage;
+    //     setPaginatedData(revenueTableData.slice(startIndex, endIndex));
+    // }, [currentPage, itemsPerPage, revenueTableData]);
 
     //   HANDLE PAGE CHANGE
 
     const handlePageChange = ({ selected }) => {
-        const newStartIndex = selected * itemsPerPage;
-        const newEndIndex = newStartIndex + itemsPerPage;
-
-        setPaginatedData(revenueTableData.slice(newStartIndex, newEndIndex));
-        setCurrentPage(selected);
+        setCurrentPage(selected+1);
     };
 
     //   HANDLE SEARCH
@@ -134,7 +130,7 @@ const RevenueTable = () => {
     useEffect(() => {
         const handleFetchEvents = async () => {
             try {
-                let url = "/revenue";
+                let url = `/revenue?page_index=${currentPage}`;
                 const queryParams = [];
 
                 if (search) {
@@ -167,7 +163,7 @@ const RevenueTable = () => {
         };
 
         handleFetchEvents();
-    }, [toast, itemsPerPage, search]);
+    }, [toast, itemsPerPage, search, currentPage]);
     
     return (
         <Box px={[4, 8]}>
