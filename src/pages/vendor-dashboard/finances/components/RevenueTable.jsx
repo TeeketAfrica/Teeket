@@ -43,6 +43,7 @@ import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
 import { teeketApi } from "../../../../utils/api";
 import { formatDate } from "../../../../utils/formatDate";
+import { formatAmount } from "../../../../utils/utils";
 
 const RevenueTable = () => {
     const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
@@ -390,7 +391,7 @@ const RevenueTable = () => {
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.amount === null? "₦0": `₦${td.amount}`}
+                                                            {td.amount === null? "₦0": `₦${formatAmount(Number(td.amount))}`}
                                                         </Td>
                                                         <Td
                                                             color="gray.600"
