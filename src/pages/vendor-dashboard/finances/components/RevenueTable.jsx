@@ -46,9 +46,8 @@ import { formatDate } from "../../../../utils/formatDate";
 import { formatAmount } from "../../../../utils/utils";
 import { Spinner } from '@chakra-ui/react';
 
-const RevenueTable = () => {
+const RevenueTable = ({viewHistory, setViewHistory}) => {
     const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
-    const [viewHistory, setViewHistory] = useState(false);
     const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [request] = useState(true);
@@ -428,6 +427,8 @@ const RevenueTable = () => {
                                                                     alt={
                                                                         td.iitle
                                                                     }
+                                                                    objectFit={"cover"}
+                                                                    borderRadius={"6px"}
                                                                     w={10}
                                                                     h={10}
                                                                 />
