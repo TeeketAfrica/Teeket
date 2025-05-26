@@ -368,9 +368,9 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
                             variant="primary"
                             disabled={!formik.isValid ||
                                 !formik.values.ticketName || 
-                                !formik.values.ticketPrice || 
-                                !formik.values.ticketQuantity || 
-                                !formik.values.ticketType} 
+                                (formik.values.ticketType === 'paid' && !formik.values.ticketPrice) || 
+                                !formik.values.ticketQuantity || !formik.values.ticketType
+                                } 
                         >
                             Save ticket
                         </Button>
