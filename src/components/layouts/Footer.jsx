@@ -26,7 +26,10 @@ const Footer = ({ border = true }) => {
                 Never get bored, find the perfect event for you
               </Text>
             </Box>
-            <Button variant="primary">Contact us</Button>
+            <Link href='/contact'>
+              <Button variant="primary">Contact us</Button>
+            </Link>
+            
           </Stack>
           <Stack
             direction={["column", "row"]}

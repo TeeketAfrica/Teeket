@@ -8,7 +8,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { formatDateAndTime } from "../../../utils/utils";
+import { formatAmount, formatDateAndTime } from "../../../utils/utils";
 import EventMap from "../../../assets/icon/EventMap.svg";
 import Cash from "../../../assets/icon/Cash.svg";
 import Calendar from "../../../assets/icon/calendar-alt.svg";
@@ -127,7 +127,7 @@ const EventCard = ({
               >
                 <Cash />
                 <Text color="gray.800" fontSize={12}>
-                  {!isFree ? `Starts at $${eventPrice}` : "Free event"}
+                  {!isFree && eventPrice !== 0 ? `Starts at ₦${formatAmount(eventPrice, 0)}` : "Free event"}
                 </Text>
               </HStack>
               <HStack
