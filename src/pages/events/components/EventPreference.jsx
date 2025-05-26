@@ -65,7 +65,7 @@ const EventPreference = ({ isOpen, onClose }) => {
           console.log(params)
           const response = await teeketApi.patch(`/user/event_preferences`, params);
                 toast({
-                    title: "Updatd Event Preference",
+                    title: "Updated Event Preference",
                     description: "Your event preferences has been updated successfully.",
                     status: "success",
                     duration: 3000,
