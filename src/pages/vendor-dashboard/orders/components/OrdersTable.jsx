@@ -303,12 +303,12 @@ const OrdersTable = () => {
                                                                 fontWeight={500}
                                                                 color="gray.800"
                                                             >
-                                                                {
+                                                               {`${
                                                                     td.attendee.first_name
-                                                                } 
-                                                                {
+                                                                }   
+                                                                ${
                                                                     td.attendee.last_name
-                                                                }
+                                                                }`}
                                                             </Text>
                                                         </Box>
                                                     </HStack>

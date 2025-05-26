@@ -126,7 +126,7 @@ const FinancesDashboardPage = () => {
                     icon={TotalRevenue}
                     revenueTitle="Total revenue made"
                     revenueTotal={revenueData?.total_revenue || 0}
-                    percentIncrease={formatAmount(revenueSummary?.percentage_change || 0)}
+                    percentIncrease={formatAmount((revenueSummary?.percentage_change || 0), 2)}
                     desc={`${
                         revenueSummary?.gain_or_loss ? "increase" : "decrease"
                     } vs last revenue`}

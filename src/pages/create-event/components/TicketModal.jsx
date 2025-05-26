@@ -68,6 +68,8 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
         validationSchema: validationSchema,
     });
 
+    console.log(formik.values)
+
     const handlerOnClose = () => {
         formik.resetForm();
         onCloseModal({ isModalOpen: false });
@@ -241,7 +243,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
                                     <PriceIcon />
                                 </InputRightElement>
                                 <InputLeftElement pointerEvents="none">
-                                    <DollarIcon />
+                                    ₦
                                 </InputLeftElement>
 
                                 <Input
@@ -364,6 +366,11 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
                             onClick={() => handleTicketDetails()}
                             size="lg"
                             variant="primary"
+                            disabled={!formik.isValid ||
+                                !formik.values.ticketName || 
+                                (formik.values.ticketType === 'paid' && !formik.values.ticketPrice) || 
+                                !formik.values.ticketQuantity || !formik.values.ticketType
+                                } 
                         >
                             Save ticket
                         </Button>
