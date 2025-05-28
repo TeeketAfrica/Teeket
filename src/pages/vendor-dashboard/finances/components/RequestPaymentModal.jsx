@@ -174,7 +174,6 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
               </Text>
               <Text fontSize={14} fontWeight={500}>
                 ${total || 0}
-                ${total || 0}
               </Text>
             </HStack>
           </ModalBody>
@@ -189,7 +188,6 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
             >
               Cancel
             </Button>
-            <Button variant="primary" w="100%" onClick={sendRequest} disabled={loading}>
             <Button variant="primary" w="100%" onClick={sendRequest} disabled={loading}>
               Send request
             </Button>
