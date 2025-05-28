@@ -243,11 +243,11 @@ const Header = () => {
                       </Link>
                     </Box>
 
-                    <DrawerBody>
-                      <VStack spacing={6}>
+                    <DrawerBody >
+                      <VStack spacing={user && user.is_creator !== null? 2 : 6}>
                       <>
                           {
-                            user? (
+                            user && user.is_creator !== null? (
                               <>
                                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px"}}>
                                   <Avatar
@@ -301,11 +301,11 @@ const Header = () => {
                             ): (
                               <>
                                 {menu.map((link, i) => (
-                                  <Text key={i} to={`/${link.url}`}>
-                                    <MenuItem fontWeight={600} fontSize={14}>
-                                      {link.link}
-                                    </MenuItem>
-                                  </Text>
+                                  <Link key={i} to={`/${link.url}`}>
+                                    <Text fontWeight={600} fontSize={14}>
+                                        {link.link}
+                                    </Text>
+                                  </Link>
                                 ))}
                                 <Link to="/auth/login">
                                   <Text
