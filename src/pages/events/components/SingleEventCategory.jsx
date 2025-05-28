@@ -1,4 +1,4 @@
-import { Button, Center, Container, Grid, Text } from "@chakra-ui/react";
+import { Button, Center, Container, Grid, HStack, Skeleton, SkeletonText, Stack, Text } from "@chakra-ui/react";
 
 import EventCard from "./EventCard";
 
@@ -7,8 +7,33 @@ import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
 import EmptyState from "../../../components/ui/EmptyState";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 import BrowseEvents from "../../../assets/icon/BrowseEvents.svg";
+import { Link } from "react-router-dom";
 
-const SingleEventCategory = ({ allEvents }) => {
+const SingleEventCategory = ({ allEvents, loading }) => {
+  if(loading){
+    return (
+      <Grid
+        style={{ width: "100%" }}
+        gridTemplateColumns={[
+          "1fr",
+          null,
+          "repeat(4, 1fr)",
+          null,
+          "repeat(4, 1fr)",
+        ]}
+        gap={6}
+      >
+        {[0, 1, 2, 3].map((digit, i) => (
+          <Stack gap="6" maxW="xs" key={digit}>
+            <HStack width="full">
+              <SkeletonText noOfLines={2} />
+            </HStack>
+            <Skeleton height="200px" />
+          </Stack>
+        ))}
+      </Grid>
+    )
+  }
   return (
     <>
       {allEvents.length > 0 ? (
@@ -48,9 +73,11 @@ const SingleEventCategory = ({ allEvents }) => {
             ))}
           </Grid>
           <Center w="full" my="6">
-            <Button variant="primary" leftIcon={<BrowseEvents />}>
-              Browse all events
-            </Button>
+            <Link to={"/events"}>
+              <Button variant="primary" leftIcon={<BrowseEvents />}>
+                Browse all events
+              </Button>
+            </Link>
           </Center>
         </>
       ) : (
