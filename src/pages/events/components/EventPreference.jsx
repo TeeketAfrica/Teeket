@@ -121,7 +121,7 @@ const EventPreference = ({ isOpen, onClose }) => {
         <ModalHeader>
           <VStack>
             <ModalFlake width={42} />
-            <Text fontSize={24} fontWeight={700} lineHeight="28.8px">
+            <Text fontSize={24} fontWeight={700} lineHeight="28.8px" align={"center"} width={"full"}>
               Choose your preference
             </Text>
             <Text textAlign="center" fontWeight={400} fontSize={14} mb="1rem">
