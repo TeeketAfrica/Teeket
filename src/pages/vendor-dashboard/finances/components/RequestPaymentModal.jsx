@@ -166,24 +166,6 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
               ))
               )
             }
-            {
-              events && (
-                events.filter(event => event.status === "due").map((dueEvent, i)=>(
-                  <HStack alignItems="flex-start" mb={4} key={i}>
-                    <Checkbox disabled={dueEvent.has_requested_payment} onChange={(e) => handleChecked(dueEvent?.amount, dueEvent?.id, e.target.checked)}/>
-                    <Box>
-                      <Text fontWeight={500}>{dueEvent?.event?.title}</Text>
-                      <Text fontSize={14} color="gray.600">
-                        <Text as="span" fontWeight={600} style={{ display: "flex", flexWrap: "nowrap", gap: "5px"}}>
-                          ${dueEvent?.amount} {" "}
-                          {dueEvent.has_requested_payment && <span style={{ display: "flex", flexWrap: "nowrap", gap: "5px"}}>payment requested <TickCircle/></span>}
-                        </Text>
-                      </Text>
-                    </Box>
-                  </HStack>
-              ))
-              )
-            }
             <Divider border="1px solid" my={5} borderColor="gray.300" />
             <HStack justifyContent="space-between">
               <Text color="gray.600" fontSize={14}>
