@@ -170,6 +170,7 @@ export const EventGetTicketHeader = ({paid, profile}) => {
                     name={profile?.first_name || profile?.email}
                     src={profile?.profile_image}
                     bgColor="transparent"
+                    opacity={profile && profile.is_creator !== null? 100 : 0}
                 />
                 </Box>
             </Stack>

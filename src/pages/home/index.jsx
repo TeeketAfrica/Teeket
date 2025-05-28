@@ -42,8 +42,8 @@ const HomePage = () => {
 
   return (
     <>
-      <main>
-        <Center>
+      <main style={{ overflowX: "hidden"}}>
+        <Center >
           <Box
             bgImage={`url(${EventBg})`}
             bgSize="cover"

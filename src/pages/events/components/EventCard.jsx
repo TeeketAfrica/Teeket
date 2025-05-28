@@ -45,12 +45,13 @@ const EventCard = ({
   }
 
   const handleRedirect = () => {
-    if (token) {
-      navigate(`/event-booking/${eventId}`);
-    } else {
-      sessionStorage.setItem("REDIRECT", `/event-booking/${eventId}`);
-      navigate("/auth/login");
-    }
+    // if (token) {
+    //   navigate(`/event-booking/${eventId}`);
+    // } else {
+    //   sessionStorage.setItem("REDIRECT", `/event-booking/${eventId}`);
+    //   navigate("/auth/login");
+    // }
+    navigate(`/event-booking/${eventId}`);
   };
 
   return (
