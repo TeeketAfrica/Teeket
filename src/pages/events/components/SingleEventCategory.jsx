@@ -56,19 +56,21 @@ const SingleEventCategory = ({ allEvents, loading }) => {
             {allEvents.map((event) => (
               <EventCard
                 key={event.id}
-                eventId={event.id}
-                eventImage={event.banner_image}
-                eventTitle={event.title}
-                eventTag={event.status.split("_").join(" ")}
-                eventTagIcon={EventTagIcon}
-                eventOrganizer={Avatars}
-                eventCommunity={`By ${event.organizer}`}
-                eventLocation={event.hosting_site}
-                eventPrice={Number(event.lowest_ticket_price)}
-                eventDate={{
-                  startDate: event.start_date,
-                  endDate: event.end_date,
-                }}
+                  eventId={event.id}
+                  eventImage={event.banner_image}
+                  eventTitle={event.title}
+                  eventTag={event.status}
+                  eventTagIcon={EventTagIcon}
+                  eventOrganizer={event.user.profile_image}
+                  eventOrganizerName={event.user.first_name || event.user.email}
+                  eventCommunity={`by ${event.organizer}`}
+                  eventLocation={event.hosting_site}
+                  eventPrice={Number(event.lowest_ticket_price)}
+                  eventDate={{
+                    startDate: `${event.start_date}`,
+                    endDate: `${event.end_date}`,
+                  }}
+                  isFree={event.is_free}
               />
             ))}
           </Grid>
