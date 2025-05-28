@@ -46,6 +46,7 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const user = useSelector(selectActiveUser);
+  console.log(user)
   const {
     isOpen: isOpenModal,
     onOpen: onOpenModal,
@@ -105,7 +106,7 @@ const Header = () => {
                     </Text>
                   </Link>
                 ))}
-                {user ? (
+                {user && user.is_creator !== null ? (
                   // <MenuRoot>
                   //   <MenuTrigger asChild>
                   //     {/* <Box cursor="pointer"> */}
