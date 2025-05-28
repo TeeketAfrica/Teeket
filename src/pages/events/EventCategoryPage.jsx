@@ -12,12 +12,14 @@ import { teeketApi } from "../../utils/api";
 const EventCategoryPage = () => {
   const { type } = useParams();
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchEvents();
   }, [type]);
 
   const fetchEvents = async () => {
+    setLoading(true);
     try {
       const response = await teeketApi.get("/events");
       const eventList = response.data.data;
@@ -36,8 +38,10 @@ const EventCategoryPage = () => {
       }
 
       setEvents(filteredEvents);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching events:", error);
+      setLoading(false);
     }
   };
 
@@ -47,7 +51,7 @@ const EventCategoryPage = () => {
       <EventCategoryHeroSection eventType={type} />
       <Container>
         <Box pt={9} pb={6} borderTop="1px solid" borderColor="gray.300">
-          <SingleEventCategory allEvents={events} />
+          <SingleEventCategory allEvents={events} loading={loading} />
         </Box>
       </Container>
       <Footer />

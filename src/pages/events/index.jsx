@@ -19,9 +19,9 @@ const EventsPage = () => {
     const navigate = useNavigate();
     const { getAccessToken } = useStorage();
     const activeUser = useSelector(selectActiveUser);
-  const token = getAccessToken();
-  const { onOpen, isOpen, onClose } = useDisclosure();
-  const { searchTerm, category, clearSearch } = useContext(SearchContext);
+    const token = getAccessToken();
+    const { onOpen, isOpen, onClose } = useDisclosure();
+    const { searchTerm, category, clearSearch } = useContext(SearchContext);
     const [events, setEvents] = useState([]);
     const [displayEventPreference, setDisplayEventPreference] = useState(false);
     const [preloader, setPreLoader] = useState(true);

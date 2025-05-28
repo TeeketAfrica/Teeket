@@ -32,26 +32,27 @@ import FinanceEmptyState from "../../../../assets/icon/FinanceEmptyState.svg";
 import EventCautionState from "../../../../assets/icon/EventCautionState.svg";
 import SupportIcon from "../../../../assets/icon/SupportIcon.svg";
 import {
-    eventFilter,
     eventTableHead,
     filterPolicy,
     financeHistoryTableData,
     financeTableData,
     financeTableHistoryHead,
+    revEventFilter,
 } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
 import { teeketApi } from "../../../../utils/api";
 import { formatDate } from "../../../../utils/formatDate";
 import { formatAmount } from "../../../../utils/utils";
+import { Spinner } from '@chakra-ui/react';
 
-const RevenueTable = () => {
+const RevenueTable = ({viewHistory, setViewHistory}) => {
     const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
-    const [viewHistory, setViewHistory] = useState(false);
     const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [request] = useState(true);
     const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const toast = useToast();
 
@@ -66,6 +67,7 @@ const RevenueTable = () => {
     const [paginatedData, setPaginatedData] = useState(
         revenueTableData.slice(startIndex, endIndex)
     );
+    const [historyTableData, setHistoryTableData] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -85,12 +87,22 @@ const RevenueTable = () => {
 
     const handleSearch = (e) => {
         const searchTerm = e.target.value.toLowerCase();
+        let filteredData;
 
-        const filteredData = revenueTableData.filter(
-            (item) =>
-                item.eventTitle.toLowerCase().includes(searchTerm) ||
-                item.eventCategory.toLowerCase().includes(searchTerm)
-        );
+        if(!viewHistory){
+            filteredData = revenueTableData.filter(
+                (item) =>
+                    (item.event.title && item.event.title.toLowerCase().includes(searchTerm)) ||
+                    (item.event.organizer && item.event.organizer.toLowerCase().includes(searchTerm))
+            );
+        }
+        else{
+            filteredData = historyTableData.filter(
+                (item) =>
+                    (item.revenue.event.title && item.revenue.event.title.toLowerCase().includes(searchTerm)) ||
+                    (item.revenue.event.organizer && item.revenue.event.organizer.toLowerCase().includes(searchTerm))
+            );
+        }
 
         setSearch(searchTerm);
         setCurrentPage(0);
@@ -112,23 +124,39 @@ const RevenueTable = () => {
     //   const handleFilterByStatus = () => {}
 
     const handleFilterByStatus = (selectedStatus) => {
-        setSelectedStatusFilter(selectedStatus);
+        // setSelectedStatusFilter(selectedStatus);
 
-        if (selectedStatus === "All events") {
+        if(!viewHistory){
+            if (selectedStatus === "All events") {
             setPaginatedData(revenueTableData);
-        } else {
-            const filteredData = revenueTableData.filter(
-                (item) => selectedStatus === filterPolicy[item.status]  
-            );
-            setCurrentPage(0);
-            setTotalItems(filteredData.length);
-            setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-            setPaginatedData(filteredData.slice(0, itemsPerPage));
+            } else {
+                const filteredData = revenueTableData.filter(
+                    (item) => item.status === selectedStatus
+                );
+                setCurrentPage(0);
+                setTotalItems(filteredData.length);
+                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+                setPaginatedData(filteredData.slice(0, itemsPerPage));
+            }
+        }else{
+            if(selectedStatus === "All events"){
+                setPaginatedData(historyTableData);
+            }
+            else{
+                const filteredData = historyTableData.filter(
+                    (item) => item.status === selectedStatus
+                );
+                setCurrentPage(0);
+                setTotalItems(filteredData.length);
+                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+                setPaginatedData(filteredData.slice(0, itemsPerPage));
+            }
         }
     };
 
     useEffect(() => {
         const handleFetchEvents = async () => {
+            setLoading(true);
             try {
                 let url = `/revenue?page_index=${currentPage}`;
                 const queryParams = [];
@@ -146,6 +174,7 @@ const RevenueTable = () => {
                 setRevenueTableData(res.data);
                 setPaginatedData(res.data.slice(0, itemsPerPage));
                 setTotalPages(Math.ceil(res.total / itemsPerPage));
+                setLoading(false);
             } catch (error) {
                 console.log(error);
 
@@ -159,11 +188,55 @@ const RevenueTable = () => {
                     position: "top-right",
                     isClosable: true,
                 });
+                setLoading(false);
             }
         };
 
+        const handleFetchPaymentHistory = async ()=>{
+            setLoading(true);
+            try{
+                let url = "/payment-requests";
+                const queryParams = [];
+
+                if (search) {
+                    queryParams.push(`search=${search}`);
+                }
+                if (queryParams.length > 0) {
+                    url += `?${queryParams.join("&")}`;
+                }
+                const response = await teeketApi.get(url);
+                const res = response.data;
+                setHistoryTableData(res.data);
+                setLoading(false);
+                console.log("payment history", response);
+            }
+            catch(error){
+                console.log(error);
+
+                const errorMessage =
+                    error?.response?.data?.message || "An error occured";
+                toast({
+                    title: "Failed to fetch payment history",
+                    description: `${errorMessage}`,
+                    status: "error",
+                    duration: 3000,
+                    position: "top-right",
+                    isClosable: true,
+                });
+                setLoading(false);
+            }
+        }
+
         handleFetchEvents();
-    }, [toast, itemsPerPage, search, currentPage]);
+        handleFetchPaymentHistory();
+    }, [toast, itemsPerPage]);
+
+    if(loading) return (
+        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem"}}>
+            <Spinner/>
+            Fetching Revenue data Hang on
+        </div>
+    )
     
     return (
         <Box px={[4, 8]}>
@@ -248,7 +321,7 @@ const RevenueTable = () => {
                             </HStack>
                         </MenuButton>
                         <MenuList>
-                            {eventFilter.map((filter, i) => (
+                            {(viewHistory ? revEventFilter[1] : revEventFilter[0]).map((filter, i) => (
                                 <MenuItem
                                     key={i}
                                     justifyContent="space-between"
@@ -256,8 +329,9 @@ const RevenueTable = () => {
                                         setSelectedFilterIndex(i);
                                         handleFilterByStatus(filter.filter);
                                     }}
+                                    style={{textTransform: "capitalize"}}
                                 >
-                                    {filter.filter}{" "}
+                                    {filter.filter === "ongoing_event"? "On Going": filter.filter === "failed_request"? "Failed Requests": filter.filter}{" "}
                                     {selectedFilterIndex === i && <Check />}
                                 </MenuItem>
                             ))}
@@ -314,7 +388,7 @@ const RevenueTable = () => {
                             fontWeight={500}
                             color="gray.700"
                         >
-                            {`${financeHistoryTableData.length} requests`}
+                            {`${historyTableData.length} requests`}
                         </Tag>
                     </HStack>
                 )}
@@ -354,6 +428,8 @@ const RevenueTable = () => {
                                                                     alt={
                                                                         td.iitle
                                                                     }
+                                                                    objectFit={"cover"}
+                                                                    borderRadius={"6px"}
                                                                     w={10}
                                                                     h={10}
                                                                 />
@@ -429,7 +505,7 @@ const RevenueTable = () => {
                                                                 fontWeight={500}
                                                                 fontSize={12}
                                                             >
-                                                                {td.status === "ongoing_event"? "On Going": td.status === "on_going"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
+                                                                {td.status === "ongoing_event"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
                                                             </Tag>
                                                         </Td>
                                                     </Tr>
@@ -460,14 +536,14 @@ const RevenueTable = () => {
                                                 </Tr>
                                             </Thead>
                                             <Tbody fontSize={14}>
-                                                {financeHistoryTableData.map(
+                                                {historyTableData.map(
                                                     (td, i) => (
                                                         <Tr key={i}>
                                                             <Td
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.id}
+                                                                {td.request_id}
                                                             </Td>
                                                             <Td>
                                                                 <HStack
@@ -475,11 +551,13 @@ const RevenueTable = () => {
                                                                 >
                                                                     <Image
                                                                         src={
-                                                                            td.img
+                                                                            td.revenue.event.banner_image
                                                                         }
                                                                         alt={
-                                                                            td.eventTitle
+                                                                            td.revenue.event.title
                                                                         }
+                                                                        objectFit={"cover"}
+                                                                        borderRadius={"6px"}
                                                                         w={10}
                                                                         h={10}
                                                                     />
@@ -491,12 +569,12 @@ const RevenueTable = () => {
                                                                             color="gray.800"
                                                                         >
                                                                             {
-                                                                                td.eventTitle
+                                                                                td.revenue.event.title
                                                                             }
                                                                         </Text>
                                                                         <Text color="gray.600">
                                                                             {
-                                                                                td.eventCategory
+                                                                                td.revenue.event.organizer
                                                                             }
                                                                         </Text>
                                                                     </Box>
@@ -506,39 +584,43 @@ const RevenueTable = () => {
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.amount === null? "0": td.amount}
+                                                                {td.revenue.amount === null? "0": td.revenue.amount}
                                                             </Td>
                                                             <Td
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.requestDate}
+                                                                {formatDate(td.date_created)}
                                                             </Td>
                                                             <Td
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
                                                                 {
-                                                                    td.remittedDate
+                                                                    td.date_remitted === null? "Coming soon": formatDate(td.date_remitted)
                                                                 }
                                                             </Td>
                                                             <Td>
                                                                 <Tag
                                                                     bg={
                                                                         td.status ===
-                                                                        "Processing"
+                                                                        "created"
                                                                             ? "gray.200"
-                                                                            : td.status ===
-                                                                              "Remitted"
+                                                                            : 
+                                                                            td.status === "processing"? "blue.200":
+                                                                            td.status ===
+                                                                              "remitted"
                                                                             ? "green.100"
                                                                             : "red.100"
                                                                     }
                                                                     color={
                                                                         td.status ===
-                                                                        "Processing"
+                                                                        "created"
                                                                             ? "gray.700"
-                                                                            : td.status ===
-                                                                              "Remitted"
+                                                                            :
+                                                                            td.status === "processing" ? "blue.700":
+                                                                            td.status ===
+                                                                              "remitted"
                                                                             ? "green.500"
                                                                             : "red.400"
                                                                     }
@@ -561,9 +643,7 @@ const RevenueTable = () => {
                                                                 <HStack>
                                                                     <SupportIcon />
                                                                     <Text>
-                                                                        {
-                                                                            td.action
-                                                                        }
+                                                                        support
                                                                     </Text>
                                                                 </HStack>
                                                             </Td>

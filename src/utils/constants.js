@@ -52,18 +52,53 @@ export const IMAGEDIMENSION = {
 };
 
 export const eventFilter = [
-    {
-        filter: "All events",
-    },
-    {
-        filter: "Coming soon",
-    },
-    {
-        filter: "On going",
-    },
-    {
-        filter: "Past events",
-    },
+        {
+            filter: "All events",
+        },
+        {
+            filter: "Coming soon",
+        },
+        {
+            filter: "On going",
+        },
+        {
+            filter: "Past events",
+        }
+]
+
+export const revEventFilter = [
+    [
+        {
+            filter: "All events",
+        },
+        {
+            filter: "due",
+        },
+        {
+            filter: "ongoing_event",
+        },
+        {
+            filter: "unavailable",
+        },
+    ],
+    [
+        {
+            filter: "All events"
+        },
+        {
+            filter: "created",
+        },
+        {
+            filter: "processing",
+        },
+        {
+            filter: "remitted"
+        },
+        {
+            filter: "failed_request"
+        }
+    ]
+    
 ];
 
 // EVENT PAGE
