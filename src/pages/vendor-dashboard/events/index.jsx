@@ -17,16 +17,6 @@ const EventsDashboardPage = () => {
   const [loading, setIsLoading] = useState(true);
   const activeUser = useSelector(selectActiveUser);
 
-   useEffect(() => {
-          if (activeUser) {
-            if (data.length > 0) {
-              dispatch(setIsCreator(true));
-            } else {
-              dispatch(setIsCreator(false));
-            }
-          }
-        }, [data, dispatch, activeUser]);
-
   const exportToExcel = () => {
     const exportData = data.map((event) => ({
       Title: event.title,
