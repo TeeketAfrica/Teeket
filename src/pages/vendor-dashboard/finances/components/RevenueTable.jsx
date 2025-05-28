@@ -38,6 +38,7 @@ import {
     financeTableData,
     financeTableHistoryHead,
     revEventFilter,
+    revEventFilter,
 } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
@@ -67,6 +68,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
     const [paginatedData, setPaginatedData] = useState(
         revenueTableData.slice(startIndex, endIndex)
     );
+    const [historyTableData, setHistoryTableData] = useState([]);
     const [historyTableData, setHistoryTableData] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
@@ -125,10 +127,35 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
 
     const handleFilterByStatus = (selectedStatus) => {
         // setSelectedStatusFilter(selectedStatus);
+        // setSelectedStatusFilter(selectedStatus);
 
         if(!viewHistory){
             if (selectedStatus === "All events") {
+        if(!viewHistory){
+            if (selectedStatus === "All events") {
             setPaginatedData(revenueTableData);
+            } else {
+                const filteredData = revenueTableData.filter(
+                    (item) => item.status === selectedStatus
+                );
+                setCurrentPage(0);
+                setTotalItems(filteredData.length);
+                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+                setPaginatedData(filteredData.slice(0, itemsPerPage));
+            }
+        }else{
+            if(selectedStatus === "All events"){
+                setPaginatedData(historyTableData);
+            }
+            else{
+                const filteredData = historyTableData.filter(
+                    (item) => item.status === selectedStatus
+                );
+                setCurrentPage(0);
+                setTotalItems(filteredData.length);
+                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+                setPaginatedData(filteredData.slice(0, itemsPerPage));
+            }
             } else {
                 const filteredData = revenueTableData.filter(
                     (item) => item.status === selectedStatus
@@ -227,15 +254,8 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
         }
 
         handleFetchEvents();
-        handleFetchPaymentHistory();
     }, [toast, itemsPerPage]);
-
-    if(loading) return (
-        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem"}}>
-            <Spinner/>
-            Fetching Revenue data Hang on
-        </div>
-    )
+    
     return (
         <Box px={[4, 8]}>
             <Stack
@@ -602,19 +622,22 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 <Tag
                                                                     bg={
                                                                         td.status ===
-                                                                            "created"
-                                                                            ? "gray.200":
-                                                                            td.status === "processing"? "blue.100"
-                                                                            : td.status ===
+                                                                        "created"
+                                                                            ? "gray.200"
+                                                                            : 
+                                                                            td.status === "processing"? "blue.200":
+                                                                            td.status ===
                                                                               "remitted"
                                                                             ? "green.100"
                                                                             : "red.100"
                                                                     }
                                                                     color={
                                                                         td.status ===
-                                                                        "processing" || "created"
+                                                                        "created"
                                                                             ? "gray.700"
-                                                                            : td.status ===
+                                                                            :
+                                                                            td.status === "processing" ? "blue.700":
+                                                                            td.status ===
                                                                               "remitted"
                                                                             ? "green.500"
                                                                             : "red.400"
