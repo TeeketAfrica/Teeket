@@ -174,7 +174,6 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
               </Text>
               <Text fontSize={14} fontWeight={500}>
                 ${total || 0}
-                ${total || 0}
               </Text>
             </HStack>
           </ModalBody>
