@@ -43,6 +43,7 @@ const InterestEvents = () => {
             {event.slice(0, 4).map((event, i) => (
               <EventCard
                 key={i}
+                eventId={event.id}
                 eventImage={event.banner_image}
                 eventTitle={event.title}
                 eventTag={event.status}
