@@ -89,6 +89,9 @@ export const revEventFilter = [
             filter: "created",
         },
         {
+            filter: "processing",
+        },
+        {
             filter: "remitted"
         },
         {

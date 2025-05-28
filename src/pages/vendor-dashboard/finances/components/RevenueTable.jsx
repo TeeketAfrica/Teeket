@@ -604,8 +604,9 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 <Tag
                                                                     bg={
                                                                         td.status ===
-                                                                        "processing" || "created"
-                                                                            ? "gray.200"
+                                                                            "created"
+                                                                            ? "gray.200":
+                                                                            td.status === "processing"? "blue.100"
                                                                             : td.status ===
                                                                               "remitted"
                                                                             ? "green.100"

@@ -60,8 +60,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
       const response = await teeketApi.post(url, {
         "revenue_ids": revenueId,
       })
-
-      if(response.status === 200){
+      if(response.status === 201){
         toast({
             title: "Payment request sent successfully",
             description:
@@ -71,7 +70,6 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
             isClosable: true,
             position: "top-right",
         })
-      setLoading(false);
       }
     }
     catch(error){
