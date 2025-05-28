@@ -38,7 +38,6 @@ import {
     financeTableData,
     financeTableHistoryHead,
     revEventFilter,
-    revEventFilter,
 } from "../../../../utils/constants";
 import EmptyState from "../../../../components/ui/EmptyState";
 import { useNavigate } from "react-router-dom";
@@ -68,7 +67,6 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
     const [paginatedData, setPaginatedData] = useState(
         revenueTableData.slice(startIndex, endIndex)
     );
-    const [historyTableData, setHistoryTableData] = useState([]);
     const [historyTableData, setHistoryTableData] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
@@ -127,35 +125,10 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
 
     const handleFilterByStatus = (selectedStatus) => {
         // setSelectedStatusFilter(selectedStatus);
-        // setSelectedStatusFilter(selectedStatus);
 
         if(!viewHistory){
             if (selectedStatus === "All events") {
-        if(!viewHistory){
-            if (selectedStatus === "All events") {
             setPaginatedData(revenueTableData);
-            } else {
-                const filteredData = revenueTableData.filter(
-                    (item) => item.status === selectedStatus
-                );
-                setCurrentPage(0);
-                setTotalItems(filteredData.length);
-                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-                setPaginatedData(filteredData.slice(0, itemsPerPage));
-            }
-        }else{
-            if(selectedStatus === "All events"){
-                setPaginatedData(historyTableData);
-            }
-            else{
-                const filteredData = historyTableData.filter(
-                    (item) => item.status === selectedStatus
-                );
-                setCurrentPage(0);
-                setTotalItems(filteredData.length);
-                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-                setPaginatedData(filteredData.slice(0, itemsPerPage));
-            }
             } else {
                 const filteredData = revenueTableData.filter(
                     (item) => item.status === selectedStatus
@@ -218,40 +191,6 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                 setLoading(false);
             }
         };
-
-        const handleFetchPaymentHistory = async ()=>{
-            setLoading(true);
-            try{
-                let url = "/payment-requests";
-                const queryParams = [];
-
-                if (search) {
-                    queryParams.push(`search=${search}`);
-                }
-                if (queryParams.length > 0) {
-                    url += `?${queryParams.join("&")}`;
-                }
-                const response = await teeketApi.get(url);
-                const res = response.data;
-                setHistoryTableData(res.data);
-                setLoading(false);
-            }
-            catch(error){
-                console.log(error);
-
-                const errorMessage =
-                    error?.response?.data?.message || "An error occured";
-                toast({
-                    title: "Failed to fetch payment history",
-                    description: `${errorMessage}`,
-                    status: "error",
-                    duration: 3000,
-                    position: "top-right",
-                    isClosable: true,
-                });
-                setLoading(false);
-            }
-        }
 
         handleFetchEvents();
     }, [toast, itemsPerPage]);
