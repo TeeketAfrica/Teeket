@@ -192,8 +192,51 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
             }
         };
 
+        const handleFetchPaymentHistory = async ()=>{
+            setLoading(true);
+            try{
+                let url = "/payment-requests";
+                const queryParams = [];
+
+                if (search) {
+                    queryParams.push(`search=${search}`);
+                }
+                if (queryParams.length > 0) {
+                    url += `?${queryParams.join("&")}`;
+                }
+                const response = await teeketApi.get(url);
+                const res = response.data;
+                setHistoryTableData(res.data);
+                setLoading(false);
+                console.log("payment history", response);
+            }
+            catch(error){
+                console.log(error);
+
+                const errorMessage =
+                    error?.response?.data?.message || "An error occured";
+                toast({
+                    title: "Failed to fetch payment history",
+                    description: `${errorMessage}`,
+                    status: "error",
+                    duration: 3000,
+                    position: "top-right",
+                    isClosable: true,
+                });
+                setLoading(false);
+            }
+        }
+
         handleFetchEvents();
+        handleFetchPaymentHistory();
     }, [toast, itemsPerPage]);
+
+    if(loading) return (
+        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem"}}>
+            <Spinner/>
+            Fetching Revenue data Hang on
+        </div>
+    )
     
     return (
         <Box px={[4, 8]}>
