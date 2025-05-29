@@ -9,7 +9,10 @@ import { useEffect, useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 import * as XLSX from "xlsx";
 import { useSelector, useDispatch } from "react-redux";
-import { selectActiveUser, setIsCreator } from "../../../features/activeUserSlice";
+import {
+  selectActiveUser,
+  setIsCreator,
+} from "../../../features/activeUserSlice";
 
 const EventsDashboardPage = () => {
   const dispatch = useDispatch();
@@ -43,25 +46,33 @@ const EventsDashboardPage = () => {
         w="100%"
         alignItems="flex-start"
         pb={6}
-        px={[4, 8]}>
+        px={[4, 8]}
+      >
         <DashboardPageHeaders
           pageTitle="Events"
           subTitle="View your organizations summary"
         />
         <HStack spacing="12px">
-          <Button variant="secondary" p={2} onClick={exportToExcel}>
-            <Export />
+          <Button
+            leftIcon={<Export />}
+            variant="secondary"
+            p={2}
+            onClick={exportToExcel}
+          >
             Export
-          </Button> 
+          </Button>
           <Link to="/create-event">
-            <Button variant="primary" p={2}>
-              <AddEvent />
+            <Button leftIcon={<AddEvent />} variant="primary" p={2}>
               Add event
             </Button>
           </Link>
         </HStack>
       </Stack>
-    <EventTable setData={setData} loading={loading} setIsLoading={setIsLoading}/>  
+      <EventTable
+        setData={setData}
+        loading={loading}
+        setIsLoading={setIsLoading}
+      />
     </DashboardLayout>
   );
 };
