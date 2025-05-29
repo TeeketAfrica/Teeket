@@ -94,7 +94,12 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                   w="100%"
                   zIndex={1}
                 >
-                  <Text color="limeGreen" fontWeight={600} fontSize={14}>
+                  <Text
+                    color="limeGreen"
+                    fontWeight={600}
+                    fontSize={14}
+                    textTransform={"capitalize"}
+                  >
                     {selectedItem.ticketType || selectedItem.event.type} ticket
                   </Text>
                   <Text fontWeight={700} color="white" fontSize={20}>
