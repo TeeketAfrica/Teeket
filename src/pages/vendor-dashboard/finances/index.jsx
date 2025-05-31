@@ -18,6 +18,8 @@ import RequestPaymentModal from "./components/RequestPaymentModal";
 import { useEffect, useState } from "react";
 import { teeketApi } from "../../../utils/api";
 import { formatAmount } from "../../../utils/utils";
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 
 const FinancesDashboardPage = () => {
     const toast = useToast();
@@ -60,14 +62,29 @@ const FinancesDashboardPage = () => {
     const exportToExcel = async () => {
         try {
             let url;
-            if(!viewHistory){
+            if (!viewHistory) {
                 url = "/revenue/export-csv";
-            }
-            else{
+            } else {
                 url = "/payment-requests/export-csv";
             }
-            const response = await teeketApi.get(url);
-            const res = response.data;
+        
+            // Fetch CSV data as text
+            const response = await teeketApi.get(url, { responseType: 'text' });
+            const csvData = response.data;
+
+            const workbook = XLSX.read(csvData, { type: 'string' });
+
+            const excelBuffer = XLSX.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array'
+            });
+
+            // Create a Blob and download
+            const blob = new Blob([excelBuffer], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+            !viewHistory? saveAs(blob, 'revenue-export.xlsx'): saveAs(blob, 'payment-request-history-export.xlsx');
+
         } catch (error) {
             const errorMessage =
                 error?.response?.data?.message || "Unable to export";
@@ -98,11 +115,10 @@ const FinancesDashboardPage = () => {
                     pageTitle="Finance"
                     subTitle="Get an overview of all event-related revenue"
                 />
-                <HStack width={{base:'100%', md:'350px'}} spacing="12px">
+                <HStack spacing="12px">
                     <Button
                         spacing={2}
                         variant="secondary"
-                        width={{ base: "50%", md: "150px" }}
                         p={2}
                         onClick={exportToExcel}
                     >
@@ -115,7 +131,7 @@ const FinancesDashboardPage = () => {
                         onClick={onOpen}
                         isDisabled={!revenueData?.total_revenue}
                     >
-                        $ Request payment
+                        ₦ Request payment
                     </Button>
                 </HStack>
             </Stack>
