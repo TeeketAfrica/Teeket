@@ -89,7 +89,6 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
     const handleSearch = (e) => {
         const searchTerm = e.target.value.toLowerCase();
         let filteredData;
-
         if(!viewHistory){
             filteredData = revenueTableData.filter(
                 (item) =>
