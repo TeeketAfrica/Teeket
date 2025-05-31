@@ -88,23 +88,6 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
     const handleSearch = (e) => {
         const searchTerm = e.target.value.toLowerCase();
         let filteredData;
-
-        if(!viewHistory){
-            filteredData = revenueTableData.filter(
-                (item) =>
-                    (item.event.title && item.event.title.toLowerCase().includes(searchTerm)) ||
-                    (item.event.organizer && item.event.organizer.toLowerCase().includes(searchTerm))
-            );
-        }
-        else{
-            filteredData = historyTableData.filter(
-                (item) =>
-                    (item.revenue.event.title && item.revenue.event.title.toLowerCase().includes(searchTerm)) ||
-                    (item.revenue.event.organizer && item.revenue.event.organizer.toLowerCase().includes(searchTerm))
-            );
-        }
-        let filteredData;
-
         if(!viewHistory){
             filteredData = revenueTableData.filter(
                 (item) =>
