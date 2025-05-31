@@ -1,4 +1,4 @@
-import { Button, Center, Container, Grid, Text } from "@chakra-ui/react";
+import { Button, Center, Container, Grid, HStack, Skeleton, SkeletonText, Stack, Text } from "@chakra-ui/react";
 
 import EventCard from "./EventCard";
 
@@ -7,8 +7,33 @@ import EventTagIcon from "../../../assets/icon/EventTagIcon.svg";
 import EmptyState from "../../../components/ui/EmptyState";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 import BrowseEvents from "../../../assets/icon/BrowseEvents.svg";
+import { Link } from "react-router-dom";
 
-const SingleEventCategory = ({ allEvents }) => {
+const SingleEventCategory = ({ allEvents, loading }) => {
+  if(loading){
+    return (
+      <Grid
+        style={{ width: "100%" }}
+        gridTemplateColumns={[
+          "1fr",
+          null,
+          "repeat(4, 1fr)",
+          null,
+          "repeat(4, 1fr)",
+        ]}
+        gap={6}
+      >
+        {[0, 1, 2, 3].map((digit, i) => (
+          <Stack gap="6" maxW="xs" key={digit}>
+            <HStack width="full">
+              <SkeletonText noOfLines={2} />
+            </HStack>
+            <Skeleton height="200px" />
+          </Stack>
+        ))}
+      </Grid>
+    )
+  }
   return (
     <>
       {allEvents.length > 0 ? (
@@ -31,26 +56,30 @@ const SingleEventCategory = ({ allEvents }) => {
             {allEvents.map((event) => (
               <EventCard
                 key={event.id}
-                eventId={event.id}
-                eventImage={event.banner_image}
-                eventTitle={event.title}
-                eventTag={event.status.split("_").join(" ")}
-                eventTagIcon={EventTagIcon}
-                eventOrganizer={Avatars}
-                eventCommunity={`By ${event.organizer}`}
-                eventLocation={event.hosting_site}
-                eventPrice={Number(event.lowest_ticket_price)}
-                eventDate={{
-                  startDate: event.start_date,
-                  endDate: event.end_date,
-                }}
+                  eventId={event.id}
+                  eventImage={event.banner_image}
+                  eventTitle={event.title}
+                  eventTag={event.status}
+                  eventTagIcon={EventTagIcon}
+                  eventOrganizer={event.user.profile_image}
+                  eventOrganizerName={event.user.first_name || event.user.email}
+                  eventCommunity={`by ${event.organizer}`}
+                  eventLocation={event.hosting_site}
+                  eventPrice={Number(event.lowest_ticket_price)}
+                  eventDate={{
+                    startDate: `${event.start_date}`,
+                    endDate: `${event.end_date}`,
+                  }}
+                  isFree={event.is_free}
               />
             ))}
           </Grid>
           <Center w="full" my="6">
-            <Button variant="primary" leftIcon={<BrowseEvents />}>
-              Browse all events
-            </Button>
+            <Link to={"/events"}>
+              <Button variant="primary" leftIcon={<BrowseEvents />}>
+                Browse all events
+              </Button>
+            </Link>
           </Center>
         </>
       ) : (

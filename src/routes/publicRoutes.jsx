@@ -5,7 +5,6 @@ import { selectUserDetails } from "../features/userSlice";
 const PublicTokenRoute = ({ element }) => {
   const location = useLocation();
   const { value, token } = location.state || {};
-  console.log("tokennn",  token)
 
   return token ? <Navigate to="/auth/send-otp" replace /> : element;
 };

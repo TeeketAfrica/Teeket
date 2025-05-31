@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Container, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Container, Grid, GridItem, HStack, Skeleton, SkeletonText, Stack, Text } from "@chakra-ui/react";
 import EmptyState from "../../../components/ui/EmptyState";
 import EmptyCard from "../../../assets/icon/EmptyCard.svg";
 import SingleTicket from "./SingleTicket";
@@ -11,10 +11,12 @@ import { formatDate } from "../../../features/formatDate";
 const TicketsSection = () => {
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { getAccessToken } = useStorage();
   const token = getAccessToken(); 
 
   useEffect(()=>{
+    setLoading(true);
       const fetchTickets = async ()=> {
         try {
           const response = await teeketApi.get(`orders/me`,
@@ -25,17 +27,43 @@ const TicketsSection = () => {
             } 
           );
           setTickets(response?.data.data)
-          console.log("ticccksss", tickets);
+          setLoading(false);
         }
         catch(err){
           console.log("Error fetching tickets:", err);
           setTickets([]);
           setAvailableTickets(false);
+          setLoading(false);
         }
       }
 
       fetchTickets();
   }, []);
+
+  if(loading){
+      return (
+        <Grid
+          style={{ width: "100%" }}
+          gridTemplateColumns={[
+            "1fr",
+            null,
+            "repeat(4, 1fr)",
+            null,
+            "repeat(4, 1fr)",
+          ]}
+          gap={6}
+        >
+          {[0, 1, 2, 3].map((digit, i) => (
+            <Stack gap="6" maxW="xs" key={digit}>
+              <HStack width="full">
+                <SkeletonText noOfLines={2} />
+              </HStack>
+              <Skeleton height="200px" />
+            </Stack>
+          ))}
+        </Grid>
+      )
+    }
 
   return (
     <Box

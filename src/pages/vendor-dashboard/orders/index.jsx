@@ -8,12 +8,22 @@ import { teeketApi } from "../../../utils/api";
 const OrdersDashboardPage = () => {
   const toast = useToast()
       const exportToExcel = async () => {
-        console.log('caught in the act')
           try {
-              let url = "/orders/export-csv";
-  
-              const response = await teeketApi.get(url);
+              const response = await teeketApi.get("/orders/export-csv");
               const res = response.data;
+
+              const blob = new Blob([res], { type: 'text/csv' });
+              const url = URL.createObjectURL(blob);
+          
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = 'exported-file.csv'; 
+          
+              document.body.appendChild(link);
+              link.click();
+          
+              document.body.removeChild(link);
+              URL.revokeObjectURL(url);
 
               toast({
                   title: "Export Order List",
@@ -24,7 +34,6 @@ const OrdersDashboardPage = () => {
                   isClosable: true,
               });
           } catch (error) {
-            console.log(error)
               const errorMessage =
                   error?.response?.data?.message || "Unable to export";
               toast({
@@ -53,7 +62,7 @@ const OrdersDashboardPage = () => {
           pageTitle="Orders"
           subTitle="Explore Your Event Ticket Orders"
         />
-        <Button onClick={exportToExcel} variant="secondary" p={2}>
+        <Button width={{base:"100%",md: '100px'}} onClick={exportToExcel} variant="secondary" p={2}>
           <Export />
           Export
         </Button>

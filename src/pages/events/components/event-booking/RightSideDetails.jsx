@@ -38,14 +38,16 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
         setEventAttendees(response.data?.data || []); // Store the attendees in state
       } catch (error) {
         console.error("Error fetching attendees:", error);
-        setEventAttendees([]); // Set empty array on error
+        setEventAttendees(null); // Set empty array on error
       }
     };
 
     fetchAttendees();
   }, [event?.id]);
 
-  const attendeesQuantity = getBookingMessage(eventAttendees.length);
+  let attendeesQuantity;
+
+  eventAttendees? attendeesQuantity = getBookingMessage(eventAttendees.length): attendeesQuantity = "Register to find out more about people going"
   console.log("EA", eventAttendees);
 
   const getTicket = () => {
@@ -68,19 +70,23 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
           )}
 
           <HStack gap="10px" alignItems="center">
-            <AvatarGroup size="sm" max={3}>
-              {eventAttendees.slice(0, 3).map((attendees, i) => (
-                <Avatar
-                  key={i}
-                  border="1px solid"
-                  borderColor="gray.800"
-                  color="gray.800"
-                  name={attendees?.name || attendees?.email}
-                  src={attendees?.profile_image}
-                  bgColor="transparent"
-                />
-              ))}
-            </AvatarGroup>
+            {
+              eventAttendees && (
+                <AvatarGroup size="sm" max={3}>
+                  {eventAttendees.slice(0, 3).map((attendees, i) => (
+                    <Avatar
+                      key={i}
+                      border="1px solid"
+                      borderColor="gray.800"
+                      color="gray.800"
+                      name={attendees?.name || attendees?.email}
+                      src={attendees?.profile_image}
+                      bgColor="transparent"
+                    />
+                  ))}
+                </AvatarGroup>
+              )
+            }
             <Text fontSize="sm" lineHeight="5" color="gray.600">
               {attendeesQuantity}
             </Text>
