@@ -147,7 +147,7 @@ const Header = () => {
                                         color="gray.600"
                                         fontSize={14}
                                     >
-                                        My Account
+                                        My Tickets
                                     </MenuItem>
                                 </Link>
                       </MenuGroup>
@@ -164,15 +164,19 @@ const Header = () => {
                           </MenuItem>
                         </Link>
 
-                        <Link to={user?.is_creator? "/app/overview": "/my-tickets"}>
-                          <MenuItem
-                            icon={<GridIcon />}
-                            color="gray.600"
-                            fontSize={14}
-                          >
-                            My dashboard
-                          </MenuItem>
-                        </Link>
+                        {
+                          user.is_creator && (
+                            <Link to={user?.is_creator}>
+                              <MenuItem
+                                icon={<GridIcon />}
+                                color="gray.600"
+                                fontSize={14}
+                              >
+                                My dashboard
+                              </MenuItem>
+                            </Link>
+                          )
+                        }
                       </MenuGroup>
                       <MenuDivider />
                       <MenuGroup>
@@ -262,28 +266,32 @@ const Header = () => {
                                 </div>
                                 <Menu>
                                   {menu.map((link, i) => (
-                                    <Link key={i} to={`/${link.url}`}>
+                                    <Link key={i} to={`/${link.url}`} onClick={onClose}>
                                       <MenuItem>
                                         {link.link}
                                       </MenuItem>
                                     </Link>
                                   ))}
-                                  <Link to="/my-tickets">
+                                  <Link to="/my-tickets" onClick={onClose}>
                                     <MenuItem>
-                                      My Account
+                                      My Tickets
                                     </MenuItem>
                                   </Link>
-                                  <Link >
+                                  <Link to={"/create-event"} onClick={onClose}>
                                     <MenuItem >
                                       Create Event
                                     </MenuItem>
                                   </Link>
-                                  <Link to={user?.is_creator? "/app/overview": "/my-tickets"}>
-                                    <MenuItem>
-                                      My dashboard
-                                    </MenuItem>
-                                  </Link>
-                                  <Link to="/account-settings">
+                                  {
+                                    user.is_creator && (
+                                      <Link to={"/app/overview"} onClick={onClose}>
+                                        <MenuItem>
+                                          My dashboard
+                                        </MenuItem>
+                                      </Link>
+                                    )
+                                  }
+                                  <Link to="/account-settings" onClick={onClose}>
                                     <MenuItem>
                                       Account settings
                                     </MenuItem>
