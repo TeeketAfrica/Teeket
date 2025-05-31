@@ -26,6 +26,15 @@ const EventsPage = () => {
     const [displayEventPreference, setDisplayEventPreference] = useState(false);
     const [preloader, setPreLoader] = useState(true);
     const [fetchError, setFetchError] = useState(false);
+    const [showUI, setShowUI] = useState(false);
+
+    useEffect(() => {
+      const hasSeenUI = sessionStorage.getItem('hasSeenUI');
+      if (!hasSeenUI) {
+        setShowUI(true);
+        sessionStorage.setItem('hasSeenUI', 'true');
+      }
+    }, []);
 
   useEffect(() => {
     fetchEvents(searchTerm, category);
@@ -73,7 +82,7 @@ const EventsPage = () => {
     return (
         <main>
             <ScrollToTop />
-            {displayEventPreference && (
+            {displayEventPreference && showUI && (
                 <EventPreference isOpen={isOpen} onClose={onClose} />
             )}
             <HeroSection />

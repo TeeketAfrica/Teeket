@@ -315,7 +315,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                     fontWeight={600}
                                     color="gray.800"
                                 >
-                                    File
+                                    Filter
                                 </Text>{" "}
                                 <DownIcon />
                             </HStack>

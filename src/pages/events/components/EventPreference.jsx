@@ -114,7 +114,7 @@ const EventPreference = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       onClose={onClose}
       isCentered
-      size="3xl"
+      size={{md: "xl", base: "xl", lg: "2xl"}}
     >
       <ModalOverlay />
       <ModalContent>
@@ -132,7 +132,7 @@ const EventPreference = ({ isOpen, onClose }) => {
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Wrap spacing={3}>
+          <Wrap spacing={3} overflowY={"auto"} maxHeight="300px">
             {availablePrefs?.map((pref, i) => (
               <WrapItem
                 key={pref.id}
