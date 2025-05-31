@@ -40,7 +40,6 @@ const ContactForm = () => {
                 "message":values.comment
              }
             );
-          console.log(response)
           if(response.status === 200){
             toast({
                 title: "Message sent!",

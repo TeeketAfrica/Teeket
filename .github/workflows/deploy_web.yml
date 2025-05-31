@@ -11,8 +11,7 @@ jobs:
     permissions: write-all
     name: Web Build & Staging Deploy
     runs-on: ubuntu-latest
-    # Skip if it's a draft PR (original condition)
-    if: ${{ !github.event.pull_request || !github.event.pull_request.draft }}
+    if: ${{ github.event.pull_request.merged == true }}
     steps:
       - uses: actions/checkout@v4
 
@@ -29,7 +28,7 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           github-token: ${{ github.token }}
-          vercel-args: ""
+          vercel-args: "--prod"
           working-directory: ./
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
