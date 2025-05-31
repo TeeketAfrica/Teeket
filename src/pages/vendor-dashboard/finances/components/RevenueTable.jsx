@@ -103,6 +103,22 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                     (item.revenue.event.organizer && item.revenue.event.organizer.toLowerCase().includes(searchTerm))
             );
         }
+        let filteredData;
+
+        if(!viewHistory){
+            filteredData = revenueTableData.filter(
+                (item) =>
+                    (item.event.title && item.event.title.toLowerCase().includes(searchTerm)) ||
+                    (item.event.organizer && item.event.organizer.toLowerCase().includes(searchTerm))
+            );
+        }
+        else{
+            filteredData = historyTableData.filter(
+                (item) =>
+                    (item.revenue.event.title && item.revenue.event.title.toLowerCase().includes(searchTerm)) ||
+                    (item.revenue.event.organizer && item.revenue.event.organizer.toLowerCase().includes(searchTerm))
+            );
+        }
 
         setSearch(searchTerm);
         setCurrentPage(0);
@@ -613,9 +629,11 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                     }
                                                                     color={
                                                                         td.status ===
-                                                                        "processing" || "created"
+                                                                        "created"
                                                                             ? "gray.700"
-                                                                            : td.status ===
+                                                                            :
+                                                                            td.status === "processing" ? "blue.700":
+                                                                            td.status ===
                                                                               "remitted"
                                                                             ? "green.500"
                                                                             : "red.400"
