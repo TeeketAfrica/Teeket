@@ -166,7 +166,7 @@ const Header = () => {
 
                         {
                           user.is_creator && (
-                            <Link to={user?.is_creator}>
+                            <Link to={"/app/overview"}>
                               <MenuItem
                                 icon={<GridIcon />}
                                 color="gray.600"
