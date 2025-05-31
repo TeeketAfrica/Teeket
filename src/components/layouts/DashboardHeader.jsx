@@ -97,7 +97,7 @@ const DashboardHeader = ({ onOpen }) => {
                                         color="gray.600"
                                         fontSize={14}
                                     >
-                                        My Account
+                                        My Tickets
                                     </MenuItem>
                                 </Link>
                             </MenuGroup>
