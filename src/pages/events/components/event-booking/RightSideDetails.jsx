@@ -96,7 +96,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
             <DetailCard
               icon={TicketIcon}
               title="Starting price"
-              subTitle={`Regular - $${Number(event?.lowest_ticket_price)}`}
+              subTitle={`Regular - ₦${Number(event?.lowest_ticket_price)}`}
             />
           )}
           <Link to={`/event-booking/${event?.id}/get-ticket`}>
