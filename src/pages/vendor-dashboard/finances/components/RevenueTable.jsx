@@ -68,6 +68,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
         revenueTableData.slice(startIndex, endIndex)
     );
     const [historyTableData, setHistoryTableData] = useState([]);
+    const [historyPaginatedData, setHistoryPaginatedData] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -95,6 +96,11 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                     (item.event.title && item.event.title.toLowerCase().includes(searchTerm)) ||
                     (item.event.organizer && item.event.organizer.toLowerCase().includes(searchTerm))
             );
+            setSearch(searchTerm);
+            setCurrentPage(0);
+            setPaginatedData(filteredData.slice(0, itemsPerPage));
+            setTotalItems(filteredData.length);
+            setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
         }
         else{
             filteredData = historyTableData.filter(
@@ -102,13 +108,12 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                     (item.revenue.event.title && item.revenue.event.title.toLowerCase().includes(searchTerm)) ||
                     (item.revenue.event.organizer && item.revenue.event.organizer.toLowerCase().includes(searchTerm))
             );
+            setSearch(searchTerm);
+            setCurrentPage(0);
+            setHistoryPaginatedData(filteredData.slice(0, itemsPerPage));
+            setTotalItems(filteredData.length);
+            setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
         }
-
-        setSearch(searchTerm);
-        setCurrentPage(0);
-        setPaginatedData(filteredData.slice(0, itemsPerPage));
-        setTotalItems(filteredData.length);
-        setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
     };
 
     //   HANDLE CLEAR SEARCH
@@ -117,6 +122,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
         setSearch("");
         setCurrentPage(0);
         setPaginatedData(revenueTableData.slice(0, itemsPerPage));
+        setHistoryPaginatedData(historyTableData.slice(0, itemsPerPage));
         setTotalItems(revenueTableData.length);
         setTotalPages(Math.ceil(revenueTableData.length / itemsPerPage));
     };
@@ -140,19 +146,25 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
             }
         }else{
             if(selectedStatus === "All events"){
-                setPaginatedData(historyTableData);
+                setHistoryPaginatedData(historyTableData);
             }
             else{
                 const filteredData = historyTableData.filter(
                     (item) => item.status === selectedStatus
                 );
                 setCurrentPage(0);
+                setHistoryPaginatedData(filteredData.slice(0, itemsPerPage));
                 setTotalItems(filteredData.length);
                 setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-                setPaginatedData(filteredData.slice(0, itemsPerPage));
             }
         }
     };
+
+    //clear search when ever tables are switched
+    useEffect(()=>{
+        handleClearSearch();
+        setSelectedFilterIndex(0);
+    }, [viewHistory])
 
     useEffect(() => {
         const handleFetchEvents = async () => {
@@ -195,7 +207,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
         const handleFetchPaymentHistory = async ()=>{
             setLoading(true);
             try{
-                let url = "/payment-requests";
+                let url = `/payment-requests`;
                 const queryParams = [];
 
                 if (search) {
@@ -207,6 +219,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                 const response = await teeketApi.get(url);
                 const res = response.data;
                 setHistoryTableData(res.data);
+                setHistoryPaginatedData(res.data.slice(0, itemsPerPage))
                 setLoading(false);
                 console.log("payment history", response);
             }
@@ -229,7 +242,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
 
         handleFetchEvents();
         handleFetchPaymentHistory();
-    }, [toast, itemsPerPage]);
+    }, [toast]);
 
     if(loading) return (
         <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem"}}>
@@ -314,7 +327,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                     fontWeight={600}
                                     color="gray.800"
                                 >
-                                    File
+                                    Filter
                                 </Text>{" "}
                                 <DownIcon />
                             </HStack>
@@ -376,9 +389,23 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                     </HStack>
                 ) : (
                     <HStack px={6} py={5}>
-                        <Text fontSize={18} fontWeight={600} color="gray.800">
-                            Payment requests
-                        </Text>
+                        {search === "" ? (
+                            <Text
+                                fontSize={18}
+                                fontWeight={600}
+                                color="gray.800"
+                            >
+                                Payment Requests
+                            </Text>
+                        ) : (
+                            <Text
+                                fontSize={18}
+                                fontWeight={600}
+                                color="gray.800"
+                            >
+                                Result for &quot;{search}&quot;
+                            </Text>
+                        )}
                         <Tag
                             py="2px"
                             px={2}
@@ -387,7 +414,12 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                             fontWeight={500}
                             color="gray.700"
                         >
-                            {`${historyTableData.length} requests`}
+                            {(paginatedData.length === 0 && search === "") ||
+                            (paginatedData.length === 0 && search !== "")
+                                ? "No requests"
+                                : search !== ""
+                                ? `${paginatedData.length} requests`
+                                : `${historyTableData.length} requests`}
                         </Tag>
                     </HStack>
                 )}
@@ -423,9 +455,9 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                         <Td>
                                                             <HStack spacing={3}>
                                                                 <Image
-                                                                    src={td.event.banner_image}
+                                                                    src={td?.event?.banner_image}
                                                                     alt={
-                                                                        td.iitle
+                                                                        td?.iitle
                                                                     }
                                                                     objectFit={"cover"}
                                                                     borderRadius={"6px"}
@@ -440,12 +472,12 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                         color="gray.800"
                                                                     >
                                                                         {
-                                                                            td.event.title
+                                                                            td?.event.title
                                                                         }
                                                                     </Text>
                                                                     <Text color="gray.600">
                                                                         {
-                                                                            td.event.organizer
+                                                                            td?.event?.organizer
                                                                         }
                                                                     </Text>
                                                                 </Box>
@@ -455,43 +487,43 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.total_tickets_sold}/
-                                                            {td.total_tickets}
+                                                            {td?.total_tickets_sold}/
+                                                            {td?.total_tickets}
                                                         </Td>
                                                         <Td
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td.amount === null? "₦0": `₦${formatAmount(Number(td.amount))}`}
+                                                            {td?.amount === null? "₦0": `₦${formatAmount(Number(td.amount))}`}
                                                         </Td>
                                                         <Td
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {formatDate(td.date_created)}
+                                                            {formatDate(td?.date_created)}
                                                         </Td>
                                                         <Td>
                                                             <Tag
                                                                 bg={
-                                                                    td.status ===
+                                                                    td?.status ===
                                                                     "ongoing_event"
                                                                         ? "gray.200"
-                                                                        : td.status ===
+                                                                        : td?.status ===
                                                                           "remitted"
                                                                         ? "green.100"
-                                                                        : td.status ===
+                                                                        : td?.status ===
                                                                           "due"
                                                                         ? "blue.100"
                                                                         : "red.100"
                                                                 }
                                                                 color={
-                                                                    td.status ===
+                                                                    td?.status ===
                                                                     "ongoing_event"
                                                                         ? "gray.700"
-                                                                        : td.status ===
+                                                                        : td?.status ===
                                                                           "remitted"
                                                                         ? "green.500"
-                                                                        : td.status ===
+                                                                        : td?.status ===
                                                                           "due"
                                                                         ? "blue.400"
                                                                         : "red.400"
@@ -504,7 +536,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 fontWeight={500}
                                                                 fontSize={12}
                                                             >
-                                                                {td.status === "ongoing_event"? "On Going": td.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
+                                                                {td?.status === "ongoing_event"? "On Going": td?.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
                                                             </Tag>
                                                         </Td>
                                                     </Tr>
@@ -535,14 +567,14 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                 </Tr>
                                             </Thead>
                                             <Tbody fontSize={14}>
-                                                {historyTableData.map(
+                                                {historyPaginatedData.map(
                                                     (td, i) => (
                                                         <Tr key={i}>
                                                             <Td
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.request_id}
+                                                                {td?.request_id}
                                                             </Td>
                                                             <Td>
                                                                 <HStack
@@ -550,10 +582,10 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 >
                                                                     <Image
                                                                         src={
-                                                                            td.revenue.event.banner_image
+                                                                            td?.revenue?.event?.banner_image
                                                                         }
                                                                         alt={
-                                                                            td.revenue.event.title
+                                                                            td?.revenue?.event?.title
                                                                         }
                                                                         objectFit={"cover"}
                                                                         borderRadius={"6px"}
@@ -568,12 +600,12 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                             color="gray.800"
                                                                         >
                                                                             {
-                                                                                td.revenue.event.title
+                                                                                td?.revenue?.event?.title
                                                                             }
                                                                         </Text>
                                                                         <Text color="gray.600">
                                                                             {
-                                                                                td.revenue.event.organizer
+                                                                                td?.revenue?.event?.organizer
                                                                             }
                                                                         </Text>
                                                                     </Box>
@@ -583,7 +615,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td.revenue.amount === null? "0": td.revenue.amount}
+                                                                {td?.revenue?.amount === null? "0": td?.revenue?.amount}
                                                             </Td>
                                                             <Td
                                                                 color="gray.600"
@@ -596,26 +628,28 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 fontWeight={500}
                                                             >
                                                                 {
-                                                                    td.date_remitted === null? "Coming soon": formatDate(td.date_remitted)
+                                                                    td?.date_remitted === null? "Coming soon": formatDate(td.date_remitted)
                                                                 }
                                                             </Td>
                                                             <Td>
                                                                 <Tag
                                                                     bg={
-                                                                        td.status ===
+                                                                        td?.status ===
                                                                             "created"
                                                                             ? "gray.200":
-                                                                            td.status === "processing"? "blue.100"
-                                                                            : td.status ===
+                                                                            td?.status === "processing"? "blue.100"
+                                                                            : td?.status ===
                                                                               "remitted"
                                                                             ? "green.100"
                                                                             : "red.100"
                                                                     }
                                                                     color={
-                                                                        td.status ===
-                                                                        "processing" || "created"
+                                                                        td?.status ===
+                                                                        "created"
                                                                             ? "gray.700"
-                                                                            : td.status ===
+                                                                            :
+                                                                            td?.status === "processing" ? "blue.700":
+                                                                            td?.status ===
                                                                               "remitted"
                                                                             ? "green.500"
                                                                             : "red.400"
@@ -632,7 +666,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                         12
                                                                     }
                                                                 >
-                                                                    {td.status}
+                                                                    {td?.status}
                                                                 </Tag>
                                                             </Td>
                                                             <Td>
