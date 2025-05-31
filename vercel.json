@@ -1,4 +1,16 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "vite.config.js",
+      "use": "@vercel/vite"
+    }
+  ],
+  "build": {
+    "env": {
+      "NODE_VERSION": "20.x"
+    }
+  },
   "routes": [
     { "src": "/[^.]+", "dest": "/index.html", "status": 200 },
     {
@@ -36,5 +48,8 @@
       "status": 200
     },
     { "src": "/event-booking", "dest": "/event-booking.html", "status": 200 }
-  ]
+  ],
+  "github": {
+    "enabled": false
+  }
 }

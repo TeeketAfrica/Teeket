@@ -171,11 +171,11 @@ const PublishEvent = ({ formik }) => {
                       <TicketPrice />
                       <Text display="inline-flex" gap="2">
                         <Text as="span">
-                          ${calculateMinAndMaxPrices(tickets).minPrice}
+                          ₦{calculateMinAndMaxPrices(tickets).minPrice}
                         </Text>
                         -
                         <Text as="span">
-                          ${calculateMinAndMaxPrices(tickets).maxPrice}
+                          ₦{calculateMinAndMaxPrices(tickets).maxPrice}
                         </Text>
                       </Text>
                     </Box>

@@ -97,7 +97,7 @@ const DashboardHeader = ({ onOpen }) => {
                                         color="gray.600"
                                         fontSize={14}
                                     >
-                                        My Account
+                                        My Tickets
                                     </MenuItem>
                                 </Link>
                             </MenuGroup>
@@ -112,16 +112,20 @@ const DashboardHeader = ({ onOpen }) => {
                                         Create Event
                                     </MenuItem>
                                 </Link>
-                                <Link to={activeUser.is_creator? "/app/overview": "/my-tickets"}>
-                                    <MenuItem
-                                        icon={<GridIcon />}
-                                        color="gray.600"
-                                        fontSize={14}
-                                        command="⌘N"
-                                    >
-                                        My dashboard
-                                    </MenuItem>
-                                </Link>
+                                {
+                                    activeUser.is_creator && (
+                                        <Link to={"/app/overview"}>
+                                            <MenuItem
+                                                icon={<GridIcon />}
+                                                color="gray.600"
+                                                fontSize={14}
+                                                command="⌘N"
+                                            >
+                                                My dashboard
+                                            </MenuItem>
+                                        </Link>
+                                    )
+                                }
                             </MenuGroup>
                             <MenuDivider />
                             <MenuGroup>
