@@ -27,7 +27,7 @@ import SignOut from "../../../assets/icon/SignOut.svg";
 import Container from "../../../components/ui/Container";
 import SideNav from "./SideNav";
 import useSignOut from "../../../utils/signOut";
-import { resetEventState } from "../../../features/eventSlice";
+import { resetEventState, selectEventDetails } from "../../../features/eventSlice";
 import { selectActiveUser } from "../../../features/activeUserSlice";
 
 const Layout = ({
@@ -43,14 +43,13 @@ const Layout = ({
   const { signOut } = useSignOut();
   const dispatch = useDispatch();
   const user = useSelector(selectActiveUser);
+  const { tickets } = useSelector(selectEventDetails);
 
   const { email } = useSelector(selectUserDetails).data;
-
   useOutsideClick({
     ref: ref,
     handler: () => setMenuToggle(false),
-  });
-
+  }); 
   const resetEvent = () => {
     dispatch(resetEventState());
   };
@@ -391,6 +390,7 @@ const Layout = ({
                 type="submit"
                 size="lg"
                 onClick={nextStep}
+                disabled={tickets.length < 1 && activeStepColor === 2}
               >
                 Save and continue
               </Button>

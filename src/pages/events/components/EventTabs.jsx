@@ -7,12 +7,14 @@ const EventTabs = ({ allEvents }) => {
     <section>
       <Container >
         <Box >
-          <Tabs style={{ overflowX: "auto", width: "100%"}}>
+          <Tabs style={{ width: "100%"}}>
             <TabList
               borderTop="1px solid"
               borderBottom="1px solid"
               borderColor="gray.300"
               justifyContent="center"
+              overflowX={"auto"}
+              overflowY={"hidden"}
             >
               <Tab>All events</Tab>
               <Tab>Curated for you</Tab>

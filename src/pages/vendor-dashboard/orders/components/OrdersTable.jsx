@@ -61,9 +61,6 @@ const OrdersTable = () => {
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [search, setSearch] = useState("");
 
-
-    console.log(currentPage)
-
     const updateNetworkStatus = () => {
         setIsOnline(navigator.onLine);
     };
@@ -179,12 +176,13 @@ const OrdersTable = () => {
             setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
             setPaginatedData(filteredData.slice(0, itemsPerPage));
         }
-    };
+    }
+    console.log(paginatedData)
 
     return (
         <Box px={[4, 8]}>
             <Stack
-                direction={["column", "row"]}
+                direction={[ "row"]}
                 justifyContent="space-between"
                 w="100%"
                 spacing="24px"
@@ -221,7 +219,7 @@ const OrdersTable = () => {
                                 fontWeight={600}
                                 color="gray.800"
                             >
-                                File
+                                Filter
                             </Text>{" "}
                             <DownIcon />
                         </HStack>

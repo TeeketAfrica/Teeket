@@ -10,6 +10,7 @@ import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 import { useState } from "react";
 import BrowseEvents from "../../../assets/icon/BrowseEvents.svg";
 import EmptyState from "../../../components/ui/EmptyState";
+import { Link } from "react-router-dom";
 
 const PaidEvents = () => {
   const [event] = useState(true);
@@ -115,9 +116,11 @@ const PaidEvents = () => {
             />
           </Grid>
           <Center w="full" my="6">
-            <Button variant="primary" leftIcon={<BrowseEvents />}>
-              Browse all events
-            </Button>
+            <Link to={"/events"}>
+              <Button variant="primary" leftIcon={<BrowseEvents />}>
+                Browse all events
+              </Button>
+            </Link>
           </Center>
         </>
       ) : (

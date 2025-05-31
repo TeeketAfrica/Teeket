@@ -33,9 +33,9 @@ const AuthenticatedRoutes = () => {
           path="organization-settings"
           element={<OrganizationSettingsDashboardPage />}
         />
-        <Route path="event" element={<EventsPage />} />
+        {/* <Route path="event" element={<EventsPage />} /> */}
         <Route path="event-category" element={<EventCategoryPage />} />
-        <Route path="event-booking" element={<EventBookingPage />} />
+        {/* <Route path="event-booking" element={<EventBookingPage />} /> */}
         <Route path="my-tickets" element={<TicketDashboardPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

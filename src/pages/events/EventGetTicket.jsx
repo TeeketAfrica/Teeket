@@ -21,7 +21,7 @@ const EventGetTicket = () => {
 
     // Function to calculate time left until the event ends
 
-    const calculateTimeLeft = (endDate, setTimeLeft, timerIntervalRef) => {
+     const calculateTimeLeft = (endDate, setTimeLeft, timerIntervalRef) => {
         const now = new Date();
         const end = new Date(endDate);
     
@@ -94,7 +94,6 @@ const EventGetTicket = () => {
             }
         };
     }, [eventData?.end_date]);
-
     return (
         <Container padding="16px">
             <EventGetTicketHeader paid={paid} profile={activeUser}/>

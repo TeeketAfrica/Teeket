@@ -42,8 +42,8 @@ const HomePage = () => {
 
   return (
     <>
-      <main>
-        <Center>
+      <main style={{ overflowX: "hidden"}}>
+        <Center >
           <Box
             bgImage={`url(${EventBg})`}
             bgSize="cover"
@@ -192,7 +192,7 @@ const HomePage = () => {
         {/* Browse Events */}
         <Box
           paddingBottom={{ base: "11", md: "14" }}
-          paddingTop={{ base: "88px", md: "450px" }}
+          paddingTop={{ base: "150px", md: "450px" }}
         >
           <Container padding="16px">
             <Text

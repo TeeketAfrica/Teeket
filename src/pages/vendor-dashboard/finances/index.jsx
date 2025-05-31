@@ -21,7 +21,7 @@ import { formatAmount } from "../../../utils/utils";
 
 const FinancesDashboardPage = () => {
     const toast = useToast();
-
+    const [viewHistory, setViewHistory] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [requestPayment] = useState(true);
 
@@ -59,8 +59,13 @@ const FinancesDashboardPage = () => {
 
     const exportToExcel = async () => {
         try {
-            let url = "/revenue/export-csv";
-
+            let url;
+            if(!viewHistory){
+                url = "/revenue/export-csv";
+            }
+            else{
+                url = "/payment-requests/export-csv";
+            }
             const response = await teeketApi.get(url);
             const res = response.data;
         } catch (error) {
@@ -93,10 +98,11 @@ const FinancesDashboardPage = () => {
                     pageTitle="Finance"
                     subTitle="Get an overview of all event-related revenue"
                 />
-                <HStack spacing="12px">
+                <HStack width={{base:'100%', md:'350px'}} spacing="12px">
                     <Button
                         spacing={2}
                         variant="secondary"
+                        width={{ base: "50%", md: "150px" }}
                         p={2}
                         onClick={exportToExcel}
                     >
@@ -137,7 +143,7 @@ const FinancesDashboardPage = () => {
                     icon={AvailableRevenue}
                     revenueTitle="Available revenue"
                     revenueTotal={revenueData?.available_revenue || 0}
-                    desc="You can request payment in 4days time"
+                    desc="You can request payment in after event completion"
                     color="blue.400"
                 />
                 <RevenueCard
@@ -146,7 +152,7 @@ const FinancesDashboardPage = () => {
                     revenueTotal={revenueData?.remitted_revenue || 0}
                 />
             </SimpleGrid>
-            <RevenueTable />
+            <RevenueTable viewHistory={viewHistory} setViewHistory={setViewHistory}/>
             <RequestPaymentModal
                 isOpen={isOpen}
                 onClose={onClose}
