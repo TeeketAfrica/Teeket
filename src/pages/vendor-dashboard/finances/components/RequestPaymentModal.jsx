@@ -144,7 +144,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
             <Text fontSize={14} mb="1rem" color="gray.600">
               Your current events with due payment brings a total of{" "}
               <Text as="span" fontWeight={700}>
-                ${events.filter(event => event.status === "due").reduce((sum, event) => sum + Number(event?.amount || 0), 0)}
+                ₦{events.filter(event => event.status === "due").reduce((sum, event) => sum + Number(event?.amount || 0), 0)}
               </Text>
               . All payment will be made within 24hours after your request.
             </Text>
@@ -157,7 +157,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
                       <Text fontWeight={500}>{dueEvent?.event?.title}</Text>
                       <Text fontSize={14} color="gray.600">
                         <Text as="span" fontWeight={600} style={{ display: "flex", flexWrap: "nowrap", gap: "5px"}}>
-                          ${dueEvent?.amount} {" "}
+                          ₦{dueEvent?.amount} {" "}
                           {dueEvent.has_requested_payment && <span style={{ display: "flex", flexWrap: "nowrap", gap: "5px"}}>payment requested <TickCircle/></span>}
                         </Text>
                       </Text>
@@ -172,7 +172,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
                 Total revenue requested
               </Text>
               <Text fontSize={14} fontWeight={500}>
-                ${total || 0}
+                ₦{total || 0}
               </Text>
             </HStack>
           </ModalBody>

@@ -131,7 +131,7 @@ const FinancesDashboardPage = () => {
                         onClick={onOpen}
                         isDisabled={!revenueData?.total_revenue}
                     >
-                        $ Request payment
+                        ₦ Request payment
                     </Button>
                 </HStack>
             </Stack>
