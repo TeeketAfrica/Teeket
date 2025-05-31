@@ -6,37 +6,36 @@ import OrdersTable from "./components/OrdersTable";
 import { teeketApi } from "../../../utils/api";
 
 const OrdersDashboardPage = () => {
-  const toast = useToast()
-      const exportToExcel = async () => {
-        console.log('caught in the act')
-          try {
-              let url = "/orders/export-csv";
-  
-              const response = await teeketApi.get(url);
-              const res = response.data;
+  const toast = useToast();
+  const exportToExcel = async () => {
+    console.log("caught in the act");
+    try {
+      let url = "/orders/export-csv";
 
-              toast({
-                  title: "Export Order List",
-                  description: `Order List exported successfully`,
-                  status: "success",
-                  duration: 3000,
-                  position: "top-right",
-                  isClosable: true,
-              });
-          } catch (error) {
-            console.log(error)
-              const errorMessage =
-                  error?.response?.data?.message || "Unable to export";
-              toast({
-                  title: "Failed to export order",
-                  description: `${errorMessage}`,
-                  status: "error",
-                  duration: 3000,
-                  position: "top-right",
-                  isClosable: true,
-              });
-          }
-      };
+      const response = await teeketApi.get(url);
+      const res = response.data;
+
+      toast({
+        title: "Export Order List",
+        description: `Order List exported successfully`,
+        status: "success",
+        duration: 3000,
+        position: "top-right",
+        isClosable: true,
+      });
+    } catch (error) {
+      console.log(error);
+      const errorMessage = error?.response?.data?.message || "Unable to export";
+      toast({
+        title: "Failed to export order",
+        description: `${errorMessage}`,
+        status: "error",
+        duration: 3000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
+  };
   return (
     <DashboardLayout>
       <Stack
@@ -53,8 +52,12 @@ const OrdersDashboardPage = () => {
           pageTitle="Orders"
           subTitle="Explore Your Event Ticket Orders"
         />
-        <Button onClick={exportToExcel} variant="secondary" p={2}>
-          <Export />
+        <Button
+          leftIcon={<Export />}
+          onClick={exportToExcel}
+          variant="secondary"
+          p={2}
+        >
           Export
         </Button>
       </Stack>

@@ -11,56 +11,55 @@ import {
   Image,
   Divider,
   Container,
-      Avatar,
+  Avatar,
   Tag,
 } from "@chakra-ui/react";
 import Calendar from "../../../../assets/icon/calendar-alt-dark.svg";
 import Clock from "../../../../assets/icon/clock-dark.svg";
 import Ticket from "../../../../assets/icon/ticket-icon.svg";
-import { filterPolicy, formatEventDateRange } from "../../../../utils/constants";
+import {
+  filterPolicy,
+  formatEventDateRange,
+} from "../../../../utils/constants";
 import { useEffect, useState } from "react";
 
 const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
+  const [result, setResult] = useState({ date: "", time: "" });
 
-const [result, setResult] = useState({date:'', time:''});
-
-  useEffect(()=>{
-    if( selectedItem?.event.start_date && selectedItem?.event.end_date){
-      setResult(formatEventDateRange({
+  useEffect(() => {
+    if (selectedItem?.event.start_date && selectedItem?.event.end_date) {
+      setResult(
+        formatEventDateRange({
           start_date: selectedItem?.event.start_date,
-          end_date: selectedItem?.event.end_date
-      }))
+          end_date: selectedItem?.event.end_date,
+        })
+      );
     }
-  }, [selectedItem])
+  }, [selectedItem]);
 
   return (
-    <Modal
-      size="xl"
-      blockScrollOnMount={false}
-      isOpen={isOpen}
-      onClose={onClose}
-    >
+    <Modal size="xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       {selectedItem && (
-        <ModalContent p={6} borderRadius={16}>
+        <ModalContent p={6} borderRadius={16} my="auto">
           <ModalHeader p={0}>
             <HStack gap="11px">
               <Avatar
-                   border="1px solid"
-                   borderColor="gray.800"
-                   color="gray.800"
-                   name={selectedItem.attendeeName || selectedItem.attendee.first_name}
-                   src={selectedItem.attendeeAvatar || selectedItem.attendee.profile_image}
-                   bgColor="transparent"
+                border="1px solid"
+                borderColor="gray.800"
+                color="gray.800"
+                name={
+                  selectedItem.attendeeName || selectedItem.attendee.first_name
+                }
+                src={
+                  selectedItem.attendeeAvatar ||
+                  selectedItem.attendee.profile_image
+                }
+                bgColor="transparent"
               />
-              {/* <Image
-                src={selectedItem.attendeeAvatar || selectedItem.attendee.profile_image}
-                alt={selectedItem.attendeeName}
-                w={10}
-                h={10}
-              /> */}
               <Text fontWeight={700} fontSize="xl">
-                {selectedItem.attendeeName || selectedItem.attendee.first_name}’s Order details
+                {selectedItem.attendeeName || selectedItem.attendee.first_name}
+                ’s Order details
               </Text>
             </HStack>
           </ModalHeader>
@@ -79,18 +78,6 @@ const [result, setResult] = useState({date:'', time:''});
               bgPosition="top left"
               my={8}
             >
-
-              <Box
-                position="absolute"
-                top={0}
-                left={0}
-                width="100%"
-                height="100%"
-                bgImage={`url(${selectedItem.img || selectedItem.event.banner_image})`}
-                bgSize="cover"
-                bgPosition="center"
-                zIndex={-1}
-              />
               <HStack
                 px={6}
                 justifyContent="space-between"
@@ -107,11 +94,16 @@ const [result, setResult] = useState({date:'', time:''});
                   w="100%"
                   zIndex={1}
                 >
-                  <Text color="limeGreen" fontWeight={600} fontSize={14}>
+                  <Text
+                    color="limeGreen"
+                    fontWeight={600}
+                    fontSize={14}
+                    textTransform={"capitalize"}
+                  >
                     {selectedItem.ticketType || selectedItem.event.type} ticket
                   </Text>
                   <Text fontWeight={700} color="white" fontSize={20}>
-                    {selectedItem.eventTitle||selectedItem.event.title}
+                    {selectedItem.eventTitle || selectedItem.event.title}
                   </Text>
                   <Container maxW="300px" px={0} mx={0}>
                     <Text fontSize={14} color="utilityLight200">
@@ -140,8 +132,8 @@ const [result, setResult] = useState({date:'', time:''});
                     borderRadius={8}
                     p={2}
                     bgColor="utilityLight100"
-                    borderColor="utilityLight100"
                     border="1px solid"
+                    borderColor="utilityLight100"
                     color="white"
                   >
                     <Calendar />
@@ -151,12 +143,12 @@ const [result, setResult] = useState({date:'', time:''});
                     borderRadius={8}
                     p={2}
                     bgColor="utilityLight100"
-                    borderColor="utilityLight100"
                     border="1px solid"
-                    color="white"
+                    borderColor="utilityLight100"
+                    color="gray.200"
                   >
                     <Clock />
-                   {result.time}
+                    {result.time}
                   </Tag>
                 </HStack>
                 <Box>
@@ -167,27 +159,38 @@ const [result, setResult] = useState({date:'', time:''});
             <Box>
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Order ID</Text>
-                <Text color="gray.600">{selectedItem.orderId || selectedItem.order_no}</Text>
+                <Text color="gray.600">
+                  {selectedItem.orderId || selectedItem.order_no}
+                </Text>
               </HStack>
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Ticket type</Text>
-                <Text color="gray.600">{selectedItem.ticketType || selectedItem.ticket.name}</Text>
+                <Text color="gray.600">
+                  {selectedItem.ticketType || selectedItem.ticket.name}
+                </Text>
               </HStack>
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Ticket Cost</Text>
-                <Text color="gray.600">{selectedItem.ticketCost || selectedItem.ticket.price}</Text>
+                <Text color="gray.600">
+                  {selectedItem.ticketCost || selectedItem.ticket.price}
+                </Text>
               </HStack>
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Event status</Text>
-                <Text color="gray.600">{filterPolicy[selectedItem.event_status]}</Text>
+                <Text color="gray.600">
+                  {filterPolicy[selectedItem.event_status]}
+                </Text>
               </HStack>
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Purchase date</Text>
-                <Text color="gray.600">{selectedItem.created || selectedItem.date_created.split('T')[0]}</Text>
+                <Text color="gray.600">
+                  {selectedItem.created ||
+                    selectedItem.date_created.split("T")[0]}
+                </Text>
               </HStack>
             </Box>
           </ModalBody>
