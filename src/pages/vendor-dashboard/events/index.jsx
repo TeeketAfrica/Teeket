@@ -48,13 +48,13 @@ const EventsDashboardPage = () => {
           pageTitle="Events"
           subTitle="View your organizations summary"
         />
-        <HStack spacing="12px">
-          <Button variant="secondary" p={2} onClick={exportToExcel}>
+        <HStack  width={{base:"100%", md:'250px'}} spacing="12px">
+          <Button width={{base:"50%"}} variant="secondary" p={2} onClick={exportToExcel}>
             <Export />
             Export
           </Button> 
           <Link to="/create-event">
-            <Button variant="primary" p={2}>
+            <Button width={{base:'150px', md:'130px'}} variant="primary" p={2}>
               <AddEvent />
               Add event
             </Button>
@@ -63,7 +63,7 @@ const EventsDashboardPage = () => {
       </Stack>
     <EventTable setData={setData} loading={loading} setIsLoading={setIsLoading}/>  
     </DashboardLayout>
-  );
+  ); 
 };
 
 export default EventsDashboardPage;

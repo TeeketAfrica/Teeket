@@ -264,11 +264,11 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
     const handleFilterByStatus = (selectedStatus) => {
         setStatusFilter(statusMap[selectedStatus]);
     };
-    console.log("paginated data", paginatedData)
+
     return (
         <Box px={[4, 8]}>
             <Stack
-                direction={["column", "row"]}
+                direction={["row"]}
                 justifyContent="space-between"
                 w="100%"
                 spacing="24px"

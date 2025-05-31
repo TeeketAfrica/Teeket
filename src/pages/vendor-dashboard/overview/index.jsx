@@ -180,7 +180,7 @@ const OverviewDashboardPage = () => {
         </VStack>
         <VStack width="100%" gap="8">
           <BoxFrame backgroundColor="gray.100" color="gray.800">
-            <Stack width="100%" minHeight="286px">
+            <Stack width="100%" minHeight="150px">
               <HStack justifyContent="space-between">
                 <Text fontSize="xl" fontWeight="bold" color="gray.800">
                   Analytics
@@ -211,7 +211,7 @@ const OverviewDashboardPage = () => {
                 </HStack>
               </HStack>
               { summary?.plot_data?.length > 0?
-                <Box display={'flex'} justifyContent={'center'} height={250}>
+                <Box display={'flex'} justifyContent={'center'} >
                   <OverviewChart chartData={summary?.plot_data}/>
                 </Box>
                 :
@@ -249,7 +249,7 @@ const OverviewDashboardPage = () => {
                 Quick Action
               </Text>
 
-              <HStack flexGrow="1">
+              <Stack direction={["column", "row"]} flexGrow="1">
                 <BoxFrame backgroundColor="gray.800" color="gray.100">
                   <VStack
                     alignItems="self-start"
@@ -293,7 +293,7 @@ const OverviewDashboardPage = () => {
                     </Button>
                   </VStack>
                 </BoxFrame>
-              </HStack>
+              </Stack>
             </Stack>
           </BoxFrame>
         </VStack>

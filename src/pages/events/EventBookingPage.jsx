@@ -63,7 +63,7 @@ const EventBooking = () => {
 
   return (
     <main>
-      <Header/>
+      <Header />
       <Container padding="16px">
         <EventBookingDetail />
         <Divider borderColor="gray.300" borderWidth="1px" />
