@@ -120,7 +120,7 @@ export const EventGetTicketSummaryBox = () => {
                                         {event.quantity}x {event.name}
                                     </Text>
                                     <Text fontSize={16} color="gray.600">
-                                        ${event.price}
+                                        ₦{event.price}
                                     </Text>
                                 </HStack>
                             ))}
@@ -148,7 +148,7 @@ export const EventGetTicketSummaryBox = () => {
                                     Transaction fee
                                 </Text>
                                 <Text fontSize={16} color="gray.600">
-                                    ${transactionFee}
+                                    ₦{transactionFee}
                                 </Text>
                             </HStack>
                         </VStack>
@@ -167,7 +167,7 @@ export const EventGetTicketSummaryBox = () => {
                                     color="gray.800"
                                     fontWeight={500}
                                 >
-                                    ${totalPrice}
+                                    ₦{totalPrice}
                                 </Text>
                             </HStack>
                         </VStack>

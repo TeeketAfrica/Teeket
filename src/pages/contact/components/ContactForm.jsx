@@ -2,10 +2,14 @@ import * as Yup from "yup";
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import { Stack } from "@chakra-ui/layout";
-import { Button, Flex, Center } from "@chakra-ui/react";
+import { Button, Flex, Center, useToast } from "@chakra-ui/react";
 import TextInput from "@/components/shared/TextInput";
+import { teeketApi } from "../../../utils/api";
 
 const ContactForm = () => {
+  const toast = useToast();
+  const [error, setError] = useState("");
+
   // Validation schema using Yup
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Please input your first name"),
@@ -16,7 +20,6 @@ const ContactForm = () => {
     comment: Yup.string().required("Please input your comments"),
   });
 
-  const [error, setError] = useState("");
 
   // Formik initialization
   const formik = useFormik({
@@ -27,9 +30,47 @@ const ContactForm = () => {
       comment: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
-      console.log(values);
-    },
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+        try{
+          const response = await teeketApi.post("/contact-us",
+             {
+                "first_name": values.firstName,
+                "last_name": values.lastName,
+                "email": values.email,
+                "message":values.comment
+             }
+            );
+          if(response.status === 200){
+            toast({
+                title: "Message sent!",
+                description:
+                    "We've received your message and will get back to you soon.",
+                status: "success",
+                duration: 4000,
+                isClosable: true,
+                position: "top-right",
+            });
+
+            resetForm();
+          }
+    }
+    catch(error){
+        console.log(error)
+        const errorMessage = error?.response?.data?.message || "An error occured";
+        setError(errorMessage);
+        toast({
+            title: "Failed to send message",
+            description: `${errorMessage}`,
+            status: "error",
+            duration: 3000,
+            position: "top-right",
+            isClosable: true,
+        });
+    }
+    finally {
+        setSubmitting(false);
+    }
+  }
   });
 
   return (
@@ -105,7 +146,8 @@ const ContactForm = () => {
             w={"fit-content"}
             size="sm"
             variant="primary"
-            isDisabled={formik.isSubmitting}
+            isLoading={formik.isSubmitting}
+            loadingText="Sending..."
           >
             Send message
           </Button>

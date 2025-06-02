@@ -37,7 +37,7 @@ const Ticket = ({ data, handleOnclick }) => {
               {data.ticketQuantity} {data.ticketName} tickets
             </Text>
             <Text fontSize="5xl" fontWeight="bold">
-              ${data.ticketPrice}
+              ₦{data.ticketPrice}
             </Text>
           </Box>
         </Box>
