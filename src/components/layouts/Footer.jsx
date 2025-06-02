@@ -4,7 +4,7 @@ import LogoBlack from "../../assets/icon/LogoBlack.svg";
 import { SOCIAL_LINKS } from "../../utils/constants";
 
 const Footer = ({ border = true }) => {
-
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer>
@@ -49,7 +49,7 @@ const Footer = ({ border = true }) => {
               ))}
             </HStack>
             <Text fontSize="sm">
-              © 2024 Teeket Africa. All rights reserved.
+              © {new Date().getFullYear()} Teeket Africa. All rights reserved.
             </Text>
             <Link href="/">
               <LogoBlack />

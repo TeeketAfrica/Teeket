@@ -115,10 +115,11 @@ const FinancesDashboardPage = () => {
                     pageTitle="Finance"
                     subTitle="Get an overview of all event-related revenue"
                 />
-                <HStack spacing="12px">
+                <HStack width={{base:'100%', md:'350px'}} spacing="12px">
                     <Button
                         spacing={2}
                         variant="secondary"
+                        width={{ base: "50%", md: "150px" }}
                         p={2}
                         onClick={exportToExcel}
                     >
