@@ -15,6 +15,9 @@ const TicketsSection = () => {
   const { getAccessToken } = useStorage();
   const token = getAccessToken(); 
 
+  console.log('tickets',tickets);
+
+
   useEffect(()=>{
     setLoading(true);
       const fetchTickets = async ()=> {
@@ -95,6 +98,8 @@ const TicketsSection = () => {
                   ticketType={ticket?.ticket.name}
                   ticketPrice={ticket?.ticket.price}
                   eventId={ticket?.event.id}
+                  eventImageUrl={ticket?.event?.banner_image}
+                  tickekId={ticket?.ticket.id}
                 />
               </GridItem>
             ))
