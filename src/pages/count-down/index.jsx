@@ -33,6 +33,7 @@ import { SOCIAL_LINKS } from "../../utils/constants";
 export const Index = () => {
   // const targetDate = new Date("2024-04-31T23:59:59");
   // const timeLeft = CountdownTimer({ targetDate });
+  const currentYear = new Date().getFullYear();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [participant, setParticipant] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -276,7 +277,7 @@ export const Index = () => {
                 ))}
               </HStack>
               <Text fontSize="sm">
-                © 2024 Teeket Africa. All rights reserved.
+                © {new Date().getFullYear()} Teeket Africa. All rights reserved.
               </Text>
               <LogoBlack />
             </Stack>

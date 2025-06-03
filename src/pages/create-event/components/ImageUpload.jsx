@@ -15,13 +15,11 @@ import {
 	UnorderedList,
 	VStack,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import CloudUpload from "../../../assets/icon/CloudUpload.svg";
 import Document from "../../../assets/icon/Document.svg";
 import FileUploadStatus from "../../../assets/icon/FileUploadStatus.svg";
 import Reload from "../../../assets/icon/Reload.svg";
-import { mediaApi } from "../../../utils/api";
 import { IMAGEDIMENSION, IMAGESIZE } from "../../../utils/constants";
 import {
 	getImageDimensions,
@@ -29,12 +27,15 @@ import {
 	readAsBinary,
 } from "../../../utils/utils";
 import { CloudUploadIcon } from "lucide-react";
+import { useGetUrl } from "../../../hooks/useGetUrl";
+import axios from "axios";
 
 const ImageUpload = ({ handleSetImage }) => {
 	const { register } = useForm();
 	const fileInputRef = useRef(null);
 	const [imageData, setImageData] = useState("");
-
+	const { signedUrl, fetchSignedUrl } = useGetUrl();
+	const [selectedImage, setSelectedImage] = useState(null);
 	const [imageUploadState, setImageUploadState] = useState({
 		default: true,
 		loading: false,
@@ -43,6 +44,10 @@ const ImageUpload = ({ handleSetImage }) => {
 			message: "",
 		},
 	});
+
+		useEffect(() => {
+			fetchSignedUrl();
+		}, [selectedImage]);
 
 	const handleImageChange = async (imageFile) => {
 		const selectedImage = imageFile || null;
@@ -90,9 +95,29 @@ const ImageUpload = ({ handleSetImage }) => {
 
 					const imageBinary = await readAsBinary(selectedImage);
 
-					const res = await mediaApi.post("/upload/picture", {
-						file: imageBinary,
-					});
+					if (signedUrl) {
+						const formData = new FormData();
+						formData.append("file", selectedImage); 
+
+						const res = await axios.post(signedUrl, formData, {
+							headers: {
+								"Content-Type": "multipart/form-data",
+							},
+						});
+						handleSetImage(res.data);
+					} else {
+						setImageUploadState({
+							default: false,
+							loading: false,
+							error: {
+								state: true,
+								message: "Failed to fetch signed URL",
+							},
+						});
+						return;
+					}
+
+
 
 					handleSetImage(res.data);
 				} else {
@@ -125,6 +150,7 @@ const ImageUpload = ({ handleSetImage }) => {
 
 		const droppedFile = e.dataTransfer.files[0];
 		if (droppedFile) {
+			setSelectedImage(droppedFile);
 			handleImageChange(droppedFile);
 		}
 	};
