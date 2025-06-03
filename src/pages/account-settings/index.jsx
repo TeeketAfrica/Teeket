@@ -9,7 +9,7 @@ import {
     useMediaQuery,
     useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Rectangle from "../../assets/icon/rectangle.svg";
 import Footer from "../../components/layouts/Footer";
@@ -19,10 +19,13 @@ import { mediaApi, teeketApi } from "../../utils/api";
 import { AccountName } from "./components/account-name";
 import { DeleteAccount } from "./components/delete-account";
 import { Password } from "./components/password";
+import { useGetUrl } from "../../hooks/useGetUrl";
+import axios from "axios";
 
 const AccountSettingsPage = () => {
     const toast = useToast();
     const [md] = useMediaQuery("(min-width: 768px)");
+    const { signedUrl, fetchSignedUrl } = useGetUrl();
     const user = useSelector((state) => state.activeUser);
     const [profileImage, setProfileImage] = useState(user?.profile_image);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -37,18 +40,20 @@ const AccountSettingsPage = () => {
         }
     };
 
+    useEffect(() => {
+        fetchSignedUrl();
+    }, [selectedImage]);
+
     const handleUploadImage = async () => {
         if (imageFile) {
             const formData = new FormData();
             formData.append("file", imageFile);
 
             try {
-                const res = await mediaApi.post("/upload/picture", formData);
-                const imageUrl = res.data?.url;
+                const res = await axios.post(signedUrl, formData);
+                const imageUrl = res.data?.secure_url;
 
                 const response = await teeketApi.patch("/user/profile", {
-                    // first_name: user?.firstName,
-                    // last_name: user?.lastName,
                     profile_image: imageUrl,
                 });
 

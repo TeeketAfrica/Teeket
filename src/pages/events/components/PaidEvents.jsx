@@ -36,7 +36,7 @@ const PaidEvents = () => {
               eventLocation="Online event"
               eventPrice="Starts at $10"
               eventDate="9th-17th Feb"
-            />2024
+            />
             <EventCard
               eventImage={Event2}
               eventTitle="Art exhibition show down: For enthusiast and newbies"
