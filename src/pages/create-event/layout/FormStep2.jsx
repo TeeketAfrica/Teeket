@@ -16,7 +16,7 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MapIcon from "../../../assets/icon/Map.svg";
 import RefreshIcon from "../../../assets/icon/Refresh.svg";
@@ -26,12 +26,30 @@ import {
 } from "../../../features/eventSlice";
 import FormLayout from "../components/FormLayout";
 import ImageUpload from "../components/ImageUpload";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  StandaloneSearchBox,
+} from "@react-google-maps/api";
+import { useDebounce } from "../../../utils/debounce";
 
 const FormStep2 = ({ formik }) => {
   const dispatch = useDispatch();
-  const { eventBannerImage, id } = useSelector(selectEventDetails);
+  const { eventBannerImage, eventFullAddress, id } = useSelector(selectEventDetails);
+  const [selAddress, setSelAddress] = useState("")
 
   const [imageData, setImageData] = useState(eventBannerImage);
+  const completeRef = useRef(null);
+  const debouncedDispatch = useDebounce(
+    (data) => dispatch(setEventDetail(data)),
+    500
+  );
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_REACT_PLACES_API_KEY,
+    libraries: ["places"],
+  });
 
   useEffect(() => {
     const data = {
@@ -41,16 +59,34 @@ const FormStep2 = ({ formik }) => {
     dispatch(setEventDetail(data));
   }, [dispatch, imageData]);
 
-  const handleInputChange = (fieldName, e) => {
-    let data;
-    if (typeof e !== "string") {
-      formik.handleChange(e);
-      data = { fieldName: fieldName, value: e.target.value };
-    } else {
-      data = { fieldName: fieldName, value: e };
-    }
+  useEffect(() => {
+    console.log("event dets", eventFullAddress);
+  }, [eventFullAddress]);
 
-    dispatch(setEventDetail(data));
+  const handleOnPlacesChanged = () => {
+    let address = completeRef.current.getPlaces();
+    const place = address[0];
+    const location = place.geometry.location;
+    const latitude = location.lat();
+    const longitude = location.lng();
+    setSelAddress(`${place.formatted_address}`);
+    dispatch(
+      setEventDetail({
+        fieldName: "eventFullAddress",
+        value: {
+          AddressName: place.formatted_address,
+          longitude: longitude,
+          latitude: latitude,
+        },
+      })
+    );
+  };
+
+  const handleInputChange = (fieldName, e) => {
+    let value = typeof e !== "string" ? e.target.value : e;
+    formik.handleChange(e);
+    setSelAddress(e.target.value);
+    debouncedDispatch({ fieldName, value });
   };
 
   return (
@@ -202,17 +238,35 @@ const FormStep2 = ({ formik }) => {
                     <InputLeftElement pointerEvents="none">
                       <MapIcon />
                     </InputLeftElement>
-                    <Input
-                      id="eventLocation"
-                      name="eventLocation"
-                      type="text"
-                      placeholder="Address"
-                      value={formik.values.eventLocation}
-                      onChange={(value) =>
-                        handleInputChange("eventLocation", value)
-                      }
-                      onBlur={formik.handleBlur}
-                    />
+                    {isLoaded && (
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "40px",
+                        }}
+                      >
+                        <StandaloneSearchBox
+                          onLoad={(ref) => (completeRef.current = ref)}
+                          onPlacesChanged={handleOnPlacesChanged}
+                        >
+                          <Input
+                            id="eventLocation"
+                            name="eventLocation"
+                            type="text"
+                            placeholder="Address"
+                            value={formik.values.eventLocation && selAddress}
+                            onChange={(value) =>
+                              handleInputChange("eventLocation", value)
+                            }
+                            onBlur={formik.handleBlur}
+                            style={{
+                              height: "50px",
+                              paddingLeft: "3rem",
+                            }}
+                          />
+                        </StandaloneSearchBox>
+                      </div>
+                    )}
                   </InputGroup>
                   <FormErrorMessage>
                     {formik.touched.eventLocation &&

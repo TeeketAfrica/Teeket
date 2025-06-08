@@ -28,6 +28,7 @@ const initialState = {
     eventAbout: "",
     eventHosting: "",
     eventLocation: "",
+    eventFullAddress: null,
     eventPlan: "",
     publishLive: "",
     tickets: [],
@@ -80,6 +81,7 @@ const eventSlice = createSlice({
                 state.eventEndTime;
             state.eventBannerImage =
                 eventData.banner_image || state.eventBannerImage;
+            state.eventFullAddress = eventData.full_address || state.eventFullAddress
             state.eventAbout = eventData.description || state.eventAbout;
             state.eventHosting = eventData.hosting_site || state.eventHosting;
             state.eventLocation =
