@@ -79,7 +79,7 @@ const FormStep1 = ({ formik }) => {
                   dispatch(setEventDetail({ fieldName, value: updatedTags }));
                 }
                 setInputTag("");
-              }, 300),
+              }, 500),
             []
           );
 

@@ -36,16 +36,11 @@ import Ticket from "../components/Ticket";
 import TicketModal from "../components/TicketModal";
 import { Formik } from "formik";
 import { formStep3Schema } from "./formSchemas";
-import { useDebounce } from "../../../utils/debounce";
 
 const FormStep3 = ({ formik }) => {
   const dispatch = useDispatch();
 
   const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
-  const debouncedDispatch = useDebounce(
-      (data) => dispatch(setEventDetail(data)),
-      500
-    );
 
   const [isTicketOpen, setIsTicketOpen] = useState({
     isModalOpen: false,
@@ -58,7 +53,9 @@ const FormStep3 = ({ formik }) => {
     formik.values.eventEstimatedSoldTicket - totalTicketQuantities;
 
   const handleInputChange = (fieldName, e) => {
-    debouncedDispatch({ fieldName: fieldName, value: e })
+    const data = { fieldName: fieldName, value: e };
+
+    dispatch(setEventDetail(data));
   };
 
   return (

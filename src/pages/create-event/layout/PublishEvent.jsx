@@ -29,7 +29,6 @@ import Calendar from "../../../assets/icon/calendar-alt.svg";
 import TicketNumber from "../../../assets/icon/TicketNumber.svg";
 import TicketPrice from "../../../assets/icon/TicketPrice.svg";
 import { DEFAULTBANNERIMAGE } from "../../../utils/constants.js";
-import { useDebounce } from "../../../utils/debounce.js";
 
 const PublishEvent = ({ formik }) => {
     const dispatch = useDispatch();
@@ -44,18 +43,15 @@ const PublishEvent = ({ formik }) => {
         eventStartTime,
         eventEndTime,
         eventBannerImage,
+        eventFullAddress,
         tickets,
         totalTicketQuantities,
     } = useSelector(selectEventDetails);
 
-    const debouncedDispatch = useDebounce(
-          (data) => dispatch(setEventDetail(data)),
-          500
-        );
-
     const handleInputChange = (fieldName, e) => {
+        const data = { fieldName: fieldName, value: e };
 
-        debouncedDispatch({ fieldName: fieldName, value: e });
+        dispatch(setEventDetail(data));
     };
     return (
         <>
@@ -124,7 +120,7 @@ const PublishEvent = ({ formik }) => {
                                         gap={2}
                                         fontSize="sm"
                                     >
-                                        <Map /> {eventLocation}
+                                        <Map /> {eventFullAddress.AddressName || eventLocation}
                                     </Text>
                                 ) : (
                                     <Text

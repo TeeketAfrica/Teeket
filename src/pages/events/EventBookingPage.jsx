@@ -40,6 +40,7 @@ const EventBooking = () => {
       try {
         const response = await teeketApi.get(`/events/${id}`);
         dispatch(setEventData(response.data));
+        console.log(response.data)
       } catch (err) {
         console.log(`Error fetching event with id ${id} `, err.message);
       }

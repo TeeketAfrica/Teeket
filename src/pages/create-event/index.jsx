@@ -62,12 +62,12 @@ const validationSchemas = [
 ];
 
 const VendorPage = () => {
-    const [activeStep, setActiveStep] = useState(0);
-    const activeUser = useSelector(selectActiveUser);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { id } = useParams();
-    const toast = useToast();
+  const [activeStep, setActiveStep] = useState(0);
+  const activeUser = useSelector(selectActiveUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const toast = useToast();
 
   const {
     eventTitle,
@@ -82,6 +82,7 @@ const VendorPage = () => {
     eventHosting,
     eventLocation,
     eventBannerImage,
+    eventFullAddress,
     eventEstimatedSoldTicket,
     eventTags,
     tickets,
@@ -89,9 +90,12 @@ const VendorPage = () => {
     totalTicketQuantities,
   } = useSelector(selectEventDetails);
 
-  useEffect(() => {
+  useEffect(()=>{
     dispatch(resetEventState());
+    console.log("has beeen reset")
+  },[])
 
+  useEffect(() => {
     const handleFetchEvent = async () => {
       try {
         const response = await teeketApi.get(`/events/${id}`);
@@ -128,7 +132,7 @@ const VendorPage = () => {
     if (id) {
       handleFetchEvent();
     }
-  }, [id, dispatch, toast]);
+  }, [id]);
 
   const initialValues = useMemo(
     () => ({
@@ -211,7 +215,11 @@ const VendorPage = () => {
       const errors = await formProps.validateForm();
 
       if (Object.keys(errors).length === 0) {
-        const data = { ...formProps.values, eventBannerImage };
+        const data = {
+          ...formProps.values,
+          eventBannerImage,
+          eventFullAddress
+        };
         const eventPayload = {
           title: data.eventTitle,
           organizer: data.eventOrganizer,
@@ -224,6 +232,15 @@ const VendorPage = () => {
           banner_image: eventBannerImage
             ? eventBannerImage.secure_url || eventBannerImage
             : DEFAULTBANNERIMAGE,
+          location_metadata: eventFullAddress && {
+            address: eventFullAddress.AddressName,
+            coordinates: {
+              longitude: eventFullAddress.longitude,
+              latitude: eventFullAddress.latitude,
+            },
+            google_maps_url: eventFullAddress.url,
+            icon_url: eventFullAddress.iconMaskBaseUri,
+          },
           hosting_site: data.eventHosting,
           event_location:
             data.eventHosting === "physical" ? data.eventLocation : null,
@@ -233,7 +250,7 @@ const VendorPage = () => {
               : null,
           number_of_tickets: data.totalTicketQuantities,
         };
-        console.log(eventPayload);
+        console.log("payload   ", eventPayload);
 
         try {
           let eventId;
@@ -273,31 +290,28 @@ const VendorPage = () => {
           // Wait for all ticket requests to complete
           await Promise.all(ticketPromises);
 
-                    if (formProps.values.publishLive === "eventLive") {
-                        try {
-                            // Publish event
-                            await teeketApi.patch(`events/${eventId}/publish`);
-                        } catch (error) {
-                            console.log(
-                                "Failed to publish event",
-                                error.message
-                            );
-                        }
-                    }
-                    //ensure that the user becomes a creator after creating an event
-                    if(!activeUser.is_creator){
-                        dispatch(setIsCreator(true))
-                    }
-                    // Reset state and navigate upon successful creation
-                    navigate("/app/events");
-                    dispatch(resetEventState());
-                } catch (error) {
-                    console.log("Failed to create or update event", error);
-                }
+          if (formProps.values.publishLive === "eventLive") {
+            try {
+              // Publish event
+              await teeketApi.patch(`events/${eventId}/publish`);
+            } catch (error) {
+              console.log("Failed to publish event", error.message);
             }
-        },
-        [dispatch, navigate, id, eventBannerImage]
-    );
+          }
+          //ensure that the user becomes a creator after creating an event
+          if (!activeUser.is_creator) {
+            dispatch(setIsCreator(true));
+          }
+          // Reset state and navigate upon successful creation
+          navigate("/app/events");
+          dispatch(resetEventState());
+        } catch (error) {
+          console.log("Failed to create or update event", error);
+        }
+      }
+    },
+    [dispatch, navigate, id, eventBannerImage, eventFullAddress]
+  );
 
   const renderFormStep = useCallback(
     (formProps) => {

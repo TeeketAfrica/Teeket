@@ -23,6 +23,7 @@ import RefreshIcon from "../../../assets/icon/Refresh.svg";
 import {
   selectEventDetails,
   setEventDetail,
+  setEventDetails,
 } from "../../../features/eventSlice";
 import FormLayout from "../components/FormLayout";
 import ImageUpload from "../components/ImageUpload";
@@ -35,8 +36,9 @@ import { useDebounce } from "../../../utils/debounce";
 
 const FormStep2 = ({ formik }) => {
   const dispatch = useDispatch();
-  const { eventBannerImage, eventFullAddress, id } = useSelector(selectEventDetails);
-  const [selAddress, setSelAddress] = useState("")
+  const { eventBannerImage, eventFullAddress, id } =
+    useSelector(selectEventDetails);
+  const [selAddress, setSelAddress] = useState("");
 
   const [imageData, setImageData] = useState(eventBannerImage);
   const completeRef = useRef(null);
@@ -59,10 +61,6 @@ const FormStep2 = ({ formik }) => {
     dispatch(setEventDetail(data));
   }, [dispatch, imageData]);
 
-  useEffect(() => {
-    console.log("event dets", eventFullAddress);
-  }, [eventFullAddress]);
-
   const handleOnPlacesChanged = () => {
     let address = completeRef.current.getPlaces();
     const place = address[0];
@@ -77,16 +75,23 @@ const FormStep2 = ({ formik }) => {
           AddressName: place.formatted_address,
           longitude: longitude,
           latitude: latitude,
+          iconMaskBaseUri: place.icon_mask_base_uri,
+          url: place.url,
         },
       })
     );
   };
 
   const handleInputChange = (fieldName, e) => {
-    let value = typeof e !== "string" ? e.target.value : e;
-    formik.handleChange(e);
-    setSelAddress(e.target.value);
-    debouncedDispatch({ fieldName, value });
+    let data;
+    if (typeof e !== "string") {
+      formik.handleChange(e);
+      data = { fieldName: fieldName, value: e.target.value };
+    } else {
+      data = { fieldName: fieldName, value: e };
+    }
+
+    dispatch(setEventDetail(data));
   };
 
   return (
@@ -254,7 +259,11 @@ const FormStep2 = ({ formik }) => {
                             name="eventLocation"
                             type="text"
                             placeholder="Address"
-                            value={formik.values.eventLocation && selAddress}
+                            value={
+                              formik.values.eventLocation && selAddress
+                                ? selAddress
+                                : formik.values.eventLocation
+                            }
                             onChange={(value) =>
                               handleInputChange("eventLocation", value)
                             }
