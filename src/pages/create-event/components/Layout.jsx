@@ -27,7 +27,10 @@ import SignOut from "../../../assets/icon/SignOut.svg";
 import Container from "../../../components/ui/Container";
 import SideNav from "./SideNav";
 import useSignOut from "../../../utils/signOut";
-import { resetEventState, selectEventDetails } from "../../../features/eventSlice";
+import {
+  resetEventState,
+  selectEventDetails,
+} from "../../../features/eventSlice";
 import { selectActiveUser } from "../../../features/activeUserSlice";
 
 const Layout = ({
@@ -36,6 +39,7 @@ const Layout = ({
   nextStep,
   prevStep,
   publishEvent,
+  isSubmitting,
 }) => {
   const [mobileToggle, setMobileToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
@@ -49,7 +53,7 @@ const Layout = ({
   useOutsideClick({
     ref: ref,
     handler: () => setMenuToggle(false),
-  }); 
+  });
   const resetEvent = () => {
     dispatch(resetEventState());
   };
@@ -103,20 +107,12 @@ const Layout = ({
               <Image src={Logo} alt="logo" />
             </Link>
             <Box display="flex" alignItems="center" gap={{ base: 6, lg: 8 }}>
-              {/* <Button
-                                type="submit"
-                                size="sm"
-                                variant="ghost"
-                                gap={2}
-                            >
-                                <Preview />
-                                <Text
-                                    as="span"
-                                    display={{ base: "none", lg: "inline" }}
-                                >
-                                    Preview event
-                                </Text>
-                            </Button> */}
+              {/* <Button type="submit" size="sm" variant="ghost" gap={2}>
+                <Preview />
+                <Text as="span" display={{ base: "none", lg: "inline" }}>
+                  Preview event
+                </Text>
+              </Button> */}
               <Button
                 type="submit"
                 size="sm"
@@ -379,6 +375,7 @@ const Layout = ({
                 leftIcon={<Rocket />}
                 size="lg"
                 variant="accent"
+                disabled={isSubmitting}
                 onClick={publishEvent}
               >
                 Publish Event
