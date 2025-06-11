@@ -18,6 +18,7 @@ const VendorPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [initialFormValues, setInitialFormValues] = useState(null);
   const activeUser = useSelector(selectActiveUser);
+  const [locationMetaData, setLocationMetaData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -32,6 +33,9 @@ const VendorPage = () => {
     toast,
   });
 
+  useEffect(() => {
+    console.log(activeStep);
+  }, [activeStep]);
   // Fetch event data if editing
   useEffect(() => {
     dispatch(resetEventState());
@@ -113,6 +117,7 @@ const VendorPage = () => {
         eventAbout: "",
         eventHosting: "",
         eventLocation: "",
+        eventPhysicalLocationDetails: null,
         eventBannerImage: "",
         eventEstimatedSoldTicket: "",
         eventTags: [],
@@ -166,8 +171,11 @@ const VendorPage = () => {
   const handleFormSubmit = useCallback(
     async (values, { setSubmitting, setFieldError }) => {
       try {
-        setSubmitting(true);
-        await submitEvent(values);
+        // (Timmi) only and try and submit if the active step is publishing or 3
+        if (activeStep === 3) {
+          setSubmitting(true);
+          await submitEvent(values);
+        }
       } catch (error) {
         console.error("Form submission error:", error);
 
@@ -201,7 +209,7 @@ const VendorPage = () => {
   const renderFormStep = useCallback(() => {
     const formComponents = [FormStep1, FormStep2, FormStep3, PublishEvent];
     const CurrentForm = formComponents[activeStep];
-    return <CurrentForm />;
+    return <CurrentForm locationMetaData={locationMetaData} setLocationMetaData={setLocationMetaData}/>;
   }, [activeStep]);
 
   // Don't render until we have initial values
@@ -224,6 +232,8 @@ const VendorPage = () => {
             nextStep={() => handleNextStep(validateForm, values, setTouched)}
             prevStep={handlePrevStep}
             publishEvent={submitForm}
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
           >
             {renderFormStep()}
           </Layout>

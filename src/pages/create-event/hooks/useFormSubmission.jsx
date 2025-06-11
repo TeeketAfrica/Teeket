@@ -14,6 +14,7 @@ const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
           end_date: `${values.eventEndDate}T${values.eventEndTime}`,
           description: values.eventAbout,
           hosting_site: values.eventHosting,
+          location_metadata: values.eventPhysicalLocationDetails || null,
           number_of_tickets:
             Number.parseInt(values.eventEstimatedSoldTicket) || 0,
           tags: values.eventTags,

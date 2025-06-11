@@ -40,6 +40,8 @@ const Layout = ({
   prevStep,
   publishEvent,
   isSubmitting,
+  activeStep,
+  setActiveStep,
 }) => {
   const [mobileToggle, setMobileToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
@@ -302,8 +304,11 @@ const Layout = ({
                 className="mobileCreateEventSideBar"
                 style={{ zIndex: 10 }}
               >
+                {/* (Timmi)on click of each button should take user back to that step and close the slide on modal */}
                 <SideNav
                   activeStep={activeStepColor}
+                  setActiveStep={setActiveStep}
+                  setMobileToggle={setMobileToggle}
                   height="100vh"
                   width="370px"
                 >
@@ -326,6 +331,8 @@ const Layout = ({
             <Box display={{ base: "none", lg: "block" }} w="286px">
               <SideNav
                 activeStep={activeStepColor}
+                setActiveStep={setActiveStep}
+                setMobileToggle={setMobileToggle}
                 height="100%"
                 width="100%"
               />

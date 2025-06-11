@@ -1,7 +1,14 @@
 import { Box, Text } from "@chakra-ui/react";
 import CheckDone from "../../../assets/icon/CheckDone.svg";
 
-const SideNav = ({ children, activeStep, height, width }) => {
+const SideNav = ({
+  children,
+  activeStep,
+  setActiveStep,
+  setMobileToggle,
+  height,
+  width,
+}) => {
   const steps = [
     {
       stepNumber: 1,
@@ -43,6 +50,12 @@ const SideNav = ({ children, activeStep, height, width }) => {
             color={i + 1 <= activeStep + 1 ? "gray.800" : "gray.500"}
             display="flex"
             justifyContent="space-between"
+            onClick={() => {
+              if(i + 1 <= activeStep){
+                setActiveStep(i)
+                setMobileToggle(false);
+              }
+            }}
           >
             <Box>
               <Text

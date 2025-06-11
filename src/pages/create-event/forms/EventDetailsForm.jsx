@@ -1,17 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Box, Button, VStack } from "@chakra-ui/react";
+import { useState, useEffect, useRef } from "react";
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  VStack,
+} from "@chakra-ui/react";
 import { useFormikContext } from "formik";
 import FormField from "../../../components/ui/FormField";
 import { FormFieldType } from "../../../components/ui/form-field-types";
 import ImageUpload from "../components/ImageUpload";
 import RefreshIcon from "../../../assets/icon/Refresh.svg";
 import MapIcon from "../../../assets/icon/Map.svg";
+import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api";
+import { PlayCircleIcon } from "lucide-react";
 
-const EventDetailsForm = () => {
-  const { values, setFieldValue } = useFormikContext();
+const EventDetailsForm = ({ location, setLocation }) => {
+  const { values, setFieldValue, setFieldTouched } = useFormikContext();
   const [imageData, setImageData] = useState(values.eventBannerImage || "");
+  const completeRef = useRef(null);
 
   // Update Formik when image changes
   useEffect(() => {
@@ -22,6 +32,37 @@ const EventDetailsForm = () => {
     { value: "online", label: "Online event" },
     { value: "physical", label: "Physical event" },
   ];
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_REACT_PLACES_API_KEY,
+    libraries: ["places"],
+  });
+
+  const handleOnPlacesChanged = () => {
+    let address = completeRef.current.getPlaces();
+    const place = address[0];
+    const location = place.geometry.location;
+    const latitude = location.lat();
+    const longitude = location.lng();
+
+    setFieldValue("eventLocation", place.formatted_address);
+    setFieldTouched("eventLocation", true);
+    if (PlayCircleIcon) {
+      setFieldValue("eventPhysicalLocationDetails", {
+        address: place.formatted_address,
+        coordinates: {
+          longitude: longitude,
+          latitude: latitude,
+        },
+        google_maps_url: place.url,
+        icon_url: place.icon_mask_base_uri,
+      });
+    } else {
+      setFieldValue("eventPhysicalLocationDetails", null);
+      setFieldTouched("eventLocation", true);
+    }
+  };
 
   return (
     <VStack maxW="600px" alignItems="flex-start" gap="8">
@@ -73,22 +114,57 @@ const EventDetailsForm = () => {
         />
 
         {/* Event Location - Conditional rendering based on hosting type */}
-        {values.eventHosting && (
+        {values.eventHosting === "online" && (
           <Box mt="4">
             <FormField
               name="eventLocation"
-              label={
-                values.eventHosting === "online"
-                  ? "Online event link"
-                  : "Event location"
-              }
+              label={"Online event link"}
               type={FormFieldType.Text}
-              placeholder={
-                values.eventHosting === "online" ? "Event url" : "Address"
-              }
-              leftIcon={values.eventHosting === "physical" ? <MapIcon /> : null}
+              placeholder={"Event url"}
               isRequired={true}
             />
+          </Box>
+        )}
+        {values.eventHosting === "physical" && (
+          <Box mt={4}>
+            <InputGroup size={"lg"}>
+              <InputLeftElement pointerEvents="none">
+                <MapIcon />
+              </InputLeftElement>
+              {isLoaded && (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "40px",
+                  }}
+                >
+                  <StandaloneSearchBox
+                    onLoad={(ref) => (completeRef.current = ref)}
+                    onPlacesChanged={handleOnPlacesChanged}
+                  >
+                    <Input
+                      id="eventLocation"
+                      name="eventLocation"
+                      type="text"
+                      placeholder="Address"
+                      value={values.eventLocation}
+                      onChange={(e) =>
+                        setFieldValue("eventLocation", e.target.value)
+                      }
+                      onBlur={() => {
+                        // Mark as touched on blur for validation
+                        setFieldTouched("eventLocation", true);
+                      }}
+                      style={{
+                        height: "50px",
+                        paddingLeft: "3rem",
+                      }}
+                      required
+                    />
+                  </StandaloneSearchBox>
+                </div>
+              )}
+            </InputGroup>
           </Box>
         )}
       </Box>
