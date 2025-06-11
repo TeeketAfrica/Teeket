@@ -1,23 +1,24 @@
 import * as Yup from "yup";
 
+//(Timmi) Ensured each validation schema matches name of field
 export const basicInfoSchema = Yup.object({
-  title: Yup.string().required("Please input an event title"),
-  organizer: Yup.string().required("Please input an event organizer"),
-  type: Yup.string().required("Please select an event type"),
-  industry: Yup.string().required("Please select an event industry"),
-  start_date: Yup.date().required("Please select start date"),
-  end_date: Yup.date().required("Please select end date"),
-  tags: Yup.array().min(1, "Please select at least one tag"),
+  eventTitle: Yup.string().required("Please input an event title"),
+  eventOrganizer: Yup.string().required("Please input an event organizer"),
+  eventType: Yup.string().required("Please select an event type"),
+  eventIndustry: Yup.string().required("Please select an event industry"),
+  eventStartDate: Yup.date().required("Please select start date"),
+  eventEndDate: Yup.date().required("Please select end date"),
+  eventTags: Yup.array().min(1, "Please select at least one tag"),
 });
 
 export const eventDetailsSchema = Yup.object({
-  description: Yup.string().required(
+  eventAbout: Yup.string().required(
     "Please provide a description for the event"
   ),
-  hosting_site: Yup.string().required(
+  eventHosting: Yup.string().required(
     "Please specify if the event will be hosted online or physical"
   ),
-  event_location: Yup.string().when("hosting_site", {
+  eventLocation: Yup.string().when("hosting_site", {
     is: "online",
     then: (schema) =>
       schema.required("Please input a valid event link, such as a Zoom link."),
@@ -27,13 +28,13 @@ export const eventDetailsSchema = Yup.object({
 });
 
 export const ticketsSchema = Yup.object({
-  number_of_tickets: Yup.string().required(
+  eventEstimatedSoldTicket: Yup.string().required(
     "Please select/input an estimated number of tickets to be sold"
   ),
 });
 
 export const publishSchema = Yup.object({
-  status: Yup.string().required("Please select publish or draft"),
+  publishLive: Yup.string().required("Please select publish or draft"),
 });
 
 export const formStepsValidationSchemas = [

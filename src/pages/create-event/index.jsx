@@ -128,6 +128,7 @@ const VendorPage = () => {
       const errors = await validateForm();
 
       if (Object.keys(errors).length === 0) {
+        console.log("vall ", values);
         setActiveStep((prevStep) => prevStep + 1);
 
         // Update ticket quantities if needed (step 3)

@@ -39,7 +39,7 @@ const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
             eventData.banner_image = values.eventBannerImage;
           }
         }
-
+        console.log("payload ", eventData)
         let response;
         if (id) {
           // Update existing event
