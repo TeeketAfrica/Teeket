@@ -170,6 +170,7 @@ const VendorPage = () => {
   // Form submission handler
   const handleFormSubmit = useCallback(
     async (values, { setSubmitting, setFieldError }) => {
+      console.log("clicked")
       try {
         // (Timmi) only and try and submit if the active step is publishing or 3
         if (activeStep === 3) {

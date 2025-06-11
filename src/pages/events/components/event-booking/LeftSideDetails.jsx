@@ -7,7 +7,7 @@ import { formatDateAndTime } from "../../../../utils/utils";
 import DetailCard from "../DetailCard";
 import EventBadge from "../EventBadge";
 
-const LeftSideDetails = ({ event }) => {
+const LeftSideDetails = ({ event, location }) => {
   const startDate = formatDateAndTime(event.start_date, "long");
   const endDate = formatDateAndTime(event.end_date, "long");
 
@@ -53,8 +53,8 @@ const LeftSideDetails = ({ event }) => {
           {event?.hosting_site === "physical" && (
             <DetailCard
               icon={GPSIcon}
-              title="Register to see address"
-              subTitle={event.event_location}
+              title="Event Address"
+              subTitle={location || event.event_location}
             />
           )}
         </Flex>

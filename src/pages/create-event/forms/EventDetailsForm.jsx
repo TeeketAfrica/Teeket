@@ -33,6 +33,7 @@ const EventDetailsForm = ({ location, setLocation }) => {
     { value: "physical", label: "Physical event" },
   ];
 
+  //(Timmi) address tracking using google api
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_REACT_PLACES_API_KEY,
@@ -48,7 +49,8 @@ const EventDetailsForm = ({ location, setLocation }) => {
 
     setFieldValue("eventLocation", place.formatted_address);
     setFieldTouched("eventLocation", true);
-    if (PlayCircleIcon) {
+    //(Timmi) setFieldValue for location details from google's api
+    if (place) {
       setFieldValue("eventPhysicalLocationDetails", {
         address: place.formatted_address,
         coordinates: {
