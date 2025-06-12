@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { Stack, Box, Divider, Heading, Text } from "@chakra-ui/react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -23,39 +22,36 @@ const PublishForm = () => {
   const { values } = useFormikContext();
   const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
 
-  const publishOptions = useMemo(
-    () => [
-      {
-        value: "eventLive",
-        label: (
-          <Box>
-            <Heading fontSize="md" fontWeight="medium">
-              Publish event live
-            </Heading>
-            <Text color="gray.600" fontSize="sm">
-              This will place your event publicly for all to see and start
-              purchasing tickets.
-            </Text>
-          </Box>
-        ),
-      },
-      {
-        value: "eventDraft",
-        label: (
-          <Box>
-            <Heading fontSize="md" fontWeight="medium">
-              Publish event to draft
-            </Heading>
-            <Text color="gray.600" fontSize="sm">
-              This will not be public and you will be able to review the event
-              from your dashboard to make any changes before going live again.
-            </Text>
-          </Box>
-        ),
-      },
-    ],
-    []
-  );
+  const publishOptions = [
+    {
+      value: "eventLive",
+      label: (
+        <Box>
+          <Heading fontSize="md" fontWeight="medium">
+            Publish event live
+          </Heading>
+          <Text color="gray.600" fontSize="sm">
+            This will place your event publicly for all to see and start
+            purchasing tickets.
+          </Text>
+        </Box>
+      ),
+    },
+    {
+      value: "eventDraft",
+      label: (
+        <Box>
+          <Heading fontSize="md" fontWeight="medium">
+            Publish event to draft
+          </Heading>
+          <Text color="gray.600" fontSize="sm">
+            This will not be public and you will be able to review the event
+            from your dashboard to make any changes before going live again.
+          </Text>
+        </Box>
+      ),
+    },
+  ];
 
   return (
     <Stack direction="column" spacing={8}>

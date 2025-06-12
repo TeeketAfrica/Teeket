@@ -45,7 +45,7 @@ const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
           }
         }
         // (Timmi) if no banner image use default
-        else{
+        else {
           eventData.banner_image = DEFAULTBANNERIMAGE;
         }
         let response;
@@ -103,7 +103,7 @@ const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
         throw error;
       }
     },
-    [id, activeUser, navigate, toast]
+    [id, activeUser]
   );
 
   return {

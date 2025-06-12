@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { resetEventState, setTicket } from "../../features/eventSlice";
+import { setTicket } from "../../features/eventSlice";
 import { teeketApi } from "../../utils/api";
 import Layout from "./components/Layout";
 import FormStep1 from "./layout/FormStep1";
@@ -28,18 +28,12 @@ const VendorPage = () => {
   const { submitEvent } = useFormSubmission({
     id,
     activeUser,
-    dispatch,
     navigate,
     toast,
   });
 
-  useEffect(() => {
-    console.log(activeStep);
-  }, [activeStep]);
   // Fetch event data if editing
   useEffect(() => {
-    dispatch(resetEventState());
-
     const handleFetchEvent = async () => {
       try {
         const response = await teeketApi.get(`/events/${id}`);
@@ -127,84 +121,74 @@ const VendorPage = () => {
   }, [id, dispatch, toast]);
 
   // Step navigation handlers
-  const handleNextStep = useCallback(
-    async (validateForm, values, setTouched) => {
-      // Validate current step
-      const errors = await validateForm();
+  const handleNextStep = async (validateForm, values, setTouched) => {
+    // Validate current step
+    const errors = await validateForm();
 
-      if (Object.keys(errors).length === 0) {
-        console.log("vall ", values);
-        setActiveStep((prevStep) => prevStep + 1);
+    if (Object.keys(errors).length === 0) {
+      setActiveStep((prevStep) => prevStep + 1);
 
-        // Update ticket quantities if needed (step 3)
-        if (id && activeStep === 2) {
-          try {
-            const res = await teeketApi.get(`/events/${id}`);
-            if (res.data.number_of_tickets) {
-              const ticketRemaining =
-                values.eventEstimatedSoldTicket - res.data.number_of_tickets;
-              await teeketApi.patch(`/events/${id}`, {
-                number_of_tickets_remaining: ticketRemaining,
-              });
-            }
-          } catch (error) {
-            console.log("Unable to update number of tickets:", error.message);
+      // Update ticket quantities if needed (step 3)
+      if (id && activeStep === 2) {
+        try {
+          const res = await teeketApi.get(`/events/${id}`);
+          if (res.data.number_of_tickets) {
+            const ticketRemaining =
+              values.eventEstimatedSoldTicket - res.data.number_of_tickets;
+            await teeketApi.patch(`/events/${id}`, {
+              number_of_tickets_remaining: ticketRemaining,
+            });
           }
+        } catch (error) {
+          console.log("Unable to update number of tickets:", error.message);
         }
-      } else {
-        // Mark all fields as touched to show validation errors
-        const touchedFields = {};
-        Object.keys(errors).forEach((field) => {
-          touchedFields[field] = true;
-        });
-        setTouched(touchedFields);
       }
-    },
-    [activeStep, id]
-  );
-
-  const handlePrevStep = useCallback(() => {
+    } else {
+      // Mark all fields as touched to show validation errors
+      const touchedFields = {};
+      Object.keys(errors).forEach((field) => {
+        touchedFields[field] = true;
+      });
+      setTouched(touchedFields);
+    }
+  };
+  const handlePrevStep = () => {
     setActiveStep((prevStep) => prevStep - 1);
-  }, []);
-
-  // Form submission handler
-  const handleFormSubmit = useCallback(
-    async (values, { setSubmitting, setFieldError }) => {
-      console.log("clicked");
-      try {
-        // (Timmi) only and try and submit if the active step is publishing or 3
-        if (activeStep === 3) {
-          setSubmitting(true);
-          await submitEvent(values);
-        }
-      } catch (error) {
-        console.error("Form submission error:", error);
-
-        // Handle specific field errors if returned from API
-        if (error.response?.data?.errors) {
-          Object.entries(error.response.data.errors).forEach(
-            ([field, message]) => {
-              setFieldError(field, message);
-            }
-          );
-        }
-
-        toast({
-          title: "Failed to save event",
-          description:
-            error.message ||
-            "There was an error saving your event. Please try again.",
-          status: "error",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        });
-      } finally {
-        setSubmitting(false);
+  };
+  const handleFormSubmit = async (values, { setSubmitting, setFieldError }) => {
+    console.log("clicked");
+    try {
+      // (Timmi) only and try and submit if the active step is publishing or 3
+      if (activeStep === 3) {
+        setSubmitting(true);
+        await submitEvent(values);
       }
-    },
-    [submitEvent]
-  );
+    } catch (error) {
+      console.error("Form submission error:", error);
+
+      // Handle specific field errors if returned from API
+      if (error.response?.data?.errors) {
+        Object.entries(error.response.data.errors).forEach(
+          ([field, message]) => {
+            setFieldError(field, message);
+          }
+        );
+      }
+
+      toast({
+        title: "Failed to save event",
+        description:
+          error.message ||
+          "There was an error saving your event. Please try again.",
+        status: "error",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   // Render current form step
   const renderFormStep = useCallback(() => {
@@ -218,11 +202,6 @@ const VendorPage = () => {
     );
   }, [activeStep]);
 
-  // Don't render until we have initial values
-  if (!initialFormValues) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Formik
       enableReinitialize={true}
@@ -233,7 +212,6 @@ const VendorPage = () => {
       {({ validateForm, values, setTouched, isSubmitting, submitForm }) => (
         <Form>
           <Layout
-            activeStepColor={activeStep}
             isSubmitting={isSubmitting}
             nextStep={() => handleNextStep(validateForm, values, setTouched)}
             prevStep={handlePrevStep}
