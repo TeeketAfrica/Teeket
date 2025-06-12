@@ -76,7 +76,7 @@ const MultiSelect = ({
   return (
     <Box ref={containerRef} position="relative">
       <Flex
-        minH="40px"
+        h="56px"
         p={2}
         border="1px solid"
         borderColor={borderColor}
@@ -87,14 +87,13 @@ const MultiSelect = ({
         bg={isDisabled ? "gray.50" : "white"}
         cursor={isDisabled ? "not-allowed" : "text"}
         _hover={!isDisabled ? { borderColor: "gray.400" } : {}}
-        _focusWithin={
-          !isDisabled
-            ? { borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }
-            : {}
-        }
+        _focusWithin={{
+          borderColor: "gray.500",
+          boxShadow: "0px 0px 1px 4px #CBD1CB",
+        }}
       >
         {value.map((tag) => (
-          <Tag key={tag.id} size="sm" colorScheme="blue" variant="solid">
+          <Tag key={tag.id} size="md" colorScheme="blue" variant="solid">
             <TagLabel>{tag.label}</TagLabel>
             {!isReadOnly && !isDisabled && (
               <TagCloseButton onClick={() => handleTagRemove(tag)} />
