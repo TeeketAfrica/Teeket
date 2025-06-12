@@ -22,7 +22,6 @@ import {
 import { Field, useField } from "formik";
 import { FormFieldType } from "./form-field-types";
 import MultiSelect from "./MultiSelect";
-// Import your existing icons
 import DownIcon from "../../assets/icon/DownIcon.svg";
 import UpArrowIcon from "../../assets/icon/UpArrow.svg";
 import DownArrowIcon from "../../assets/icon/DownArrow.svg";
@@ -195,9 +194,7 @@ const FormField = memo(
                     variant={radioVariant}
                     isDisabled={isDisabled}
                   >
-                    {typeof option.label === "string"
-                      ? option.label
-                      : option.label}
+                    {option.label}
                   </Radio>
                 ))}
               </HStack>
@@ -212,9 +209,7 @@ const FormField = memo(
               max={max}
               step={step}
               value={field.value}
-              onChange={(valueString, valueNumber) =>
-                helpers.setValue(valueNumber)
-              }
+              onChange={(_, valueNumber) => helpers.setValue(valueNumber)}
               isDisabled={isDisabled}
               isReadOnly={isReadOnly}
               size={size}
@@ -304,7 +299,5 @@ const FormField = memo(
     );
   }
 );
-
-FormField.displayName = "FormField";
 
 export default FormField;

@@ -41,8 +41,7 @@ const BasicInfoForm = () => {
 
   return (
     <Stack spacing={4}>
-      {/* Basic Information */}
-      <Box maxW="600px" w="100%">
+      <Box maxW={{ base: "100%", lg: "600px" }} w="100%">
         <Stack spacing={4}>
           <FormField
             name="eventTitle"
@@ -51,7 +50,6 @@ const BasicInfoForm = () => {
             placeholder="Give a clear title for the event you are creating"
             maxLength={100}
             showCharacterCount={true}
-            isRequired={true}
           />
 
           <FormField
@@ -59,7 +57,6 @@ const BasicInfoForm = () => {
             label="Organizer"
             type={FormFieldType.Text}
             placeholder="Who is organizing this event?"
-            isRequired={true}
           />
 
           <Box
@@ -73,7 +70,6 @@ const BasicInfoForm = () => {
               type={FormFieldType.Select}
               placeholder="Choose a type e.g. Celebration"
               options={eventOptions}
-              isRequired={true}
             />
 
             <FormField
@@ -82,7 +78,6 @@ const BasicInfoForm = () => {
               type={FormFieldType.Select}
               placeholder="Choose an industry e.g. Anime"
               options={eventOptions}
-              isRequired={true}
             />
           </Box>
         </Stack>
@@ -120,14 +115,12 @@ const BasicInfoForm = () => {
               name="eventStartDate"
               label="Start date"
               type={FormFieldType.Date}
-              isRequired={true}
             />
 
             <FormField
               name="eventStartTime"
               label="Start time"
               type={FormFieldType.Time}
-              isRequired={true}
             />
           </Box>
 
@@ -140,14 +133,12 @@ const BasicInfoForm = () => {
               name="eventEndDate"
               label="End date"
               type={FormFieldType.Date}
-              isRequired={true}
             />
 
             <FormField
               name="eventEndTime"
               label="End time"
               type={FormFieldType.Time}
-              isRequired={true}
             />
           </Box>
 

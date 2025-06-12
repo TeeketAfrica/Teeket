@@ -1245,6 +1245,7 @@ export const eventTypes = [
   "Zoom Networking Event",
   "Twitter Space Talk",
 ];
+
 export const industries = [
   "Music & Entertainment",
   "Tech & Innovation",

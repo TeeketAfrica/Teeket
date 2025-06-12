@@ -53,7 +53,7 @@ const VendorPage = () => {
           })
         );
 
-        // Set tickets in Redux (still needed for ticket management)
+        // Set tickets in Redux (needed for ticket management)
         dispatch(setTicket(transformedTickets));
 
         // Set initial form values from API data
@@ -194,7 +194,7 @@ const VendorPage = () => {
         setSubmitting(false);
       }
     },
-    [submitEvent, toast]
+    [submitEvent]
   );
 
   // Render current form step
