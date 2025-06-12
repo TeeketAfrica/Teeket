@@ -21,7 +21,6 @@ import TicketPrice from "../../../assets/icon/TicketPrice.svg";
 
 const PublishForm = () => {
   const { values } = useFormikContext();
-  // Only get tickets from Redux since they're managed separately
   const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
 
   const publishOptions = useMemo(
@@ -217,14 +216,13 @@ const PublishForm = () => {
             </Text>
           </Box>
 
-          <Box maxW="600px" w="100%">
+          <Box maxW={{ base: "100%", lg: "600px" }} w="100%">
             <FormField
               name="publishLive"
               type={FormFieldType.Radio}
               options={publishOptions}
               radioDirection="column"
               radioSpacing="6"
-              isRequired={true}
             />
           </Box>
         </Stack>

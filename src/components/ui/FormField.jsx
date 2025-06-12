@@ -50,6 +50,7 @@ const FormField = memo(
     radioSpacing = "10px",
     radioVariant = "border",
     radioSize = "lg",
+    radioMaxWidth = "100%",
     // Custom props for backward compatibility
     description,
     characterLimit,
@@ -80,7 +81,6 @@ const FormField = memo(
     const fieldComponent = useMemo(() => {
       switch (type) {
         case FormFieldType.TextArea:
-        case "textarea":
           return (
             <Field
               as={Textarea}
@@ -98,7 +98,6 @@ const FormField = memo(
           );
 
         case FormFieldType.Password:
-        case "password":
           return (
             <InputGroup size={size}>
               {leftIcon && (
@@ -132,7 +131,6 @@ const FormField = memo(
           );
 
         case FormFieldType.Select:
-        case "select":
           return (
             <Field
               as={Select}
@@ -154,7 +152,6 @@ const FormField = memo(
           );
 
         case FormFieldType.MultiSelect:
-        case "multiselect":
           return (
             <MultiSelect
               options={options}
@@ -171,7 +168,6 @@ const FormField = memo(
           );
 
         case FormFieldType.Radio:
-        case "radio":
           return (
             <RadioGroup
               name={name}
@@ -188,6 +184,8 @@ const FormField = memo(
               >
                 {options.map((option) => (
                   <Radio
+                    flex={1}
+                    maxW={radioMaxWidth}
                     key={option.value}
                     value={option.value}
                     size={radioSize}
@@ -202,7 +200,6 @@ const FormField = memo(
           );
 
         case FormFieldType.Number:
-        case "number":
           return (
             <NumberInput
               min={min}

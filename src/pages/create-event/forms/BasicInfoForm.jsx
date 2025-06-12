@@ -149,7 +149,6 @@ const BasicInfoForm = () => {
               type={FormFieldType.Select}
               placeholder="Choose a type e.g. Celebration"
               options={eventTypes}
-              isRequired={true}
             />
 
             <FormField

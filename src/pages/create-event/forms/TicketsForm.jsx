@@ -50,7 +50,7 @@ const TicketsForm = () => {
           options={ticketOptions}
           radioDirection="row"
           radioSpacing="10px"
-          isRequired={true}
+          radioMaxWidth="200px"
         />
 
         {/* Custom Number Input */}

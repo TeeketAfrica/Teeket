@@ -262,6 +262,20 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
                 onChange={formik.handleChange}
                 onBlur={() => formik.setFieldTouched("ticketQuantity", true)}
               />
+              <InputRightElement>
+                <Box
+                  as="button"
+                  fontSize="sm"
+                  color="gray.600"
+                  fontWeight="medium"
+                  disabled={ticketQuantity - formik.values.ticketQuantity < -1}
+                  onClick={() =>
+                    formik.setFieldValue("ticketQuantity", ticketQuantity)
+                  }
+                >
+                  Max
+                </Box>
+              </InputRightElement>
             </InputGroup>
 
             <FormErrorMessage>

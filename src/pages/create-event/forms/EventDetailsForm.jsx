@@ -67,13 +67,17 @@ const EventDetailsForm = ({ location, setLocation }) => {
   };
 
   return (
-    <VStack maxW="600px" alignItems="flex-start" gap="8">
+    <VStack
+      maxW={{ base: "100%", lg: "600px" }}
+      alignItems="flex-start"
+      gap="8"
+    >
       {/* Banner Image */}
       {imageData?.secure_url || imageData ? (
         <Box>
           <Box
             h="400px"
-            maxW="600px"
+            maxW={{ base: "100%", lg: "600px" }}
             borderRadius="12px"
             overflow="hidden"
             mb="2"
@@ -102,7 +106,6 @@ const EventDetailsForm = ({ location, setLocation }) => {
         placeholder="Tell us about the event"
         helperText="Give a detailed description of what this event is about"
         rows={7}
-        isRequired={true}
       />
 
       {/* Event Hosting */}
@@ -112,7 +115,6 @@ const EventDetailsForm = ({ location, setLocation }) => {
           label="How will this event be hosted"
           type={FormFieldType.Radio}
           options={hostingOptions}
-          isRequired={true}
         />
 
         {/* Event Location - Conditional rendering based on hosting type */}
@@ -123,7 +125,6 @@ const EventDetailsForm = ({ location, setLocation }) => {
               label={"Online event link"}
               type={FormFieldType.Text}
               placeholder={"Event url"}
-              isRequired={true}
             />
           </Box>
         )}
