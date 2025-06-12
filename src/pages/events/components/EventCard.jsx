@@ -54,8 +54,6 @@ const EventCard = ({
     navigate(`/event-booking/${eventId}`);
   };
 
-  console.log(eventTag)
-
   return (
     <Link w="100%" to="#" onClick={handleRedirect}>
       <GridItem

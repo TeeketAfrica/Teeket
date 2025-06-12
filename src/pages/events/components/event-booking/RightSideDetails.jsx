@@ -45,10 +45,11 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
     fetchAttendees();
   }, [event?.id]);
 
+  console.log(event)
   let attendeesQuantity;
 
   eventAttendees? attendeesQuantity = getBookingMessage(eventAttendees.length): attendeesQuantity = "Register to find out more about people going"
-  console.log("EA", eventAttendees);
+
 
   const getTicket = () => {
     dispatch(changeTicketStep(1));
@@ -99,16 +100,20 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               subTitle={`Regular - ₦${Number(event?.lowest_ticket_price)}`}
             />
           )}
-          <Link to={`/event-booking/${event?.id}/get-ticket`}>
-            <Button
-              variant="primary"
-              size="lg"
-              width="100%"
-              onClick={getTicket}
-            >
-              {!isRegistered ? "Get Your Ticket" : "See my ticket"}
-            </Button>
-          </Link>
+          {
+            event.status !== "past_event" &&
+            <Link to={`/event-booking/${event?.id}/get-ticket`}>
+              <Button
+                variant="primary"
+                size="lg"
+                width="100%"
+                onClick={getTicket}
+              >
+                {!isRegistered ? "Get Your Ticket" : "See my ticket"}
+              </Button>
+            </Link>            
+          }
+
         </VStack>
       </BoxFrame>
       <BoxFrame paddingX="24px" paddingY="24px">

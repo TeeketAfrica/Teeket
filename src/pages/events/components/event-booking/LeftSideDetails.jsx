@@ -19,7 +19,7 @@ const LeftSideDetails = ({ event }) => {
             <EventBadge
               eventBadgeInfo={{
                 badgeTitle: `${event.status?.split("_").join(" ")}`,
-                state: "trending",
+                state: event.status === 'past_event'? "past" :"trending",
                 icon: LightingIcon,
               }}
             />
@@ -46,9 +46,13 @@ const LeftSideDetails = ({ event }) => {
               title={`${startDate.date.day}, ${startDate.date.dayNumber} ${startDate.date.month}`}
               subTitle={`${startDate.time} - ${endDate.time}`}
             />
+            {
+              event.status !== 'past_event' && 
             <Button variant="secondary" size="sm">
               Remind me
-            </Button>
+            </Button>              
+            }
+
           </Flex>
           {event?.hosting_site === "physical" && (
             <DetailCard

@@ -73,7 +73,7 @@ const FaqWrapper = () => {
                     </VStack>
 
                     <Button variant="accent" size="lg">
-                        <Link href="/" _hover={{ textDecoration: "none" }}>
+                        <Link href="/contact" _hover={{ textDecoration: "none" }}>
                             Get in Touch
                         </Link>
                     </Button>
