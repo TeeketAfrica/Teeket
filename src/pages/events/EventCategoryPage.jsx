@@ -21,7 +21,9 @@ const EventCategoryPage = () => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const response = await teeketApi.get("/events");
+      const response = await teeketApi.get("/events", {
+        nullAuth: true,
+      });
       const eventList = response.data.data;
       let filteredEvents;
 

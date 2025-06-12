@@ -26,8 +26,9 @@ import {
 import { teeketApi } from "../../../../utils/api";
 import { useEffect, useState } from "react";
 import { getBookingMessage } from "../../../../utils/formatAttendees";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
-const RightSIdeDetails = ({ event, isRegistered }) => {
+const RightSIdeDetails = ({ event, isRegistered, location }) => {
   const dispatch = useDispatch();
   const [eventAttendees, setEventAttendees] = useState([]);
 
@@ -47,7 +48,9 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
 
   let attendeesQuantity;
 
-  eventAttendees? attendeesQuantity = getBookingMessage(eventAttendees.length): attendeesQuantity = "Register to find out more about people going"
+  eventAttendees && isRegistered
+    ? (attendeesQuantity = getBookingMessage(eventAttendees.length))
+    : (attendeesQuantity = "Register to find out more about people going");
   console.log("EA", eventAttendees);
 
   const getTicket = () => {
@@ -59,9 +62,9 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
       <BoxFrame paddingX="24px" paddingY="24px">
         <VStack gap="6" alignItems="flex-start">
           <Text as="h4" fontSize="xl" lineHeight="6" fontWeight="semibold">
-            {!isRegistered ? "Get tickets" : "View tickets"}
+            Get tickets
           </Text>
-          {!isRegistered && (
+          {isRegistered && (
             <DetailCard
               icon={LightingOutlineIcon}
               title="This event is trending"
@@ -70,29 +73,27 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
           )}
 
           <HStack gap="10px" alignItems="center">
-            {
-              eventAttendees && (
-                <AvatarGroup size="sm" max={3}>
-                  {eventAttendees.slice(0, 3).map((attendees, i) => (
-                    <Avatar
-                      key={i}
-                      border="1px solid"
-                      borderColor="gray.800"
-                      color="gray.800"
-                      name={attendees?.name || attendees?.email}
-                      src={attendees?.profile_image}
-                      bgColor="transparent"
-                    />
-                  ))}
-                </AvatarGroup>
-              )
-            }
+            {eventAttendees && (
+              <AvatarGroup size="sm" max={3}>
+                {eventAttendees.slice(0, 3).map((attendees, i) => (
+                  <Avatar
+                    key={i}
+                    border="1px solid"
+                    borderColor="gray.800"
+                    color="gray.800"
+                    name={attendees?.name || attendees?.email}
+                    src={attendees?.profile_image}
+                    bgColor="transparent"
+                  />
+                ))}
+              </AvatarGroup>
+            )}
             <Text fontSize="sm" lineHeight="5" color="gray.600">
               {attendeesQuantity}
             </Text>
           </HStack>
 
-          {!isRegistered && (
+          {isRegistered && (
             <DetailCard
               icon={TicketIcon}
               title="Starting price"
@@ -106,7 +107,7 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               width="100%"
               onClick={getTicket}
             >
-              {!isRegistered ? "Get Your Ticket" : "See my ticket"}
+              Get Your Ticket
             </Button>
           </Link>
         </VStack>
@@ -154,24 +155,44 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
           </Text>
         </VStack>
       </BoxFrame>
-      {event?.hosting_site === "physical" && (
+      {event?.hosting_site === "physical" && location !== null && (
         <BoxFrame paddingX="8px" paddingY="8px">
           <Box position="relative" overflow="hidden" borderRadius="8px">
             <Box
               width="100%"
-              maxHeight="222px"
+              maxHeight="350px"
               height="100%"
               overflow="hidden"
               borderRadius="8px"
               border="1px solid"
               borderColor="gray.300"
             >
-              <EventMap
-                alt="map"
+              {/* <LoadScript
+                googleMapsApiKey={import.meta.env.VITE_REACT_PLACES_API_KEY}
+              >
+                <GoogleMap
+                  // mapContainerStyle={}
+                  center={{
+                    lat: location.coordinates.latitude,
+                    lng: location.coordinates.longitude
+                  }}
+                  zoom={15}
+                >
+                  <Marker position={{
+                    lat: location.coordinates.latitude,
+                    lng: location.coordinates.longitude
+                  }} />
+                </GoogleMap>
+                V
+              </LoadScript> */}
+
+              <iframe
                 width="100%"
                 height="100%"
-                objectFit="cover"
-              />
+                style={{ border: 0 }}
+                src={`https://www.google.com/maps/embed/v1/view?key=${import.meta.env.VITE_REACT_PLACES_API_KEY}&center=${location.coordinates.latitude},${location.coordinates.longitude}&zoom=15`}
+                allowFullScreen
+              ></iframe>
             </Box>
             <VStack
               position="absolute"
@@ -181,11 +202,15 @@ const RightSIdeDetails = ({ event, isRegistered }) => {
               gap="10px"
               zIndex={4}
             >
-              <GPSIcon width="32px" height="32px" objectFit="cover" />
+              {!isRegistered && (
+                <>
+                  <GPSIcon width="32px" height="32px" objectFit="cover" />
 
-              <Button variant="secondary">
-                {!isRegistered ? "Register to view address" : "View address"}
-              </Button>
+                  <Button variant="secondary">
+                    Register to view address on the map
+                  </Button>
+                </>
+              )}
             </VStack>
             {!isRegistered && (
               <Box

@@ -3,7 +3,6 @@ import Illustration from "../../../assets/icon/Illustration.svg";
 import { formatAmount } from "../../../utils/utils";
 
 const Ticket = ({ data, handleOnclick }) => {
-  console.log(data.ticketPrice)
   return (
     <Box
       position="relative"
@@ -37,16 +36,15 @@ const Ticket = ({ data, handleOnclick }) => {
           >
             {data.ticketQuantity} {data.ticketName} tickets
           </Text>
-            {
-              data.ticketPrice === 0 ?         
+          {data.ticketPrice === 0 ? (
             <Text fontSize="5xl" fontWeight="bold">
               Free
-            </Text>:
+            </Text>
+          ) : (
             <Text fontSize="5xl" fontWeight="bold">
               ₦{formatAmount(Number.parseInt(data.ticketPrice), 0)}
-            </Text>        
-            }
-
+            </Text>
+          )}
         </Box>
       </Box>
       <Box position="absolute" right="11px" top="10px">
