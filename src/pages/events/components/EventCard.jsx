@@ -54,6 +54,8 @@ const EventCard = ({
     navigate(`/event-booking/${eventId}`);
   };
 
+  console.log(eventTag)
+
   return (
     <Link w="100%" to="#" onClick={handleRedirect}>
       <GridItem
@@ -89,7 +91,7 @@ const EventCard = ({
                 color="gray.700"
                 textTransform="capitalize"
               >
-                {eventTag}
+                {eventTag === "on_going"? "On Going": eventTag === "coming_soon"? "Coming Soon": eventTag === "past_event"? "Past Event": ""}
               </Text>
             </HStack>
             <Text fontWeight={500} color="gray.800">

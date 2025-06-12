@@ -110,7 +110,7 @@ const SingleTicket = ({
                   {ticketType}{" "}
                 </Text>
                 <Text color="gray.800" as="span">
-                {"@$"}{ticketPrice}
+                {"@ ₦"}{ticketPrice}
                 </Text>
               </Text>
             </Box>

@@ -1,4 +1,3 @@
-// useGetUrl.ts
 import { useState } from "react";
 import { teeketApi } from "../utils/api";
 
