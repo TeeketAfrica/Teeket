@@ -205,7 +205,7 @@ const Layout = ({
                     </Box>
                     <Box w="100%" px="4">
                       <Link
-                        href=""
+                        href="/account-settings"
                         display="flex"
                         gap="3"
                         py="2"
