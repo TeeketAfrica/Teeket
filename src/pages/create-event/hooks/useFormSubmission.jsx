@@ -2,9 +2,10 @@ import { useCallback } from "react";
 import { teeketApi } from "../../../utils/api";
 import { DEFAULTBANNERIMAGE } from "../../../utils/constants";
 
-const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
+const useFormSubmission = ({ id, activeUser, navigate, toast, tickets }) => {
   const submitEvent = useCallback(
     async (values) => {
+      console.log("tok", tickets);
       try {
         const eventData = {
           title: values.eventTitle,
@@ -73,11 +74,35 @@ const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
           });
         }
 
+        //(Timmi) handle tickets from tickets stored on the redux store
+        const ticketPromises = tickets.map((ticket) => {
+          console.log("get here");
+
+          const ticketPayload = {
+            name: ticket.ticketName,
+            price: ticket.ticketPrice,
+            quantity: ticket.ticketQuantity,
+            is_paid: ticket.ticketType === "paid",
+          };
+
+          if (typeof ticket.id === "string") {
+            return teeketApi.patch(
+              `/events/${response.data.id}/tickets/${ticket.id}`,
+              ticketPayload
+            );
+          }
+          return teeketApi.post(`/events/${response.data.id}/tickets`, ticketPayload);
+        });
+
+        await Promise.all(ticketPromises);
+
         // Navigate to appropriate page based on publish status [(Timmi) navigate to proper url]
         if (values.publishLive === "eventLive") {
+          //(Timmi) patch the publish if publish live was clicked
+          await teeketApi.patch(`events/${response.data.id}/publish`);
           navigate("/app/events");
         } else {
-          navigate("//app/events");
+          navigate("/app/events");
         }
 
         return response.data;
@@ -103,7 +128,7 @@ const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
         throw error;
       }
     },
-    [id, activeUser]
+    [id, activeUser, tickets]
   );
 
   return {

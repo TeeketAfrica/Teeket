@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { setTicket } from "../../features/eventSlice";
+import { selectEventDetails, setTicket } from "../../features/eventSlice";
 import { teeketApi } from "../../utils/api";
 import Layout from "./components/Layout";
 import FormStep1 from "./layout/FormStep1";
@@ -19,6 +19,7 @@ const VendorPage = () => {
   const [initialFormValues, setInitialFormValues] = useState(null);
   const activeUser = useSelector(selectActiveUser);
   const [locationMetaData, setLocationMetaData] = useState([]);
+  const { tickets } = useSelector(selectEventDetails);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -30,6 +31,7 @@ const VendorPage = () => {
     activeUser,
     navigate,
     toast,
+    tickets
   });
 
   // Fetch event data if editing
@@ -156,10 +158,10 @@ const VendorPage = () => {
     setActiveStep((prevStep) => prevStep - 1);
   };
   const handleFormSubmit = async (values, { setSubmitting, setFieldError }) => {
-    console.log("clicked");
     try {
       // (Timmi) only and try and submit if the active step is publishing or 3
       if (activeStep === 3) {
+        console.log("submitted")
         setSubmitting(true);
         await submitEvent(values);
       }
@@ -195,10 +197,7 @@ const VendorPage = () => {
     const formComponents = [FormStep1, FormStep2, FormStep3, PublishEvent];
     const CurrentForm = formComponents[activeStep];
     return (
-      <CurrentForm
-        locationMetaData={locationMetaData}
-        setLocationMetaData={setLocationMetaData}
-      />
+      <CurrentForm/>
     );
   }, [activeStep]);
 

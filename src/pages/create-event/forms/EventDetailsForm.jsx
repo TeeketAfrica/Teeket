@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
+  Image,
   Input,
   InputGroup,
   InputLeftElement,
@@ -75,23 +76,30 @@ const EventDetailsForm = () => {
       {imageData?.secure_url || imageData ? (
         <Box>
           <Box
+            key={imageData.public_id || id}
             h="400px"
-            maxW={{ base: "100%", lg: "600px" }}
+            maxW="600px"
             borderRadius="12px"
             overflow="hidden"
             mb="2"
-            backgroundImage={`url(${imageData.secure_url || imageData})`}
-            backgroundSize="cover"
-            backgroundPosition="top"
-          />
-          <Button
-            onClick={() => setImageData("")}
-            leftIcon={<RefreshIcon />}
-            variant="secondary"
-            size="sm"
           >
-            Change Image
-          </Button>
+            <Image
+              src={imageData.secure_url || eventBannerImage}
+              alt={`event-banner ${imageData.public_id || id}`}
+              objectFit="cover"
+              h="100%"
+              w="100%"
+              objectPosition="top"
+            />
+            <Button
+              onClick={() => setImageData("")}
+              leftIcon={<RefreshIcon />}
+              variant="secondary"
+              size="sm"
+            >
+              Change Image
+            </Button>
+          </Box>
         </Box>
       ) : (
         <ImageUpload handleSetImage={setImageData} />

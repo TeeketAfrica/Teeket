@@ -154,69 +154,75 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
 
                 <Divider h="1px" backgroundColor="gray.300" />
 
-                <FormField
-                  name="ticketName"
-                  label="Ticket name"
-                  type={FormFieldType.Text}
-                  placeholder="e.g. Regular"
-                  rightIcon={<TicketIcon />}
-                  size="lg"
-                />
+                {formik.values.ticketType !== "" && (
+                  <>
+                    <FormField
+                      name="ticketName"
+                      label="Ticket name"
+                      type={FormFieldType.Text}
+                      placeholder="e.g. Regular"
+                      rightIcon={<TicketIcon />}
+                      size="lg"
+                    />
 
-                {formik.values.ticketType === "paid" && (
-                  <FormField
-                    name="ticketPrice"
-                    label="Ticket price"
-                    type={FormFieldType.Number}
-                    placeholder="set ticket price"
-                    rightIcon={<PriceIcon />}
-                    helperText={
-                      formik.values.ticketPrice
-                        ? "Our 2% commission will taken from each tickets sold"
-                        : undefined
-                    }
-                    min={1}
-                    size="lg"
-                    leftIcon="₦"
-                  />
+                    {formik.values.ticketType === "paid" && (
+                      <FormField
+                        name="ticketPrice"
+                        label="Ticket price"
+                        type={FormFieldType.Number}
+                        placeholder="set ticket price"
+                        rightIcon={<PriceIcon />}
+                        helperText={
+                          formik.values.ticketPrice
+                            ? "Our 2% commission will taken from each tickets sold"
+                            : undefined
+                        }
+                        min={1}
+                        size="lg"
+                        leftIcon="₦"
+                      />
+                    )}
+
+                    <FormField
+                      name="ticketQuantity"
+                      label={`How many ${
+                        formik.values.ticketName
+                          ? formik.values.ticketName.toLowerCase()
+                          : ""
+                      } tickets should be sold`}
+                      type={FormFieldType.Number}
+                      placeholder="e.g. 40"
+                      rightIcon={
+                        <Box
+                          as="button"
+                          fontSize="sm"
+                          color="gray.600"
+                          fontWeight="medium"
+                          disabled={
+                            ticketQuantity - formik.values.ticketQuantity <= 0
+                          }
+                          onClick={() =>
+                            formik.setFieldValue(
+                              "ticketQuantity",
+                              ticketQuantity
+                            )
+                          }
+                          _disabled={{ opacity: 0.5, cursor: "not-allowed" }}
+                        >
+                          Max
+                        </Box>
+                      }
+                      helperText={`${
+                        ticketQuantity - formik.values.ticketQuantity < -1
+                          ? "0"
+                          : ticketQuantity - formik.values.ticketQuantity
+                      } tickets available`}
+                      min={1}
+                      max={ticketQuantity}
+                      size="lg"
+                    />
+                  </>
                 )}
-
-                <FormField
-                  name="ticketQuantity"
-                  label={`How many ${
-                    formik.values.ticketName
-                      ? formik.values.ticketName.toLowerCase()
-                      : ""
-                  } tickets should be sold`}
-                  type={FormFieldType.Number}
-                  placeholder="e.g. 40"
-                  rightIcon={
-                    <Box
-                      as="button"
-                      fontSize="sm"
-                      color="gray.600"
-                      fontWeight="medium"
-                      disabled={
-                        ticketQuantity - formik.values.ticketQuantity <= 0
-                      }
-                      onClick={() =>
-                        formik.setFieldValue("ticketQuantity", ticketQuantity)
-                      }
-                      _disabled={{ opacity: 0.5, cursor: "not-allowed" }}
-                    >
-                      Max
-                    </Box>
-                  }
-                  helperText={`${
-                    ticketQuantity - formik.values.ticketQuantity < -1
-                      ? "0"
-                      : ticketQuantity - formik.values.ticketQuantity
-                  } tickets available`}
-                  min={1}
-                  max={ticketQuantity}
-                  size="lg"
-                />
-
                 {data && (
                   <Button
                     onClick={() => handleOpenDeleteModal(formik)}

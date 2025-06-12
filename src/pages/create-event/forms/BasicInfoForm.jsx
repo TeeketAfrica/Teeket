@@ -5,7 +5,7 @@ import { Stack, Box, Divider, Heading, Text, useToast } from "@chakra-ui/react";
 import FormField from "../../../components/ui/FormField";
 import { FormFieldType } from "../../../components/ui/form-field-types";
 import { teeketApi } from "../../../utils/api";
-import { eventTypes } from "../../../utils/constants";
+import { eventTypes, industries } from "../../../utils/constants";
 
 const BasicInfoForm = () => {
   const toast = useToast();
@@ -77,8 +77,8 @@ const BasicInfoForm = () => {
               name="eventIndustry"
               label="Industry"
               type={FormFieldType.Select}
-              placeholder="Choose an industry e.g. Anime"
-              options={eventOptions}
+              placeholder="Choose an industry e.g.  Art"
+              options={industries}
             />
           </Box>
         </Stack>
