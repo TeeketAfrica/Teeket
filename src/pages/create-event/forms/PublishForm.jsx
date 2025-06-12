@@ -1,5 +1,3 @@
-"use client";
-
 import { Stack, Box, Divider, Heading, Text } from "@chakra-ui/react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";

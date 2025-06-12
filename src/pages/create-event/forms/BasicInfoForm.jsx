@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Stack, Box, Divider, Heading, Text, useToast } from "@chakra-ui/react";
 import FormField from "../../../components/ui/FormField";

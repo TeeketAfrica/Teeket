@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Button, Divider, HStack, Slide, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";

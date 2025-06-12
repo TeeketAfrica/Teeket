@@ -30,7 +30,10 @@ const useFormSubmission = ({ id, activeUser, navigate, toast, tickets }) => {
         if (values.eventHosting === "physical") {
           eventData.event_location = values.eventLocation;
         } else if (values.eventHosting === "online") {
-          eventData.event_link = values.eventLocation;
+          const eventUrl = values.eventLocation;
+          eventData.event_link = eventUrl.startsWith('http://') || eventUrl.startsWith('https://')
+            ? eventUrl
+            : `https://${eventUrl}`;
         }
 
         // Add banner image if available

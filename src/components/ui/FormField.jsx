@@ -9,6 +9,7 @@ import {
   Select,
   InputGroup,
   InputRightElement,
+  InputLeftElement,
   Button,
   RadioGroup,
   HStack,
@@ -241,9 +242,9 @@ const FormField = memo(
           return (
             <InputGroup size={size}>
               {leftIcon && (
-                <InputRightElement pointerEvents="none">
+                <InputLeftElement pointerEvents="none">
                   {leftIcon}
-                </InputRightElement>
+                </InputLeftElement>
               )}
               <Field
                 as={Input}
