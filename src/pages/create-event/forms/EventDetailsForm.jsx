@@ -75,20 +75,15 @@ const EventDetailsForm = () => {
       {/* Banner Image */}
       {imageData?.secure_url || imageData ? (
         <Box>
-          <Box
-            key={imageData.public_id || id}
-            h="400px"
-            maxW="600px"
-            borderRadius="12px"
-            overflow="hidden"
-            mb="2"
-          >
+          <Box key={imageData.public_id || id} maxW="600px">
             <Image
               src={imageData.secure_url || eventBannerImage}
               alt={`event-banner ${imageData.public_id || id}`}
               objectFit="cover"
               h="100%"
+              maxH="400px"
               w="100%"
+              borderRadius="12px"
               objectPosition="top"
             />
             <Button
@@ -96,6 +91,8 @@ const EventDetailsForm = () => {
               leftIcon={<RefreshIcon />}
               variant="secondary"
               size="sm"
+              mt={2}
+              zIndex={20}
             >
               Change Image
             </Button>

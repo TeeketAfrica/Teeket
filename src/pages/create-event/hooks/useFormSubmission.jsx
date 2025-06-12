@@ -5,7 +5,6 @@ import { DEFAULTBANNERIMAGE } from "../../../utils/constants";
 const useFormSubmission = ({ id, activeUser, navigate, toast, tickets }) => {
   const submitEvent = useCallback(
     async (values) => {
-      console.log("tok", tickets);
       try {
         const eventData = {
           title: values.eventTitle,
@@ -76,8 +75,6 @@ const useFormSubmission = ({ id, activeUser, navigate, toast, tickets }) => {
 
         //(Timmi) handle tickets from tickets stored on the redux store
         const ticketPromises = tickets.map((ticket) => {
-          console.log("get here");
-
           const ticketPayload = {
             name: ticket.ticketName,
             price: ticket.ticketPrice,
@@ -91,7 +88,10 @@ const useFormSubmission = ({ id, activeUser, navigate, toast, tickets }) => {
               ticketPayload
             );
           }
-          return teeketApi.post(`/events/${response.data.id}/tickets`, ticketPayload);
+          return teeketApi.post(
+            `/events/${response.data.id}/tickets`,
+            ticketPayload
+          );
         });
 
         await Promise.all(ticketPromises);

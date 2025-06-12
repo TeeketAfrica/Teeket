@@ -11,13 +11,6 @@ const BasicInfoForm = () => {
   const toast = useToast();
   const [tagOptions, setTagOptions] = useState([]);
 
-  // Event options
-  const eventOptions = [
-    { value: "celebration", label: "Celebration" },
-    { value: "party", label: "Party" },
-    { value: "naming", label: "Naming" },
-  ];
-
   // Fetch tags on mount
   useEffect(() => {
     const fetchTags = async () => {

@@ -31,7 +31,7 @@ const VendorPage = () => {
     activeUser,
     navigate,
     toast,
-    tickets
+    tickets,
   });
 
   // Fetch event data if editing
@@ -159,9 +159,8 @@ const VendorPage = () => {
   };
   const handleFormSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
-      // (Timmi) only and try and submit if the active step is publishing or 3
+      // (Timmi) submit if the active step is publishing or 3
       if (activeStep === 3) {
-        console.log("submitted")
         setSubmitting(true);
         await submitEvent(values);
       }
@@ -196,9 +195,7 @@ const VendorPage = () => {
   const renderFormStep = useCallback(() => {
     const formComponents = [FormStep1, FormStep2, FormStep3, PublishEvent];
     const CurrentForm = formComponents[activeStep];
-    return (
-      <CurrentForm/>
-    );
+    return <CurrentForm />;
   }, [activeStep]);
 
   return (
