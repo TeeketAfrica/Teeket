@@ -16,16 +16,16 @@ import {
   resetEventState,
   selectEventDetails,
 } from "../../../../features/eventSlice";
+import { selectActiveUser } from "../../../../features/activeUserSlice";
 
 const EventBookingDetail = () => {
   const { eventData: event, paid } = useSelector((state) => state.event);
   const dispatch = useDispatch();
+  const isActiveUser = useSelector(selectActiveUser);
 
   useEffect(() => {
     dispatch(resetEventState());
   }, []);
-
-  const [isRegistered] = useState(false);
 
   return event ? (
     <VStack width="100%" mx="auto" gap="22px" paddingY="11">
@@ -39,9 +39,16 @@ const EventBookingDetail = () => {
         />
       </Box>
       <Flex w="100%" flexDirection={{ base: "column", lg: "row" }} gap="6">
-        <LeftSideDetails event={event} />
+        <LeftSideDetails
+          event={event}
+          location={event?.location_metadata?.address}
+        />
 
-        <RightSideDetails event={event} isRegistered={isRegistered} />
+        <RightSideDetails
+          event={event}
+          isRegistered={isActiveUser}
+          location={event?.location_metadata}
+        />
       </Flex>
     </VStack>
   ) : (

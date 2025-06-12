@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { teeketApi } from "../../../utils/api";
+import { DEFAULTBANNERIMAGE } from "../../../utils/constants";
 
 const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
   const submitEvent = useCallback(
@@ -14,9 +15,13 @@ const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
           end_date: `${values.eventEndDate}T${values.eventEndTime}`,
           description: values.eventAbout,
           hosting_site: values.eventHosting,
+          //(Timmi) include location metadata coming from formik fi
+          location_metadata: values.eventPhysicalLocationDetails || null,
           number_of_tickets:
             Number.parseInt(values.eventEstimatedSoldTicket) || 0,
-          tags: values.eventTags,
+
+          //(Timmi) map the tags
+          tags: values.eventTags.map((tag) => tag.id),
           status: values.publishLive === "eventLive" ? "published" : "draft",
           creator_id: activeUser?.id,
         };
@@ -39,7 +44,10 @@ const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
             eventData.banner_image = values.eventBannerImage;
           }
         }
-        console.log("payload ", eventData)
+        // (Timmi) if no banner image use default
+        else{
+          eventData.banner_image = DEFAULTBANNERIMAGE;
+        }
         let response;
         if (id) {
           // Update existing event
@@ -65,11 +73,11 @@ const useFormSubmission = ({ id, activeUser, navigate, toast }) => {
           });
         }
 
-        // Navigate to appropriate page based on publish status
+        // Navigate to appropriate page based on publish status [(Timmi) navigate to proper url]
         if (values.publishLive === "eventLive") {
-          navigate("/vendor-dashboard/events");
+          navigate("/app/events");
         } else {
-          navigate("/vendor-dashboard/events");
+          navigate("//app/events");
         }
 
         return response.data;
