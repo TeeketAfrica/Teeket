@@ -30,6 +30,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LogoutModal from "../auth/LogoutModal";
 import { selectActiveUser } from "../../features/activeUserSlice";
+import useStorage from "../../utils/storage";
 
 const DashboardHeader = ({ onOpen }) => {
     const activeUser = useSelector(selectActiveUser);

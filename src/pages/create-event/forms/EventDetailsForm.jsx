@@ -75,7 +75,7 @@ const EventDetailsForm = () => {
         <Box>
           <Box key={imageData.public_id || id} maxW="600px">
             <Image
-              src={imageData.secure_url || eventBannerImage}
+              src={imageData.secure_url}
               alt={`event-banner ${imageData.public_id || id}`}
               objectFit="cover"
               h="100%"

@@ -32,6 +32,8 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
   const dispatch = useDispatch();
   const [eventAttendees, setEventAttendees] = useState([]);
 
+  isRegistered = isRegistered.is_creator === null ? false : true;
+
   useEffect(() => {
     const fetchAttendees = async () => {
       try {
@@ -43,8 +45,10 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
       }
     };
 
-    fetchAttendees();
-  }, [event?.id]);
+    if (isRegistered) {
+      fetchAttendees();
+    }
+  }, [event?.id, isRegistered]);
 
   let attendeesQuantity;
 
@@ -158,16 +162,17 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
       {event?.hosting_site === "physical" && location !== null && (
         <BoxFrame paddingX="8px" paddingY="8px">
           <Box position="relative" overflow="hidden" borderRadius="8px">
-            <Box
-              width="100%"
-              maxHeight="350px"
-              height="100%"
-              overflow="hidden"
-              borderRadius="8px"
-              border="1px solid"
-              borderColor="gray.300"
-            >
-              {/* <LoadScript
+            {isRegistered ? (
+              <Box
+                width="100%"
+                maxHeight="350px"
+                height="100%"
+                overflow="hidden"
+                borderRadius="8px"
+                border="1px solid"
+                borderColor="gray.300"
+              >
+                {/* <LoadScript
                 googleMapsApiKey={import.meta.env.VITE_REACT_PLACES_API_KEY}
               >
                 <GoogleMap
@@ -186,14 +191,22 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
                 V
               </LoadScript> */}
 
-              <iframe
+                <iframe
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  src={`https://www.google.com/maps/embed/v1/view?key=${import.meta.env.VITE_REACT_PLACES_API_KEY}&center=${location.coordinates.latitude},${location.coordinates.longitude}&zoom=15`}
+                  allowFullScreen
+                ></iframe>
+              </Box>
+            ) : (
+              <EventMap
+                alt="map"
                 width="100%"
                 height="100%"
-                style={{ border: 0 }}
-                src={`https://www.google.com/maps/embed/v1/view?key=${import.meta.env.VITE_REACT_PLACES_API_KEY}&center=${location.coordinates.latitude},${location.coordinates.longitude}&zoom=15`}
-                allowFullScreen
-              ></iframe>
-            </Box>
+                objectFit="cover"
+              />
+            )}
             <VStack
               position="absolute"
               top="50%"

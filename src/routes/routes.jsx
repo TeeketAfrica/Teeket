@@ -37,6 +37,8 @@ const publicRoutes = [
   { path: "/event-category/:type?", element: EventCategoryPage },
   { path: "/account-settings", element: AccountSettingsPage },
   { path: "/events/similar-events/:id?", element: SimilarEvents },
+  { path: "/event-booking/:id?", element: EventBookingPage },
+  { path: "/event-booking/:id?/get-ticket", element: EventGetTicket },
 ];
 
 const privateRoutes = [
@@ -51,9 +53,7 @@ const privateRoutes = [
   {
     path: "/app/organization-settings",
     element: OrganizationSettingsDashboardPage,
-  },
-  { path: "/event-booking/:id?", element: EventBookingPage },
-  { path: "/event-booking/:id?/get-ticket", element: EventGetTicket },
+  }
 ];
 
 const publicRoutesWithoutAuth = [

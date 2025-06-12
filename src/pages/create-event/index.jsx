@@ -215,8 +215,8 @@ const VendorPage = () => {
             activeStep={activeStep}
             setActiveStep={setActiveStep}
           >
-            {/* {renderFormStep()} */}
-            <FormStep2 />
+            {renderFormStep()}
+            {/* <FormStep2 /> */}
           </Layout>
         </Form>
       )}
