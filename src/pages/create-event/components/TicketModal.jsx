@@ -1,21 +1,7 @@
-import {
-  Box,
-  Button,
-  Divider,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  Radio,
-  RadioGroup,
-  Slide,
-  Text,
-} from "@chakra-ui/react";
-import { useFormik } from "formik";
+"use client";
+
+import { Box, Button, Divider, HStack, Slide, Text } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import * as Yup from "yup";
@@ -28,6 +14,8 @@ import {
   setTicketDetails,
   updateTicketDetails,
 } from "../../../features/eventSlice";
+import FormField from "../../../components/ui/FormField";
+import { FormFieldType } from "../../../components/ui/form-field-types";
 
 const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
   const dispatch = useDispatch();
@@ -44,7 +32,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
       "Please specify if the ticket will be free or paid"
     ),
     ticketName: Yup.string().required("Please enter ticket name"),
-    ticketPrice: Yup.number().min(1, "Ticket price must be greater than"),
+    ticketPrice: Yup.number().min(1, "Ticket price must be greater than 0"),
     ticketQuantity: Yup.number()
       .min(1, "Ticket quantity for sale must be greater than 0")
       .max(
@@ -54,50 +42,39 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
       .required("Please enter ticket quantity for sale"),
   });
 
-  // Formik initialization
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      ticketType: data?.ticketType || "",
-      ticketName: data?.ticketName || "",
-      ticketPrice: Number.parseInt(data?.ticketPrice) || "",
-      ticketQuantity: data?.ticketQuantity || "",
-    },
-
-    validationSchema,
-  });
-
-  const handlerOnClose = () => {
-    formik.resetForm();
-    onCloseModal({ isModalOpen: false });
+  const initialValues = {
+    ticketType: data?.ticketType || "",
+    ticketName: data?.ticketName || "",
+    ticketPrice: Number.parseInt(data?.ticketPrice) || "",
+    ticketQuantity: data?.ticketQuantity || "",
   };
 
-  const handleTicketDetails = (id = null) => {
-    if (formik.isValid) {
-      const { values } = formik;
-      const ticketType = values.ticketType;
-      const updatedValues = {
-        ...values,
-        ticketPrice: ticketType === "free" ? 0 : values.ticketPrice,
-      };
-
-      if (id) {
-        dispatch(updateTicketDetails({ id, ...updatedValues }));
-      } else {
-        dispatch(setTicketDetails(updatedValues));
-      }
-
-      handlerOnClose();
-    }
-  };
-
-  const handleOpenDeleteModal = () => {
+  const handleOpenDeleteModal = (formik) => {
     openModal("deleteTicket", {
       event_id: id,
       id: data.id,
       formik: formik,
       closeParentModal: onCloseModal,
     });
+  };
+
+  const handleSubmit = ({ values, resetForm, isValid }) => {
+    if (isValid) {
+      const ticketType = values.ticketType;
+      const updatedValues = {
+        ...values,
+        ticketPrice: ticketType === "free" ? 0 : values.ticketPrice,
+      };
+
+      if (data?.id) {
+        dispatch(updateTicketDetails({ id: data.id, ...updatedValues }));
+      } else {
+        dispatch(setTicketDetails(updatedValues));
+      }
+
+      onCloseModal({ isModalOpen: false });
+      resetForm();
+    }
   };
 
   return (
@@ -133,217 +110,163 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
           >
             Manage your ticket
           </Text>
-          <Box onClick={handlerOnClose}>
+          <Box onClick={() => onCloseModal({ isModalOpen: false })}>
             <MultiplyIcon />
           </Box>
         </Box>
 
-        <Box
-          display="flex"
-          flexDirection="column"
-          gap="6"
-          padding="6"
-          backgroundColor="inherit"
-          height="100%"
-          overflowY="auto"
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          enableReinitialize
         >
-          <FormControl
-            isInvalid={formik.touched.ticketType && formik.errors.ticketType}
-          >
-            <FormLabel fontSize="lg" fontWeight="semibold" color="black">
-              Will this be a free or paid event?
-            </FormLabel>
-            <RadioGroup
-              name="ticketType"
-              value={formik.values.ticketType}
-              onChange={(value) => formik.setFieldValue("ticketType", value)}
-              onBlur={() => formik.setFieldTouched("ticketType", true)}
-              marginTop="4"
+          {(formik) => (
+            <Form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                overflowY: "scroll",
+              }}
             >
-              <HStack color="gray.800" fontWeight="medium" flexWrap="wrap">
-                <Radio value="free" size="lg" variant="border">
-                  Free event
-                </Radio>
-                <Radio value="paid" size="lg" variant="border">
-                  Paid event
-                </Radio>
-              </HStack>
-            </RadioGroup>
-            <FormErrorMessage>
-              {formik.touched.ticketType && formik.errors.ticketType}
-            </FormErrorMessage>
-          </FormControl>
-
-          <Divider h="1px" backgroundColor="gray.300" />
-
-          <FormControl
-            isInvalid={formik.touched.ticketName && formik.errors.ticketName}
-          >
-            <FormLabel htmlFor="ticketName">Ticket name</FormLabel>
-
-            <InputGroup size="lg">
-              <InputRightElement pointerEvents="none">
-                <TicketIcon />
-              </InputRightElement>
-
-              <Input
-                id="ticketName"
-                name="ticketName"
-                type="text"
-                placeholder="e.g. Regular"
-                value={formik.values.ticketName}
-                onChange={formik.handleChange}
-                onBlur={() => formik.setFieldTouched("ticketName", true)}
-              />
-            </InputGroup>
-
-            <FormErrorMessage>
-              {formik.touched.ticketName && formik.errors.ticketName}
-            </FormErrorMessage>
-          </FormControl>
-
-          {formik.values.ticketType !== "free" && (
-            <FormControl
-              isInvalid={
-                formik.touched.ticketPrice && formik.errors.ticketPrice
-              }
-            >
-              <FormLabel htmlFor="ticketPrice">Ticket price</FormLabel>
-
-              <InputGroup size="lg">
-                <InputRightElement pointerEvents="none">
-                  <PriceIcon />
-                </InputRightElement>
-                <InputLeftElement pointerEvents="none">₦</InputLeftElement>
-
-                <Input
-                  id="ticketPrice"
-                  name="ticketPrice"
-                  type="number"
-                  placeholder="set ticket price"
-                  value={formik.values.ticketPrice}
-                  onChange={formik.handleChange}
-                  onBlur={() => formik.setFieldTouched("ticketPrice", true)}
+              <Box
+                display="flex"
+                flexDirection="column"
+                gap="6"
+                padding="6"
+                backgroundColor="inherit"
+                height="100%"
+                overflowY="auto"
+              >
+                <FormField
+                  name="ticketType"
+                  label="Will this be a free or paid event?"
+                  type={FormFieldType.Radio}
+                  options={[
+                    { value: "free", label: "Free event" },
+                    { value: "paid", label: "Paid event" },
+                  ]}
+                  radioDirection="row"
+                  radioSpacing="10px"
+                  radioVariant="border"
+                  radioMaxWidth="fit-content"
                 />
-              </InputGroup>
-              {formik.values.ticketPrice && (
-                <Text fontSize="sm" fontWeight="normal" color="gray.600">
-                  Our 2% commission will taken from each tickets sold
-                </Text>
-              )}
 
-              <FormErrorMessage>
-                {formik.touched.ticketPrice && formik.errors.ticketPrice}
-              </FormErrorMessage>
-            </FormControl>
-          )}
+                <Divider h="1px" backgroundColor="gray.300" />
 
-          <FormControl
-            isInvalid={
-              formik.touched.ticketQuantity && formik.errors.ticketQuantity
-            }
-          >
-            <FormLabel htmlFor="ticketQuantity">
-              How many{" "}
-              <Text as="span" textTransform="lowercase">
-                {formik.values.ticketName}
-              </Text>{" "}
-              tickets should be sold
-            </FormLabel>
+                <FormField
+                  name="ticketName"
+                  label="Ticket name"
+                  type={FormFieldType.Text}
+                  placeholder="e.g. Regular"
+                  rightIcon={<TicketIcon />}
+                  size="lg"
+                />
 
-            <InputGroup size="lg">
-              <Input
-                id="ticketQuantity"
-                name="ticketQuantity"
-                type="number"
-                placeholder="e.g. 40"
-                min={0}
-                value={formik.values.ticketQuantity}
-                onChange={formik.handleChange}
-                onBlur={() => formik.setFieldTouched("ticketQuantity", true)}
-              />
-              <InputRightElement>
-                <Box
-                  as="button"
-                  fontSize="sm"
-                  color="gray.600"
-                  fontWeight="medium"
-                  disabled={ticketQuantity - formik.values.ticketQuantity < -1}
-                  onClick={() =>
-                    formik.setFieldValue("ticketQuantity", ticketQuantity)
+                {formik.values.ticketType === "paid" && (
+                  <FormField
+                    name="ticketPrice"
+                    label="Ticket price"
+                    type={FormFieldType.Number}
+                    placeholder="set ticket price"
+                    rightIcon={<PriceIcon />}
+                    helperText={
+                      formik.values.ticketPrice
+                        ? "Our 2% commission will taken from each tickets sold"
+                        : undefined
+                    }
+                    min={1}
+                    size="lg"
+                    leftIcon="₦"
+                  />
+                )}
+
+                <FormField
+                  name="ticketQuantity"
+                  label={`How many ${
+                    formik.values.ticketName
+                      ? formik.values.ticketName.toLowerCase()
+                      : ""
+                  } tickets should be sold`}
+                  type={FormFieldType.Number}
+                  placeholder="e.g. 40"
+                  rightIcon={
+                    <Box
+                      as="button"
+                      fontSize="sm"
+                      color="gray.600"
+                      fontWeight="medium"
+                      disabled={
+                        ticketQuantity - formik.values.ticketQuantity <= 0
+                      }
+                      onClick={() =>
+                        formik.setFieldValue("ticketQuantity", ticketQuantity)
+                      }
+                      _disabled={{ opacity: 0.5, cursor: "not-allowed" }}
+                    >
+                      Max
+                    </Box>
+                  }
+                  helperText={`${
+                    ticketQuantity - formik.values.ticketQuantity < -1
+                      ? "0"
+                      : ticketQuantity - formik.values.ticketQuantity
+                  } tickets available`}
+                  min={1}
+                  max={ticketQuantity}
+                  size="lg"
+                />
+
+                {data && (
+                  <Button
+                    onClick={() => handleOpenDeleteModal(formik)}
+                    leftIcon={<TrashIcon />}
+                    variant="ghost"
+                    color="red.400"
+                    size="sm"
+                    width="fit-content"
+                  >
+                    Delete this ticket
+                  </Button>
+                )}
+              </Box>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-end"
+                gap="14px"
+                backgroundColor="inherit"
+                borderTop="1px solid"
+                borderColor="gray.300"
+                paddingY="3"
+                paddingX="6"
+              >
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  onClick={() => onCloseModal({ isModalOpen: false })}
+                >
+                  Discard
+                </Button>
+                <Button
+                  onClick={() => handleSubmit(formik)}
+                  size="lg"
+                  variant="primary"
+                  disabled={
+                    !formik.isValid ||
+                    !formik.values.ticketName ||
+                    (formik.values.ticketType === "paid" &&
+                      !formik.values.ticketPrice) ||
+                    !formik.values.ticketQuantity ||
+                    !formik.values.ticketType
                   }
                 >
-                  Max
-                </Box>
-              </InputRightElement>
-            </InputGroup>
-
-            <FormErrorMessage>
-              {formik.touched.ticketQuantity && formik.errors.ticketQuantity}
-            </FormErrorMessage>
-
-            <Text fontSize="sm" fontWeight="normal" color="gray.600">
-              {ticketQuantity - formik.values.ticketQuantity < -1
-                ? "0"
-                : ticketQuantity - formik.values.ticketQuantity}{" "}
-              tickets available
-            </Text>
-          </FormControl>
-
-          {data && (
-            <Button
-              onClick={() => handleOpenDeleteModal()}
-              leftIcon={<TrashIcon />}
-              variant="ghost"
-              color="red.400"
-              size="sm"
-              width="fit-content"
-            >
-              Delete this ticket
-            </Button>
+                  {!data ? "Save ticket" : "Update ticket"}
+                </Button>
+              </Box>
+            </Form>
           )}
-        </Box>
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-end"
-          gap="14px"
-          backgroundColor="inherit"
-          borderTop="1px solid"
-          borderColor="gray.300"
-          paddingY="3"
-          paddingX="6"
-          marginTop="6"
-        >
-          <Button variant="secondary" size="lg" onClick={handlerOnClose}>
-            Discard
-          </Button>
-          {!data ? (
-            <Button
-              onClick={() => handleTicketDetails()}
-              size="lg"
-              variant="primary"
-              disabled={
-                !formik.isValid ||
-                !formik.values.ticketName ||
-                (formik.values.ticketType === "paid" &&
-                  !formik.values.ticketPrice) ||
-                !formik.values.ticketQuantity ||
-                !formik.values.ticketType
-              }
-            >
-              Save ticket
-            </Button>
-          ) : (
-            <Button
-              size="lg"
-              variant="primary"
-              onClick={() => handleUpdateTicketDetails(data.id)}
-            >
-              Update ticket
-            </Button>
-          )}
-        </Box>
+        </Formik>
       </Box>
     </Slide>
   );

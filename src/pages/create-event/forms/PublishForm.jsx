@@ -222,6 +222,7 @@ const PublishForm = () => {
               type={FormFieldType.Radio}
               options={publishOptions}
               radioDirection="column"
+              radioMaxWidth="100%"
               radioSpacing="6"
             />
           </Box>

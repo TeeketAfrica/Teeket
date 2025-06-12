@@ -16,9 +16,8 @@ import ImageUpload from "../components/ImageUpload";
 import RefreshIcon from "../../../assets/icon/Refresh.svg";
 import MapIcon from "../../../assets/icon/Map.svg";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api";
-import { PlayCircleIcon } from "lucide-react";
 
-const EventDetailsForm = ({ location, setLocation }) => {
+const EventDetailsForm = () => {
   const { values, setFieldValue, setFieldTouched } = useFormikContext();
   const [imageData, setImageData] = useState(values.eventBannerImage || "");
   const completeRef = useRef(null);
@@ -115,6 +114,7 @@ const EventDetailsForm = ({ location, setLocation }) => {
           label="How will this event be hosted"
           type={FormFieldType.Radio}
           options={hostingOptions}
+          radioMaxWidth="fit-content"
         />
 
         {/* Event Location - Conditional rendering based on hosting type */}

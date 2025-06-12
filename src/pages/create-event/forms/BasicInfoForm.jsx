@@ -5,6 +5,7 @@ import { Stack, Box, Divider, Heading, Text, useToast } from "@chakra-ui/react";
 import FormField from "../../../components/ui/FormField";
 import { FormFieldType } from "../../../components/ui/form-field-types";
 import { teeketApi } from "../../../utils/api";
+import { eventTypes } from "../../../utils/constants";
 
 const BasicInfoForm = () => {
   const toast = useToast();
@@ -15,85 +16,6 @@ const BasicInfoForm = () => {
     { value: "celebration", label: "Celebration" },
     { value: "party", label: "Party" },
     { value: "naming", label: "Naming" },
-  ];
-
-  //(Timmi) New event Types
-  const eventTypes = [
-    { value: "Concert / Music Show", label: "Concert / Music Show" },
-    { value: "Comedy Show", label: "Comedy Show" },
-    { value: "Dance Performance", label: "Dance Performance" },
-    { value: "Open Mic / Talent Night", label: "Open Mic / Talent Night" },
-    { value: "Theatre / Stage Play", label: "Theatre / Stage Play" },
-    {
-      value: "Spoken Word / Poetry Night",
-      label: "Spoken Word / Poetry Night",
-    },
-    { value: "Cultural Festival", label: "Cultural Festival" },
-    { value: "Movie Screening", label: "Movie Screening" },
-    { value: "Conference", label: "Conference" },
-    { value: "Panel Discussion", label: "Panel Discussion" },
-    { value: "Fireside Chat", label: "Fireside Chat" },
-    { value: "Workshop / Masterclass", label: "Workshop / Masterclass" },
-    { value: "Product Launch", label: "Product Launch" },
-    { value: "Startup Pitch Event", label: "Startup Pitch Event" },
-    { value: "Job Fair / Career Fair", label: "Job Fair / Career Fair" },
-    { value: "Corporate Retreat", label: "Corporate Retreat" },
-    { value: "Bootcamp", label: "Bootcamp" },
-    { value: "Training Program", label: "Training Program" },
-    { value: "Webinar", label: "Webinar" },
-    { value: "Seminar / Lecture", label: "Seminar / Lecture" },
-    { value: "Hackathon", label: "Hackathon" },
-    { value: "Study Group", label: "Study Group" },
-    { value: "Language Class", label: "Language Class" },
-    { value: "Academic Symposium", label: "Academic Symposium" },
-    {
-      value: "Art Exhibition / Gallery Opening",
-      label: "Art Exhibition / Gallery Opening",
-    },
-    { value: "Pop-Up Market", label: "Pop-Up Market" },
-    { value: "Fashion Show", label: "Fashion Show" },
-    { value: "Photography Walk", label: "Photography Walk" },
-    {
-      value: "Food Tasting / Culinary Experience",
-      label: "Food Tasting / Culinary Experience",
-    },
-    { value: "DIY / Craft Workshop", label: "DIY / Craft Workshop" },
-    { value: "Design Meetup", label: "Design Meetup" },
-    { value: "Yoga / Meditation Session", label: "Yoga / Meditation Session" },
-    { value: "Fitness Bootcamp", label: "Fitness Bootcamp" },
-    {
-      value: "Therapy Circle / Safe Space",
-      label: "Therapy Circle / Safe Space",
-    },
-    { value: "Wellness Retreat", label: "Wellness Retreat" },
-    { value: "Mental Health Meetup", label: "Mental Health Meetup" },
-    {
-      value: "Vision Board / Goal-Setting Event",
-      label: "Vision Board / Goal-Setting Event",
-    },
-    { value: "House Party", label: "House Party" },
-    { value: "Games Night", label: "Games Night" },
-    { value: "Speed Friending / Dating", label: "Speed Friending / Dating" },
-    { value: "Community Hangout", label: "Community Hangout" },
-    {
-      value: "City Tour / Local Exploration",
-      label: "City Tour / Local Exploration",
-    },
-    { value: "Volunteer Event", label: "Volunteer Event" },
-    {
-      value: "Religious or Faith-Based Gathering",
-      label: "Religious or Faith-Based Gathering",
-    },
-    { value: "Singles-Only Events", label: "Singles-Only Events" },
-    { value: "Creator Meetup", label: "Creator Meetup" },
-    { value: "Virtual Concert", label: "Virtual Concert" },
-    { value: "Online Class", label: "Online Class" },
-    {
-      value: "Instagram/TikTok Live Performance",
-      label: "Instagram/TikTok Live Performance",
-    },
-    { value: "Zoom Networking Event", label: "Zoom Networking Event" },
-    { value: "Twitter Space Talk", label: "Twitter Space Talk" },
   ];
 
   // Fetch tags on mount
@@ -147,7 +69,7 @@ const BasicInfoForm = () => {
               name="eventType"
               label="Type of event"
               type={FormFieldType.Select}
-              placeholder="Choose a type e.g. Celebration"
+              placeholder="Choose a type e.g. Music Show"
               options={eventTypes}
             />
 

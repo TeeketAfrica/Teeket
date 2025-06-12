@@ -32,6 +32,7 @@ import {
   selectEventDetails,
 } from "../../../features/eventSlice";
 import { selectActiveUser } from "../../../features/activeUserSlice";
+import { useFormikContext } from "formik";
 
 const Layout = ({
   children,
@@ -40,7 +41,6 @@ const Layout = ({
   prevStep,
   publishEvent,
   isSubmitting,
-  activeStep,
   setActiveStep,
 }) => {
   const [mobileToggle, setMobileToggle] = useState(false);
@@ -59,6 +59,8 @@ const Layout = ({
   const resetEvent = () => {
     dispatch(resetEventState());
   };
+
+  const { values } = useFormikContext();
 
   const steps = [
     {
@@ -119,7 +121,9 @@ const Layout = ({
                 type="submit"
                 size="sm"
                 variant="primary"
-                isDisabled={activeStepColor !== steps.length - 1}
+                isDisabled={
+                  activeStepColor !== steps.length - 1 || !values.publishLive
+                }
                 gap={2}
                 onClick={publishEvent}
               >
@@ -382,7 +386,7 @@ const Layout = ({
                 leftIcon={<Rocket />}
                 size="lg"
                 variant="accent"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !values.publishLive}
                 onClick={publishEvent}
               >
                 Publish Event

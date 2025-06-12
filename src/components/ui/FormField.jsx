@@ -18,6 +18,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Box,
 } from "@chakra-ui/react";
 import { Field, useField } from "formik";
 import { FormFieldType } from "./form-field-types";
@@ -180,11 +181,12 @@ const FormField = memo(
                 color="gray.800"
                 fontWeight="medium"
                 flexWrap="wrap"
-                direction={radioDirection}
+                flexDirection={radioDirection}
               >
                 {options.map((option) => (
                   <Radio
                     flex={1}
+                    w="100%"
                     maxW={radioMaxWidth}
                     key={option.value}
                     value={option.value}
@@ -205,21 +207,33 @@ const FormField = memo(
               min={min}
               max={max}
               step={step}
+              placeholder={placeholder}
               value={field.value}
               onChange={(_, valueNumber) => helpers.setValue(valueNumber)}
               isDisabled={isDisabled}
               isReadOnly={isReadOnly}
               size={size}
             >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper>
-                  <UpArrowIcon />
-                </NumberIncrementStepper>
-                <NumberDecrementStepper>
-                  <DownArrowIcon />
-                </NumberDecrementStepper>
-              </NumberInputStepper>
+              <NumberInputField pl={leftIcon && 9} />
+              {rightIcon && (
+                <Box position="absolute" left={5} top={"1.1rem"} h="100%">
+                  {leftIcon}
+                </Box>
+              )}
+              {rightIcon ? (
+                <Box position="absolute" right={5} top={5} h="100%">
+                  {rightIcon}
+                </Box>
+              ) : (
+                <NumberInputStepper>
+                  <NumberIncrementStepper>
+                    <UpArrowIcon />
+                  </NumberIncrementStepper>
+                  <NumberDecrementStepper>
+                    <DownArrowIcon />
+                  </NumberDecrementStepper>
+                </NumberInputStepper>
+              )}
             </NumberInput>
           );
 

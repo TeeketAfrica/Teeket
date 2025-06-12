@@ -170,7 +170,7 @@ const VendorPage = () => {
   // Form submission handler
   const handleFormSubmit = useCallback(
     async (values, { setSubmitting, setFieldError }) => {
-      console.log("clicked")
+      console.log("clicked");
       try {
         // (Timmi) only and try and submit if the active step is publishing or 3
         if (activeStep === 3) {
@@ -210,7 +210,12 @@ const VendorPage = () => {
   const renderFormStep = useCallback(() => {
     const formComponents = [FormStep1, FormStep2, FormStep3, PublishEvent];
     const CurrentForm = formComponents[activeStep];
-    return <CurrentForm locationMetaData={locationMetaData} setLocationMetaData={setLocationMetaData}/>;
+    return (
+      <CurrentForm
+        locationMetaData={locationMetaData}
+        setLocationMetaData={setLocationMetaData}
+      />
+    );
   }, [activeStep]);
 
   // Don't render until we have initial values
