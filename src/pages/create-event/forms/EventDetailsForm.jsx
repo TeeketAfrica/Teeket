@@ -73,10 +73,10 @@ const EventDetailsForm = () => {
       {/* Banner Image */}
       {imageData?.secure_url || imageData ? (
         <Box>
-          <Box key={imageData.public_id || id} maxW="600px">
+          <Box key={imageData.public_id} maxW="600px">
             <Image
-              src={imageData.secure_url}
-              alt={`event-banner ${imageData.public_id || id}`}
+              src={imageData.secure_url || imageData}
+              alt={`event-banner ${imageData.public_id? imageData.public_id: ""}`}
               objectFit="cover"
               h="100%"
               maxH="400px"

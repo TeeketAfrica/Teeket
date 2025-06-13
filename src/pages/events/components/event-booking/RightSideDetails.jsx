@@ -9,6 +9,7 @@ import {
   Image,
   Text,
   Tooltip,
+  useBreakpointValue,
   VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
@@ -33,6 +34,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
   const [eventAttendees, setEventAttendees] = useState([]);
 
   isRegistered = isRegistered.is_creator === null ? false : true;
+  const showTooltip = useBreakpointValue({ base: false, md: true });
 
   useEffect(() => {
     const fetchAttendees = async () => {
@@ -171,6 +173,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
                 borderRadius="8px"
                 border="1px solid"
                 borderColor="gray.300"
+                position={"relative"}
               >
                 {/* <LoadScript
                 googleMapsApiKey={import.meta.env.VITE_REACT_PLACES_API_KEY}
@@ -239,6 +242,48 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
               />
             )}
           </Box>
+          {/* Hover Info Message */}
+          {isRegistered && (
+            <Box mt={"2"}>
+              {showTooltip ? (
+                <Tooltip
+                  label="Having trouble finding the event location?
+                        Click anywhere on the map to open Google Maps.
+                        Then, use the Copy Address button next to the address,
+                        paste it into Google Maps, and you'll be able to locate the event easily."
+                  fontSize="sm"
+                  borderRadius="md"
+                  padding="8px"
+                  bg="gray.700"
+                  color="white"
+                  hasArrow
+                  placement="top-start"
+                >
+                  <Text
+                    fontSize="sm"
+                    fontWeight="medium"
+                    color="blue.600"
+                    _hover={{ textDecoration: "underline", cursor: "help" }}
+                  >
+                    Having trouble locating the event?
+                  </Text>
+                </Tooltip>
+              ) : (
+                <Box
+                  bg="gray.100"
+                  borderRadius="md"
+                  p="2"
+                  fontSize="xs"
+                  color="gray.700"
+                  boxShadow="md"
+                  textColor={"blue.600"}
+                >
+                  Can't find the location? Tap Copy Address, then search on
+                  Google Maps.
+                </Box>
+              )}
+            </Box>
+          )}
         </BoxFrame>
       )}
     </VStack>

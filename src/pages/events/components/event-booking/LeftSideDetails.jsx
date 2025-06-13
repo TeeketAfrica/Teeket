@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, useToast, VStack } from "@chakra-ui/react";
 import CalendarIcon from "../../../../assets/icon/Calendar.svg";
 import GPSIcon from "../../../../assets/icon/Gps.svg";
 import LightingIcon from "../../../../assets/icon/LightingIcon.svg";
@@ -10,6 +10,20 @@ import EventBadge from "../EventBadge";
 const LeftSideDetails = ({ event, location }) => {
   const startDate = formatDateAndTime(event.start_date, "long");
   const endDate = formatDateAndTime(event.end_date, "long");
+  const toast = useToast();
+
+  const handleCopy = () => {
+    if (!event.event_location) return;
+    navigator.clipboard.writeText(event.event_location);
+    toast({
+      title: "Copied!",
+      description: "Address copied to clipboard.",
+      status: "success",
+      duration: 2000,
+      position: "top-right",
+      isClosable: true,
+    });
+  };
 
   return (
     <VStack width={{ base: "100%", lg: "60%" }} gap="6" alignItems="flex-start">
@@ -51,11 +65,21 @@ const LeftSideDetails = ({ event, location }) => {
             </Button>
           </Flex>
           {event?.hosting_site === "physical" && (
-            <DetailCard
-              icon={GPSIcon}
-              title="Event Address"
-              subTitle={location || event.event_location}
-            />
+            <Flex
+              flexDirection={{ base: "column", sm: "row" }}
+              gap="2"
+              justifyContent="space-between"
+              alignItems={{ base: "flex-start", sm: "center" }}
+            >
+              <DetailCard
+                icon={GPSIcon}
+                title="Event Address"
+                subTitle={location || event.event_location}
+              />
+              <Button variant="secondary" size="sm" onClick={handleCopy}>
+                Copy Address
+              </Button>
+            </Flex>
           )}
         </Flex>
       </BoxFrame>

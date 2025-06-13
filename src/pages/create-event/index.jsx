@@ -53,6 +53,8 @@ const VendorPage = () => {
           })
         );
 
+        console.log("transformed", transformedTickets)
+
         // Set tickets in Redux (needed for ticket management)
         dispatch(setTicket(transformedTickets));
 
