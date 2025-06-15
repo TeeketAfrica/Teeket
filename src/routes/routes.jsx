@@ -22,6 +22,7 @@ import {
   AboutPage,
   ContactPage,
 } from "../pages";
+import NotFound from "../pages/404/404";
 import SimilarEvents from "../pages/events/SimilarEvents";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
@@ -39,6 +40,8 @@ const publicRoutes = [
   { path: "/events/similar-events/:id?", element: SimilarEvents },
   { path: "/event-booking/:id?", element: EventBookingPage },
   { path: "/event-booking/:id?/get-ticket", element: EventGetTicket },
+
+  {path: "*", element: NotFound}
 ];
 
 const privateRoutes = [

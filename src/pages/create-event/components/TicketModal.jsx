@@ -21,6 +21,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
   const { openModal } = useModal();
   const { id } = useParams();
 
+
   const ticketQuantity = data
     ? selectedQuantity + data.ticketQuantity
     : selectedQuantity;
@@ -211,7 +212,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
                         </Box>
                       }
                       helperText={`${
-                        ticketQuantity - formik.values.ticketQuantity < -1
+                        ticketQuantity - formik.values.ticketQuantity < 1 
                           ? "0"
                           : ticketQuantity - formik.values.ticketQuantity
                       } tickets available`}
@@ -262,7 +263,7 @@ const TicketModal = ({ ticketState, onCloseModal, selectedQuantity }) => {
                     (formik.values.ticketType === "paid" &&
                       !formik.values.ticketPrice) ||
                     !formik.values.ticketQuantity ||
-                    !formik.values.ticketType
+                    !formik.values.ticketType || ticketQuantity < formik.values.ticketQuantity
                   }
                 >
                   {!data ? "Save ticket" : "Update ticket"}

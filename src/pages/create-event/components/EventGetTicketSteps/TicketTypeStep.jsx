@@ -18,6 +18,7 @@ import {
 } from "../../../../features/eventSlice";
 import { teeketApi } from "../../../../utils/api";
 import { TicketTypeBox } from "../TicketTypeBox";
+import useStorage from "../../../../utils/storage";
 
 export const TicketTypeStep = () => {
   const {
@@ -29,13 +30,15 @@ export const TicketTypeStep = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
-
   const [date, setDate] = useState("");
   const [timeRange, setTimeRange] = useState("");
   // const [eventTitle] = useState(eventDataTickets[0]?.event?.title);
 
   const [isTicketError, setIsTicketError] = useState(false);
   const [ticketError, setTicketError] = useState("");
+
+  const { getAccessToken } = useStorage();
+  const token = getAccessToken();
 
   const { eventTicketBooking, ticketStep } = useSelector(
     (state) => state.event
@@ -57,7 +60,7 @@ export const TicketTypeStep = () => {
         const response = await teeketApi.get(
           `/events/${eventData.id}/tickets`,
           {
-            nullAuth: true,
+            nullAuth: true
           }
         );
         dispatch(setEventDataTicketsData(response.data.data));
@@ -105,6 +108,9 @@ export const TicketTypeStep = () => {
         `/events/${eventData.id}/tickets/book`,
         {
           ticket_orders: tickets,
+        },
+        {
+            nullAuth: true
         }
       );
       if (response && response.status === 200) {

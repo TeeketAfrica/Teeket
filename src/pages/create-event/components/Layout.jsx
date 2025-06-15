@@ -12,7 +12,7 @@ import {
   useOutsideClick,
   Avatar,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Logo from "../../../assets/img/brandLogo.png";
 import Preview from "../../../assets/icon/eye.svg";
@@ -49,8 +49,8 @@ const Layout = ({
   const { signOut } = useSignOut();
   const dispatch = useDispatch();
   const user = useSelector(selectActiveUser);
-  const { tickets } = useSelector(selectEventDetails);
-
+  const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
+  const [disable, setDisable] = useState(false);
   const { email } = useSelector(selectUserDetails).data;
   useOutsideClick({
     ref: ref,
@@ -61,6 +61,13 @@ const Layout = ({
   };
 
   const { values } = useFormikContext();
+
+  useEffect(()=>{
+    if(values && totalTicketQuantities){
+      console.log(values)
+      totalTicketQuantities > values.eventEstimatedSoldTicket? setDisable(true): setDisable(false);
+    }
+  },[values, totalTicketQuantities])
 
   const steps = [
     {
@@ -398,7 +405,7 @@ const Layout = ({
                 type="submit"
                 size="lg"
                 onClick={nextStep}
-                disabled={tickets.length < 1 && activeStep === 2}
+                disabled={(tickets.length < 1 && activeStep === 2) || disable}
               >
                 Save and continue
               </Button>

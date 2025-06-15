@@ -65,10 +65,10 @@ const Header = () => {
       link: "Contact us",
       url: "contact",
     },
-    {
-      link: "About",
-      url: "about",
-    },
+    // {
+    //   link: "About",
+    //   url: "about",
+    // },
   ];
   return (
     <header>
@@ -91,7 +91,7 @@ const Header = () => {
                   w="100%"
                   display={["none", "none", "none", "block"]}
                 >
-                  <InputGroup w="full">
+                  {/* <InputGroup w="full">
                     <InputLeftElement pointerEvents="none">
                       <Search />
                     </InputLeftElement>
@@ -100,7 +100,7 @@ const Header = () => {
                       type="text"
                       placeholder="Search for an event"
                     />
-                  </InputGroup>
+                  </InputGroup> */}
                 </Box>
                 {menu.map((link, i) => (
                   <Link key={i} to={`/${link.url}`}>

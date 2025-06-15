@@ -59,7 +59,7 @@ const DashboardHeader = ({ onOpen }) => {
                     </Link>
                 </Box>
                 <Box maxW="375px" w="100%" display={["none", "block"]}>
-                    <InputGroup>
+                    {/* <InputGroup>
                         <InputLeftElement pointerEvents="none">
                             <Search />
                         </InputLeftElement>
@@ -71,7 +71,7 @@ const DashboardHeader = ({ onOpen }) => {
                         <InputRightElement mr={3}>
                             <SearchIcon />
                         </InputRightElement>
-                    </InputGroup>
+                    </InputGroup> */}
                 </Box>
                 <HStack
                     w="100%"

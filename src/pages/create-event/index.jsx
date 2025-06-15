@@ -3,7 +3,11 @@ import { Formik, Form } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { selectEventDetails, setTicket } from "../../features/eventSlice";
+import {
+  selectEventDetails,
+  setTicket,
+  setTotalTicketQuantity,
+} from "../../features/eventSlice";
 import { teeketApi } from "../../utils/api";
 import Layout from "./components/Layout";
 import FormStep1 from "./layout/FormStep1";
@@ -18,8 +22,7 @@ const VendorPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [initialFormValues, setInitialFormValues] = useState(null);
   const activeUser = useSelector(selectActiveUser);
-  const [locationMetaData, setLocationMetaData] = useState([]);
-  const { tickets } = useSelector(selectEventDetails);
+  const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -41,6 +44,8 @@ const VendorPage = () => {
         const response = await teeketApi.get(`/events/${id}`);
         const eventData = response.data;
 
+        console.log("ee", eventData);
+
         // Fetch tickets
         const res = await teeketApi.get(`/events/${id}/tickets`);
         const transformedTickets = res.data.data.map(
@@ -52,12 +57,18 @@ const VendorPage = () => {
             ticketType: is_paid ? "paid" : "free",
           })
         );
-
-        console.log("transformed", transformedTickets)
+        console.log("transformed", transformedTickets);
+        
+        // get the total ticket quantity by summing all the ticket quantities
+        const totalTicketQuantity = transformedTickets.reduce(
+          (sum, ticket) => sum + ticket.ticketQuantity,
+          0
+        );
 
         // Set tickets in Redux (needed for ticket management)
         dispatch(setTicket(transformedTickets));
-
+        // Set Total ticket quantity on fetch
+        dispatch(setTotalTicketQuantity(totalTicketQuantity));
         // Set initial form values from API data
         setInitialFormValues({
           eventTitle: eventData.title || "",
@@ -80,7 +91,7 @@ const VendorPage = () => {
           eventHosting: eventData.hosting_site || "",
           eventLocation: eventData.event_location || eventData.event_link || "",
           eventBannerImage: eventData.banner_image || "",
-          eventEstimatedSoldTicket: eventData.number_of_tickets || "",
+          eventEstimatedSoldTicket: eventData.number_of_tickets || 0,
           eventTags: eventData.tags || [],
           publishLive: eventData.status || "",
         });
@@ -117,7 +128,7 @@ const VendorPage = () => {
         eventLocation: "",
         eventPhysicalLocationDetails: null,
         eventBannerImage: "",
-        eventEstimatedSoldTicket: "",
+        eventEstimatedSoldTicket: 0,  
         eventTags: [],
         publishLive: "",
       });
@@ -142,6 +153,8 @@ const VendorPage = () => {
             await teeketApi.patch(`/events/${id}`, {
               number_of_tickets_remaining: ticketRemaining,
             });
+
+            console.log("ticks rem", ticketRemaining)
           }
         } catch (error) {
           console.log("Unable to update number of tickets:", error.message);

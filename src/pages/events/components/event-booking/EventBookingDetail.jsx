@@ -23,6 +23,8 @@ const EventBookingDetail = () => {
   const dispatch = useDispatch();
   const isActiveUser = useSelector(selectActiveUser);
 
+  console.log("eveee",event)
+
   useEffect(() => {
     dispatch(resetEventState());
   }, []);
@@ -41,6 +43,7 @@ const EventBookingDetail = () => {
       <Flex w="100%" flexDirection={{ base: "column", lg: "row" }} gap="6">
         <LeftSideDetails
           event={event}
+          user={isActiveUser}
           location={event?.location_metadata?.address}
         />
 

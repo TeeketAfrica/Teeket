@@ -6,6 +6,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { useFormikContext } from "formik";
@@ -15,11 +16,23 @@ import ImageUpload from "../components/ImageUpload";
 import RefreshIcon from "../../../assets/icon/Refresh.svg";
 import MapIcon from "../../../assets/icon/Map.svg";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api";
+import UserDetailInstruction from "../components/create-event-form/UserDetailInstruction";
 
 const EventDetailsForm = () => {
   const { values, setFieldValue, setFieldTouched } = useFormikContext();
   const [imageData, setImageData] = useState(values.eventBannerImage || "");
   const completeRef = useRef(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const hasOpened = useRef(false); // Track if we've already opened
+
+  useEffect(() => {
+    const hasSeenModal = sessionStorage.getItem("hasSeenUserDetailInstruction");
+
+    if (!hasSeenModal) {
+      onOpen(); // Show the modal
+      sessionStorage.setItem("hasSeenUserDetailInstruction", "true"); // Set flag
+    }
+  }, [onOpen]);
 
   // Update Formik when image changes
   useEffect(() => {
@@ -41,11 +54,14 @@ const EventDetailsForm = () => {
   const handleOnPlacesChanged = () => {
     let address = completeRef.current.getPlaces();
     const place = address[0];
+    const name = place.name;
     const location = place.geometry.location;
     const latitude = location.lat();
     const longitude = location.lng();
 
-    setFieldValue("eventLocation", place.formatted_address);
+    console.log("address data", address);
+
+    setFieldValue("eventLocation", `${name}, ${place.formatted_address}`);
     setFieldTouched("eventLocation", true);
     //(Timmi) setFieldValue for location details from google's api
     if (place) {
@@ -70,6 +86,10 @@ const EventDetailsForm = () => {
       alignItems="flex-start"
       gap="8"
     >
+      <UserDetailInstruction
+        isOpen={isOpen}
+        onClose={onClose}
+      />
       {/* Banner Image */}
       {imageData?.secure_url || imageData ? (
         <Box>
@@ -105,8 +125,8 @@ const EventDetailsForm = () => {
         name="eventAbout"
         label="About the event"
         type={FormFieldType.TextArea}
-        placeholder="Tell us about the event"
-        helperText="Give a detailed description of what this event is about"
+        placeholder="Tell us about the event and include the event address in the description"
+        helperText="Give a detailed description of what this event is about and include the event address in the description"
         rows={7}
       />
 

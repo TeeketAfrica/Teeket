@@ -28,13 +28,25 @@ import { teeketApi } from "../../../../utils/api";
 import { useEffect, useState } from "react";
 import { getBookingMessage } from "../../../../utils/formatAttendees";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import useStorage from "../../../../utils/storage";
 
 const RightSIdeDetails = ({ event, isRegistered, location }) => {
   const dispatch = useDispatch();
   const [eventAttendees, setEventAttendees] = useState([]);
 
-  isRegistered = isRegistered.is_creator === null ? false : true;
+  const [active, setActive] = useState(false);
+
+  const { getAccessToken } = useStorage();
+  const token = getAccessToken();
   const showTooltip = useBreakpointValue({ base: false, md: true });
+
+  useEffect(()=>{
+    if(isRegistered.is_creator === null || token === null){
+      setActive(false);
+    }else{
+      setActive(true);
+    }
+  },[token, isRegistered])
 
   useEffect(() => {
     const fetchAttendees = async () => {
@@ -47,14 +59,14 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
       }
     };
 
-    if (isRegistered) {
+    if (active) {
       fetchAttendees();
     }
-  }, [event?.id, isRegistered]);
+  }, [event?.id, active]);
 
   let attendeesQuantity;
 
-  eventAttendees && isRegistered
+  eventAttendees && active
     ? (attendeesQuantity = getBookingMessage(eventAttendees.length))
     : (attendeesQuantity = "Register to find out more about people going");
   console.log("EA", eventAttendees);
@@ -70,7 +82,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
           <Text as="h4" fontSize="xl" lineHeight="6" fontWeight="semibold">
             Get tickets
           </Text>
-          {isRegistered && (
+          {active && (
             <DetailCard
               icon={LightingOutlineIcon}
               title="This event is trending"
@@ -99,7 +111,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
             </Text>
           </HStack>
 
-          {isRegistered && (
+          {active && (
             <DetailCard
               icon={TicketIcon}
               title="Starting price"
@@ -164,7 +176,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
       {event?.hosting_site === "physical" && location !== null && (
         <BoxFrame paddingX="8px" paddingY="8px">
           <Box position="relative" overflow="hidden" borderRadius="8px">
-            {isRegistered ? (
+            {active ? (
               <Box
                 width="100%"
                 maxHeight="350px"
@@ -218,7 +230,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
               gap="10px"
               zIndex={4}
             >
-              {!isRegistered && (
+              {!active && (
                 <>
                   <GPSIcon width="32px" height="32px" objectFit="cover" />
 
@@ -228,7 +240,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
                 </>
               )}
             </VStack>
-            {!isRegistered && (
+            {!active && (
               <Box
                 position="absolute"
                 top="0"
@@ -243,7 +255,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
             )}
           </Box>
           {/* Hover Info Message */}
-          {isRegistered && (
+          {active && (
             <Box mt={"2"}>
               {showTooltip ? (
                 <Tooltip

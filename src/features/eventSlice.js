@@ -96,6 +96,10 @@ const eventSlice = createSlice({
             state.tickets = action.payload;
         },
 
+        setTotalTicketQuantity: (state, action)=>{
+            state.totalTicketQuantities = action.payload;
+        },
+
         setEventDetail: (state, action) => {
             const { fieldName, value } = action.payload;
             state[fieldName] = value;
@@ -239,10 +243,11 @@ export const {
     setReferenceId,
     setTicketUserDetails,
     setIsPaid,
+    setTotalTicketQuantity,
     setUserEventPreference
 } = eventSlice.actions;
 
-const TRANSACTION_FEE_RATE = 0.01;
+const TRANSACTION_FEE_RATE = 0;
 
 export const selectPriceDetails = createSelector(
     (state) => state.event.eventTicketBooking || [],

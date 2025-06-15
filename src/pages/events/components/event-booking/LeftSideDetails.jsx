@@ -6,11 +6,15 @@ import BoxFrame from "../../../../components/layouts/BoxFrame";
 import { formatDateAndTime } from "../../../../utils/utils";
 import DetailCard from "../DetailCard";
 import EventBadge from "../EventBadge";
+import useStorage from "../../../../utils/storage";
 
-const LeftSideDetails = ({ event, location }) => {
+const LeftSideDetails = ({ event, location, user }) => {
   const startDate = formatDateAndTime(event.start_date, "long");
   const endDate = formatDateAndTime(event.end_date, "long");
   const toast = useToast();
+  const { getAccessToken } = useStorage();
+  const token = getAccessToken();
+  user = user.is_creator === null || !token ? false : true;
 
   const handleCopy = () => {
     if (!event.event_location) return;
@@ -60,9 +64,11 @@ const LeftSideDetails = ({ event, location }) => {
               title={`${startDate.date.day}, ${startDate.date.dayNumber} ${startDate.date.month}`}
               subTitle={`${startDate.time} - ${endDate.time}`}
             />
-            <Button variant="secondary" size="sm">
-              Remind me
-            </Button>
+            {user && (
+              <Button variant="secondary" size="sm">
+                Remind me
+              </Button>
+            )}
           </Flex>
           {event?.hosting_site === "physical" && (
             <Flex
@@ -74,7 +80,7 @@ const LeftSideDetails = ({ event, location }) => {
               <DetailCard
                 icon={GPSIcon}
                 title="Event Address"
-                subTitle={location || event.event_location}
+                subTitle={event.event_location}
               />
               <Button variant="secondary" size="sm" onClick={handleCopy}>
                 Copy Address
