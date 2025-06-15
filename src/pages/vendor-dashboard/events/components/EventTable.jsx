@@ -23,6 +23,14 @@ import {
     Thead,
     Tr,
     useToast,
+    Button,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    VStack,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
 import Search from "../../../../assets/icon/Search.svg";
@@ -40,6 +48,8 @@ import ActionBtn from "../../../../assets/icon/ActionBtn.svg";
 import { teeketApi } from "../../../../utils/api";
 import { Spinner } from '@chakra-ui/react';
 import { formatAmount } from "../../../../utils/utils";
+import { Html5QrcodeScanner } from "html5-qrcode";
+
 
 const EventTable = ({ setData, loading, setIsLoading }) => {
     const [statusFilter, setStatusFilter] = useState("");
@@ -52,8 +62,38 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [search, setSearch] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
+    const [scanResult, setScanResult] = useState('')
     const toast = useToast();
+
+    useEffect(()=>{
+        console.log(isOpen)
+        if(isOpen){
+            const scanner = new Html5QrcodeScanner('reader', {
+                qrbox:{
+                    width:250,
+                    height:250
+                },
+                fps: 5
+            })
+
+            scanner.render(success, error);
+
+            function success(result){
+                scanner.clear();
+                setScanResult(result)
+            }
+
+            function error(err){
+                console.warn(err);
+
+            }                 
+        }
+   
+    }, [])
+
+
 
     const updateNetworkStatus = () => {
         setIsOnline(navigator.onLine);
@@ -267,6 +307,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
 
     return (
         <Box px={[4, 8]}>
+
             <Stack
                 direction={["row"]}
                 justifyContent="space-between"
@@ -483,6 +524,16 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                                                                         bgColor:
                                                                             "gray.200",
                                                                     }}
+                                                                    onClick={()=>setIsOpen(true)}
+                                                                >
+                                                                    <Text>Scan attendees</Text>
+                                                                        
+                                                                </MenuItem>
+                                                                <MenuItem
+                                                                    _hover={{
+                                                                        bgColor:
+                                                                            "gray.200",
+                                                                    }}
                                                                 >
                                                                     <Link
                                                                         to={`/edit-event/${td.id}`}
@@ -655,6 +706,50 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                     </Box>
                 )}
             </Box>
+
+        <Modal
+            blockScrollOnMount={false}
+            isOpen={isOpen}
+            onClose={()=>setIsOpen(false)}
+            size="md"
+            borderRadius={12}
+        >
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader
+                    alignSelf="center"
+                    paddingBottom={1}
+                    paddingTop={6}
+                >
+                    Scan Attendee
+                </ModalHeader>
+                <ModalBody paddingBottom={10} textAlign={"center"}>
+                        {
+                            scanResult ?
+                            <div>Success: <Link href={"http://" + scanResult}>Press Me</Link> </div> :
+                            <div id="reader"></div>
+                        }
+                    
+
+                </ModalBody>
+
+                {/* <ModalFooter>
+                    <Button
+                        variant="secondary"
+                        colorScheme="blue"
+                        w="100%"
+                        h={55}
+                        mr={3}
+                        onClick={onClose}
+                    >
+                        Cancel
+                    </Button>
+                    <Button variant="danger" w="100%" h={55} onClick={signOut}>
+                        Yes, Logout
+                    </Button>
+                </ModalFooter> */}
+            </ModalContent>
+        </Modal>
         </Box>
     );
 };

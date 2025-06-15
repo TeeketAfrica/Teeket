@@ -23,6 +23,7 @@ const EventsPage = () => {
     const { onOpen, isOpen, onClose } = useDisclosure();
     const { searchTerm, category, clearSearch } = useContext(SearchContext);
     const [events, setEvents] = useState([]);
+    const [curatedEvents, setCuratedEvents] = useState([]);
     const [displayEventPreference, setDisplayEventPreference] = useState(false);
     const [preloader, setPreLoader] = useState(true);
     const [fetchError, setFetchError] = useState(false);
@@ -38,6 +39,7 @@ const EventsPage = () => {
 
   useEffect(() => {
     fetchEvents(searchTerm, category);
+    fetchCuratedEvents()
   }, [searchTerm, category]);
 
   useEffect(() => {
@@ -61,7 +63,26 @@ const EventsPage = () => {
     //     console.log("events", events.length)
     //   }, [events, dispatch, activeUser]);
 
-    const fetchEvents = async (title) => {
+    const fetchCuratedEvents = async () => {
+        try {
+            const response = await teeketApi.get(`/events/curated`, {
+                nullAuth: true,
+            });
+            const eventList = response.data.data;
+
+      setCuratedEvents(eventList);
+
+      setPreLoader(false);
+      setFetchError(false);
+    } catch (error) {
+      setPreLoader(false);
+      setFetchError(true);
+      console.error("Error fetching curated events:", error);
+    }
+  };
+
+
+  const fetchEvents = async (title) => {
         try {
             const response = await teeketApi.get(`/events?title=${title}`, {
                 nullAuth: true,
@@ -93,7 +114,7 @@ const EventsPage = () => {
                 </Text>
             ) : (
                 <>
-                    {events?.length > 0 && <EventTabs allEvents={events} />}
+                    {events?.length > 0 && <EventTabs curated={curatedEvents} allEvents={events} />}
 
           {events?.length == 0 && fetchError && (
             <Container maxW="385px" px={0}>
