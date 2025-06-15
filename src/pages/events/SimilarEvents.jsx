@@ -11,7 +11,6 @@ const SimilarEvents = () => {
   const { eventData: event } = useSelector((state) => state.event);
   const location = useLocation();
   const { similarEvents } = location.state || {};
-  console.log("object, ", similarEvents)
   return (
     <div
       style={{maxWidth: "1600px"}}

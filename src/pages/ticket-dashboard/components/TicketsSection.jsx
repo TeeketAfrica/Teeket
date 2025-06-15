@@ -15,7 +15,6 @@ const TicketsSection = () => {
   const { getAccessToken } = useStorage();
   const token = getAccessToken(); 
 
-  console.log('tickets',tickets);
 
 
   useEffect(()=>{

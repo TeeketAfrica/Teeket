@@ -27,7 +27,7 @@ import BrandLogo from "../../assets/img/brandLogo.png";
 import Hamburger from "../../assets/icon/Hamburger.svg";
 import Search from "../../assets/icon/Search.svg";
 import { Link } from "react-router-dom";
-import {  useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/activeUserSlice";
 import {
@@ -39,6 +39,7 @@ import {
 } from "lucide-react";
 import SignOutIcon from "../../assets/icon/sign-out-2.svg";
 import LogoutModal from "../auth/LogoutModal";
+import useStorage from "../../utils/storage";
 
 // import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu";
 
@@ -46,7 +47,9 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const user = useSelector(selectActiveUser);
-  console.log(user)
+  const { getAccessToken } = useStorage();
+  const token = getAccessToken();
+
   const {
     isOpen: isOpenModal,
     onOpen: onOpenModal,
@@ -62,10 +65,10 @@ const Header = () => {
       link: "Contact us",
       url: "contact",
     },
-    {
-      link: "About",
-      url: "about",
-    },
+    // {
+    //   link: "About",
+    //   url: "about",
+    // },
   ];
   return (
     <header>
@@ -88,7 +91,7 @@ const Header = () => {
                   w="100%"
                   display={["none", "none", "none", "block"]}
                 >
-                  <InputGroup w="full">
+                  {/* <InputGroup w="full">
                     <InputLeftElement pointerEvents="none">
                       <Search />
                     </InputLeftElement>
@@ -97,7 +100,7 @@ const Header = () => {
                       type="text"
                       placeholder="Search for an event"
                     />
-                  </InputGroup>
+                  </InputGroup> */}
                 </Box>
                 {menu.map((link, i) => (
                   <Link key={i} to={`/${link.url}`}>
@@ -106,7 +109,7 @@ const Header = () => {
                     </Text>
                   </Link>
                 ))}
-                {user && user.is_creator !== null ? (
+                {token && user && user.is_creator !== null ? (
                   // <MenuRoot>
                   //   <MenuTrigger asChild>
                   //     {/* <Box cursor="pointer"> */}
@@ -141,15 +144,15 @@ const Header = () => {
                     </MenuButton>
                     <MenuList>
                       <MenuGroup title={user?.email}>
-                                <Link to={"/my-tickets"}>
-                                    <MenuItem
-                                        icon={<TicketIcon />}
-                                        color="gray.600"
-                                        fontSize={14}
-                                    >
-                                        My Tickets
-                                    </MenuItem>
-                                </Link>
+                        <Link to={"/my-tickets"}>
+                          <MenuItem
+                            icon={<TicketIcon />}
+                            color="gray.600"
+                            fontSize={14}
+                          >
+                            My Tickets
+                          </MenuItem>
+                        </Link>
                       </MenuGroup>
                       <MenuDivider />
                       <MenuGroup>
@@ -164,19 +167,17 @@ const Header = () => {
                           </MenuItem>
                         </Link>
 
-                        {
-                          user.is_creator && (
-                            <Link to={"/app/overview"}>
-                              <MenuItem
-                                icon={<GridIcon />}
-                                color="gray.600"
-                                fontSize={14}
-                              >
-                                My dashboard
-                              </MenuItem>
-                            </Link>
-                          )
-                        }
+                        {user.is_creator && (
+                          <Link to={"/app/overview"}>
+                            <MenuItem
+                              icon={<GridIcon />}
+                              color="gray.600"
+                              fontSize={14}
+                            >
+                              My dashboard
+                            </MenuItem>
+                          </Link>
+                        )}
                       </MenuGroup>
                       <MenuDivider />
                       <MenuGroup>
@@ -247,99 +248,98 @@ const Header = () => {
                       </Link>
                     </Box>
 
-                    <DrawerBody >
-                      <VStack spacing={user && user.is_creator !== null? 2 : 6}>
-                      <>
-                          {
-                            user && user.is_creator !== null? (
-                              <>
-                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px"}}>
-                                  <Avatar
-                                    border="1px solid"
-                                    borderColor="gray.800"
-                                    color="gray.800"
-                                    name={user?.first_name || user?.email}
-                                    src={user?.profile_image}
-                                    bgColor="transparent"
-                                  />
-                                  <Text>{user?.email}</Text>
-                                </div>
-                                <Menu>
-                                  {menu.map((link, i) => (
-                                    <Link key={i} to={`/${link.url}`} onClick={onClose}>
-                                      <MenuItem>
-                                        {link.link}
-                                      </MenuItem>
-                                    </Link>
-                                  ))}
-                                  <Link to="/my-tickets" onClick={onClose}>
-                                    <MenuItem>
-                                      My Tickets
-                                    </MenuItem>
-                                  </Link>
-                                  <Link to={"/create-event"} onClick={onClose}>
-                                    <MenuItem >
-                                      Create Event
-                                    </MenuItem>
-                                  </Link>
-                                  {
-                                    user.is_creator && (
-                                      <Link to={"/app/overview"} onClick={onClose}>
-                                        <MenuItem>
-                                          My dashboard
-                                        </MenuItem>
-                                      </Link>
-                                    )
-                                  }
-                                  <Link to="/account-settings" onClick={onClose}>
-                                    <MenuItem>
-                                      Account settings
-                                    </MenuItem>
-                                  </Link>
-                                  <Link>
-                                    <MenuItem
-                                      onClick={onOpenModal}
-                                      color={"red.300"}
-                                    >
-                                      Log out
-                                    </MenuItem>
-                                  </Link>
-                                </Menu>
-                              </>
-                            ): (
-                              <>
+                    <DrawerBody>
+                      <VStack
+                        spacing={token && user && user.is_creator !== null ? 2 : 6}
+                      >
+                        <>
+                          {token && user && user.is_creator !== null ? (
+                            <>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  gap: "5px",
+                                }}
+                              >
+                                <Avatar
+                                  border="1px solid"
+                                  borderColor="gray.800"
+                                  color="gray.800"
+                                  name={user?.first_name || user?.email}
+                                  src={user?.profile_image}
+                                  bgColor="transparent"
+                                />
+                                <Text>{user?.email}</Text>
+                              </div>
+                              <Menu>
                                 {menu.map((link, i) => (
-                                  <Link key={i} to={`/${link.url}`}>
-                                    <Text fontWeight={600} fontSize={14}>
-                                        {link.link}
-                                    </Text>
+                                  <Link
+                                    key={i}
+                                    to={`/${link.url}`}
+                                    onClick={onClose}
+                                  >
+                                    <MenuItem>{link.link}</MenuItem>
                                   </Link>
                                 ))}
-                                <Link to="/auth/login">
-                                  <Text
-                                    fontWeight={600}
-                                    fontSize={14}
-                                    color="textSuccess"
+                                <Link to="/my-tickets" onClick={onClose}>
+                                  <MenuItem>My Tickets</MenuItem>
+                                </Link>
+                                <Link to={"/create-event"} onClick={onClose}>
+                                  <MenuItem>Create Event</MenuItem>
+                                </Link>
+                                {user.is_creator && (
+                                  <Link to={"/app/overview"} onClick={onClose}>
+                                    <MenuItem>My dashboard</MenuItem>
+                                  </Link>
+                                )}
+                                <Link to="/account-settings" onClick={onClose}>
+                                  <MenuItem>Account settings</MenuItem>
+                                </Link>
+                                <Link>
+                                  <MenuItem
+                                    onClick={onOpenModal}
+                                    color={"red.300"}
                                   >
-                                    Login
+                                    Log out
+                                  </MenuItem>
+                                </Link>
+                              </Menu>
+                            </>
+                          ) : (
+                            <>
+                              {menu.map((link, i) => (
+                                <Link key={i} to={`/${link.url}`}>
+                                  <Text fontWeight={600} fontSize={14}>
+                                    {link.link}
                                   </Text>
                                 </Link>
-                                <Link to="/auth/create-account">
-                                  <Text
-                                    p={2}
-                                    borderRadius={16}
-                                    bgColor="textSuccess"
-                                    color="white"
-                                    fontWeight={600}
-                                    fontSize={14}
-                                  >
-                                    Try Teeket
-                                  </Text>
-                                </Link>
-                              </>
-                            )
-                          }
-                        </>  
+                              ))}
+                              <Link to="/auth/login">
+                                <Text
+                                  fontWeight={600}
+                                  fontSize={14}
+                                  color="textSuccess"
+                                >
+                                  Login
+                                </Text>
+                              </Link>
+                              <Link to="/auth/create-account">
+                                <Text
+                                  p={2}
+                                  borderRadius={16}
+                                  bgColor="textSuccess"
+                                  color="white"
+                                  fontWeight={600}
+                                  fontSize={14}
+                                >
+                                  Try Teeket
+                                </Text>
+                              </Link>
+                            </>
+                          )}
+                        </>
                       </VStack>
                     </DrawerBody>
                   </DrawerContent>

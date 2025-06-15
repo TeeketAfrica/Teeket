@@ -117,7 +117,8 @@ const FinancesDashboardPage = () => {
                 />
                 <HStack width={{base:'100%', md:'350px'}} spacing="12px">
                     <Button
-                        spacing={2}
+                        spacing={4}
+                        gap={2}
                         variant="secondary"
                         width={{ base: "50%", md: "150px" }}
                         p={2}

@@ -38,7 +38,6 @@ import { selectActiveUser } from "../../features/activeUserSlice";
 const SidebarMenu = ({ onClose, isOpen }) => {
     const [placement] = useState("left");
     const activeUser = useSelector(selectActiveUser);
-    console.log(activeUser)
 
     const {
         isOpen: isOpenModal,

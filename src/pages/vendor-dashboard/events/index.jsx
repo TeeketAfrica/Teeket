@@ -9,7 +9,10 @@ import { useEffect, useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 import * as XLSX from "xlsx";
 import { useSelector, useDispatch } from "react-redux";
-import { selectActiveUser, setIsCreator } from "../../../features/activeUserSlice";
+import {
+  selectActiveUser,
+  setIsCreator,
+} from "../../../features/activeUserSlice";
 
 const EventsDashboardPage = () => {
   const dispatch = useDispatch();
@@ -18,6 +21,19 @@ const EventsDashboardPage = () => {
   const activeUser = useSelector(selectActiveUser);
 
   const exportToExcel = () => {
+    if (data.length < 1) {
+      toast({
+        title: "Error",
+        description: `Unable to export as you have no events. Consider creating one.`,
+        status: "error",
+        duration: 3000,
+        position: "top-right",
+        isClosable: true,
+      });
+
+      return;
+    }
+
     const exportData = data.map((event) => ({
       Title: event.title,
       Organizer: event.organizer,
@@ -43,27 +59,41 @@ const EventsDashboardPage = () => {
         w="100%"
         alignItems="flex-start"
         pb={6}
-        px={[4, 8]}>
+        px={[4, 8]}
+      >
         <DashboardPageHeaders
           pageTitle="Events"
           subTitle="View your organizations summary"
         />
-        <HStack  width={{base:"100%", md:'250px'}} spacing="12px">
-          <Button width={{base:"50%"}} variant="secondary" p={2} onClick={exportToExcel}>
+        <HStack width={{ base: "100%", md: "250px" }} spacing="12px">
+          <Button
+            width={{ base: "50%" }}
+            variant="secondary"
+            p={2}
+            onClick={exportToExcel}
+          >
             <Export />
             Export
-          </Button> 
+          </Button>
           <Link to="/create-event">
-            <Button width={{base:'150px', md:'130px'}} variant="primary" p={2}>
+            <Button
+              width={{ base: "150px", md: "130px" }}
+              variant="primary"
+              p={2}
+            >
               <AddEvent />
               Add event
             </Button>
           </Link>
         </HStack>
       </Stack>
-    <EventTable setData={setData} loading={loading} setIsLoading={setIsLoading}/>  
+      <EventTable
+        setData={setData}
+        loading={loading}
+        setIsLoading={setIsLoading}
+      />
     </DashboardLayout>
-  ); 
+  );
 };
 
 export default EventsDashboardPage;
