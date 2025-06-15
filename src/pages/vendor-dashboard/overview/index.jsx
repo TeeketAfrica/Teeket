@@ -46,7 +46,6 @@ const OverviewDashboardPage = () => {
       try {
         const organizationSummary = await teeketApi.get("/revenue/summary");
         setSummary(organizationSummary.data);
-        console.log("OS", organizationSummary);
       } catch (error) {
         console.error("Error fetching events:", error);
         setEvents([]);

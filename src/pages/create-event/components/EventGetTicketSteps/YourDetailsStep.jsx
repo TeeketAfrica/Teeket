@@ -61,11 +61,7 @@ export const YourDetailsStep = () => {
   const [email, setEmail] = useState("");
   const [showEmailBox, setShowEmailBox] = useState(false);
   const { isSetDetails, ticketUserDetails } = useSelector(selectEventDetails);
-
-  useEffect(()=>{
-    console.log("dets", ticketUserDetails);
-  },[ticketUserDetails]);
-
+  
   const {
     register,
     handleSubmit,

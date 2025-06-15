@@ -69,7 +69,6 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
   eventAttendees && active
     ? (attendeesQuantity = getBookingMessage(eventAttendees.length))
     : (attendeesQuantity = "Register to find out more about people going");
-  console.log("EA", eventAttendees);
 
   const getTicket = () => {
     dispatch(changeTicketStep(1));

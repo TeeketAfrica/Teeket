@@ -23,8 +23,6 @@ const EventBookingDetail = () => {
   const dispatch = useDispatch();
   const isActiveUser = useSelector(selectActiveUser);
 
-  console.log("eveee",event)
-
   useEffect(() => {
     dispatch(resetEventState());
   }, []);

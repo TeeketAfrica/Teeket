@@ -15,10 +15,6 @@ export const TicketTypeBox = ({ data }) => {
     const dispatch = useDispatch();
     const { eventTicketBooking, isBookedTicket } = useSelector((state) => state.event);
 
-    useEffect(()=>{
-        console.log(isBookedTicket)
-    },[isBookedTicket])
-
     const currentQuantity =
         eventTicketBooking.find((ticket) => ticket.id === data.id)?.quantity ||
         0;

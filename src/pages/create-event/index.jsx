@@ -44,7 +44,6 @@ const VendorPage = () => {
         const response = await teeketApi.get(`/events/${id}`);
         const eventData = response.data;
 
-        console.log("ee", eventData);
 
         // Fetch tickets
         const res = await teeketApi.get(`/events/${id}/tickets`);
@@ -57,7 +56,6 @@ const VendorPage = () => {
             ticketType: is_paid ? "paid" : "free",
           })
         );
-        console.log("transformed", transformedTickets);
         
         // get the total ticket quantity by summing all the ticket quantities
         const totalTicketQuantity = transformedTickets.reduce(
@@ -154,7 +152,6 @@ const VendorPage = () => {
               number_of_tickets_remaining: ticketRemaining,
             });
 
-            console.log("ticks rem", ticketRemaining)
           }
         } catch (error) {
           console.log("Unable to update number of tickets:", error.message);

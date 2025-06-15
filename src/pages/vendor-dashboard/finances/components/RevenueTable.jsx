@@ -221,7 +221,6 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                 setHistoryTableData(res.data);
                 setHistoryPaginatedData(res.data.slice(0, itemsPerPage))
                 setLoading(false);
-                console.log("payment history", response);
             }
             catch(error){
                 console.log(error);

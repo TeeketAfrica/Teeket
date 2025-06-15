@@ -36,7 +36,6 @@ export const EventGetTicketSummaryBox = ({}) => {
     isBookedTicket,
   } = useSelector((state) => state.event);
 
-  console.log("TICKS", ticketUserDetails);
 
   const { subTotalPrice, transactionFee, totalPrice } =
     useSelector(selectPriceDetails);

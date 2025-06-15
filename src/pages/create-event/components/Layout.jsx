@@ -64,7 +64,6 @@ const Layout = ({
 
   useEffect(()=>{
     if(values && totalTicketQuantities){
-      console.log(values)
       totalTicketQuantities > values.eventEstimatedSoldTicket? setDisable(true): setDisable(false);
     }
   },[values, totalTicketQuantities])

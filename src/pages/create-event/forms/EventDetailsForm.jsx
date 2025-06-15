@@ -59,8 +59,6 @@ const EventDetailsForm = () => {
     const latitude = location.lat();
     const longitude = location.lng();
 
-    console.log("address data", address);
-
     setFieldValue("eventLocation", `${name}, ${place.formatted_address}`);
     setFieldTouched("eventLocation", true);
     //(Timmi) setFieldValue for location details from google's api

@@ -38,8 +38,6 @@ export const EventGetTicketHeader = ({ paid, profile }) => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  console.log({"paid": paid, "booked": isBookedTicket, "details": isSetDetails})
-
   const {
     isOpen: isOpenModal,
     onOpen: onOpenModal,
