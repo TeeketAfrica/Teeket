@@ -30,6 +30,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LogoutModal from "../auth/LogoutModal";
 import { selectActiveUser } from "../../features/activeUserSlice";
+import useStorage from "../../utils/storage";
 
 const DashboardHeader = ({ onOpen }) => {
     const activeUser = useSelector(selectActiveUser);
@@ -58,7 +59,7 @@ const DashboardHeader = ({ onOpen }) => {
                     </Link>
                 </Box>
                 <Box maxW="375px" w="100%" display={["none", "block"]}>
-                    <InputGroup>
+                    {/* <InputGroup>
                         <InputLeftElement pointerEvents="none">
                             <Search />
                         </InputLeftElement>
@@ -70,7 +71,7 @@ const DashboardHeader = ({ onOpen }) => {
                         <InputRightElement mr={3}>
                             <SearchIcon />
                         </InputRightElement>
-                    </InputGroup>
+                    </InputGroup> */}
                 </Box>
                 <HStack
                     w="100%"

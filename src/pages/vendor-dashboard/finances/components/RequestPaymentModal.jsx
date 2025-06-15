@@ -210,7 +210,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="primary" w="100%">
+            <Button variant="primary" w="100%" onClick={onClose}>
               Continue
             </Button>
           </ModalFooter>

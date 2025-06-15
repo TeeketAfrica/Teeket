@@ -76,6 +76,7 @@ const LoginForm = () => {
         }
       } catch (err) {
         if (err.message == "Network Error") {
+          console.log("sad", err)
           alert("Check your internet connection!.");
         } else {
           setError("Invalid username or password");

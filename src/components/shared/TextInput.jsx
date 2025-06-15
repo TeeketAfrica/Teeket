@@ -9,53 +9,52 @@ import {
 } from "@chakra-ui/react";
 import { Mail, X } from "lucide-react";
 
-const TextInput = ({ formik, label, inputName, error, handleError, type }) => {
-  const isInvalid =
-    (formik.touched[inputName] && formik.errors[inputName]) || error;
+const TextInput = ({
+  formik,
+  label,
+  inputName,
+  error,
+  handleError,
+  type = "text",
+}) => {
+  const { touched, errors, values, handleChange, setFieldTouched } = formik;
+
+  const isTouched = touched[inputName];
+  const hasFormikError = errors[inputName];
+  const isInvalid = (isTouched && hasFormikError) || error;
 
   return (
     <FormControl isInvalid={isInvalid}>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel htmlFor={inputName}>{label}</FormLabel>
       <InputGroup size="lg">
         {type === "email" && (
           <InputRightElement pointerEvents="none">
-            {isInvalid || error ? (
-              <X size={20} />
-            ) : (
-              <Mail size={20} fillColor="#5E665E" />
-            )}
+            {isInvalid ? <X size={20} /> : <Mail size={20} fill="#fff" />}
           </InputRightElement>
         )}
         {type === "textarea" ? (
           <Textarea
             id={inputName}
             name={inputName}
-            type="text"
             rows={6}
-            value={formik.values[inputName]}
-            onChange={formik.handleChange}
-            onFocus={() => {
-              formik.setFieldTouched(inputName, false),
-                handleError && handleError("");
-            }}
+            value={values[inputName]}
+            onChange={handleChange}
+            onBlur={() => setFieldTouched(inputName, true)}
           />
         ) : (
           <Input
             id={inputName}
             name={inputName}
-            type={type === "email" ? "email" : "text"}
-            value={formik.values[inputName]}
-            onChange={formik.handleChange}
-            onFocus={() => {
-              formik.setFieldTouched(inputName, false),
-                handleError && handleError("");
-            }}
+            type={type}
+            value={values[inputName]}
+            onChange={handleChange}
+            onBlur={() => setFieldTouched(inputName, true)}
           />
         )}
       </InputGroup>
       <FormErrorMessage>
-        {isInvalid && !error && <div>{formik.errors[inputName]}</div>}
-        {error && <div>{error}</div>}
+        {isTouched && hasFormikError && !error && errors[inputName]}
+        {error && error}
       </FormErrorMessage>
     </FormControl>
   );

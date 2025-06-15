@@ -34,9 +34,9 @@ const TicketsForm = () => {
     values.eventEstimatedSoldTicket - totalTicketQuantities;
 
   const ticketOptions = [
-    { value: "25", label: "25 Tickets" },
-    { value: "50", label: "50 Tickets" },
-    { value: "100", label: "100 Tickets" },
+    { value: 25, label: "25 Tickets" },
+    { value: 50, label: "50 Tickets" },
+    { value: 100, label: "100 Tickets" },
   ];
 
   return (
@@ -55,6 +55,7 @@ const TicketsForm = () => {
 
         {/* Custom Number Input */}
         <Box mt={4} maxW="200px">
+          Custom Amount
           <FormField
             name="eventEstimatedSoldTicket"
             type={FormFieldType.Number}

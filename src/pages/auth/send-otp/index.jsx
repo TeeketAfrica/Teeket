@@ -71,7 +71,6 @@ const CreateAccountPage = () => {
                          Authorization: `Bearer ${token}`
                     }
                 })
-                console.log("US", userData.data)
                 if (verifyOTPResponse.status === 200) {
                     console.log(verifyOTPResponse);
                     dispatch(setActiveUser(userData.data));

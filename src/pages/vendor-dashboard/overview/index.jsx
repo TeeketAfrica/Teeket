@@ -21,7 +21,7 @@ import AIStar from "../../../assets/icon/AI-star.svg";
 import Ticket from "../../../assets/icon/Ticket-green.svg";
 import Gain from "../../../assets/icon/Arrow-up.svg";
 import { teeketApi } from "../../../utils/api";
-import chartImg from "../../../assets/img/Chart.png"
+import chartImg from "../../../assets/img/Chart.png";
 import { OverviewChart } from "./OverviewChart";
 import { formatAmount } from "../../../utils/utils";
 
@@ -42,17 +42,15 @@ const OverviewDashboardPage = () => {
       }
     };
 
-    const fetchOrganizationSummary = async ()=> {
-      try{
+    const fetchOrganizationSummary = async () => {
+      try {
         const organizationSummary = await teeketApi.get("/revenue/summary");
         setSummary(organizationSummary.data);
-        console.log("OS" ,organizationSummary)
-      }
-      catch (error){
+      } catch (error) {
         console.error("Error fetching events:", error);
         setEvents([]);
       }
-    }
+    };
 
     fetchEvents();
     fetchOrganizationSummary();
@@ -94,56 +92,68 @@ const OverviewDashboardPage = () => {
                   <Text fontSize="md">Your earnings</Text>
                   <Text fontSize="5xl" fontWeight="bold">
                     <Text as="span">₦</Text>
-                    <Text as="span">{summary?.overview?.available_revenue.toLocaleString('en-US')}</Text>
+                    <Text as="span">
+                      {summary?.overview?.available_revenue.toLocaleString(
+                        "en-US"
+                      )}
+                    </Text>
                   </Text>
                   <HStack fontSize="sm" fontWeight="medium" marginTop="auto">
                     <HStack>
-                      {
-                        summary.percentage_change > 0 && <Gain />
-                      }
-                      <Text as="span" color={summary.percentage_change < 0? "red.400": summary.percentage_change>0? "green.400": "gray.100"}>
-                        {formatAmount(summary?.percentage_change || 0) }%
+                      {summary.percentage_change > 0 && <Gain />}
+                      <Text
+                        as="span"
+                        color={
+                          summary.percentage_change < 0
+                            ? "red.400"
+                            : summary.percentage_change > 0
+                              ? "green.400"
+                              : "gray.100"
+                        }
+                      >
+                        {formatAmount(summary?.percentage_change || 0)}%
                       </Text>
                     </HStack>
                     <Text>vs last month</Text>
                   </HStack>
                 </VStack>
                 <Box>
-                  <Image src={chartImg} alt="chart" /></Box>
+                  <Image src={chartImg} alt="chart" />
+                </Box>
               </HStack>
             </Box>
-            <HStack justifyContent="space-between">
-              <Text fontWeight="semibold" color="rgba(255, 255, 255, 0.75)">
-                Your revenue from 3 events last month
-              </Text>
-              <AvatarGroup direction="row" size="sm" max={3} spacing="-1rem">
-                <Avatar
-                  name="Ryan Florence"
-                  src="https://bit.ly/ryan-florence"
-                  variant="roundedSquare"
-                />
-                <Avatar
-                  name="Segun Adebayo"
-                  src="https://bit.ly/sage-adebayo"
-                  variant="roundedSquare"
-                />
-                <Avatar
-                  name="Kent Dodds"
-                  src="https://bit.ly/kent-c-dodds"
-                  variant="roundedSquare"
-                />
-                <Avatar
-                  name="Prosper Otemuyiwa"
-                  src="https://bit.ly/prosper-baba"
-                  variant="roundedSquare"
-                />
-                <Avatar
-                  name="Christian Nwamba"
-                  src="https://bit.ly/code-beast"
-                  variant="roundedSquare"
-                />
-              </AvatarGroup>
-            </HStack>
+            {/* <HStack justifyContent="space-between">
+                <Text fontWeight="semibold" color="rgba(255, 255, 255, 0.75)">
+                  Your revenue from 3 events last month
+                </Text>
+                <AvatarGroup direction="row" size="sm" max={3} spacing="-1rem">
+                  <Avatar
+                    name="Ryan Florence"
+                    src="https://bit.ly/ryan-florence"
+                    variant="roundedSquare"
+                  />
+                  <Avatar
+                    name="Segun Adebayo"
+                    src="https://bit.ly/sage-adebayo"
+                    variant="roundedSquare"
+                  />
+                  <Avatar
+                    name="Kent Dodds"
+                    src="https://bit.ly/kent-c-dodds"
+                    variant="roundedSquare"
+                  />
+                  <Avatar
+                    name="Prosper Otemuyiwa"
+                    src="https://bit.ly/prosper-baba"
+                    variant="roundedSquare"
+                  />
+                  <Avatar
+                    name="Christian Nwamba"
+                    src="https://bit.ly/code-beast"
+                    variant="roundedSquare"
+                  />
+                </AvatarGroup>
+              </HStack> */}
           </BoxFrame>
           <BoxFrame backgroundColor="gray.100" color="gray.800">
             <VStack
@@ -210,13 +220,13 @@ const OverviewDashboardPage = () => {
                   </HStack>
                 </HStack>
               </HStack>
-              { summary?.plot_data?.length > 0?
-                <Box display={'flex'} justifyContent={'center'} >
-                  <OverviewChart chartData={summary?.plot_data}/>
+              {summary?.plot_data?.length > 0 ? (
+                <Box display={"flex"} justifyContent={"center"}>
+                  <OverviewChart chartData={summary?.plot_data} />
                 </Box>
-                :
+              ) : (
                 <VStack flexGrow="1" justifyContent="center">
-                  <ChartUp/>
+                  <ChartUp />
 
                   <Text
                     as="h4"
@@ -238,9 +248,8 @@ const OverviewDashboardPage = () => {
                   >
                     Create Event
                   </Button>
-                </VStack>                
-              }
-
+                </VStack>
+              )}
             </Stack>
           </BoxFrame>
           <BoxFrame backgroundColor="gray.100" color="gray.800">

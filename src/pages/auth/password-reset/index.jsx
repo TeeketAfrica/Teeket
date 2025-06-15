@@ -56,7 +56,14 @@ const PasswordResetPage = () => {
     <AuthLayout>
       <Box display="flex" flexDirection="column" gap={8}>
         {passwordReset ? (
-          <>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
             <Box textAlign="center">
               <DoubleCheckMark />
             </Box>
@@ -65,11 +72,11 @@ const PasswordResetPage = () => {
               subheading="Your password was reset successfully"
             />
             <Link to="/auth/login">
-              <Button type="button" mt="4" size="lg" w="full">
+              <Button type="button" mt="4" size="lg" w="full" variant={"primary"}>
                 Back to Login
               </Button>
             </Link>
-          </>
+          </div>
         ) : (
           <>
             <AuthHeader heading="Reset password" />

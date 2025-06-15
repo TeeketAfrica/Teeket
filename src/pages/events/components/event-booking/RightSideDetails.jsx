@@ -9,6 +9,7 @@ import {
   Image,
   Text,
   Tooltip,
+  useBreakpointValue,
   VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
@@ -27,10 +28,25 @@ import { teeketApi } from "../../../../utils/api";
 import { useEffect, useState } from "react";
 import { getBookingMessage } from "../../../../utils/formatAttendees";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import useStorage from "../../../../utils/storage";
 
 const RightSIdeDetails = ({ event, isRegistered, location }) => {
   const dispatch = useDispatch();
   const [eventAttendees, setEventAttendees] = useState([]);
+
+  const [active, setActive] = useState(false);
+
+  const { getAccessToken } = useStorage();
+  const token = getAccessToken();
+  const showTooltip = useBreakpointValue({ base: false, md: true });
+
+  useEffect(()=>{
+    if(isRegistered.is_creator === null || token === null){
+      setActive(false);
+    }else{
+      setActive(true);
+    }
+  },[token, isRegistered])
 
   useEffect(() => {
     const fetchAttendees = async () => {
@@ -43,15 +59,16 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
       }
     };
 
-    fetchAttendees();
-  }, [event?.id]);
+    if (active) {
+      fetchAttendees();
+    }
+  }, [event?.id, active]);
 
   let attendeesQuantity;
 
-  eventAttendees && isRegistered
+  eventAttendees && active
     ? (attendeesQuantity = getBookingMessage(eventAttendees.length))
     : (attendeesQuantity = "Register to find out more about people going");
-  console.log("EA", eventAttendees);
 
   const getTicket = () => {
     dispatch(changeTicketStep(1));
@@ -64,7 +81,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
           <Text as="h4" fontSize="xl" lineHeight="6" fontWeight="semibold">
             Get tickets
           </Text>
-          {isRegistered && (
+          {active && (
             <DetailCard
               icon={LightingOutlineIcon}
               title="This event is trending"
@@ -93,7 +110,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
             </Text>
           </HStack>
 
-          {isRegistered && (
+          {active && (
             <DetailCard
               icon={TicketIcon}
               title="Starting price"
@@ -158,16 +175,18 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
       {event?.hosting_site === "physical" && location !== null && (
         <BoxFrame paddingX="8px" paddingY="8px">
           <Box position="relative" overflow="hidden" borderRadius="8px">
-            <Box
-              width="100%"
-              maxHeight="350px"
-              height="100%"
-              overflow="hidden"
-              borderRadius="8px"
-              border="1px solid"
-              borderColor="gray.300"
-            >
-              {/* <LoadScript
+            {active ? (
+              <Box
+                width="100%"
+                maxHeight="350px"
+                height="100%"
+                overflow="hidden"
+                borderRadius="8px"
+                border="1px solid"
+                borderColor="gray.300"
+                position={"relative"}
+              >
+                {/* <LoadScript
                 googleMapsApiKey={import.meta.env.VITE_REACT_PLACES_API_KEY}
               >
                 <GoogleMap
@@ -186,14 +205,22 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
                 V
               </LoadScript> */}
 
-              <iframe
+                <iframe
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  src={`https://www.google.com/maps/embed/v1/view?key=${import.meta.env.VITE_REACT_PLACES_API_KEY}&center=${location.coordinates.latitude},${location.coordinates.longitude}&zoom=15`}
+                  allowFullScreen
+                ></iframe>
+              </Box>
+            ) : (
+              <EventMap
+                alt="map"
                 width="100%"
                 height="100%"
-                style={{ border: 0 }}
-                src={`https://www.google.com/maps/embed/v1/view?key=${import.meta.env.VITE_REACT_PLACES_API_KEY}&center=${location.coordinates.latitude},${location.coordinates.longitude}&zoom=15`}
-                allowFullScreen
-              ></iframe>
-            </Box>
+                objectFit="cover"
+              />
+            )}
             <VStack
               position="absolute"
               top="50%"
@@ -202,7 +229,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
               gap="10px"
               zIndex={4}
             >
-              {!isRegistered && (
+              {!active && (
                 <>
                   <GPSIcon width="32px" height="32px" objectFit="cover" />
 
@@ -212,7 +239,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
                 </>
               )}
             </VStack>
-            {!isRegistered && (
+            {!active && (
               <Box
                 position="absolute"
                 top="0"
@@ -226,6 +253,48 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
               />
             )}
           </Box>
+          {/* Hover Info Message */}
+          {active && (
+            <Box mt={"2"}>
+              {showTooltip ? (
+                <Tooltip
+                  label="Having trouble finding the event location?
+                        Click anywhere on the map to open Google Maps.
+                        Then, use the Copy Address button next to the address,
+                        paste it into Google Maps, and you'll be able to locate the event easily."
+                  fontSize="sm"
+                  borderRadius="md"
+                  padding="8px"
+                  bg="gray.700"
+                  color="white"
+                  hasArrow
+                  placement="top-start"
+                >
+                  <Text
+                    fontSize="sm"
+                    fontWeight="medium"
+                    color="blue.600"
+                    _hover={{ textDecoration: "underline", cursor: "help" }}
+                  >
+                    Having trouble locating the event?
+                  </Text>
+                </Tooltip>
+              ) : (
+                <Box
+                  bg="gray.100"
+                  borderRadius="md"
+                  p="2"
+                  fontSize="xs"
+                  color="gray.700"
+                  boxShadow="md"
+                  textColor={"blue.600"}
+                >
+                  Can't find the location? Tap Copy Address, then search on
+                  Google Maps.
+                </Box>
+              )}
+            </Box>
+          )}
         </BoxFrame>
       )}
     </VStack>

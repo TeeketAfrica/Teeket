@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { Stack } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 
 import PasswordInput from "@/components/shared/PasswordInput";
 import { authApi } from "@/utils/api";
@@ -14,6 +14,7 @@ import TextInput from "@/components/shared/TextInput";
 const CreateAccountForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const toast = useToast();
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -69,10 +70,25 @@ const CreateAccountForm = () => {
             }
           } catch (err) {
             console.log("Error sending OTP", err);
+            toast({
+              title: "Error sending OTP",
+              status: "error",
+              duration: 5000,
+              position: "top-right",
+              isClosable: true,
+            });
           }
         }
       } catch (err) {
         console.log("Error creating user", err);
+        toast({
+          title: "Error creating user",
+          description: err.response.data.message === "Validation Error"? "Account already exists": err.response.data.message,
+          status: "error",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        });
       }
     },
   });

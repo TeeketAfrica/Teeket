@@ -6,13 +6,13 @@ const PublicRoute = ({ children }) => {
   // const hideHeaderPaths = ["/event-booking/:id/get-ticket"]; // Simplified pattern
 
   // A function to match the current path against a pattern
-  // const shouldHideHeader = location.pathname.includes("/get-ticket");
+  const shouldHideHeader = location.pathname.includes("/get-ticket");
 
   try {
     return (
       <>
-        {/* {!shouldHideHeader && <Header />} */}
-        <Header/>
+        {!shouldHideHeader && <Header />}
+        {/* <Header/> */}
         {children}
       </>
     );

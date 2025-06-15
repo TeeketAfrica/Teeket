@@ -22,7 +22,7 @@ const PublishForm = () => {
 
   const publishOptions = [
     {
-      value: "eventLive",
+      value: "on_going",
       label: (
         <Box>
           <Heading fontSize="md" fontWeight="medium">

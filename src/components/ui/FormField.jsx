@@ -173,7 +173,7 @@ const FormField = memo(
           return (
             <RadioGroup
               name={name}
-              value={field.value}
+              value={field.value.toString()}
               onChange={(value) => helpers.setValue(value)}
               marginTop="4"
             >
@@ -190,7 +190,7 @@ const FormField = memo(
                     w="100%"
                     maxW={radioMaxWidth}
                     key={option.value}
-                    value={option.value}
+                    value={option.value.toString()}
                     size={radioSize}
                     variant={radioVariant}
                     isDisabled={isDisabled}
@@ -209,8 +209,11 @@ const FormField = memo(
               max={max}
               step={step}
               placeholder={placeholder}
-              value={field.value}
-              onChange={(_, valueNumber) => helpers.setValue(valueNumber)}
+              value={isNaN(Number(field.value)) ? 0 : field.value}
+              onChange={(_, valueNumber) => {
+                const safeValue = Number.isNaN(valueNumber) ? 0 : valueNumber;
+                helpers.setValue(safeValue);
+              }}
               isDisabled={isDisabled}
               isReadOnly={isReadOnly}
               size={size}

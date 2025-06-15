@@ -188,7 +188,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
             });
         } catch (error) {
             const errorMessage =
-                error?.response?.data?.message || "An error occured";
+                error?.response?.data?.message || "You do not have any Attendees to export at this time";
             toast({
                 title: "Error",
                 description: `${errorMessage}`,

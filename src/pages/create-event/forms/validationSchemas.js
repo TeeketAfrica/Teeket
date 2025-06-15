@@ -13,7 +13,7 @@ export const basicInfoSchema = Yup.object({
 
 export const eventDetailsSchema = Yup.object({
   eventAbout: Yup.string().required(
-    "Please provide a description for the event"
+    "Please provide a description for the event and include the event address in the description"
   ),
   eventHosting: Yup.string().required(
     "Please specify if the event will be hosted online or physical"
