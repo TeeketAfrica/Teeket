@@ -82,9 +82,7 @@ const HomePage = () => {
                   maxWidth="54ch"
                   marginX="auto"
                 >
-                  Say goodbye to event planning stress. Browse countless
-                  options, create events with ease, and manage everything in one
-                  place.{" "}
+                  Expand your world, connect with others. Browse countless options, create events with ease, and manage everything in one place. {" "}
                 </Text>
               </VStack>
               <HStack justifyContent="center" marginBottom="8" width="100%">
@@ -220,7 +218,7 @@ const HomePage = () => {
               marginTop={["8", "11"]}
             >
               {BrowseEventInfo.map((data) => (
-                <Card key={data.title} width="389px" height="343px">
+                <Card key={data.title} width="389px" height="363px">
                   <VStack
                     justifyContent="space-between"
                     alignItems="flex-start"
@@ -521,7 +519,7 @@ const HomePage = () => {
             </VStack>
 
             <Button variant="accent" size="lg">
-              <Link href="/" _hover={{ textDecoration: "none" }}>
+              <Link href="/contact" _hover={{ textDecoration: "none" }}>
                 Get in Touch
               </Link>
             </Button>
