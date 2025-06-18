@@ -96,7 +96,6 @@ const OrdersTable = () => {
                 }
                 const response = await teeketApi.get(url);
                 const res = response.data;
-                console.log('alldata', res.data)
                 setTotalItems(res.total);
                 setOrdersTableData(res.data);
                 setPaginatedData(res.data.slice(0, itemsPerPage));
