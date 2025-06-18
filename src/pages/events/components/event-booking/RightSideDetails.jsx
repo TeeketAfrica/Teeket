@@ -64,6 +64,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
     }
   }, [event?.id, active]);
 
+  console.log(event)
   let attendeesQuantity;
 
   eventAttendees && active
@@ -117,16 +118,20 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
               subTitle={`Regular - ₦${Number(event?.lowest_ticket_price)}`}
             />
           )}
-          <Link to={`/event-booking/${event?.id}/get-ticket`}>
-            <Button
-              variant="primary"
-              size="lg"
-              width="100%"
-              onClick={getTicket}
-            >
-              Get Your Ticket
-            </Button>
-          </Link>
+          {
+            event.status !== "past_event" &&
+            <Link to={`/event-booking/${event?.id}/get-ticket`}>
+              <Button
+                variant="primary"
+                size="lg"
+                width="100%"
+                onClick={getTicket}
+              >
+                {!isRegistered ? "Get Your Ticket" : "See my ticket"}
+              </Button>
+            </Link>            
+          }
+
         </VStack>
       </BoxFrame>
       <BoxFrame paddingX="24px" paddingY="24px">

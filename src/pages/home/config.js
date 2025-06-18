@@ -123,38 +123,41 @@ export const FAQSInfo = [
 export const BrowseEventInfo = [
   {
     imageName: "category_1",
-    title: "Browse your favourite events",
+    title: "Create Events in Minutes",
     content:
-      "Find curated list of events that resonate with you, build your interests and see what we have to offer",
+      "Our user-friendly form lets you set up events with ease! Manage details like name, description, date/time, type, location & payment options.",
   },
   {
     imageName: "category_2",
-    title: "Manage tickets",
+    title: "Gain Insights, Maximize Revenue",
     content:
-      "We care about your interests and so we provided a way for you to see all your tickets in one place",
+      "Track ticket sales, registrations, and attendee engagement with our intuitive dashboard. Make informed decisions and boost profits.",
   },
   {
     imageName: "category_3",
-    title: "Cashless payment",
+    title: "Find the Perfect Event, Every Time",
     content:
-      "Find curated list of events that resonate with you, build your interests and see what we have to offer",
+      "Powerful search engine lets you filter by type, location, date & keywords. Discover exciting events tailored to your interests!",
   },
   {
     imageName: "category_4",
-    title: "Create events",
+    title: "Secure Ticket Purchases, Made Easy",
     content:
-      "Find curated list of events that resonate with you, build your interests and see what we have to offer",
+      "Integrate your payment gateway & offer guest checkout for one-time purchases. Secure ticket purchases made easy!",
   },
   {
     imageName: "category_5",
-    title: "Manage events",
+    title: "Skip the Lines, Join the Experience",
     content:
-      "Find curated list of events that resonate with you, build your interests and see what we have to offer",
+      "Streamlined registration gets you into events faster. No more waiting in lines, just enjoy the experience.",
   },
   {
     imageName: "category_6",
-    title: "Publish and share your events",
+    title: "Endless Events, At Your Fingertips",
     content:
-      "Find curated list of events that resonate with you, build your interests and see what we have to offer",
+      "Discover new passions, network & create memories. Explore a world of events at your fingertips.",
   },
 ];
+
+
+

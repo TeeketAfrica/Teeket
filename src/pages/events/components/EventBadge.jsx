@@ -1,4 +1,4 @@
-import { Flex, Text, useTheme } from "@chakra-ui/react";
+import { Flex, Tag, Text, useTheme } from "@chakra-ui/react";
 
 const EventBadge = ({ eventBadgeInfo }) => {
   const theme = useTheme();
@@ -27,15 +27,22 @@ const EventBadge = ({ eventBadgeInfo }) => {
         backgroundColor: theme.colors.green[100],
       },
     },
+    past: {
+      content: { color: theme.colors.red[500] },
+      container: {
+        backgroundColor: theme.colors.red[100],
+      },
+    },
   };
 
   const style = specificStyles[state] || {};
 
   return (
+
     <Flex {...commonStyles.default.container} {...style.container}>
       {state !== "defaultIcon" ? (
         <>
-          <Icon />
+          {state !== 'past' && <Icon />}
           <Text
             fontSize="sm"
             fontWeight="medium"
