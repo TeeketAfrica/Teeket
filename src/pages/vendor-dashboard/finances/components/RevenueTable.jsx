@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
     Box,
+    Center,
     HStack,
     Image,
     Input,
@@ -220,7 +221,6 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                 setHistoryTableData(res.data);
                 setHistoryPaginatedData(res.data.slice(0, itemsPerPage))
                 setLoading(false);
-                console.log("payment history", response);
             }
             catch(error){
                 console.log(error);
@@ -625,9 +625,10 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                             <Td
                                                                 color="gray.600"
                                                                 fontWeight={500}
+                                                                textAlign={"center"}
                                                             >
                                                                 {
-                                                                    td?.date_remitted === null? "Coming soon": formatDate(td.date_remitted)
+                                                                    td?.date_remitted === null? "-": formatDate(td.date_remitted)
                                                                 }
                                                             </Td>
                                                             <Td>
@@ -752,7 +753,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                 {paginatedData.length !== 0 && (
                     <Box px={6} pt={3}>
                         <ReactPaginate
-                            previousLabel={"Previous"}
+                            previousLabel={"Prev"}
                             nextLabel={"Next"}
                             breakLabel={"..."}
                             pageCount={totalPages}

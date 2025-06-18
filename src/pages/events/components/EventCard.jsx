@@ -33,8 +33,8 @@ const EventCard = ({
 
   const token = getAccessToken();
 
-  const startDate = formatDateAndTime(eventDate.startDate, "short");
-  const endDate = formatDateAndTime(eventDate.endDate, "short");
+  const startDate = formatDateAndTime(eventDate.startDate || eventDate, "short");
+  const endDate = formatDateAndTime(eventDate.endDate || eventDate, "short");
 
   let formatedDate = "";
 
@@ -114,7 +114,7 @@ const EventCard = ({
               </HStack>
               <HStack spacing={2} mt={2}>
                 <EventMap />
-                <Text color="gray.600">{eventLocation}</Text>
+                <Text noOfLines={1} color="gray.600">{eventLocation}</Text>
               </HStack>
             </Box>
             <HStack mt={4} justifyContent="space-between" gap={2}>

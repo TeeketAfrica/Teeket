@@ -46,7 +46,13 @@ const InterestEvents = () => {
                 eventId={event.id}
                 eventImage={event.banner_image}
                 eventTitle={event.title}
-                eventTag={event.status}
+                eventTag={
+                  event.status === "on_going"
+                    ? "On Going"
+                    : event.status === "coming_soon"
+                      ? "Coming Soon"
+                      : "Past Event"
+                }
                 eventTagIcon={EventTagIcon}
                 eventOrganizer={event.user.profile_image}
                 eventOrganizerName={event.user.first_name || event.user.email}

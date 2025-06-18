@@ -4,6 +4,7 @@ import {
     Box,
     Divider,
     HStack,
+    Spinner,
     Text,
     VStack,
     useMediaQuery,
@@ -30,6 +31,7 @@ const AccountSettingsPage = () => {
     const [profileImage, setProfileImage] = useState(user?.profile_image);
     const [selectedImage, setSelectedImage] = useState(null);
     const [imageFile, setImageFile] = useState(null);
+    const [uploading, setUploading] = useState(false)
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -44,7 +46,12 @@ const AccountSettingsPage = () => {
         fetchSignedUrl();
     }, [selectedImage]);
 
+    useEffect(()=>{
+        if(signedUrl) handleUploadImage()
+    },[signedUrl])
+
     const handleUploadImage = async () => {
+        setUploading(true)
         if (imageFile) {
             const formData = new FormData();
             formData.append("file", imageFile);
@@ -70,6 +77,7 @@ const AccountSettingsPage = () => {
                     isClosable: true,
                     position: "top",
                 });
+
             } catch (error) {
                 console.error("Error updating profile image:", error);
                 toast({
@@ -82,6 +90,7 @@ const AccountSettingsPage = () => {
                 });
             }
         }
+        setUploading(false)
     };
 
     const handleRemoveImage = () => {
@@ -110,23 +119,26 @@ const AccountSettingsPage = () => {
                                 src={selectedImage || profileImage}
                             />
                             <VStack>
-                                {selectedImage ? (
+                                {/* {selectedImage ? ( */}
                                     <Button
                                         variant="primary"
-                                        onClick={handleUploadImage}
-                                    >
-                                        Upload photo
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        onClick={()=>{setProfileImage(null); setSelectedImage(null)}}
                                         as="label"
                                         htmlFor="imageInput"
-                                        variant="primary"
+                                        disabled = {uploading}
+                                        // onClick={handleUploadImage}
                                     >
-                                        Change photo
+                                       <span style={{marginRight:'8px'}}>Upload photo</span>  {uploading && <Spinner/>}
                                     </Button>
-                                )}
+                                {/* // ) : (
+                                //     <Button */}
+                                {/* //         onClick={()=>{setProfileImage(null); setSelectedImage(null)}}
+                                //         as="label"
+                                //         htmlFor="imageInput"
+                                //         variant="primary"
+                                //     >
+                                //         Change photo */}
+                                {/* //     </Button>
+                                // )} */}
                                 <input
                                     id="imageInput"
                                     type="file"

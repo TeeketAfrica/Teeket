@@ -12,7 +12,7 @@ import {
   useOutsideClick,
   Avatar,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Logo from "../../../assets/img/brandLogo.png";
 import Preview from "../../../assets/icon/eye.svg";
@@ -27,15 +27,21 @@ import SignOut from "../../../assets/icon/SignOut.svg";
 import Container from "../../../components/ui/Container";
 import SideNav from "./SideNav";
 import useSignOut from "../../../utils/signOut";
-import { resetEventState, selectEventDetails } from "../../../features/eventSlice";
+import {
+  resetEventState,
+  selectEventDetails,
+} from "../../../features/eventSlice";
 import { selectActiveUser } from "../../../features/activeUserSlice";
+import { useFormikContext } from "formik";
 
 const Layout = ({
   children,
-  activeStepColor,
+  activeStep,
   nextStep,
   prevStep,
   publishEvent,
+  isSubmitting,
+  setActiveStep,
 }) => {
   const [mobileToggle, setMobileToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
@@ -43,16 +49,24 @@ const Layout = ({
   const { signOut } = useSignOut();
   const dispatch = useDispatch();
   const user = useSelector(selectActiveUser);
-  const { tickets } = useSelector(selectEventDetails);
-
+  const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
+  const [disable, setDisable] = useState(false);
   const { email } = useSelector(selectUserDetails).data;
   useOutsideClick({
     ref: ref,
     handler: () => setMenuToggle(false),
-  }); 
+  });
   const resetEvent = () => {
     dispatch(resetEventState());
   };
+
+  const { values } = useFormikContext();
+
+  useEffect(()=>{
+    if(values && totalTicketQuantities){
+      totalTicketQuantities > values.eventEstimatedSoldTicket? setDisable(true): setDisable(false);
+    }
+  },[values, totalTicketQuantities])
 
   const steps = [
     {
@@ -103,25 +117,19 @@ const Layout = ({
               <Image src={Logo} alt="logo" />
             </Link>
             <Box display="flex" alignItems="center" gap={{ base: 6, lg: 8 }}>
-              {/* <Button
-                                type="submit"
-                                size="sm"
-                                variant="ghost"
-                                gap={2}
-                            >
-                                <Preview />
-                                <Text
-                                    as="span"
-                                    display={{ base: "none", lg: "inline" }}
-                                >
-                                    Preview event
-                                </Text>
-                            </Button> */}
+              {/* <Button type="submit" size="sm" variant="ghost" gap={2}>
+                <Preview />
+                <Text as="span" display={{ base: "none", lg: "inline" }}>
+                  Preview event
+                </Text>
+              </Button> */}
               <Button
                 type="submit"
                 size="sm"
                 variant="primary"
-                isDisabled={activeStepColor !== steps.length - 1}
+                isDisabled={
+                  activeStep !== steps.length - 1 || !values.publishLive
+                }
                 gap={2}
                 onClick={publishEvent}
               >
@@ -207,7 +215,7 @@ const Layout = ({
                     </Box>
                     <Box w="100%" px="4">
                       <Link
-                        href=""
+                        href="/account-settings"
                         display="flex"
                         gap="3"
                         py="2"
@@ -270,7 +278,7 @@ const Layout = ({
               {steps.map((step, i) => (
                 <Text
                   key={step.stepInfo}
-                  display={activeStepColor + 1 === i + 1 ? "flex" : "none"}
+                  display={activeStep + 1 === i + 1 ? "flex" : "none"}
                   gap={2}
                 >
                   <Text as="span" fontSize="sm" color="gray.500">
@@ -306,8 +314,11 @@ const Layout = ({
                 className="mobileCreateEventSideBar"
                 style={{ zIndex: 10 }}
               >
+                {/* (Timmi)on click of each button should take user back to that step and close the slide on modal */}
                 <SideNav
-                  activeStep={activeStepColor}
+                  activeStep={activeStep}
+                  setActiveStep={setActiveStep}
+                  setMobileToggle={setMobileToggle}
                   height="100vh"
                   width="370px"
                 >
@@ -329,7 +340,9 @@ const Layout = ({
             </Box>
             <Box display={{ base: "none", lg: "block" }} w="286px">
               <SideNav
-                activeStep={activeStepColor}
+                activeStep={activeStep}
+                setActiveStep={setActiveStep}
+                setMobileToggle={setMobileToggle}
                 height="100%"
                 width="100%"
               />
@@ -367,30 +380,31 @@ const Layout = ({
             alignItems="center"
           >
             <Button
-              display={activeStepColor > 0 ? "inline-flex" : "none"}
+              display={activeStep > 0 ? "inline-flex" : "none"}
               variant="secondary"
               size="lg"
               onClick={() => prevStep()}
             >
               Discard
             </Button>
-            {activeStepColor === steps.length - 1 && (
+            {activeStep === steps.length - 1 && (
               <Button
                 leftIcon={<Rocket />}
                 size="lg"
                 variant="accent"
+                disabled={isSubmitting || !values.publishLive}
                 onClick={publishEvent}
               >
                 Publish Event
               </Button>
             )}
-            {activeStepColor !== steps.length - 1 && (
+            {activeStep !== steps.length - 1 && (
               <Button
                 variant="primary"
                 type="submit"
                 size="lg"
                 onClick={nextStep}
-                disabled={tickets.length < 1 && activeStepColor === 2}
+                disabled={(tickets.length < 1 && activeStep === 2) || disable}
               >
                 Save and continue
               </Button>

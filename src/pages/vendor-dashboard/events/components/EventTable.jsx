@@ -68,7 +68,6 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
     const toast = useToast();
 
     useEffect(()=>{
-        console.log(isOpen)
         if(isOpen){
             const scanner = new Html5QrcodeScanner('reader', {
                 qrbox:{
@@ -92,8 +91,6 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
         }
    
     }, [])
-
-
 
     const updateNetworkStatus = () => {
         setIsOnline(navigator.onLine);
@@ -123,7 +120,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
             }
 
             if (queryParams.length > 0) {
-                url += `?${queryParams.join("&")}`;
+                url += `&${queryParams.join("&")}`;
             }
             const response = await teeketApi.get(url);
             const res = response.data;
@@ -228,7 +225,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
             });
         } catch (error) {
             const errorMessage =
-                error?.response?.data?.message || "An error occured";
+                error?.response?.data?.message || "You do not have any Attendees to export at this time";
             toast({
                 title: "Error",
                 description: `${errorMessage}`,

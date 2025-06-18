@@ -1,8 +1,10 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import Container from "../../../components/ui/Container";
 import AllEvents from "./AllEvents";
+import CuratedEvents from "./CuratedEvents";
 
 const EventTabs = ({curated, allEvents }) => {
+  console.log(curated)
   return (
     <section>
       <Container >
@@ -29,7 +31,8 @@ const EventTabs = ({curated, allEvents }) => {
                   <AllEvents events={allEvents} type="all" />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <AllEvents events={curated} type="all" />
+                  <CuratedEvents events={curated}/>
+                  {/* <AllEvents events={curated} type="all" /> */}
                 </TabPanel>
                 <TabPanel p={0}>
                   <AllEvents events={allEvents} type="all" />

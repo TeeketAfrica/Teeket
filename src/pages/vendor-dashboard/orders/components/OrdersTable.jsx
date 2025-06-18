@@ -92,7 +92,7 @@ const OrdersTable = () => {
                 }
 
                 if (queryParams.length > 0) {
-                    url += `?${queryParams.join("&")}`;
+                    url += `&${queryParams.join("&")}`;
                 }
                 const response = await teeketApi.get(url);
                 const res = response.data;
@@ -129,7 +129,6 @@ const OrdersTable = () => {
     //     setPaginatedData(ordersTableData.slice(startIndex, endIndex));
     // }, [currentPage, itemsPerPage, ordersTableData]);
 
-    console.log(paginatedData)
 
     // HANDLE PAGE CHANGE
     const handlePageChange = ({ selected }) => {
@@ -165,19 +164,18 @@ const OrdersTable = () => {
     const handleFilterByStatus = (selectedStatus) => {
         setStatusFilter(statusMap[selectedStatus]);
 
-        if (selectedStatus === "All events") {
-            setPaginatedData(ordersTableData);
-        } else {
-            const filteredData = ordersTableData.filter(
-                (item) => selectedStatus === filterPolicy[item.status]  
-            );
-            setCurrentPage(0);
-            setTotalItems(filteredData.length);
-            setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-            setPaginatedData(filteredData.slice(0, itemsPerPage));
-        }
+        // if (selectedStatus === "All events") {
+        //     setPaginatedData(ordersTableData);
+        // } else {
+        //     const filteredData = ordersTableData.filter(
+        //         (item) => selectedStatus === filterPolicy[item.status]  
+        //     );
+        //     setCurrentPage(1);
+        //     setTotalItems(filteredData.length);
+        //     setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+        //     setPaginatedData(filteredData.slice(0, itemsPerPage));
+        // }
     }
-    console.log(paginatedData)
 
     return (
         <Box px={[4, 8]}>
@@ -387,8 +385,8 @@ const OrdersTable = () => {
                                                         spacing={3}
                                                     >
                                                         <MoreDetails
-                                                            width={5}
-                                                            height={5}
+                                                            width={15}
+                                                            height={15}
                                                         />
                                                         <Text
                                                             fontWeight={600}

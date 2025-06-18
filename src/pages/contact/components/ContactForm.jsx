@@ -1,8 +1,7 @@
 import * as Yup from "yup";
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { Stack } from "@chakra-ui/layout";
-import { Button, Flex, Center, useToast } from "@chakra-ui/react";
+import { Stack, Flex, Center, Button, useToast } from "@chakra-ui/react";
 import TextInput from "@/components/shared/TextInput";
 import { teeketApi } from "../../../utils/api";
 
@@ -10,7 +9,7 @@ const ContactForm = () => {
   const toast = useToast();
   const [error, setError] = useState("");
 
-  // Validation schema using Yup
+  // Yup validation schema
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Please input your first name"),
     lastName: Yup.string(),
@@ -20,8 +19,7 @@ const ContactForm = () => {
     comment: Yup.string().required("Please input your comments"),
   });
 
-
-  // Formik initialization
+  // Formik setup
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -30,75 +28,61 @@ const ContactForm = () => {
       comment: "",
     },
     validationSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
-        try{
-          const response = await teeketApi.post("/contact-us",
-             {
-                "first_name": values.firstName,
-                "last_name": values.lastName,
-                "email": values.email,
-                "message":values.comment
-             }
-            );
-          if(response.status === 200){
-            toast({
-                title: "Message sent!",
-                description:
-                    "We've received your message and will get back to you soon.",
-                status: "success",
-                duration: 4000,
-                isClosable: true,
-                position: "top-right",
-            });
+      try {
+        const response = await teeketApi.post("/contact-us", {
+          first_name: values.firstName,
+          last_name: values.lastName,
+          email: values.email,
+          message: values.comment,
+        });
 
-            resetForm();
-          }
-    }
-    catch(error){
-        console.log(error)
-        const errorMessage = error?.response?.data?.message || "An error occured";
+        if (response.status === 200) {
+          toast({
+            title: "Message sent!",
+            description: "We've received your message and will get back to you soon.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+            position: "top-right",
+          });
+          resetForm();
+        }
+      } catch (error) {
+        console.error(error);
+        const errorMessage =
+          error?.response?.data?.message || "An error occurred";
         setError(errorMessage);
         toast({
-            title: "Failed to send message",
-            description: `${errorMessage}`,
-            status: "error",
-            duration: 3000,
-            position: "top-right",
-            isClosable: true,
+          title: "Failed to send message",
+          description: errorMessage,
+          status: "error",
+          duration: 3000,
+          position: "top-right",
+          isClosable: true,
         });
-    }
-    finally {
+      } finally {
         setSubmitting(false);
-    }
-  }
+      }
+    },
   });
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stack spacing={4}>
-        {/* names */}
+        {/* Name Fields */}
         <Flex direction={{ base: "column", sm: "row" }} gap={6}>
           <TextInput
-            formik={{
-              handleChange: formik.handleChange,
-              values: formik.values,
-              touched: formik.touched,
-              errors: formik.errors,
-              setFieldTouched: formik.setFieldTouched,
-            }}
+            formik={formik}
             label="First name"
             inputName="firstName"
             error={error}
             handleError={setError}
           />
           <TextInput
-            formik={{
-              handleChange: formik.handleChange,
-              values: formik.values,
-              touched: formik.touched,
-              errors: formik.errors,
-              setFieldTouched: formik.setFieldTouched,
-            }}
+            formik={formik}
             label="Last name"
             inputName="lastName"
             error={error}
@@ -106,29 +90,19 @@ const ContactForm = () => {
           />
         </Flex>
 
-        {/* email */}
+        {/* Email Field */}
         <TextInput
-          formik={{
-            handleChange: formik.handleChange,
-            values: formik.values,
-            touched: formik.touched,
-            errors: formik.errors,
-            setFieldTouched: formik.setFieldTouched,
-          }}
+          formik={formik}
           type="email"
           label="Email address"
           inputName="email"
           error={error}
           handleError={setError}
         />
+
+        {/* Comment Field */}
         <TextInput
-          formik={{
-            handleChange: formik.handleChange,
-            values: formik.values,
-            touched: formik.touched,
-            errors: formik.errors,
-            setFieldTouched: formik.setFieldTouched,
-          }}
+          formik={formik}
           type="textarea"
           label="Comments"
           inputName="comment"
@@ -136,14 +110,14 @@ const ContactForm = () => {
           handleError={setError}
         />
 
-        {/* Submit button */}
+        {/* Submit Button */}
         <Center>
           <Button
             type="submit"
             mt="4"
             paddingBlock={2}
             paddingInline={4}
-            w={"fit-content"}
+            w="fit-content"
             size="sm"
             variant="primary"
             isLoading={formik.isSubmitting}

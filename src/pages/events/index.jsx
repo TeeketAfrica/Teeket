@@ -31,7 +31,7 @@ const EventsPage = () => {
 
     useEffect(() => {
       const hasSeenUI = sessionStorage.getItem('hasSeenUI');
-      if (!hasSeenUI) {
+      if (!hasSeenUI && token) {
         setShowUI(true);
         sessionStorage.setItem('hasSeenUI', 'true');
       }
@@ -103,7 +103,7 @@ const EventsPage = () => {
     return (
         <main>
             <ScrollToTop />
-            {displayEventPreference && showUI && (
+            {displayEventPreference && showUI && token && (
                 <EventPreference isOpen={isOpen} onClose={onClose} />
             )}
             <HeroSection />
