@@ -11,7 +11,7 @@ import BrowseEvents from "../../../assets/icon/BrowseEvents.svg";
 import EmptyState from "../../../components/ui/EmptyState";
 import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 
-const CuratedEvents = ({events}) => {
+const CuratedEvents = ({ events }) => {
   const [event] = useState(true);
   return (
     <>
@@ -26,20 +26,25 @@ const CuratedEvents = ({events}) => {
             pb={9}
           >
             {
-              events?.map((i, id)=>
-              <EventCard
-                key={id}
-                eventId={i.id}
-                eventImage={Event1}
-                eventTitle={i.title}
-                eventTag="Trending"
-                eventTagIcon={EventTagIcon}
-                eventOrganizer={Avatars}
-                eventCommunity="By Web3 and co"
-                eventLocation={i.event_location}
-                eventPrice={`${i.lowest_ticket_price}`}
-                eventDate={i.start_date}
-              />              
+              events?.map((i, id) =>
+                <EventCard
+                  key={id}
+                  eventId={i.id}
+                  eventImage={i.banner_image}
+                  eventTitle={i.title}
+                  eventTag={i.status}
+                  eventTagIcon={EventTagIcon}
+                  eventOrganizer={i.user.profile_image}
+                  eventOrganizerName={i.user.first_name || i.user.email}
+                  eventCommunity={`by ${i.organizer}`}
+                  eventLocation={i.hosting_site}
+                  eventPrice={`${i.lowest_ticket_price}`}
+                  eventDate={{
+                    startDate: `${i.start_date}`,
+                    endDate: `${i.end_date}`,
+                  }}
+                  isFree={i.is_free}
+                />
               )
             }
 

@@ -85,8 +85,8 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
           {active && (
             <DetailCard
               icon={LightingOutlineIcon}
-              title="This event is trending"
-              subTitle="Hurry up and get your tickets"
+              title={event.status === "on_going"? "This event is trending": event.status === "coming_soon"? "This event is coming soon": "This event has passed"}
+              subTitle={event.status === "on_going"||event.status === "coming_soon"? "Hurry up and get your tickets": ""}
             />
           )}
 
@@ -127,7 +127,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
                 width="100%"
                 onClick={getTicket}
               >
-                {!isRegistered ? "Get Your Ticket" : "See my ticket"}
+                Get Your Ticket
               </Button>
             </Link>            
           }
@@ -172,8 +172,8 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
           </HStack>
           <Divider borderColor="gray.300" borderWidth="1px" />
           <Text fontSize="sm" lineHeight="5" color="gray.500">
-            The best african art event host, building and creating experiences
-            for art enthusiats
+            Teeket the best african event marketing platform, building and creating experiences
+            for enthusiats.
           </Text>
         </VStack>
       </BoxFrame>
