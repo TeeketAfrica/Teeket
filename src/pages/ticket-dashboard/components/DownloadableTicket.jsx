@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { selectActiveUser } from "../../../features/activeUserSlice";
 import TicketBg from "../../../assets/img/TicketBg.png";
 import TicketCardIcon from "../../../assets/icon/TicketCardIcon.svg";
+import { teeketApi } from "../../../utils/api";
 
 const toBase64Image = async (url) => {
   const res = await fetch(url, { mode: "cors" });
@@ -34,15 +35,32 @@ const DownloadableTicket = ({
   eventId,
     ticketId,
   ticketRef,
+  orderId,
   eventImageUrl,
 }) => {
   const activeUser = useSelector(selectActiveUser);
   const [logo, setLogo] = useState("");
+  const [signature, setSignature] = useState("");
   const [hero, setHero] = useState("");
   const [qrCode, setQrCode] = useState("");
   const [loadingImages, setLoadingImages] = useState(true);
 
+  const getQRSignature = async () =>{
+    try {
+      const response = await teeketApi.get(`/events/tickets/qr-code?order_id=${orderId}`)
+      setSignature(response.data.data.signature)
+    } catch (error) {
+      
+    }
+  }
+
   useEffect(() => {
+    getQRSignature()
+  }, [orderId])
+  
+
+  useEffect(() => {
+    console.log('it got here')
     const loadImages = async () => {
       const logoBase64 = await toBase64Image(
         "https://res.cloudinary.com/doztcdg5v/image/upload/v1727911001/logo_q4sjwi.svg"
@@ -50,9 +68,11 @@ const DownloadableTicket = ({
       const heroBase64 = await toBase64Image(eventImageUrl);
       const qrBase64 = await toBase64Image(
         `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
-          `https://teeketafrica.com/?event_id=${eventId}&user_id=${activeUser.id}&ticket_id=${ticketId}`
+          `${signature}`
         )}&size=150x150`
       );
+
+      console.log(qrBase64)
 
       setLogo(logoBase64);
       setHero(heroBase64);
@@ -61,7 +81,7 @@ const DownloadableTicket = ({
     };
 
     loadImages();
-  }, [eventId]);
+  }, [signature]);
 
   if (loadingImages) {
     return <Spinner size="xl" />;

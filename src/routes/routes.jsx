@@ -24,6 +24,7 @@ import {
 } from "../pages";
 import NotFound from "../pages/404/404";
 import SimilarEvents from "../pages/events/SimilarEvents";
+import ScanToAttend from "../pages/vendor-dashboard/events/components/ScanToAttend";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
 import PublicTokenRoute from "./publicRoutes";
@@ -51,6 +52,7 @@ const privateRoutes = [
   { path: "/app/events", element: EventsDashboardPage },
   { path: "/app/order", element: OrdersDashboardPage },
   { path: "/app/finance", element: FinancesDashboardPage },
+  { path: "/app/scan-to-attend", element: ScanToAttend },
   { path: "/account-settings", element: AccountSettingsPage },
   { path: "/my-tickets", element: TicketDashboardPage },
   {

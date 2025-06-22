@@ -88,6 +88,12 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                                 title="Finance"
                                 link="/app/finance"
                             />
+                            <SidebarOptions
+                                icon={FinanceIcon}
+                                darkIcon={DarkFinanceIcon}
+                                title="Scan to Attend"
+                                link="/app/scan-to-attend"
+                            />
                         </Box>
                     </VStack>
                     <VStack spacing={6}>

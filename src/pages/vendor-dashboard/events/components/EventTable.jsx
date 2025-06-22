@@ -704,49 +704,6 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                 )}
             </Box>
 
-        <Modal
-            blockScrollOnMount={false}
-            isOpen={isOpen}
-            onClose={()=>setIsOpen(false)}
-            size="md"
-            borderRadius={12}
-        >
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader
-                    alignSelf="center"
-                    paddingBottom={1}
-                    paddingTop={6}
-                >
-                    Scan Attendee
-                </ModalHeader>
-                <ModalBody paddingBottom={10} textAlign={"center"}>
-                        {
-                            scanResult ?
-                            <div>Success: <Link href={"http://" + scanResult}>Press Me</Link> </div> :
-                            <div id="reader"></div>
-                        }
-                    
-
-                </ModalBody>
-
-                {/* <ModalFooter>
-                    <Button
-                        variant="secondary"
-                        colorScheme="blue"
-                        w="100%"
-                        h={55}
-                        mr={3}
-                        onClick={onClose}
-                    >
-                        Cancel
-                    </Button>
-                    <Button variant="danger" w="100%" h={55} onClick={signOut}>
-                        Yes, Logout
-                    </Button>
-                </ModalFooter> */}
-            </ModalContent>
-        </Modal>
         </Box>
     );
 };
