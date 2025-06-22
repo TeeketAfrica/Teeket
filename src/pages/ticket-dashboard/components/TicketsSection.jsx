@@ -15,7 +15,7 @@ const TicketsSection = () => {
   const { getAccessToken } = useStorage();
   const token = getAccessToken(); 
 
-
+    console.log(tickets)
 
   useEffect(()=>{
     setLoading(true);
@@ -99,6 +99,7 @@ const TicketsSection = () => {
                   eventId={ticket?.event.id}
                   eventImageUrl={ticket?.event?.banner_image}
                   tickekId={ticket?.ticket.id}
+                  orderId={ticket.id}
                 />
               </GridItem>
             ))
