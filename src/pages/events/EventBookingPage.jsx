@@ -135,7 +135,7 @@ const EventBooking = () => {
                     eventId={event.id}
                     eventImage={event.banner_image}
                     eventTitle={event.title}
-                    eventTag={event.status?.split("_").join(" ")}
+                    eventTag={event.status}
                     eventTagIcon={EventTagIcon}
                     eventOrganizer={event.user.profile_image}
                     eventOrganizerName={

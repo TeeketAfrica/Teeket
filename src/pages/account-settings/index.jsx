@@ -71,7 +71,7 @@ const AccountSettingsPage = () => {
                 toast({
                     title: "Profile Updated",
                     description:
-                        "You have successfully updated your profile image.",
+                        "You have successfully updated your profile image. Please refresh the page to see your changes",
                     status: "success",
                     duration: 4000,
                     isClosable: true,

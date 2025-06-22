@@ -504,7 +504,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                                                             fontWeight={500}
                                                             fontSize={12}
                                                         >
-                                                            {td.status === "on_going"? "On Going": td.status === "coming_soon"? "Coming Soon": td.status === "past_event"? "Past Event": ""}
+                                                            {td.status === "on_going"? "On Going": td.status === "coming_soon"? "Coming Soon": td.status === "past_event"? "Past Event": "Unavailable"}
                                                         </Tag>
                                                     </Td>
                                                     <Td>
