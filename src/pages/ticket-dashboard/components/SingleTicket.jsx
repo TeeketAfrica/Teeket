@@ -31,14 +31,17 @@ const SingleTicket = ({
   ticketType,
   ticketPrice,
   eventId,
-  ticketId,
+  tickekId,
   eventImageUrl,
+  orderId
 }) => {
   const navigate = useNavigate();
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [downloadingPDF, setDownloadingPDF] = useState(false);
   const [downloadingImage, setDownloadingImage] = useState(false);
   const ticketRef = useRef(null);
+
+  console.log(tickekId, eventId)
 
   const handleDownloadImage = async () => {
     setDownloadingImage(true);
@@ -71,6 +74,7 @@ const SingleTicket = ({
     setDownloadingPDF(false);
     onClose();
   };
+
 
 
   return (
@@ -168,8 +172,9 @@ const SingleTicket = ({
           ticketPrice={ticketPrice}
           ticketRef={ticketRef}
           eventId={eventId}
-          ticketId={ticketId}
+          ticketId={tickekId}
           eventImageUrl={eventImageUrl}
+          orderId={orderId}
         />
       </Box>
 
