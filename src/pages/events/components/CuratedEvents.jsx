@@ -13,6 +13,7 @@ import EventSpeakerEmpty from "../../../assets/icon/EventSpeakerEmptyBlue.svg";
 
 const CuratedEvents = ({events}) => {
   const [event] = useState(true);
+
   return (
     <>
       {event ? (
@@ -35,12 +36,12 @@ const CuratedEvents = ({events}) => {
               <EventCard
                 key={id}
                 eventId={i.id}
-                eventImage={Event1}
+                eventImage={i.banner_image}
                 eventTitle={i.title}
-                eventTag="Trending"
+                eventTag={i.status}
                 eventTagIcon={EventTagIcon}
                 eventOrganizer={Avatars}
-                eventCommunity="By Web3 and co"
+                eventCommunity={i.organizer}
                 eventLocation={i.event_location}
                 eventPrice={`${i.lowest_ticket_price}`}
                 eventDate={i.start_date}

@@ -27,8 +27,6 @@ const PreviewScanned = () => {
     const navigate = useNavigate()
     const [order, setOrder] = useState()
 
-    const [result, setResult] = useState({date:'', time:''});
-
     const fetchOrder = async()=>{
         if (id !== ('All tickets have been scanned' | 'This QR code is invalid')){
             try {

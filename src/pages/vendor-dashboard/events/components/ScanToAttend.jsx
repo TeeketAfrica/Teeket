@@ -35,12 +35,10 @@ const ScanToAttend = () => {
             if(scanResult){
                 try {
                   const response = await teeketApi.post(`/events/tickets/qr-code/verify`, {token:scanResult})
-                  console.log(response)
-                  console.log(response.data.order_id)
                     setOrderId(response.data.data.order_id)
                     navigate(`/app/preview-scanned/${response.data.data.order_id}`)
                 } catch (error) {
-                  console.error("Error verifying order:", error);
+                //   console.error("Error verifying order:", error);
                   navigate(`/app/preview-scanned/${error.response?.data?.message || 'An error occurred while verifying the order.'}`)
                 }                
             }
