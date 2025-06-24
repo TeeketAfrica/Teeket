@@ -52,7 +52,7 @@ const ScanToAttend = () => {
     <div className='h-screen flex justify-center items-center relative'>
         {
             orderId ?
-            <div>Success: <Link to={`/app/preview-scanned/${orderId}/${error}`}>Preview Ticket</Link> </div> :
+            <div>Success: <Link to={`/app/preview-scanned/${orderId}}`}>Preview Ticket</Link> </div> :
             <div id="reader"></div>
         }
     </div>
