@@ -1,8 +1,13 @@
+import { asyncThunkCreator } from '@reduxjs/toolkit'
 import { Html5QrcodeScanner } from 'html5-qrcode'
 import React, { useEffect, useState } from 'react'
+import { teeketApi } from '../../../../utils/api'
+import { Link, useNavigate } from 'react-router-dom'
 
 const ScanToAttend = () => {
     const [scanResult, setScanResult] = useState('')
+    const [orderId, setOrderId] = useState('')
+    const navigate = useNavigate()
         useEffect(()=>{
                 const scanner = new Html5QrcodeScanner('reader', {
                     qrbox:{
@@ -20,16 +25,34 @@ const ScanToAttend = () => {
                 }
     
                 function error(err){
-                    console.warn(err);
+                    // console.warn(err);
     
                 }                 
        
         }, [])
+
+        const handleVerifyOrder = async()=>{
+            if(scanResult){
+                try {
+                  const response = await teeketApi.post(`/events/tickets/qr-code/verify`, {token:scanResult})
+                    setOrderId(response.data.data.order_id)
+                    navigate(`/app/preview-scanned/${response.data.data.order_id}`)
+                } catch (error) {
+                //   console.error("Error verifying order:", error);
+                  navigate(`/app/preview-scanned/${error.response?.data?.message || 'An error occurred while verifying the order.'}`)
+                }                
+            }
+
+        }
+
+        useEffect(()=>{
+            handleVerifyOrder()
+        }, [scanResult])
   return (
     <div className='h-screen flex justify-center items-center relative'>
         {
-            scanResult ?
-            <div>Success: <Link href={"http://" + scanResult}>Press Me</Link> </div> :
+            orderId ?
+            <div>Success: <Link to={`/app/preview-scanned/${orderId}}`}>Preview Ticket</Link> </div> :
             <div id="reader"></div>
         }
     </div>
