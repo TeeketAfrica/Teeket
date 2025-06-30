@@ -516,7 +516,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                                                                     variant="outline"
                                                                 />
                                                                 <MenuList>
-                                                                    <Link to={"/app/scan-to-attend"}>
+                                                                    {/* <Link to={"/app/scan-to-attend"}>
                                                                         <MenuItem
                                                                             _hover={{
                                                                                 bgColor:
@@ -527,7 +527,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                                                                             <Text>Scan attendees</Text>
 
                                                                         </MenuItem>
-                                                                    </Link>
+                                                                    </Link> */}
                                                                     <MenuItem
                                                                         _hover={{
                                                                             bgColor:
