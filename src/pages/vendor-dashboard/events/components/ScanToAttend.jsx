@@ -71,7 +71,6 @@ const ScanToAttend = () => {
         if (scanResult) {
             handleVerifyOrder();
             stopScanner();
-        }
     }, [scanResult]);
 
     const stopScanner = () => {
