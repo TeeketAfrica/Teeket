@@ -38,7 +38,7 @@ const CuratedEvents = ({ events }) => {
                   eventOrganizerName={i.user.first_name || i.user.email}
                   eventCommunity={`by ${i.organizer}`}
                   eventLocation={i.hosting_site}
-                  eventPrice={`${i.lowest_ticket_price}`}
+                  eventPrice={Number(i.lowest_ticket_price)}
                   eventDate={{
                     startDate: `${i.start_date}`,
                     endDate: `${i.end_date}`,

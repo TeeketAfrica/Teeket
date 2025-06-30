@@ -67,29 +67,29 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
     const [scanResult, setScanResult] = useState('')
     const toast = useToast();
 
-    useEffect(()=>{
-        if(isOpen){
+    useEffect(() => {
+        if (isOpen) {
             const scanner = new Html5QrcodeScanner('reader', {
-                qrbox:{
-                    width:250,
-                    height:250
+                qrbox: {
+                    width: 250,
+                    height: 250
                 },
                 fps: 5
             })
 
             scanner.render(success, error);
 
-            function success(result){
+            function success(result) {
                 scanner.clear();
                 setScanResult(result)
             }
 
-            function error(err){
+            function error(err) {
                 console.warn(err);
 
-            }                 
+            }
         }
-   
+
     }, [])
 
     const updateNetworkStatus = () => {
@@ -196,26 +196,26 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
     // EXPORT ATTENDEE LIST
     const handleAttendeeExport = async (eventId) => {
         try {
-           const res = await teeketApi.get(`/events/${eventId}/attendees/export-csv`, 
+            const res = await teeketApi.get(`/events/${eventId}/attendees/export-csv`,
                 {
-                    responseType: 'blob', 
+                    responseType: 'blob',
                 }
-             );
-             console.log(res)
-            
-                const blob = new Blob([res.data], { type: 'text/csv' });
-                const url = URL.createObjectURL(blob);
-            
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'Attendee-List.csv'; 
-            
-                document.body.appendChild(link);
-                link.click();
-            
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            
+            );
+            console.log(res)
+
+            const blob = new Blob([res.data], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Attendee-List.csv';
+
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
             toast({
                 title: "Attendee list exported",
                 status: "success",
@@ -276,7 +276,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
 
     // HANDLE PAGE CHANGE
     const handlePageChange = ({ selected }) => {
-        setCurrentPage(selected+1);
+        setCurrentPage(selected + 1);
     };
 
     //   HANDLE CLEAR SEARCH
@@ -385,283 +385,285 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                         color="gray.700"
                     >
                         {(paginatedData.length === 0 && search === "") ||
-                        (paginatedData.length === 0 && search !== "")
+                            (paginatedData.length === 0 && search !== "")
                             ? "No events"
                             : search !== ""
-                            ? `${paginatedData.length} events`
-                            : `${totalItems} events`}
+                                ? `${paginatedData.length} events`
+                                : `${totalItems} events`}
                     </Tag>
                 </HStack>
                 {isOnline ? (
                     loading ? (
-                        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem"}}>
-                        <Spinner/>
-                        Fetching Your Events Hang On
+                        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem" }}>
+                            <Spinner />
+                            Fetching Your Events Hang On
                         </div>
                     ) :
-                    (
-                        <>
-                            {paginatedData.length !== 0 ? (
-                                <TableContainer>
-                                    <Table variant="simple">
-                                        <Thead>
-                                            <Tr bgColor="gray.200">
-                                                {eventTableHead.map((th, i) => (
-                                                    <Th
-                                                        textTransform="capitalize"
-                                                        fontSize={12}
-                                                        fontWeight={500}
-                                                        color="gray.600"
-                                                        borderBottom="1px solid"
-                                                        borderColor="gray.300"
-                                                        key={i}
-                                                    >
-                                                        {th.head}
-                                                    </Th>
-                                                ))}
-                                            </Tr>
-                                        </Thead>
-                                        <Tbody fontSize={14}>
-                                            {paginatedData.map((td, i) => (
-                                                <Tr key={i}>
-                                                    <Td>
-                                                        <HStack spacing={[2, 3]}>
-                                                            <Image
-                                                                src={
-                                                                    td.banner_image
-                                                                }
-                                                                alt={td.industry}
-                                                                objectFit="cover"
-                                                                w={10}
-                                                                h={10}
-                                                            />
-                                                            <Box>
-                                                                <Text
-                                                                    fontWeight={500}
-                                                                    color="gray.800"
-                                                                >
-                                                                    {td.title}
-                                                                </Text>
-                                                                <Text color="gray.600">
-                                                                    {td.organizer}
-                                                                </Text>
-                                                            </Box>
-                                                        </HStack>
-                                                    </Td>
-                                                    <Td
-                                                        color="gray.600"
-                                                        fontWeight={500}
-                                                    >
-                                                        {td.tickets_sold}/
-                                                        {td.number_of_tickets}
-                                                    </Td>
-                                                    {
-                                                        td.total_revenue === 0?
-                                                        <Td
-                                                            color="gray.600"
-                                                            fontWeight={500}
-                                                        >
-                                                            Free
-                                                        </Td>:
-                                                        <Td
-                                                            color="gray.600"
-                                                            fontWeight={500}
-                                                        >
-                                                            ₦{formatAmount(td.total_revenue, 0)}
-                                                        </Td>                                                      
-                                                    }
-                                                    <Td
-                                                        color="gray.600"
-                                                        fontWeight={500}
-                                                    >
-                                                        {formatDate(
-                                                            td.date_created
-                                                        )}
-                                                    </Td>
-                                                    <Td>
-                                                        <Tag
-                                                            bg={
-                                                                td.status ===
-                                                                "coming_soon"
-                                                                    ? "gray.200"
-                                                                    : td.status ===
-                                                                    "on_going"
-                                                                    ? "green.100"
-                                                                    : "red.100"
-                                                            }
-                                                            color={
-                                                                td.status ===
-                                                                "coming_soon"
-                                                                    ? "gray.700"
-                                                                    : td.status ===
-                                                                    "on_going"
-                                                                    ? "green.500"
-                                                                    : "red.400"
-                                                            }
-                                                            borderRadius={16}
-                                                            py="2px"
-                                                            px={2}
-                                                            fontWeight={500}
+                        (
+                            <>
+                                {paginatedData.length !== 0 ? (
+                                    <TableContainer>
+                                        <Table variant="simple">
+                                            <Thead>
+                                                <Tr bgColor="gray.200">
+                                                    {eventTableHead.map((th, i) => (
+                                                        <Th
+                                                            textTransform="capitalize"
                                                             fontSize={12}
+                                                            fontWeight={500}
+                                                            color="gray.600"
+                                                            borderBottom="1px solid"
+                                                            borderColor="gray.300"
+                                                            key={i}
                                                         >
-                                                            {td.status === "on_going"? "On Going": td.status === "coming_soon"? "Coming Soon": td.status === "past_event"? "Past Event": "Unavailable"}
-                                                        </Tag>
-                                                    </Td>
-                                                    <Td>
-                                                        <Menu>
-                                                            <MenuButton
-                                                                as={IconButton}
-                                                                aria-label="Options"
-                                                                icon={<ActionBtn />}
-                                                                variant="outline"
-                                                            />
-                                                            <MenuList>
-                                                                <MenuItem
-                                                                    _hover={{
-                                                                        bgColor:
-                                                                            "gray.200",
-                                                                    }}
-                                                                    onClick={()=>setIsOpen(true)}
-                                                                >
-                                                                    <Text>Scan attendees</Text>
-                                                                        
-                                                                </MenuItem>
-                                                                <MenuItem
-                                                                    _hover={{
-                                                                        bgColor:
-                                                                            "gray.200",
-                                                                    }}
-                                                                >
-                                                                    <Link
-                                                                        to={`/edit-event/${td.id}`}
-                                                                    >
-                                                                        Edit event
-                                                                    </Link>
-                                                                </MenuItem>
-                                                                <MenuItem
-                                                                    _hover={{
-                                                                        bgColor:
-                                                                            "gray.200",
-                                                                    }}
-                                                                >
-                                                                    <Link
-                                                                        to={`/event-booking/${td.id}`}
-                                                                    >
-                                                                        View event
-                                                                    </Link>
-                                                                </MenuItem>
-                                                                <MenuItem
-                                                                    onClick={() =>
-                                                                        handleDuplicateEvent(
-                                                                            td.id
-                                                                        )
-                                                                    }
-                                                                    _hover={{
-                                                                        bgColor:
-                                                                            "gray.200",
-                                                                    }}
-                                                                >
-                                                                    <Link>
-                                                                        Duplicate
-                                                                        event
-                                                                    </Link>
-                                                                </MenuItem>
-                                                                <MenuItem
-                                                                    onClick={() =>
-                                                                        handleAttendeeExport(
-                                                                            td.id
-                                                                        )
-                                                                    }
-                                                                    _hover={{
-                                                                        bgColor:
-                                                                            "gray.200",
-                                                                    }}
-                                                                >
-                                                                    Export attendees
-                                                                    list
-                                                                </MenuItem>
-                                                                <Divider
-                                                                    borderColor="grey100"
-                                                                    my={3}
-                                                                />
-                                                                <MenuItem
-                                                                    onClick={() =>
-                                                                        handleCopyEvent(
-                                                                            td.id
-                                                                        )
-                                                                    }
-                                                                    _hover={{
-                                                                        bgColor:
-                                                                            "gray.200",
-                                                                    }}
-                                                                >
-                                                                    Copy link
-                                                                </MenuItem>
-                                                                <MenuItem
-                                                                    onClick={() =>
-                                                                        handleDeleteEvent(
-                                                                            td.id
-                                                                        )
-                                                                    }
-                                                                    _hover={{
-                                                                        bgColor:
-                                                                            "gray.200",
-                                                                    }}
-                                                                >
-                                                                    Delete event
-                                                                </MenuItem>
-                                                            </MenuList>
-                                                        </Menu>
-                                                    </Td>
+                                                            {th.head}
+                                                        </Th>
+                                                    ))}
                                                 </Tr>
-                                            ))}
-                                        </Tbody>
-                                    </Table>
-                                </TableContainer>
-                            ) : search !== "" && paginatedData.length === 0 ? (
-                                <EmptyState
-                                    maxW="350px"
-                                    icon={SearchIconEmpty}
-                                    title="No result"
-                                    desc={
-                                        <Text
-                                            fontSize={14}
-                                            color="gray.600"
-                                            textAlign="center"
-                                        >
-                                            Your search “{search || statusFilter}”
-                                            did not match any events. Please try
-                                            again or create add a new event.
-                                        </Text>
-                                    }
-                                    outlineBtn="Clear search"
-                                    primaryBtn="Create event"
-                                    outlineOnClick={handleClearSearch}
-                                    primaryOnClick={() => navigate("/create-event")}
-                                />
-                            ) : (
-                                <EmptyState
-                                    maxW="350px"
-                                    icon={EventSpeakerEmpty}
-                                    title="Start by creating an event"
-                                    desc={
-                                        <Text
-                                            fontSize={14}
-                                            color="gray.600"
-                                            textAlign="center"
-                                        >
-                                            All events created will live here for
-                                            you to view and manage effectively.
-                                        </Text>
-                                    }
-                                    outlineBtn="Need help?"
-                                    primaryBtn="Create event"
-                                    outlineOnClick={() => navigate("/need-help")}
-                                    primaryOnClick={() => navigate("/create-event")}
-                                />
-                            )}
-                        </>
-                    )
+                                            </Thead>
+                                            <Tbody fontSize={14}>
+                                                {paginatedData.map((td, i) => (
+                                                    <Tr key={i}>
+                                                        <Td>
+                                                            <HStack spacing={[2, 3]}>
+                                                                <Image
+                                                                    src={
+                                                                        td.banner_image
+                                                                    }
+                                                                    alt={td.industry}
+                                                                    objectFit="cover"
+                                                                    w={10}
+                                                                    h={10}
+                                                                />
+                                                                <Box>
+                                                                    <Text
+                                                                        fontWeight={500}
+                                                                        color="gray.800"
+                                                                    >
+                                                                        {td.title}
+                                                                    </Text>
+                                                                    <Text color="gray.600">
+                                                                        {td.organizer}
+                                                                    </Text>
+                                                                </Box>
+                                                            </HStack>
+                                                        </Td>
+                                                        <Td
+                                                            color="gray.600"
+                                                            fontWeight={500}
+                                                        >
+                                                            {td.tickets_sold}/
+                                                            {td.number_of_tickets}
+                                                        </Td>
+                                                        {
+                                                            td.total_revenue === 0 ?
+                                                                <Td
+                                                                    color="gray.600"
+                                                                    fontWeight={500}
+                                                                >
+                                                                    Free
+                                                                </Td> :
+                                                                <Td
+                                                                    color="gray.600"
+                                                                    fontWeight={500}
+                                                                >
+                                                                    ₦{formatAmount(td.total_revenue, 0)}
+                                                                </Td>
+                                                        }
+                                                        <Td
+                                                            color="gray.600"
+                                                            fontWeight={500}
+                                                        >
+                                                            {formatDate(
+                                                                td.date_created
+                                                            )}
+                                                        </Td>
+                                                        <Td>
+                                                            <Tag
+                                                                bg={
+                                                                    td.status ===
+                                                                        "coming_soon"
+                                                                        ? "gray.200"
+                                                                        : td.status ===
+                                                                            "on_going"
+                                                                            ? "green.100"
+                                                                            : "red.100"
+                                                                }
+                                                                color={
+                                                                    td.status ===
+                                                                        "coming_soon"
+                                                                        ? "gray.700"
+                                                                        : td.status ===
+                                                                            "on_going"
+                                                                            ? "green.500"
+                                                                            : "red.400"
+                                                                }
+                                                                borderRadius={16}
+                                                                py="2px"
+                                                                px={2}
+                                                                fontWeight={500}
+                                                                fontSize={12}
+                                                            >
+                                                                {td.status === "on_going" ? "On Going" : td.status === "coming_soon" ? "Coming Soon" : td.status === "past_event" ? "Past Event" : "Unavailable"}
+                                                            </Tag>
+                                                        </Td>
+                                                        <Td>
+                                                            <Menu>
+                                                                <MenuButton
+                                                                    as={IconButton}
+                                                                    aria-label="Options"
+                                                                    icon={<ActionBtn />}
+                                                                    variant="outline"
+                                                                />
+                                                                <MenuList>
+                                                                    <Link to={"/app/scan-to-attend"}>
+                                                                        <MenuItem
+                                                                            _hover={{
+                                                                                bgColor:
+                                                                                    "gray.200",
+                                                                            }}
+                                                                            onClick={() => setIsOpen(true)}
+                                                                        >
+                                                                            <Text>Scan attendees</Text>
+
+                                                                        </MenuItem>
+                                                                    </Link>
+                                                                    <MenuItem
+                                                                        _hover={{
+                                                                            bgColor:
+                                                                                "gray.200",
+                                                                        }}
+                                                                    >
+                                                                        <Link
+                                                                            to={`/edit-event/${td.id}`}
+                                                                        >
+                                                                            Edit event
+                                                                        </Link>
+                                                                    </MenuItem>
+                                                                    <MenuItem
+                                                                        _hover={{
+                                                                            bgColor:
+                                                                                "gray.200",
+                                                                        }}
+                                                                    >
+                                                                        <Link
+                                                                            to={`/event-booking/${td.id}`}
+                                                                        >
+                                                                            View event
+                                                                        </Link>
+                                                                    </MenuItem>
+                                                                    <MenuItem
+                                                                        onClick={() =>
+                                                                            handleDuplicateEvent(
+                                                                                td.id
+                                                                            )
+                                                                        }
+                                                                        _hover={{
+                                                                            bgColor:
+                                                                                "gray.200",
+                                                                        }}
+                                                                    >
+                                                                        <Link>
+                                                                            Duplicate
+                                                                            event
+                                                                        </Link>
+                                                                    </MenuItem>
+                                                                    <MenuItem
+                                                                        onClick={() =>
+                                                                            handleAttendeeExport(
+                                                                                td.id
+                                                                            )
+                                                                        }
+                                                                        _hover={{
+                                                                            bgColor:
+                                                                                "gray.200",
+                                                                        }}
+                                                                    >
+                                                                        Export attendees
+                                                                        list
+                                                                    </MenuItem>
+                                                                    <Divider
+                                                                        borderColor="grey100"
+                                                                        my={3}
+                                                                    />
+                                                                    <MenuItem
+                                                                        onClick={() =>
+                                                                            handleCopyEvent(
+                                                                                td.id
+                                                                            )
+                                                                        }
+                                                                        _hover={{
+                                                                            bgColor:
+                                                                                "gray.200",
+                                                                        }}
+                                                                    >
+                                                                        Copy link
+                                                                    </MenuItem>
+                                                                    <MenuItem
+                                                                        onClick={() =>
+                                                                            handleDeleteEvent(
+                                                                                td.id
+                                                                            )
+                                                                        }
+                                                                        _hover={{
+                                                                            bgColor:
+                                                                                "gray.200",
+                                                                        }}
+                                                                    >
+                                                                        Delete event
+                                                                    </MenuItem>
+                                                                </MenuList>
+                                                            </Menu>
+                                                        </Td>
+                                                    </Tr>
+                                                ))}
+                                            </Tbody>
+                                        </Table>
+                                    </TableContainer>
+                                ) : search !== "" && paginatedData.length === 0 ? (
+                                    <EmptyState
+                                        maxW="350px"
+                                        icon={SearchIconEmpty}
+                                        title="No result"
+                                        desc={
+                                            <Text
+                                                fontSize={14}
+                                                color="gray.600"
+                                                textAlign="center"
+                                            >
+                                                Your search “{search || statusFilter}”
+                                                did not match any events. Please try
+                                                again or create add a new event.
+                                            </Text>
+                                        }
+                                        outlineBtn="Clear search"
+                                        primaryBtn="Create event"
+                                        outlineOnClick={handleClearSearch}
+                                        primaryOnClick={() => navigate("/create-event")}
+                                    />
+                                ) : (
+                                    <EmptyState
+                                        maxW="350px"
+                                        icon={EventSpeakerEmpty}
+                                        title="Start by creating an event"
+                                        desc={
+                                            <Text
+                                                fontSize={14}
+                                                color="gray.600"
+                                                textAlign="center"
+                                            >
+                                                All events created will live here for
+                                                you to view and manage effectively.
+                                            </Text>
+                                        }
+                                        outlineBtn="Need help?"
+                                        primaryBtn="Create event"
+                                        outlineOnClick={() => navigate("/need-help")}
+                                        primaryOnClick={() => navigate("/create-event")}
+                                    />
+                                )}
+                            </>
+                        )
                 ) : (
                     <EmptyState
                         icon={EventCautionState}
