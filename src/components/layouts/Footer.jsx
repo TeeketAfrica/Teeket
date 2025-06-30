@@ -1,7 +1,8 @@
-import { Box, Button, HStack, Link, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Link, Stack, Text, VStack } from "@chakra-ui/react";
 import Container from "../ui/Container";
 import LogoBlack from "../../assets/icon/LogoBlack.svg";
 import { SOCIAL_LINKS } from "../../utils/constants";
+import Policies from "../shared/Policies";
 
 const Footer = ({ border = true }) => {
   const currentYear = new Date().getFullYear();
@@ -29,7 +30,7 @@ const Footer = ({ border = true }) => {
             <Link href='/contact'>
               <Button variant="primary">Contact us</Button>
             </Link>
-            
+
           </Stack>
           <Stack
             direction={["column", "row"]}
@@ -48,9 +49,12 @@ const Footer = ({ border = true }) => {
                 </Link>
               ))}
             </HStack>
-            <Text fontSize="sm">
-              © {new Date().getFullYear()} Teeket Africa. All rights reserved.
-            </Text>
+            <VStack>
+              <Text fontSize="sm">
+                © {new Date().getFullYear()} Teeket Africa. All rights reserved.
+              </Text>
+              <Policies />
+            </VStack>
             <Link href="/">
               <LogoBlack />
             </Link>

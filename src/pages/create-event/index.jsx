@@ -44,6 +44,8 @@ const VendorPage = () => {
         const response = await teeketApi.get(`/events/${id}`);
         const eventData = response.data;
 
+        console.log("eventData", eventData)
+
 
         // Fetch tickets
         const res = await teeketApi.get(`/events/${id}/tickets`);
@@ -91,8 +93,9 @@ const VendorPage = () => {
           eventBannerImage: eventData.banner_image || "",
           eventEstimatedSoldTicket: eventData.number_of_tickets || 0,
           eventTags: eventData.tags || [],
-          publishLive: eventData.status || "",
+          publishLive: eventData.is_live?.toString() || "false",
         });
+        console.log(eventData.is_live)
       } catch (error) {
         const errorMessage =
           error?.response?.data?.message ||

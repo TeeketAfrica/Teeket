@@ -16,34 +16,34 @@ import PlusCircle from "@/assets/icon/PlusCircle.svg";
 export const Faq = ({ children }) => {
   const FAQSInfo = [
     {
-      question: "Is there a free trial available?",
+      question: "How do I create an event on Teeket?",
       answer:
-        "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30 minute onboarding call to get you up and running as soon as possible.",
+        "Creating events on Teeket is refreshingly simple. Our intuitive event creation form lets you set up an experience in just a few clicks,  from naming your event to setting date, time, location, ticketing, and even payment options. You don’t need to be tech-savvy — just bring your idea, and we’ll handle the rest.",
     },
     {
-      question: "Can I change my plan later?",
+      question: "Can I track how well my event is doing?",
       answer:
-        "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30 minute onboarding call to get you up and running as soon as possible.",
+        "Yes! Teeket gives you a clear, data-driven dashboard where you can track ticket sales, attendee engagement, and registration trends in real-time. Whether you're a seasoned creator or just starting out, you'll have the insights you need to grow your event, optimize pricing, and increase impact.",
     },
     {
-      question: "What is your cancellation policy?",
+      question: "How do I find events that match my interests?",
       answer:
-        "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30 minute onboarding call to get you up and running as soon as possible.",
+        "Teeket’s powerful search and discovery tools let you filter events by type, date, location, and keywords. Whether you’re into fitness, tech, art, or spiritual gatherings, Teeket helps you discover meaningful events tailored to your lifestyle, values, and vibe — so you never miss out on what matters to you.",
     },
     {
-      question: "Can other info be added to an invoice?",
+      question: "Is it easy and safe to buy tickets on Teeket?",
       answer:
-        "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30 minute onboarding call to get you up and running as soon as possible.",
+        "Absolutely. Teeket offers seamless, secure ticketing with guest checkout options, card payments via Stripe, and zero hidden fees. Whether you’re a frequent event-goer or just dropping in for one special occasion, you can book tickets in seconds and with full confidence.",
     },
     {
-      question: "How does billing work?",
+      question: "What happens when I arrive at an event? Will there be queues?",
       answer:
-        "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30 minute onboarding call to get you up and running as soon as possible.",
+        "No more standing in line! Teeket’s registration system is designed for smooth check-ins and quick access. Simply show your e-ticket and you’re in. We make sure the focus is on the experience — not the wait.",
     },
     {
-      question: "How do I change my account email?",
+      question: "What kind of events can I attend on Teeket?",
       answer:
-        "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30 minute onboarding call to get you up and running as soon as possible.",
+        "From niche workshops to big festivals, from healing retreats to creative showcases — Teeket is your gateway to emotionally rich, culturally resonant events. Whether you're showing up solo or with friends, you'll find experiences that spark connection, discovery, and joy.",
     },
   ];
   return (

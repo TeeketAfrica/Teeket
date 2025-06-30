@@ -16,12 +16,12 @@ const LeftSideDetails = ({ event, location, user }) => {
   const token = getAccessToken();
   user = user.is_creator === null || !token ? false : true;
 
-  const handleCopy = () => {
-    if (!event.event_location) return;
-    navigator.clipboard.writeText(event.event_location);
+  const handleCopy = (text) => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
     toast({
       title: "Copied!",
-      description: "Address copied to clipboard.",
+      description: "Copied to clipboard.",
       status: "success",
       duration: 2000,
       position: "top-right",
@@ -37,7 +37,7 @@ const LeftSideDetails = ({ event, location, user }) => {
             <EventBadge
               eventBadgeInfo={{
                 badgeTitle: `${event.status?.split("_").join(" ")}`,
-                state: event.status === 'past_event'? "past" :"trending",
+                state: event.status === 'past_event' ? "past" : "trending",
                 icon: LightingIcon,
               }}
             />
@@ -65,14 +65,14 @@ const LeftSideDetails = ({ event, location, user }) => {
               subTitle={`${startDate.time} - ${endDate.time}`}
             />
             {
-              event.status !== 'past_event' && 
-            <Button variant="secondary" size="sm">
-              Remind me
-            </Button>              
+              event.status !== 'past_event' &&
+              <Button variant="secondary" size="sm">
+                Remind me
+              </Button>
             }
 
           </Flex>
-          {event?.hosting_site === "physical" && (
+          {event?.hosting_site === "physical" ? (
             <Flex
               flexDirection={{ base: "column", sm: "row" }}
               gap="2"
@@ -84,8 +84,24 @@ const LeftSideDetails = ({ event, location, user }) => {
                 title="Event Address"
                 subTitle={event.event_location}
               />
-              <Button variant="secondary" size="sm" onClick={handleCopy}>
+              <Button variant="secondary" size="auto" padding={1} onClick={()=>handleCopy(event.event_location)}>
                 Copy Address
+              </Button>
+            </Flex>
+          ) : (
+            <Flex
+              flexDirection={{ base: "column", sm: "row" }}
+              gap="2"
+              justifyContent="space-between"
+              alignItems={{ base: "flex-start", sm: "center" }}
+            >
+              <DetailCard
+                icon={GPSIcon}
+                title="Event Link"
+                subTitle={event.event_link}
+              />
+              <Button variant="secondary" size="sm" padding={2} onClick={()=>handleCopy(event.event_link)}>
+                Copy Link
               </Button>
             </Flex>
           )}

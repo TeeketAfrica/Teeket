@@ -98,13 +98,17 @@ const useFormSubmission = ({ id, activeUser, navigate, toast, tickets }) => {
         });
 
         await Promise.all(ticketPromises);
-
         // Navigate to appropriate page based on publish status [(Timmi) navigate to proper url]
-        if (values.publishLive === "eventLive") {
+        if (values.publishLive === "eventLive"|| values.publishLive === "true") {
           //(Timmi) patch the publish if publish live was clicked
-          await teeketApi.patch(`events/${response.data.id}/publish`);
+          await teeketApi.patch(`events/${response.data.id}/publish`, {
+            "is_live": true
+          });
           navigate("/app/events");
         } else {
+          await teeketApi.patch(`events/${response.data.id}/publish`, {
+            "is_live": false
+          });
           navigate("/app/events");
         }
 
