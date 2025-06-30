@@ -26,6 +26,7 @@ import EventsIcon from "../../assets/icon/loudspeaker.svg";
 import DarkEventsIcon from "../../assets/icon/darkloudspeaker.svg";
 import OrderIcon from "../../assets/icon/receipt.svg";
 import FinanceIcon from "../../assets/icon/money.svg";
+import ScanIcon from "../../assets/icon/scan.svg";
 import DarkFinanceIcon from "../../assets/icon/darkmoney.svg";
 import DarkOrderIcon from "../../assets/icon/DarkOrderIcon.svg";
 import Settings from "../../assets/icon/sidebarsettings.svg";
@@ -89,9 +90,9 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                                 link="/app/finance"
                             />
                             <SidebarOptions
-                                icon={FinanceIcon}
+                                icon={ScanIcon}
                                 darkIcon={DarkFinanceIcon}
-                                title="Scan to Attend"
+                                title="Scan Ticket"
                                 link="/app/scan-to-attend"
                             />
                         </Box>
@@ -181,6 +182,12 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                                         darkIcon={DarkFinanceIcon}
                                         title="Finance"
                                         link="/app/finance"
+                                    />
+                                    <SidebarOptions
+                                        icon={ScanIcon}
+                                        darkIcon={DarkFinanceIcon}
+                                        title="Scan Ticket"
+                                        link="/app/scan-to-attend"
                                     />
                                 </Box>
                             </VStack>

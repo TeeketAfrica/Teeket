@@ -20,9 +20,11 @@ const PublishForm = () => {
   const { values } = useFormikContext();
   const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
 
+  console.log(values)
+
   const publishOptions = [
     {
-      value: "on_going",
+      value: "true",
       label: (
         <Box>
           <Heading fontSize="md" fontWeight="medium">
@@ -36,7 +38,7 @@ const PublishForm = () => {
       ),
     },
     {
-      value: "eventDraft",
+      value: "false",
       label: (
         <Box>
           <Heading fontSize="md" fontWeight="medium">

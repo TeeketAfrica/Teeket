@@ -139,11 +139,11 @@ const SingleTicket = ({
                       <Button colorScheme="green" onClick={handleDownloadImage}>
                         {downloadingImage ? "Downloading..." : "Download as Image"}
                       </Button>
-                      <Button colorScheme="teal" onClick={handleDownloadPDF}>
+                      {/* <Button colorScheme="teal" onClick={handleDownloadPDF}>
                         {
                           downloadingPDF ? "Downloading..." : "Download as PDF"
                         }
-                      </Button>
+                      </Button> */}
                     </VStack>
                   </PopoverBody>
                 </PopoverContent>
