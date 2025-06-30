@@ -24,6 +24,10 @@ import {
 } from "../pages";
 import NotFound from "../pages/404/404";
 import SimilarEvents from "../pages/events/SimilarEvents";
+import privacyPolicy from "../pages/Privacy-Policy/privacyPolicy";
+import securityPolicy from "../pages/Security-policy/securityPolicy";
+import Tou from "../pages/Terms-of-use/Tou";
+import PreviewScanned from "../pages/vendor-dashboard/events/components/PreviewScanned";
 import ScanToAttend from "../pages/vendor-dashboard/events/components/ScanToAttend";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
@@ -36,6 +40,9 @@ const publicRoutes = [
   { path: "/contact", element: ContactPage },
   { path: "/about", element: AboutPage },
   { path: "/events", element: EventsPage },
+  { path: "/terms-of-use", element:  Tou},
+  { path: "/privacy-policy", element: privacyPolicy},
+  { path: "/security-policy", element: securityPolicy },
   { path: "/event-category/:type?", element: EventCategoryPage },
   { path: "/account-settings", element: AccountSettingsPage },
   { path: "/events/similar-events/:id?", element: SimilarEvents },
@@ -53,6 +60,7 @@ const privateRoutes = [
   { path: "/app/order", element: OrdersDashboardPage },
   { path: "/app/finance", element: FinancesDashboardPage },
   { path: "/app/scan-to-attend", element: ScanToAttend },
+  { path: "/app/preview-scanned/:id?", element:  PreviewScanned},
   { path: "/account-settings", element: AccountSettingsPage },
   { path: "/my-tickets", element: TicketDashboardPage },
   {
