@@ -11,6 +11,7 @@ import {
   Text,
   Link,
   Center,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import Footer from "@/components/layouts/Footer";
 import Masonry from "./components/Masonry";
@@ -35,14 +36,17 @@ import Faq3Image from "@/assets/img/faqs_3.webp";
 import { useStorage } from "../../utils/storage";
 import { Faq } from "@/components/shared/Faq";
 import GetInTouch from "@/components/shared/GetInTouch";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const { getAccessToken } = useStorage();
   const token = getAccessToken();
 
+  const navigate = useNavigate();
+
   return (
     <>
-      <main style={{ overflowX: "hidden"}}>
+      <main style={{ overflowX: "hidden" }}>
         <Center >
           <Box
             bgImage={`url(${EventBg})`}
@@ -260,14 +264,80 @@ const HomePage = () => {
                       overflow="hidden"
                     >
                       <Image
-                         src={`/images/${data.imageName}.webp`}
+                        src={`/images/${data.imageName}.png`}
                         alt="image"
-                        objectFit="contain"
+                        objectFit={"contain"}
                       />
                     </Box>
                   </VStack>
                 </Card>
               ))}
+              <Card width="389px" height="363px">
+                <VStack
+                  justifyContent="end"
+                  backgroundColor={"#141714"}
+                  borderRadius={"3px"}
+                  alignItems="flex-start"
+                  paddingTop="37px"
+                  paddingLeft="25px"
+                  paddingRight="8"
+                  width="100%"
+                  height="100%"
+                  overflow="hidden"
+                >
+                  <Box
+                    position="absolute"
+                    top="-3rem"
+                    transform="rotate3d(1, 0, 1, -5deg)"
+                    height="194px"
+                    width="313px"
+                    border="1px solid"
+                    borderColor="rgba(20, 23, 20, 0.75)"
+                    borderRadius="8px"
+                    overflow="hidden"
+                  >
+                    <Box position="relative" width="100%" height="100%">
+                      <Image
+                        src="/images/6.png"
+                        alt="image"
+                        layout="fill"
+                        objectFit="contain"
+                      />
+                      <Box
+                        position="absolute"
+                        top={0}
+                        left={0}
+                        width="100%"
+                        height="100%"
+                        backgroundColor="#06CC0666"
+                        opacity={"40%"}
+                        pointerEvents="none"
+                      />
+                    </Box>
+                  </Box>
+                  <VStack gap="2" alignItems={"left"}>
+                    <Text
+                      fontWeight="600"
+                      fontSize="18px"
+                      lineHeight="26px"
+                      color="#FFFFFF"
+                    >
+                      What are you waiting for?
+                    </Text>
+                    <Text
+                      fontWeight="normal"
+                      fontSize="16px"
+                      lineHeight="6"
+                      color="#CBD1CB"
+                    >
+                      Discover new passions, network & create memories.
+                    </Text>
+                  </VStack>
+                  <Button variant={"secondary"} size={"lg"} paddingX={"3rem"} marginY={5} onClick={() => navigate("/app/overview")}>
+                    Get Started
+                  </Button>
+                </VStack>
+              </Card>
             </Grid>
           </Container>
         </Box>

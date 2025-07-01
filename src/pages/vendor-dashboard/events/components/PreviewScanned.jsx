@@ -44,6 +44,8 @@ const PreviewScanned = () => {
     fetchOrder()
   }, [])
 
+  console.log(order)
+
   return (
     <Box 
         display={'flex'}
@@ -192,6 +194,11 @@ const PreviewScanned = () => {
                     <HStack justifyContent="space-between" mt={6}>
                         <Text fontWeight={500}>Order ID</Text>
                         <Text color="gray.600">{order?.orderId || order?.order_no}</Text>
+                    </HStack>
+                    <Divider borderColor="gray.300" my={2} />
+                    <HStack justifyContent="space-between" my={2}>
+                        <Text fontWeight={500}>Ticket Quantity</Text>
+                        <Text color="gray.600">{order?.quantity}</Text>
                     </HStack>
                     <Divider borderColor="gray.300" my={2} />
                     <HStack justifyContent="space-between">
