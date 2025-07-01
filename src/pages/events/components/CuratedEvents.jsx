@@ -18,7 +18,12 @@ const CuratedEvents = ({ events }) => {
       {event ? (
         <>
           <Grid
-            templateColumns="repeat(4, 1fr)"
+            templateColumns={[
+              "repeat(1, 1fr)",
+              "repeat(2, 1fr)",
+              "repeat(3, 1fr)",
+              "repeat(4, 1fr)",
+            ]}
             gap={6}
             borderBottom="1px solid"
             borderColor="gray.300"
