@@ -9,18 +9,8 @@ const GetInTouch = () => {
     {
       type: "email",
       content: "Our friendly team is here to help.",
-      address: "hello@teeketafrica.com",
-    },
-    {
-      type: "office",
-      content: "Come say hello at our office HQ.",
-      address: "100 Smith Street Collingwood VIC 3066 AU",
-    },
-    {
-      type: "phone",
-      content: "Mon-Fri from 8am to 5pm.",
-      address: "+1 (555) 000-0000",
-    },
+      address: "info@teeketafrica.com",
+    }
   ];
   const iconMap = {
     email: <MailIcon fillColor="#ffffff" size="24px" />,
@@ -65,9 +55,7 @@ const GetInTouch = () => {
           </VStack>
           <Grid
             templateColumns={{
-              base: "1fr",
-              md: "repeat(2, 1fr)",
-              lg: "repeat(3, 1fr)",
+              base: "1fr"
             }}
             alignItems="center"
             width="100%"

@@ -91,7 +91,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
           )}
 
           <HStack gap="10px" alignItems="center">
-            {eventAttendees && (
+            {event.status !== "past_event" || eventAttendees && (
               <AvatarGroup size="sm" max={3}>
                 {eventAttendees.slice(0, 3).map((attendees, i) => (
                   <Avatar

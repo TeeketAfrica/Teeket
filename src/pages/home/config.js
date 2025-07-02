@@ -122,41 +122,41 @@ export const FAQSInfo = [
 
 export const BrowseEventInfo = [
   {
-    imageName: "category_1",
+    imageName: "1",
     title: "Create Events in Minutes",
     content:
-      "Our user-friendly form lets you set up events with ease! Manage details like name, description, date/time, type, location & payment options.",
+      "Our simple form allows you to effortlessly create events! Easily manage details such as the event name, description, date and time, type, location, and payment options.",
   },
   {
-    imageName: "category_2",
+    imageName: "2",
     title: "Gain Insights, Maximize Revenue",
     content:
       "Track ticket sales, registrations, and attendee engagement with our intuitive dashboard. Make informed decisions and boost profits.",
   },
   {
-    imageName: "category_3",
+    imageName: "3",
     title: "Find the Perfect Event, Every Time",
     content:
-      "Powerful search engine lets you filter by type, location, date & keywords. Discover exciting events tailored to your interests!",
+      "Powerful search and recommendation that lets you filter and discover exciting events tailored to your interests!",
   },
   {
-    imageName: "category_4",
+    imageName: "4",
     title: "Secure Ticket Purchases, Made Easy",
     content:
-      "Integrate your payment gateway & offer guest checkout for one-time purchases. Secure ticket purchases made easy!",
+      "Integrated with payment gateway to offer safe guest checkout for one-time purchases.",
   },
   {
-    imageName: "category_5",
+    imageName: "5",
     title: "Skip the Lines, Join the Experience",
     content:
-      "Streamlined registration gets you into events faster. No more waiting in lines, just enjoy the experience.",
+      "Quick registration means you can join events faster. Skip the lines and enjoy!",
   },
-  {
-    imageName: "category_6",
-    title: "Endless Events, At Your Fingertips",
-    content:
-      "Discover new passions, network & create memories. Explore a world of events at your fingertips.",
-  },
+  // {
+  //   imageName: "category_6",
+  //   title: "Endless Events, At Your Fingertips",
+  //   content:
+  //     "Discover new passions, network & create memories. Explore a world of events at your fingertips.",
+  // },
 ];
 
 
