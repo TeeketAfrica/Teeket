@@ -33,7 +33,7 @@ const DownloadableTicket = ({
   ticketType,
   ticketPrice,
   eventId,
-    ticketId,
+  ticketId,
   ticketRef,
   orderId,
   eventImageUrl,
@@ -45,22 +45,22 @@ const DownloadableTicket = ({
   const [qrCode, setQrCode] = useState("");
   const [loadingImages, setLoadingImages] = useState(true);
 
-  const getQRSignature = async () =>{
+  const getQRSignature = async () => {
     try {
       const response = await teeketApi.get(`/events/tickets/qr-code?order_id=${orderId}`)
       setSignature(response.data.data.signature)
     } catch (error) {
-      
+
     }
   }
 
   useEffect(() => {
     getQRSignature()
   }, [orderId])
-  
+
 
   useEffect(() => {
-    console.log('it got here')
+    console.log('it got here', encodeURIComponent(`${signature}`))
     const loadImages = async () => {
       const logoBase64 = await toBase64Image(
         "https://res.cloudinary.com/doztcdg5v/image/upload/v1727911001/logo_q4sjwi.svg"

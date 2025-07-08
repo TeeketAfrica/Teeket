@@ -1145,6 +1145,7 @@ export function formatEventDateRange({ start_date, end_date }) {
 export const filterPolicy = {
   ongoing_event: "On going",
   on_going: "On going",
+  past_event: "Past Event",
   coming_soon: "Coming Soon",
 };
 
