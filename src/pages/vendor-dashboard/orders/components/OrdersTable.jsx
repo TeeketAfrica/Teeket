@@ -365,7 +365,7 @@ const OrdersTable = () => {
                                                     color="gray.600"
                                                     fontWeight={500}
                                                 >
-                                                    ₦{formatAmount(Number(td.ticket.price), 0)}
+                                                    ₦{formatAmount(Number(td.ticket.price * td.quantity), 0)}
                                                 </Td>
                                                 <Td
                                                     color="gray.600"
