@@ -264,7 +264,7 @@ const HomePage = () => {
                       overflow="hidden"
                     >
                       <Image
-                        src={`/images/${data.imageName}.png`}
+                        src={`/images/${data.imageName}.${data.imageName == "2" || data.imageName == "4" ? "svg": "png"}`}
                         alt="image"
                         objectFit={"contain"}
                       />

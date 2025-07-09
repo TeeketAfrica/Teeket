@@ -62,10 +62,10 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
 
     const itemsPerPage = 10;
 
-    const startIndex = currentPage * itemsPerPage;
+    const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
-    const hStartIndex = histCurrentPage * itemsPerPage;
+    const hStartIndex = (histCurrentPage - 1) * itemsPerPage;
     const hEndIndex = hStartIndex + itemsPerPage;
 
     const [revenueTableData, setRevenueTableData] = useState([]);
@@ -102,84 +102,73 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
     //   HANDLE SEARCH
 
     const handleSearch = (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        let filteredData;
-        if (!viewHistory) {
-            filteredData = revenueTableData.filter(
-                (item) =>
-                    (item.event.title && item.event.title.toLowerCase().includes(searchTerm)) ||
-                    (item.event.organizer && item.event.organizer.toLowerCase().includes(searchTerm))
-            );
-            setSearch(searchTerm);
-            setCurrentPage(1);
-            setPaginatedData(filteredData.slice(0, itemsPerPage));
-            setTotalItems(filteredData.length);
-            setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-        }
-        else {
-            filteredData = historyTableData.filter(
-                (item) =>
-                    (item.revenue.event.title && item.revenue.event.title.toLowerCase().includes(searchTerm)) ||
-                    (item.revenue.event.organizer && item.revenue.event.organizer.toLowerCase().includes(searchTerm))
-            );
-            setSearch(searchTerm);
-            setCurrentPage(1);
-            setHistoryPaginatedData(filteredData.slice(0, itemsPerPage));
-            setHistoryTotal(filteredData.length);
-            setHistoryTotalPage(Math.ceil(filteredData.length / itemsPerPage));
-        }
+        setSearch(e.target.value.toLowerCase());
+        viewHistory ? setHistCurrentPage(1) : setCurrentPage(1);
     };
 
     //   HANDLE CLEAR SEARCH
 
     const handleClearSearch = () => {
         setSearch("");
-        setCurrentPage(1);
-        setPaginatedData(revenueTableData.slice(0, itemsPerPage));
-        setHistoryPaginatedData(historyTableData.slice(0, itemsPerPage));
-        setTotalItems(revenueTableData.length);
-        setTotalPages(Math.ceil(revenueTableData.length / itemsPerPage));
-        setHistoryTotal(historyTableData.length)
-        setHistoryTotalPage(Math.ceil(historyTableData.length / itemsPerPage));
+        viewHistory ? setHistCurrentPage(1) : setCurrentPage(1);
     };
-
-    //   const handleFilterByStatus = () => {}
 
     const handleFilterByStatus = (selectedStatus) => {
-        // setSelectedStatusFilter(selectedStatus);
+        setSelectedStatusFilter(selectedStatus);
+        viewHistory ? setHistCurrentPage(1) : setCurrentPage(1);
+    };
 
-        if (!viewHistory) {
-            if (selectedStatus === "All events") {
-                setPaginatedData(revenueTableData);
-            } else {
-                const filteredData = revenueTableData.filter(
-                    (item) => item.status === selectedStatus
+    const getFilteredData = (data, statusFilter, searchTerm) => {
+        let filtered = [...data];
+
+        if (statusFilter && statusFilter !== "All events") {
+            filtered = filtered.filter((item) =>
+                (item.status === statusFilter)
+            );
+        }
+
+        if (searchTerm) {
+            filtered = filtered.filter((item) => {
+                const event = item.event || item.revenue?.event;
+                return (
+                    event?.title?.toLowerCase().includes(searchTerm) ||
+                    event?.organizer?.toLowerCase().includes(searchTerm)
                 );
-                setCurrentPage(1);
-                setTotalItems(filteredData.length);
-                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-                setPaginatedData(filteredData.slice(0, itemsPerPage));
-            }
+            });
+        }
+
+        return filtered;
+    };
+
+    const applyFilters = () => {
+        const data = viewHistory ? historyTableData : revenueTableData;
+        const filtered = getFilteredData(data, selectedStatusFilter, search);
+        const startIndex = viewHistory ? (histCurrentPage - 1) * itemsPerPage : (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginated = filtered.slice(startIndex, endIndex);
+
+        if (viewHistory) {
+            setHistoryPaginatedData(paginated);
+            setHistoryTotal(filtered.length);
+            setHistoryTotalPage(Math.ceil(filtered.length / itemsPerPage));
         } else {
-            if (selectedStatus === "All events") {
-                setHistoryPaginatedData(historyTableData);
-            }
-            else {
-                const filteredData = historyTableData.filter(
-                    (item) => item.status === selectedStatus
-                );
-                setCurrentPage(1);
-                setHistoryPaginatedData(filteredData.slice(0, itemsPerPage));
-                setHistoryTotal(filteredData.length);
-                setHistoryTotalPage(Math.ceil(filteredData.length / itemsPerPage));
-            }
+            setPaginatedData(paginated);
+            setTotalItems(filtered.length);
+            setTotalPages(Math.ceil(filtered.length / itemsPerPage));
         }
     };
+
+    useEffect(() => {
+        applyFilters();
+    }, [revenueTableData, historyTableData, selectedStatusFilter, search, currentPage, histCurrentPage, viewHistory]);
+
+
+    //   const handleFilterByStatus = () => {}
 
     //clear search when ever tables are switched
     useEffect(() => {
         handleClearSearch();
-        setSelectedFilterIndex(0);
+        setSelectedStatusFilter(null);
     }, [viewHistory])
 
     useEffect(() => {
@@ -261,13 +250,13 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
         handleFetchPaymentHistory();
     }, [toast, currentPage]);
 
-    useEffect(() => {
-        setHistoryPaginatedData(
-            historyTableData.slice(
-                hStartIndex, hEndIndex
-            )
-        )
-    }, [histCurrentPage])
+    // useEffect(() => {
+    //     setHistoryPaginatedData(
+    //         historyTableData.slice(
+    //             hStartIndex, hEndIndex
+    //         )
+    //     )
+    // }, [histCurrentPage])
 
     if (loading) return (
         <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem" }}>

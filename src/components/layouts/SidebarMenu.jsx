@@ -107,12 +107,12 @@ const SidebarMenu = ({ onClose, isOpen }) => {
                                     link="/app/organization-settings"
                                 />)
                             }
-                            <SidebarOptions
+                            {/* <SidebarOptions
                                 icon={Help}
                                 darkIcon={DarkOverviewIcon}
                                 title="Help and support"
                                 link="/help-and-support"
-                            />
+                            /> */}
                         </Box>
                         <HStack justifyContent="space-between">
                             <Avatar
