@@ -47,10 +47,11 @@ import { formatDate } from "../../../../utils/formatDate";
 import { formatAmount } from "../../../../utils/utils";
 import { Spinner } from '@chakra-ui/react';
 
-const RevenueTable = ({viewHistory, setViewHistory}) => {
+const RevenueTable = ({ viewHistory, setViewHistory }) => {
     const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
     const [selectedFilterIndex, setSelectedFilterIndex] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [histCurrentPage, setHistCurrentPage] = useState(1);
     const [request] = useState(true);
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(false);
@@ -59,19 +60,28 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
 
     const navigate = useNavigate();
 
-    const itemsPerPage = 8;
+    const itemsPerPage = 10;
 
     const startIndex = currentPage * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
+
+    const hStartIndex = histCurrentPage * itemsPerPage;
+    const hEndIndex = hStartIndex + itemsPerPage;
 
     const [revenueTableData, setRevenueTableData] = useState([]);
     const [paginatedData, setPaginatedData] = useState(
         revenueTableData.slice(startIndex, endIndex)
     );
     const [historyTableData, setHistoryTableData] = useState([]);
-    const [historyPaginatedData, setHistoryPaginatedData] = useState([]);
+    const [historyPaginatedData, setHistoryPaginatedData] = useState(
+        historyTableData.slice(
+            hStartIndex, hEndIndex
+        )
+    );
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [historyTotal, setHistoryTotal] = useState(0);
+    const [historyTotalPage, setHistoryTotalPage] = useState(0);
 
     // useEffect(() => {
     //     const startIndex = currentPage * itemsPerPage;
@@ -82,37 +92,41 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
     //   HANDLE PAGE CHANGE
 
     const handlePageChange = ({ selected }) => {
-        setCurrentPage(selected+1);
+        setCurrentPage(selected + 1);
     };
+
+    const handleHistPageChange = ({ selected }) => {
+        setHistCurrentPage(selected + 1);
+    }
 
     //   HANDLE SEARCH
 
     const handleSearch = (e) => {
         const searchTerm = e.target.value.toLowerCase();
         let filteredData;
-        if(!viewHistory){
+        if (!viewHistory) {
             filteredData = revenueTableData.filter(
                 (item) =>
                     (item.event.title && item.event.title.toLowerCase().includes(searchTerm)) ||
                     (item.event.organizer && item.event.organizer.toLowerCase().includes(searchTerm))
             );
             setSearch(searchTerm);
-            setCurrentPage(0);
+            setCurrentPage(1);
             setPaginatedData(filteredData.slice(0, itemsPerPage));
             setTotalItems(filteredData.length);
             setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
         }
-        else{
+        else {
             filteredData = historyTableData.filter(
                 (item) =>
                     (item.revenue.event.title && item.revenue.event.title.toLowerCase().includes(searchTerm)) ||
                     (item.revenue.event.organizer && item.revenue.event.organizer.toLowerCase().includes(searchTerm))
             );
             setSearch(searchTerm);
-            setCurrentPage(0);
+            setCurrentPage(1);
             setHistoryPaginatedData(filteredData.slice(0, itemsPerPage));
-            setTotalItems(filteredData.length);
-            setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+            setHistoryTotal(filteredData.length);
+            setHistoryTotalPage(Math.ceil(filteredData.length / itemsPerPage));
         }
     };
 
@@ -120,11 +134,13 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
 
     const handleClearSearch = () => {
         setSearch("");
-        setCurrentPage(0);
+        setCurrentPage(1);
         setPaginatedData(revenueTableData.slice(0, itemsPerPage));
         setHistoryPaginatedData(historyTableData.slice(0, itemsPerPage));
         setTotalItems(revenueTableData.length);
         setTotalPages(Math.ceil(revenueTableData.length / itemsPerPage));
+        setHistoryTotal(historyTableData.length)
+        setHistoryTotalPage(Math.ceil(historyTableData.length / itemsPerPage));
     };
 
     //   const handleFilterByStatus = () => {}
@@ -132,36 +148,36 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
     const handleFilterByStatus = (selectedStatus) => {
         // setSelectedStatusFilter(selectedStatus);
 
-        if(!viewHistory){
+        if (!viewHistory) {
             if (selectedStatus === "All events") {
-            setPaginatedData(revenueTableData);
+                setPaginatedData(revenueTableData);
             } else {
                 const filteredData = revenueTableData.filter(
                     (item) => item.status === selectedStatus
                 );
-                setCurrentPage(0);
+                setCurrentPage(1);
                 setTotalItems(filteredData.length);
                 setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
                 setPaginatedData(filteredData.slice(0, itemsPerPage));
             }
-        }else{
-            if(selectedStatus === "All events"){
+        } else {
+            if (selectedStatus === "All events") {
                 setHistoryPaginatedData(historyTableData);
             }
-            else{
+            else {
                 const filteredData = historyTableData.filter(
                     (item) => item.status === selectedStatus
                 );
-                setCurrentPage(0);
+                setCurrentPage(1);
                 setHistoryPaginatedData(filteredData.slice(0, itemsPerPage));
-                setTotalItems(filteredData.length);
-                setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+                setHistoryTotal(filteredData.length);
+                setHistoryTotalPage(Math.ceil(filteredData.length / itemsPerPage));
             }
         }
     };
 
     //clear search when ever tables are switched
-    useEffect(()=>{
+    useEffect(() => {
         handleClearSearch();
         setSelectedFilterIndex(0);
     }, [viewHistory])
@@ -204,9 +220,9 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
             }
         };
 
-        const handleFetchPaymentHistory = async ()=>{
+        const handleFetchPaymentHistory = async () => {
             setLoading(true);
-            try{
+            try {
                 let url = `/payment-requests`;
                 const queryParams = [];
 
@@ -220,9 +236,11 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                 const res = response.data;
                 setHistoryTableData(res.data);
                 setHistoryPaginatedData(res.data.slice(0, itemsPerPage))
+                setHistoryTotal(res.data.length);
+                setHistoryTotalPage(Math.ceil(res.data.length / itemsPerPage));
                 setLoading(false);
             }
-            catch(error){
+            catch (error) {
                 console.log(error);
 
                 const errorMessage =
@@ -241,11 +259,19 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
 
         handleFetchEvents();
         handleFetchPaymentHistory();
-    }, [toast]);
+    }, [toast, currentPage]);
 
-    if(loading) return (
-        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem"}}>
-            <Spinner/>
+    useEffect(() => {
+        setHistoryPaginatedData(
+            historyTableData.slice(
+                hStartIndex, hEndIndex
+            )
+        )
+    }, [histCurrentPage])
+
+    if (loading) return (
+        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem" }}>
+            <Spinner />
             Fetching Revenue data Hang on
         </div>
     )
@@ -340,9 +366,9 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                         setSelectedFilterIndex(i);
                                         handleFilterByStatus(filter.filter);
                                     }}
-                                    style={{textTransform: "capitalize"}}
+                                    style={{ textTransform: "capitalize" }}
                                 >
-                                    {filter.filter === "ongoing_event"? "On Going": filter.filter === "failed_request"? "Failed Requests": filter.filter}{" "}
+                                    {filter.filter === "ongoing_event" ? "On Going" : filter.filter === "failed_request" ? "Failed Requests" : filter.filter}{" "}
                                     {selectedFilterIndex === i && <Check />}
                                 </MenuItem>
                             ))}
@@ -379,11 +405,11 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                             color="gray.700"
                         >
                             {(paginatedData.length === 0 && search === "") ||
-                            (paginatedData.length === 0 && search !== "")
+                                (paginatedData.length === 0 && search !== "")
                                 ? "No events"
                                 : search !== ""
-                                ? `${paginatedData.length} events`
-                                : `${revenueTableData.length} events`}
+                                    ? `${paginatedData.length} events`
+                                    : `${revenueTableData.length} events`}
                         </Tag>
                     </HStack>
                 ) : (
@@ -414,11 +440,11 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                             color="gray.700"
                         >
                             {(paginatedData.length === 0 && search === "") ||
-                            (paginatedData.length === 0 && search !== "")
+                                (paginatedData.length === 0 && search !== "")
                                 ? "No requests"
                                 : search !== ""
-                                ? `${paginatedData.length} requests`
-                                : `${historyTableData.length} requests`}
+                                    ? `${paginatedData.length} requests`
+                                    : `${historyTableData.length} requests`}
                         </Tag>
                     </HStack>
                 )}
@@ -493,7 +519,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                             color="gray.600"
                                                             fontWeight={500}
                                                         >
-                                                            {td?.amount === null? "₦0": `₦${formatAmount(Number(td.amount))}`}
+                                                            {td?.amount === null ? "₦0" : `₦${formatAmount(Number(td.amount))}`}
                                                         </Td>
                                                         <Td
                                                             color="gray.600"
@@ -505,27 +531,27 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                             <Tag
                                                                 bg={
                                                                     td?.status ===
-                                                                    "ongoing_event"
+                                                                        "ongoing_event"
                                                                         ? "gray.200"
                                                                         : td?.status ===
-                                                                          "remitted"
-                                                                        ? "green.100"
-                                                                        : td?.status ===
-                                                                          "due"
-                                                                        ? "blue.100"
-                                                                        : "red.100"
+                                                                            "remitted"
+                                                                            ? "green.100"
+                                                                            : td?.status ===
+                                                                                "due"
+                                                                                ? "blue.100"
+                                                                                : "red.100"
                                                                 }
                                                                 color={
                                                                     td?.status ===
-                                                                    "ongoing_event"
+                                                                        "ongoing_event"
                                                                         ? "gray.700"
                                                                         : td?.status ===
-                                                                          "remitted"
-                                                                        ? "green.500"
-                                                                        : td?.status ===
-                                                                          "due"
-                                                                        ? "blue.400"
-                                                                        : "red.400"
+                                                                            "remitted"
+                                                                            ? "green.500"
+                                                                            : td?.status ===
+                                                                                "due"
+                                                                                ? "blue.400"
+                                                                                : "red.400"
                                                                 }
                                                                 borderRadius={
                                                                     16
@@ -535,7 +561,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 fontWeight={500}
                                                                 fontSize={12}
                                                             >
-                                                                {td?.status === "ongoing_event"? "On Going": td?.status === "remitted"? "Remitted": td.status === "due"? "Due": "Unavailable"}
+                                                                {td?.status === "ongoing_event" ? "On Going" : td?.status === "remitted" ? "Remitted" : td.status === "due" ? "Due" : "Unavailable"}
                                                             </Tag>
                                                         </Td>
                                                     </Tr>
@@ -614,7 +640,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 color="gray.600"
                                                                 fontWeight={500}
                                                             >
-                                                                {td?.revenue?.amount === null? "0": td?.revenue?.amount}
+                                                                {td?.revenue?.amount === null ? "0" : td?.revenue?.amount}
                                                             </Td>
                                                             <Td
                                                                 color="gray.600"
@@ -628,7 +654,7 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                 textAlign={"center"}
                                                             >
                                                                 {
-                                                                    td?.date_remitted === null? "-": formatDate(td.date_remitted)
+                                                                    td?.date_remitted === null ? "-" : formatDate(td.date_remitted)
                                                                 }
                                                             </Td>
                                                             <Td>
@@ -636,23 +662,23 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                                                                     bg={
                                                                         td?.status ===
                                                                             "created"
-                                                                            ? "gray.200":
-                                                                            td?.status === "processing"? "blue.100"
-                                                                            : td?.status ===
-                                                                              "remitted"
-                                                                            ? "green.100"
-                                                                            : "red.100"
+                                                                            ? "gray.200" :
+                                                                            td?.status === "processing" ? "blue.100"
+                                                                                : td?.status ===
+                                                                                    "remitted"
+                                                                                    ? "green.100"
+                                                                                    : "red.100"
                                                                     }
                                                                     color={
                                                                         td?.status ===
-                                                                        "created"
+                                                                            "created"
                                                                             ? "gray.700"
                                                                             :
-                                                                            td?.status === "processing" ? "blue.700":
-                                                                            td?.status ===
-                                                                              "remitted"
-                                                                            ? "green.500"
-                                                                            : "red.400"
+                                                                            td?.status === "processing" ? "blue.700" :
+                                                                                td?.status ===
+                                                                                    "remitted"
+                                                                                    ? "green.500"
+                                                                                    : "red.400"
                                                                     }
                                                                     borderRadius={
                                                                         16
@@ -756,12 +782,13 @@ const RevenueTable = ({viewHistory, setViewHistory}) => {
                             previousLabel={"Prev"}
                             nextLabel={"Next"}
                             breakLabel={"..."}
-                            pageCount={totalPages}
+                            pageCount={!viewHistory ? totalPages : historyTotalPage}
                             marginPagesDisplayed={2}
                             pageRangeDisplayed={5}
-                            onPageChange={handlePageChange}
+                            onPageChange={!viewHistory ? handlePageChange : handleHistPageChange}
                             containerClassName={"pagination"}
                             subContainerClassName={"pages pagination"}
+                            disabledClassName={"disabled"}
                             activeClassName={"active"}
                         />
                     </Box>

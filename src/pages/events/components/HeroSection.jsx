@@ -156,7 +156,7 @@ const HeroSection = () => {
                           leftIcon={<SearchWhite />}
                           className="searchbar"
                           variant="primary"
-                          style={{ height: "56px",  display: "flex", justifyItems: "center", alignItems: "center", width: "100%"}}
+                          style={{ height: "56px",  display: "flex", justifyItems: "center", alignItems: "center", width: "25%"}}
                           onClick={handleButtonClick}
                         >
                           Search

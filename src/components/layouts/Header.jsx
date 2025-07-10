@@ -23,7 +23,7 @@ import {
   MenuDivider,
 } from "@chakra-ui/react";
 import Container from "../ui/Container";
-import BrandLogo from "../../assets/img/brandLogo.png";
+import BrandLogo from "../../assets/img/brand.svg";
 import Hamburger from "../../assets/icon/Hamburger.svg";
 import Search from "../../assets/icon/Search.svg";
 import { Link } from "react-router-dom";
@@ -49,6 +49,8 @@ const Header = () => {
   const user = useSelector(selectActiveUser);
   const { getAccessToken } = useStorage();
   const token = getAccessToken();
+
+  console.log(BrandLogo)
 
   const {
     isOpen: isOpenModal,
@@ -82,7 +84,7 @@ const Header = () => {
             w="full"
           >
             <Link to="/">
-              <Image w="full" src={BrandLogo} alt="logo" />
+              <BrandLogo style={{ width: "100%" }} />
             </Link>
             <Box maxW="860px" w="full" display={["none", null, "block"]}>
               <HStack spacing={6} justifyContent="end">
