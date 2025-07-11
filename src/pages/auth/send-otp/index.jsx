@@ -14,7 +14,7 @@ import { setActiveUser } from "../../../features/activeUserSlice";
 
 const CreateAccountPage = () => {
     const location = useLocation();
-    const { value, token } = location.state || {};
+    const { value } = location.state || {};
     const navigate = useNavigate();
     const { setAccessToken } = useStorage();
     const dispatch = useDispatch();
@@ -64,22 +64,29 @@ const CreateAccountPage = () => {
                 const verifyOTPResponse = await authApi.post("/verify_otp", {
                     email: value,
                     otp: otp,
-                    kind: "verify",
+                    kind: "verify_and_login",
                 });
-                const userData = await teeketApi.get("/user/profile", {
-                    headers: {
-                         Authorization: `Bearer ${token}`
-                    }
-                })
-                if (verifyOTPResponse.status === 200) {
-                    console.log(verifyOTPResponse);
-                    dispatch(setActiveUser(userData.data));
-                    if (!userData.data.is_creator) {
-                        navigate("/events");
-                      } else {
-                        navigate("/app/overview");
-                    }
+                console.log("OTP RES", verifyOTPResponse)
+                if(verifyOTPResponse.detail = ""){
+
                 }
+                else{
+                    
+                }
+                // const userData = await teeketApi.get("/user/profile", {
+                //     headers: {
+                //          Authorization: `Bearer ${token}`
+                //     }
+                // })
+                // if (verifyOTPResponse.status === 200) {
+                //     console.log(verifyOTPResponse);
+                //     dispatch(setActiveUser(userData.data));
+                //     if (!userData.data.is_creator) {
+                //         navigate("/events");
+                //       } else {
+                //         navigate("/app/overview");
+                //     }
+                // }
             } catch (err) {
                 setOtpError(true);
             }
@@ -89,10 +96,11 @@ const CreateAccountPage = () => {
     useEffect(() => {
         if (!value) {
             navigate("auth/create-account");
-        } else {
-            setAccessToken(token);
-        }
-    }, [navigate, setAccessToken, token, value]);
+        } 
+        // else {
+        //     setAccessToken(token);
+        // }
+    }, [navigate, setAccessToken, value]);
 
     const handlePaste = (e) => {
         const pastedValue = e.clipboardData.getData("text");

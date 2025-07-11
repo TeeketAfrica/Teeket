@@ -49,22 +49,24 @@ const CreateAccountForm = () => {
         const response = await authApi.post("/signup", {
           email: values.email,
           password: values.password,
-        });
+        }, { nullAuth: true});
 
-        const token = response.data.access_token;
+        const res = response.data;
 
-        if (token) {
+        console.log("created", res)
+
+        if (res.success) {
           try {
             const sendOTP = await authApi.post("/send_otp", {
               email: values.email,
-              kind: "verify",
+              kind: "verify_and_login",
             });
             console.log(sendOTP);
             if (sendOTP.status === 200) {
               dispatch(setUserDetails(values));
 
               navigate("/auth/send-otp", {
-                state: { value: values.email, token: token },
+                state: { value: values.email },
               });
               // navigate("/app/overview");
             }

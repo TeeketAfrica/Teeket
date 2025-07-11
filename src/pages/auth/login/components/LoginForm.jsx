@@ -44,44 +44,68 @@ const LoginForm = () => {
           email: values.email,
           password: values.password,
         });
-        const access_token = response.data.access_token;
-        const refresh_token = response.data.refresh_token;
-        // const userData = response2.data;
 
-        if (access_token) {
-          // set the refresh token and access token to cookie storage
-          setAccessToken(access_token);
-          setRefreshToken(refresh_token);
-          const response2 = await teeketApi.get("/user/profile", {
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-          })
+        console.log("res", response)
+        // const access_token = response.data.access_token;
+        // const refresh_token = response.data.refresh_token;
+        // // const userData = response2.data;
 
-          dispatch(setUserDetails(values));
-          dispatch(setActiveUser(response2.data));
+        // if (access_token) {
+        //   // set the refresh token and access token to cookie storage
+        //   setAccessToken(access_token);
+        //   setRefreshToken(refresh_token);
+        //   const response2 = await teeketApi.get("/user/profile", {
+        //     headers: {
+        //         Authorization: `Bearer ${access_token}`
+        //     }
+        //   })
+
+        //   dispatch(setUserDetails(values));
+        //   dispatch(setActiveUser(response2.data));
 
 
-          const path = sessionStorage.getItem("REDIRECT");
-          if (path) {
-            sessionStorage.removeItem("REDIRECT");
-            navigate(path);
-          }
+        //   const path = sessionStorage.getItem("REDIRECT");
+        //   if (path) {
+        //     sessionStorage.removeItem("REDIRECT");
+        //     navigate(path);
+        //   }
 
-          if (!activeUser?.is_creator) {
-            navigate("/events");
-          } else {
-            navigate("/app/overview");
-          }
-        }
+        //   if (!activeUser?.is_creator) {
+        //     navigate("/events");
+        //   } else {
+        //     navigate("/app/overview");
+        //   }
+        // }
       } catch (err) {
-        if (err.message == "Network Error") {
+
+        if (err.response.data.message == "Network Error") {
           console.log("sad", err)
           alert("Check your internet connection!.");
-        } else {
-          setError("Invalid username or password");
         }
-        console.log("Failed to login", err.message);
+        else if (err.response.data.message === "User is not verified") {
+          try {
+            const sendOTP = await authApi.post("/send_otp", {
+              email: values.email,
+              kind: "verify_and_login",
+            });
+            console.log(sendOTP);
+            if (sendOTP.status === 200) {
+              dispatch(setUserDetails(values));
+
+              navigate("/auth/send-otp", {
+                state: { value: values.email },
+              });
+              // navigate("/app/overview");
+            }
+          }
+          catch (err) {
+            console.log(err)
+          }
+        }
+        else {
+          setError("Invalid username or password");
+          console.log("Failed to login", err.response.data.message);
+        }
       }
     },
   });
