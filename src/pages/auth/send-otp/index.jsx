@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Button, Input, Text } from "@chakra-ui/react";
+import { Button, Input, Text, useToast } from "@chakra-ui/react";
 import { Box, HStack } from "@chakra-ui/layout";
 import AuthLayout from "../../../components/auth/AuthLayout";
 import AuthHeader from "../../../components/auth/AuthHeader";
@@ -18,6 +18,9 @@ const CreateAccountPage = () => {
     const navigate = useNavigate();
     const { setAccessToken } = useStorage();
     const dispatch = useDispatch();
+    const toast = useToast();
+    let access
+    let refresh
 
     const formatEmail = value && maskEmail(value);
 
@@ -67,28 +70,43 @@ const CreateAccountPage = () => {
                     kind: "verify_and_login",
                 });
                 console.log("OTP RES", verifyOTPResponse)
-                if(verifyOTPResponse.detail = ""){
-
+                if (verifyOTPResponse.status = 200 && verifyOTPResponse.data.status) {
+                    access = verifyOTPResponse.data.access_token
+                    refresh = verifyOTPResponse.data.refresh_token
                 }
-                else{
-                    
+                else {
+                    console.log("OTP token error", verifyOTPResponse.data)
+                    toast({
+                        title: "Error validating OTP",
+                        description: `${verifyOTPResponse.data.detail}`,
+                        status: "error",
+                        duration: 5000,
+                        position: "top-right",
+                        isClosable: true,
+                    });
+                    return;
                 }
-                // const userData = await teeketApi.get("/user/profile", {
-                //     headers: {
-                //          Authorization: `Bearer ${token}`
-                //     }
-                // })
-                // if (verifyOTPResponse.status === 200) {
-                //     console.log(verifyOTPResponse);
-                //     dispatch(setActiveUser(userData.data));
-                //     if (!userData.data.is_creator) {
-                //         navigate("/events");
-                //       } else {
-                //         navigate("/app/overview");
-                //     }
-                // }
+                const userData = await teeketApi.get("/user/profile", {
+                    headers: {
+                        Authorization: `Bearer ${access}`
+                    }
+                })
+                dispatch(setActiveUser(userData.data));
+                if (!userData.data.is_creator) {
+                    navigate("/events");
+                } else {
+                    navigate("/app/overview");
+                }
             } catch (err) {
                 setOtpError(true);
+                toast({
+                    title: "Error validating OTP",
+                    description: `${err}`,
+                    status: "error",
+                    duration: 5000,
+                    position: "top-right",
+                    isClosable: true,
+                });
             }
         },
     });
@@ -96,7 +114,7 @@ const CreateAccountPage = () => {
     useEffect(() => {
         if (!value) {
             navigate("auth/create-account");
-        } 
+        }
         // else {
         //     setAccessToken(token);
         // }

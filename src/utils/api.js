@@ -54,7 +54,7 @@ export const createApiInstance = (
     async (error) => {
       const originalRequest = error.config;
 
-      const isAuthRoute = originalRequest.url.includes("/login") || originalRequest.url.includes("/register");
+      const isAuthRoute = originalRequest.url.includes("/login") || originalRequest.url.includes("/signup") || originalRequest.url.includes("/send_otp");
 
       if (error.response.status === 401 && !originalRequest._retry && !isAuthRoute) {
         if (isRefreshing) {

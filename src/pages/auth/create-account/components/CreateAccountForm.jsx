@@ -85,7 +85,7 @@ const CreateAccountForm = () => {
         console.log("Error creating user", err);
         toast({
           title: "Error creating user",
-          description: err.response.data.message === "Validation Error"? "Account already exists": err.response.data.message,
+          description: err.response.data.message,
           status: "error",
           duration: 5000,
           position: "top-right",
