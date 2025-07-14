@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Container from "../../components/ui/Container";
-import { Box, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, Link, Stack, Text, VStack } from "@chakra-ui/react";
 import WarningIcon from "../../assets/icon/Warning.svg";
 import { EventGetTicketHeader } from "../create-event/components/EventGetTicketHeader";
 import { EventGetTicketSummaryBox } from "../create-event/components/EventGetTicketSummaryBox";
@@ -10,6 +10,9 @@ import { YourDetailsStep } from "../create-event/components/EventGetTicketSteps/
 import Payment from "../create-event/components/EventGetTicketSteps/Payment";
 import Footer from "../../components/layouts/Footer";
 import { selectActiveUser } from "../../features/activeUserSlice";
+import { SOCIAL_LINKS } from "../../utils/constants";
+import Policies from "../../components/shared/Policies";
+import LogoBlack from "@/assets/icon/LogoBlack.svg";
 
 const EventGetTicket = () => {
     const { ticketStep, eventData, paid } = useSelector((state) => state.event);
@@ -135,7 +138,48 @@ const EventGetTicket = () => {
                         </Box>
                 </VStack>
             )}
-            <Footer />
+            <footer>
+                  <Container padding="16px">
+                    <Box py="64px" borderTop={"1px solid"} borderColor="gray.300">
+                      <Stack
+                        direction={["column", "row"]}
+                        justifyContent="space-between"
+                        gap="24px"
+                        alignItems="center"
+                        mb="64px"
+                      >
+            
+                      </Stack>
+                      <Stack
+                        direction={["column", "row"]}
+                        bgColor="gray.200"
+                        borderRadius="10px"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        gap="32px"
+                        py="28px"
+                        px="32px"
+                      >
+                        <HStack spacing={6}>
+                          {SOCIAL_LINKS.map(({ link, icon: Icon }, i) => (
+                            <Link key={i} href={link} target="_blank">
+                              <Icon />
+                            </Link>
+                          ))}
+                        </HStack>
+                        <VStack>
+                          <Text fontSize="sm">
+                            © {new Date().getFullYear()} Teeket Africa. All rights reserved.
+                          </Text>
+                          <Policies />
+                        </VStack>
+                        <Link href="/">
+                          <LogoBlack />
+                        </Link>
+                      </Stack>
+                    </Box>
+                  </Container>
+                </footer>
         </Container>
     );
 };

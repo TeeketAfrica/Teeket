@@ -1,4 +1,4 @@
-import { Html5Qrcode } from "html5-qrcode";
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
@@ -69,18 +69,29 @@ const ScanToAttend = () => {
       alert("Failed to start camera. Please check permissions.");
       setIsScanning(false);
     }
+
+    return () => {
+      // Clean up scanner when component unmounts
+      if (html5QrCodeRef.current) {
+        html5QrCodeRef.current.stop().then(() => {
+          html5QrCodeRef.current.clear();
+          html5QrCodeRef.current = null;
+          setIsScanning(false);
+        }).catch((err) => {
+          console.error("Error cleaning up QR scanner:", err);
+        });
+      }
+    };
   };
 
   const stopScanner = () => {
-    if (html5QrCodeRef.current && isScanning) {
-      html5QrCodeRef.current
-        .stop()
-        .then(() => {
-          html5QrCodeRef.current?.clear();
-          setIsScanning(false);
-        })
-        .catch((err) => console.error("Error stopping scanner:", err));
-    }
+    html5QrCodeRef.current
+      .stop()
+      .then(() => {
+        html5QrCodeRef.current?.clear();
+        setIsScanning(false);
+      })
+      .catch((err) => console.error("Error stopping scanner:", err));
   };
 
   const handleVerifyOrder = async () => {
@@ -96,8 +107,7 @@ const ScanToAttend = () => {
       navigate(`/app/preview-scanned/${id}`);
     } catch (error) {
       navigate(
-        `/app/preview-scanned/${
-          error.response?.data?.message || "An error occurred"
+        `/app/preview-scanned/${error.response?.data?.message || "An error occurred"
         }`
       );
     }
@@ -126,16 +136,21 @@ const ScanToAttend = () => {
             Position the QR code within the frame to scan
           </Text>
 
-          {fileImageUrl ? (
-            <Box
-              width="100%"
-              minH="300px"
-              borderWidth={2}
-              borderColor="green.500"
-              borderRadius="md"
-              overflow="hidden"
-              bg="gray.100"
-            >
+          <Box
+            id="qr-reader"
+            width="100%"
+            minH="300px"
+            borderWidth={2}
+            borderColor={fileImageUrl ? "green.500" : isScanning ? "blue.500" : "gray.500"}
+            borderRadius="md"
+            overflow="hidden"
+            bg="gray.100"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            position="relative"
+          >
+            {fileImageUrl ? (
               <img
                 src={fileImageUrl.objectUrl}
                 alt="Uploaded QR"
@@ -145,24 +160,10 @@ const ScanToAttend = () => {
                   maxHeight: "300px",
                 }}
               />
-            </Box>
-          ) : (
-            <Box
-              id="qr-reader"
-              width="100%"
-              borderWidth={2}
-              borderColor={isScanning ? "blue.500" : "gray.500"}
-              borderRadius="md"
-              overflow="hidden"
-              minH="300px"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              bg="gray.100"
-              position="relative"
-            />
-          )}
+            ) : null}
+          </Box>
 
+          {/* Camera Selector (only when not using file) */}
           {!fileImageUrl && cameras.length > 0 && (
             <Box w="100%">
               <Text mb={1}>Select Camera</Text>
@@ -179,55 +180,10 @@ const ScanToAttend = () => {
             </Box>
           )}
 
+          {/* Button Controls */}
           <VStack w="100%" spacing={4}>
-            {!fileImageUrl &&
-              (!isScanning ? (
-                <Button
-                  onClick={startScanner}
-                  variant="primary"
-                  colorScheme="blue"
-                  w="100%"
-                  size="lg"
-                >
-                  Start Scanning
-                </Button>
-              ) : (
-                <Button
-                  onClick={stopScanner}
-                  variant="outline"
-                  colorScheme="red"
-                  w="100%"
-                  size="lg"
-                >
-                  Stop Scanning
-                </Button>
-              ))}
-
-            {!fileImageUrl ? (
-              <Button
-                as="label"
-                variant="secondary"
-                w="100%"
-                size="lg"
-                cursor="pointer"
-              >
-                <input
-                  type="file"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      setFileImageUrl({
-                        file: file,
-                        objectUrl: URL.createObjectURL(file),
-                      });
-                    }
-                  }}
-                />
-                Scan from Image
-              </Button>
-            ) : (
+            {/* If an image is uploaded, show Scan/Clear buttons */}
+            {fileImageUrl ? (
               <>
                 <Button
                   variant="solid"
@@ -240,11 +196,15 @@ const ScanToAttend = () => {
                       try {
                         const decodedText = await qr.scanFile(
                           fileImageUrl.file,
-                          true
+                          true,
+                          {
+                            formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+                          }
                         );
                         setScanResult(decodedText);
                       } catch (err) {
                         console.error("File scan failed:", err);
+                        setFileImageUrl(null);
                         alert("Unable to detect QR code in image.");
                       } finally {
                         qr.clear();
@@ -258,15 +218,68 @@ const ScanToAttend = () => {
                   variant="outline"
                   colorScheme="gray"
                   size="lg"
-                  onClick={() => setFileImageUrl(null)}
+                  onClick={() => {setFileImageUrl(null)}}
                   w="100%"
                 >
                   Clear Uploaded Image
                 </Button>
               </>
+            ) : (
+              <>
+                {!isScanning ? (
+                  <Button
+                    onClick={startScanner}
+                    variant="primary"
+                    colorScheme="blue"
+                    w="100%"
+                    size="lg"
+                  >
+                    Start Scanning
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={stopScanner}
+                    variant="outline"
+                    colorScheme="red"
+                    w="100%"
+                    size="lg"
+                  >
+                    Stop Scanning
+                  </Button>
+                )}
+
+                {/* Scan from image file input */}
+                <Button
+                  as="label"
+                  variant="secondary"
+                  w="100%"
+                  size="lg"
+                  cursor="pointer"
+                  onClick={stopScanner}
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setFileImageUrl({
+                          file,
+                          objectUrl: URL.createObjectURL(file),
+                        });
+                      } else {
+                        setFileImageUrl(null);
+                      }
+                    }}
+                  />
+                  Scan from Image
+                </Button>
+              </>
             )}
           </VStack>
 
+          {/* Hidden element for scanFile() container */}
           <div id="qr-reader-file" style={{ display: "none" }} />
         </VStack>
       )}

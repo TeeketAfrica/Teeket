@@ -6,13 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { authApi } from "@/utils/api";
 import { setUserDetails } from "@/features/userSlice";
 import { Stack } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import PasswordInput from "@/components/shared/PasswordInput";
 import { useStorage } from "@/utils/storage";
 import { selectActiveUser } from "@/features/activeUserSlice";
 import TextInput from "@/components/shared/TextInput";
 import { setActiveUser } from "../../../../features/activeUserSlice";
-import useGetSelf from "../../../../hooks/useGetSelf";
 import { teeketApi } from "../../../../utils/api";
 
 const LoginForm = () => {
@@ -20,6 +19,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const activeUser = useSelector(selectActiveUser);
   const { setAccessToken, setRefreshToken } = useStorage();
+  const toast = useToast();
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -44,6 +44,8 @@ const LoginForm = () => {
           email: values.email,
           password: values.password,
         });
+
+        console.log("res", response)
         const access_token = response.data.access_token;
         const refresh_token = response.data.refresh_token;
         // const userData = response2.data;
@@ -75,13 +77,52 @@ const LoginForm = () => {
           }
         }
       } catch (err) {
-        if (err.message == "Network Error") {
+
+        if (err.response.data.message == "Network Error") {
           console.log("sad", err)
           alert("Check your internet connection!.");
-        } else {
-          setError("Invalid username or password");
         }
-        console.log("Failed to login", err.message);
+        else if (err.response.data.message === "User is not verified") {
+          try {
+            const sendOTP = await authApi.post("/send_otp", {
+              email: values.email,
+              kind: "verify_and_login",
+            });
+            console.log(sendOTP);
+            if (sendOTP.status === 200) {
+              dispatch(setUserDetails(values));
+
+              navigate("/auth/send-otp", {
+                state: { value: values.email },
+              });
+              // navigate("/app/overview");
+            }
+          }
+          catch (err) {
+            console.log(err)
+            toast({
+              title: "Error sending otp",
+              description: `${err.response.data.message}`,
+              status: "error",
+              duration: 5000,
+              position: "top-right",
+              isClosable: true,
+            })
+
+          }
+        }
+        else {
+          setError("Invalid username or password");
+          console.log("Failed to login", err.response.data.message);
+          toast({
+            title: "Error login in",
+            description: `${err.response.data.message}`,
+            status: "error",
+            duration: 5000,
+            position: "top-right",
+            isClosable: true,
+          });
+        }
       }
     },
   });

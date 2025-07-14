@@ -54,7 +54,9 @@ export const createApiInstance = (
     async (error) => {
       const originalRequest = error.config;
 
-      if (error.response.status === 401 && !originalRequest._retry) {
+      const isAuthRoute = originalRequest.url.includes("/login") || originalRequest.url.includes("/signup") || originalRequest.url.includes("/send_otp");
+
+      if (error.response.status === 401 && !originalRequest._retry && !isAuthRoute) {
         if (isRefreshing) {
           // If a refresh is already in process, queue the request
           return new Promise((resolve, reject) => {

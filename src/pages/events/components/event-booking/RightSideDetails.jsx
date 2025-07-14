@@ -11,6 +11,7 @@ import {
   Tooltip,
   useBreakpointValue,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import GPSIcon from "../../../../assets/icon/Gps.svg";
@@ -29,6 +30,7 @@ import { useEffect, useState } from "react";
 import { getBookingMessage } from "../../../../utils/formatAttendees";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import useStorage from "../../../../utils/storage";
+import { shareLink } from "../../../../utils/utils";
 
 const RightSIdeDetails = ({ event, isRegistered, location }) => {
   const dispatch = useDispatch();
@@ -39,14 +41,15 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
   const { getAccessToken } = useStorage();
   const token = getAccessToken();
   const showTooltip = useBreakpointValue({ base: false, md: true });
+  const toast = useToast();
 
-  useEffect(()=>{
-    if(isRegistered.is_creator === null || token === null){
+  useEffect(() => {
+    if (isRegistered.is_creator === null || token === null) {
       setActive(false);
-    }else{
+    } else {
       setActive(true);
     }
-  },[token, isRegistered])
+  }, [token, isRegistered]);
 
   useEffect(() => {
     const fetchAttendees = async () => {
@@ -64,7 +67,7 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
     }
   }, [event?.id, active]);
 
-  console.log(event)
+  console.log(event);
   let attendeesQuantity;
 
   eventAttendees && active
@@ -74,6 +77,18 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
   const getTicket = () => {
     dispatch(changeTicketStep(1));
     dispatch(resetEventTicketBooking());
+  };
+
+  const shareEvent = () => {
+    const shareUrl = `${window.location.origin}/event-booking/${event?.id}`;
+    const shareText = `Check out this event: ${event?.title} - ${event?.description}`;
+    const shareTitle = event?.title || "Teeket Event";
+
+    shareLink({
+      url: shareUrl,
+      title: shareTitle,
+      text: shareText,
+    });
   };
   return (
     <VStack width={{ base: "100%", lg: "40%" }} gap="6" alignItems="flex-start">
@@ -85,13 +100,23 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
           {active && (
             <DetailCard
               icon={LightingOutlineIcon}
-              title={event.status === "on_going"? "This event is trending": event.status === "coming_soon"? "This event is coming soon": "This event has passed"}
-              subTitle={event.status === "on_going"||event.status === "coming_soon"? "Hurry up and get your tickets": ""}
+              title={
+                event.status === "on_going"
+                  ? "This event is trending"
+                  : event.status === "coming_soon"
+                    ? "This event is coming soon"
+                    : "This event has passed"
+              }
+              subTitle={
+                event.status === "on_going" || event.status === "coming_soon"
+                  ? "Hurry up and get your tickets"
+                  : ""
+              }
             />
           )}
 
           <HStack gap="10px" alignItems="center">
-            {event.status !== "past_event" || eventAttendees && (
+            {eventAttendees && (
               <AvatarGroup size="sm" max={3}>
                 {eventAttendees.slice(0, 3).map((attendees, i) => (
                   <Avatar
@@ -118,20 +143,33 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
               subTitle={`Regular - ₦${Number(event?.lowest_ticket_price)}`}
             />
           )}
-          {
-            event.status !== "past_event" &&
-            <Link to={`/event-booking/${event?.id}/get-ticket`}>
+          {event.status !== "past_event" && (
+            <VStack width="100%" gap="10px" alignItems="center">
+              <Link
+                to={`/event-booking/${event?.id}/get-ticket`}
+                style={{ width: "100%" }}
+              >
+                <Button
+                  variant="primary"
+                  size="lg"
+                  width="100%"
+                  onClick={getTicket}
+                >
+                  Get Your Ticket
+                </Button>
+              </Link>
               <Button
-                variant="primary"
+                variant="outline"
+                border="1px solid"
+                borderColor="gray.300"
                 size="lg"
                 width="100%"
-                onClick={getTicket}
+                onClick={shareEvent}
               >
-                Get Your Ticket
+                Share
               </Button>
-            </Link>            
-          }
-
+            </VStack>
+          )}
         </VStack>
       </BoxFrame>
       <BoxFrame paddingX="24px" paddingY="24px">
@@ -172,8 +210,8 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
           </HStack>
           <Divider borderColor="gray.300" borderWidth="1px" />
           <Text fontSize="sm" lineHeight="5" color="gray.500">
-            Teeket the best african event marketing platform, building and creating experiences
-            for enthusiats.
+            Teeket the best african event marketing platform, building and
+            creating experiences for enthusiats.
           </Text>
         </VStack>
       </BoxFrame>

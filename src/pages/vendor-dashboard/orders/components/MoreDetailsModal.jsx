@@ -11,7 +11,7 @@ import {
   Image,
   Divider,
   Container,
-      Avatar,
+  Avatar,
   Tag,
 } from "@chakra-ui/react";
 import Calendar from "../../../../assets/icon/calendar-alt-dark.svg";
@@ -22,13 +22,15 @@ import { useEffect, useState } from "react";
 
 const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
 
-const [result, setResult] = useState({date:'', time:''});
+  const [result, setResult] = useState({ date: '', time: '' });
 
-  useEffect(()=>{
-    if( selectedItem?.event.start_date && selectedItem?.event.end_date){
+  console.log(selectedItem)
+
+  useEffect(() => {
+    if (selectedItem?.event.start_date && selectedItem?.event.end_date) {
       setResult(formatEventDateRange({
-          start_date: selectedItem?.event.start_date,
-          end_date: selectedItem?.event.end_date
+        start_date: selectedItem?.event.start_date,
+        end_date: selectedItem?.event.end_date
       }))
     }
   }, [selectedItem])
@@ -46,12 +48,12 @@ const [result, setResult] = useState({date:'', time:''});
           <ModalHeader p={0}>
             <HStack gap="11px">
               <Avatar
-                   border="1px solid"
-                   borderColor="gray.800"
-                   color="gray.800"
-                   name={selectedItem.attendeeName || selectedItem.attendee.first_name}
-                   src={selectedItem.attendeeAvatar || selectedItem.attendee.profile_image}
-                   bgColor="transparent"
+                border="1px solid"
+                borderColor="gray.800"
+                color="gray.800"
+                name={selectedItem.attendeeName || selectedItem.attendee.first_name}
+                src={selectedItem.attendeeAvatar || selectedItem.attendee.profile_image}
+                bgColor="transparent"
               />
               {/* <Image
                 src={selectedItem.attendeeAvatar || selectedItem.attendee.profile_image}
@@ -111,7 +113,7 @@ const [result, setResult] = useState({date:'', time:''});
                     {selectedItem.ticketType || selectedItem.event.type} ticket
                   </Text>
                   <Text fontWeight={700} color="white" fontSize={20}>
-                    {selectedItem.eventTitle||selectedItem.event.title}
+                    {selectedItem.eventTitle || selectedItem.event.title}
                   </Text>
                   <Container maxW="300px" px={0} mx={0}>
                     <Text fontSize={14} color="utilityLight200">
@@ -156,7 +158,7 @@ const [result, setResult] = useState({date:'', time:''});
                     color="white"
                   >
                     <Clock />
-                   {result.time}
+                    {result.time}
                   </Tag>
                 </HStack>
                 <Box>
@@ -168,6 +170,11 @@ const [result, setResult] = useState({date:'', time:''});
               <HStack justifyContent="space-between">
                 <Text fontWeight={500}>Order ID</Text>
                 <Text color="gray.600">{selectedItem.orderId || selectedItem.order_no}</Text>
+              </HStack>
+              <Divider borderColor="gray.300" my={2} />
+              <HStack justifyContent="space-between" my={2}>
+                <Text fontWeight={500}>Ticket Quantity</Text>
+                <Text color="gray.600">{selectedItem.quantity}</Text>
               </HStack>
               <Divider borderColor="gray.300" my={2} />
               <HStack justifyContent="space-between">

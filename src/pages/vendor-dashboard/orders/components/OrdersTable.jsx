@@ -179,7 +179,7 @@ const OrdersTable = () => {
     return (
         <Box px={[4, 8]}>
             <Stack
-                direction={[ "row"]}
+                direction={["column-reverse", null, null, "row"]}
                 justifyContent="space-between"
                 w="100%"
                 spacing="24px"
@@ -238,7 +238,7 @@ const OrdersTable = () => {
                     </MenuList>
                 </Menu>
             </Stack>
-            <Box border="1px" borderColor="gray.300" borderRadius={8} pb={4}>
+            <Box border="1px" borderColor="gray.300" borderRadius={8} pb={4} maxWidth="100%">
                 <HStack px={6} py={5}>
                     {search === "" ? (
                         <Text fontSize={18} fontWeight={600} color="gray.800">
@@ -365,7 +365,7 @@ const OrdersTable = () => {
                                                     color="gray.600"
                                                     fontWeight={500}
                                                 >
-                                                    ₦{formatAmount(Number(td.ticket.price), 0)}
+                                                    ₦{formatAmount(Number(td.ticket.price * td.quantity), 0)}
                                                 </Td>
                                                 <Td
                                                     color="gray.600"
