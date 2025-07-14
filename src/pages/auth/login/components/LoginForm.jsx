@@ -12,7 +12,6 @@ import { useStorage } from "@/utils/storage";
 import { selectActiveUser } from "@/features/activeUserSlice";
 import TextInput from "@/components/shared/TextInput";
 import { setActiveUser } from "../../../../features/activeUserSlice";
-import useGetSelf from "../../../../hooks/useGetSelf";
 import { teeketApi } from "../../../../utils/api";
 
 const LoginForm = () => {

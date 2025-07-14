@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -69,7 +69,6 @@ const CreateAccountPage = () => {
                     otp: otp,
                     kind: "verify_and_login",
                 });
-                console.log("OTP RES", verifyOTPResponse)
                 if (verifyOTPResponse.data.success && verifyOTPResponse.data.message === "passed") {
                     access = verifyOTPResponse.data.data.access_token
                     refresh = verifyOTPResponse.data.data.refresh_token
