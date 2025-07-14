@@ -179,7 +179,7 @@ const OrdersTable = () => {
     return (
         <Box px={[4, 8]}>
             <Stack
-                direction={[ "row"]}
+                direction={["column-reverse", null, null, "row"]}
                 justifyContent="space-between"
                 w="100%"
                 spacing="24px"

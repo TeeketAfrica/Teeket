@@ -6,7 +6,7 @@ const DashboardLayout = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box h="100vh" w="100vw" overflow="hidden">
+    <Box h="100vh" w="100vw" overflowY={"hidden"} overflowX="auto">
       <Stack h="100%" w="100%" direction="row" spacing={0}>
         <SidebarMenu onClose={onClose} isOpen={isOpen} />
         <Box h="100%" w="100%" pb={12}>
