@@ -238,7 +238,7 @@ const OrdersTable = () => {
                     </MenuList>
                 </Menu>
             </Stack>
-            <Box border="1px" borderColor="gray.300" borderRadius={8} pb={4}>
+            <Box border="1px" borderColor="gray.300" borderRadius={8} pb={4} maxWidth="100%">
                 <HStack px={6} py={5}>
                     {search === "" ? (
                         <Text fontSize={18} fontWeight={600} color="gray.800">
