@@ -36,7 +36,7 @@ import PublicRouteWithoutHeader from "./PublicRoutesWithoutHeader";
 
 const publicRoutes = [
   { path: "/", element: HomePage},
-  { path: "/help-and-support", element: HelpAndSupportPage },
+  // { path: "/help-and-support", element: HelpAndSupportPage },
   { path: "/contact", element: ContactPage },
   { path: "/about", element: AboutPage },
   { path: "/events", element: EventsPage },

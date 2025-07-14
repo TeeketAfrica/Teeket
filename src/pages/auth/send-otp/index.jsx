@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Button, Input, Text } from "@chakra-ui/react";
+import { Button, Input, Text, useToast } from "@chakra-ui/react";
 import { Box, HStack } from "@chakra-ui/layout";
 import AuthLayout from "../../../components/auth/AuthLayout";
 import AuthHeader from "../../../components/auth/AuthHeader";
@@ -14,10 +14,13 @@ import { setActiveUser } from "../../../features/activeUserSlice";
 
 const CreateAccountPage = () => {
     const location = useLocation();
-    const { value, token } = location.state || {};
+    const { value } = location.state || {};
     const navigate = useNavigate();
-    const { setAccessToken } = useStorage();
+    const { setAccessToken, setRefreshToken } = useStorage();
     const dispatch = useDispatch();
+    const toast = useToast();
+    let access
+    let refresh
 
     const formatEmail = value && maskEmail(value);
 
@@ -64,35 +67,50 @@ const CreateAccountPage = () => {
                 const verifyOTPResponse = await authApi.post("/verify_otp", {
                     email: value,
                     otp: otp,
-                    kind: "verify",
+                    kind: "verify_and_login",
                 });
+                if (verifyOTPResponse.data.success && verifyOTPResponse.data.message === "passed") {
+                    access = verifyOTPResponse.data.data.access_token
+                    refresh = verifyOTPResponse.data.data.refresh_token
+                    setAccessToken(access);
+                    setRefreshToken(refresh);
+                }
+                else {
+                    console.log("OTP token error", verifyOTPResponse.data)
+                    toast({
+                        title: "Error validating OTP",
+                        description: `${verifyOTPResponse.data.message}`,
+                        status: "error",
+                        duration: 5000,
+                        position: "top-right",
+                        isClosable: true,
+                    });
+                    return;
+                }
                 const userData = await teeketApi.get("/user/profile", {
                     headers: {
-                         Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${access}`
                     }
                 })
-                if (verifyOTPResponse.status === 200) {
-                    console.log(verifyOTPResponse);
-                    dispatch(setActiveUser(userData.data));
-                    if (!userData.data.is_creator) {
-                        navigate("/events");
-                      } else {
-                        navigate("/app/overview");
-                    }
+                dispatch(setActiveUser(userData.data));
+                if (!userData.data.is_creator) {
+                    navigate("/events");
+                } else {
+                    navigate("/app/overview");
                 }
             } catch (err) {
                 setOtpError(true);
+                toast({
+                    title: "Error validating OTP",
+                    description: `${err}`,
+                    status: "error",
+                    duration: 5000,
+                    position: "top-right",
+                    isClosable: true,
+                });
             }
         },
     });
-
-    useEffect(() => {
-        if (!value) {
-            navigate("auth/create-account");
-        } else {
-            setAccessToken(token);
-        }
-    }, [navigate, setAccessToken, token, value]);
 
     const handlePaste = (e) => {
         const pastedValue = e.clipboardData.getData("text");
@@ -122,10 +140,26 @@ const CreateAccountPage = () => {
         try {
             await authApi.post("/send_otp", {
                 email: value,
-                kind: "verify",
+                kind: "verify_and_login",
             });
+            toast({
+                title: "New OTP sent please chack your mail",
+                status: "success",
+                duration: 5000,
+                position: "top-right",
+                isClosable: true,
+            });
+
         } catch (err) {
             console.log("Error encountered while resend OTP", err);
+            toast({
+                title: "Error sending new otp",
+                description: `${err.data.message}`,
+                status: "error",
+                duration: 5000,
+                position: "top-right",
+                isClosable: true,
+            });
         }
 
         setOtpError(false);

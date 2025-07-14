@@ -17,7 +17,7 @@ const PrivateRoute = ({ children }) => {
     // Special case: protect /app/overview to only allow 'creator'
     if (location.pathname === "/app/overview") {
       if (!activeUser?.is_creator) {
-        return <Navigate to="/my-tickets" />;
+        return <Navigate to="/events" />;
       }
     }
 

@@ -6,12 +6,12 @@ import {
   Heading,
   Text,
   VStack,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverBody,
+  // Popover,
+  // PopoverTrigger,
+  // PopoverContent,
+  // PopoverArrow,
+  // PopoverCloseButton,
+  // PopoverBody,
   useDisclosure,
 } from "@chakra-ui/react";
 import TicketBg from "../../../assets/img/TicketBg.png";
@@ -120,18 +120,18 @@ const SingleTicket = ({
             </Box>
             <Divider border="1px dashed" borderColor="gray.400" />
             <HStack w="full">
-              <Popover isOpen={isOpen} onClose={onClose}>
-                <PopoverTrigger>
+              {/* <Popover isOpen={isOpen} onClose={onClose}> */}
+                {/* <PopoverTrigger> */}
                   <Button
-                    leftIcon={<DownloadTicket />}
+                    leftIcon={!downloadingImage && <DownloadTicket />}
                     w="50%"
                     variant="primary"
-                    onClick={onOpen}
+                    onClick={handleDownloadImage}
                   >
-                    Get ticket
+                    {downloadingImage ? "Downloading..." : "Get ticket"}
                   </Button>
-                </PopoverTrigger>
-                <PopoverContent width="fit-content">
+                {/* </PopoverTrigger> */}
+                {/* <PopoverContent width="fit-content">
                   <PopoverArrow />
                   <PopoverCloseButton />
                   <PopoverBody>
@@ -139,15 +139,15 @@ const SingleTicket = ({
                       <Button colorScheme="green" onClick={handleDownloadImage}>
                         {downloadingImage ? "Downloading..." : "Download as Image"}
                       </Button>
-                      {/* <Button colorScheme="teal" onClick={handleDownloadPDF}>
+                      <Button colorScheme="teal" onClick={handleDownloadPDF}>
                         {
                           downloadingPDF ? "Downloading..." : "Download as PDF"
                         }
-                      </Button> */}
+                      </Button>
                     </VStack>
                   </PopoverBody>
-                </PopoverContent>
-              </Popover>
+                </PopoverContent> */}
+              {/* </Popover> */}
 
               <Button
                 w="50%"
