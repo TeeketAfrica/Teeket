@@ -33,15 +33,16 @@ import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./publicRoute";
 import PublicTokenRoute from "./publicRoutes";
 import PublicRouteWithoutHeader from "./PublicRoutesWithoutHeader";
+import RouteLayout from "../components/layouts/RouteLayout";
 
 const publicRoutes = [
-  { path: "/", element: HomePage},
-  // { path: "/help-and-support", element: HelpAndSupportPage },
+  { path: "/", element: HomePage },
+  { path: "/help-and-support", element: HelpAndSupportPage },
   { path: "/contact", element: ContactPage },
   { path: "/about", element: AboutPage },
   { path: "/events", element: EventsPage },
-  { path: "/terms-of-use", element:  Tou},
-  { path: "/privacy-policy", element: privacyPolicy},
+  { path: "/terms-of-use", element: Tou },
+  { path: "/privacy-policy", element: privacyPolicy },
   { path: "/security-policy", element: securityPolicy },
   { path: "/event-category/:type?", element: EventCategoryPage },
   { path: "/account-settings", element: AccountSettingsPage },
@@ -49,7 +50,7 @@ const publicRoutes = [
   { path: "/event-booking/:id?", element: EventBookingPage },
   { path: "/event-booking/:id?/get-ticket", element: EventGetTicket },
 
-  {path: "*", element: NotFound}
+  { path: "*", element: NotFound },
 ];
 
 const privateRoutes = [
@@ -60,13 +61,13 @@ const privateRoutes = [
   { path: "/app/order", element: OrdersDashboardPage },
   { path: "/app/finance", element: FinancesDashboardPage },
   { path: "/app/scan-to-attend", element: ScanToAttend },
-  { path: "/app/preview-scanned/:id?", element:  PreviewScanned},
+  { path: "/app/preview-scanned/:id?", element: PreviewScanned },
   { path: "/account-settings", element: AccountSettingsPage },
   { path: "/my-tickets", element: TicketDashboardPage },
   {
     path: "/app/organization-settings",
     element: OrganizationSettingsDashboardPage,
-  }
+  },
 ];
 
 const publicRoutesWithoutAuth = [
@@ -76,49 +77,53 @@ const publicRoutesWithoutAuth = [
   { path: "/auth/send-otp", element: SendOTPPage },
 ];
 
-
 const publicRoutesWithTokenRedirect = [
   { path: "/auth/login", element: LoginPage },
   { path: "/auth/create-account", element: CreateAccountPage },
 ];
 
 const routes = [
-  ...publicRoutes.map((route) => ({
-    path: route.path,
-    element: (
-      <PublicRoute>
-        <route.element />
-      </PublicRoute>
-    ),
-  })),
-  ...publicRoutesWithoutAuth.map((route) => ({
-    path: route.path,
-    element: (
-      <PublicRouteWithoutHeader>
-        <route.element />
-      </PublicRouteWithoutHeader>
-    ),
-  })),
-  ...privateRoutes.map((route) => ({
-    path: route.path,
-    element: (
-      <PrivateRoute>
-        <route.element />
-      </PrivateRoute>
-    ),
-  })),
-  ...publicRoutesWithTokenRedirect.map((route) => ({
-    path: route.path,
-    element: (
-      <PublicTokenRoute
-        element={
+  {
+    element: <RouteLayout />,
+    children: [
+      ...publicRoutes.map((route) => ({
+        path: route.path,
+        element: (
+          <PublicRoute>
+            <route.element />
+          </PublicRoute>
+        ),
+      })),
+      ...publicRoutesWithoutAuth.map((route) => ({
+        path: route.path,
+        element: (
           <PublicRouteWithoutHeader>
             <route.element />
           </PublicRouteWithoutHeader>
-        }
-      />
-    ),
-  })),
+        ),
+      })),
+      ...privateRoutes.map((route) => ({
+        path: route.path,
+        element: (
+          <PrivateRoute>
+            <route.element />
+          </PrivateRoute>
+        ),
+      })),
+      ...publicRoutesWithTokenRedirect.map((route) => ({
+        path: route.path,
+        element: (
+          <PublicTokenRoute
+            element={
+              <PublicRouteWithoutHeader>
+                <route.element />
+              </PublicRouteWithoutHeader>
+            }
+          />
+        ),
+      })),
+    ],
+  },
 ];
 
 export default routes;
