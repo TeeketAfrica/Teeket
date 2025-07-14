@@ -257,7 +257,7 @@ const HomePage = () => {
                       bottom="-27px"
                       transform="rotate3d(1, 0, 1, -5deg)"
                       height="194px"
-                      border="1px solid"
+                      border={`${data.imageName === "2" || data.imageName === "4"? "0" : "1px solid"}`}
                       borderColor="rgba(20, 23, 20, 0.75)"
                       width="313px"
                       borderRadius="8px"
@@ -266,7 +266,7 @@ const HomePage = () => {
                       <Image
                         src={`/images/${data.imageName}.${data.imageName == "2" || data.imageName == "4" ? "svg": "png"}`}
                         alt="image"
-                        objectFit={"contain"}
+                        objectFit={"cover"}
                       />
                     </Box>
                   </VStack>

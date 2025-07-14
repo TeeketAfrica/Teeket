@@ -16,7 +16,7 @@ const CreateAccountPage = () => {
     const location = useLocation();
     const { value } = location.state || {};
     const navigate = useNavigate();
-    const { setAccessToken } = useStorage();
+    const { setAccessToken, setRefreshToken } = useStorage();
     const dispatch = useDispatch();
     const toast = useToast();
     let access
@@ -70,15 +70,17 @@ const CreateAccountPage = () => {
                     kind: "verify_and_login",
                 });
                 console.log("OTP RES", verifyOTPResponse)
-                if (verifyOTPResponse.status = 200 && verifyOTPResponse.data.status) {
-                    access = verifyOTPResponse.data.access_token
-                    refresh = verifyOTPResponse.data.refresh_token
+                if (verifyOTPResponse.data.success && verifyOTPResponse.data.message === "passed") {
+                    access = verifyOTPResponse.data.data.access_token
+                    refresh = verifyOTPResponse.data.data.refresh_token
+                    setAccessToken(access);
+                    setRefreshToken(refresh);
                 }
                 else {
                     console.log("OTP token error", verifyOTPResponse.data)
                     toast({
                         title: "Error validating OTP",
-                        description: `${verifyOTPResponse.data.detail}`,
+                        description: `${verifyOTPResponse.data.message}`,
                         status: "error",
                         duration: 5000,
                         position: "top-right",
@@ -111,15 +113,6 @@ const CreateAccountPage = () => {
         },
     });
 
-    useEffect(() => {
-        if (!value) {
-            navigate("auth/create-account");
-        }
-        // else {
-        //     setAccessToken(token);
-        // }
-    }, [navigate, setAccessToken, value]);
-
     const handlePaste = (e) => {
         const pastedValue = e.clipboardData.getData("text");
         if (/^\d{6}$/.test(pastedValue)) {
@@ -148,10 +141,26 @@ const CreateAccountPage = () => {
         try {
             await authApi.post("/send_otp", {
                 email: value,
-                kind: "verify",
+                kind: "verify_and_login",
             });
+            toast({
+                title: "New OTP sent please chack your mail",
+                status: "success",
+                duration: 5000,
+                position: "top-right",
+                isClosable: true,
+            });
+
         } catch (err) {
             console.log("Error encountered while resend OTP", err);
+            toast({
+                title: "Error sending new otp",
+                description: `${err.data.message}`,
+                status: "error",
+                duration: 5000,
+                position: "top-right",
+                isClosable: true,
+            });
         }
 
         setOtpError(false);
