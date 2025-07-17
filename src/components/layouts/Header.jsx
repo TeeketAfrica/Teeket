@@ -27,7 +27,7 @@ import BrandLogo from "../../assets/img/brand.svg";
 import Hamburger from "../../assets/icon/Hamburger.svg";
 import Search from "../../assets/icon/Search.svg";
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/activeUserSlice";
 import {

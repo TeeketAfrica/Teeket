@@ -84,7 +84,7 @@ const OrdersTable = () => {
                 const queryParams = [];
 
                 if (search) {
-                    queryParams.push(`search=${search}`);
+                    queryParams.push(`?search=${search}`);
                 }
 
                 if (statusFilter) {
