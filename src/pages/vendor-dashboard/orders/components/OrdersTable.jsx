@@ -58,21 +58,22 @@ const OrdersTable = () => {
     const [totalItems, setTotalItems] = useState(0);
     const [paginatedData, setPaginatedData] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
-    const [isOnline, setIsOnline] = useState(navigator.onLine);
+    const [isOnline, setIsOnline] = useState(true);
     const [search, setSearch] = useState("");
 
     const updateNetworkStatus = () => {
-        setIsOnline(navigator.onLine);
+        setIsOnline(true);
     };
 
     useEffect(() => {
-        window.addEventListener("online", updateNetworkStatus);
-        window.addEventListener("offline", updateNetworkStatus);
+        // window.addEventListener("online", updateNetworkStatus);
+        // window.addEventListener("offline", updateNetworkStatus);
 
-        return () => {
-            window.removeEventListener("online", updateNetworkStatus);
-            window.removeEventListener("offline", updateNetworkStatus);
-        };
+        // return () => {
+        //     window.removeEventListener("online", updateNetworkStatus);
+        //     window.removeEventListener("offline", updateNetworkStatus);
+        // };
+        updateNetworkStatus();
     }, []);
     // FETCH ORDERS
 
