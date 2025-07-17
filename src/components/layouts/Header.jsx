@@ -40,6 +40,7 @@ import {
 import SignOutIcon from "../../assets/icon/sign-out-2.svg";
 import LogoutModal from "../auth/LogoutModal";
 import useStorage from "../../utils/storage";
+import useGetSelf from "../../hooks/useGetSelf";
 
 // import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu";
 
@@ -49,8 +50,11 @@ const Header = () => {
   const user = useSelector(selectActiveUser);
   const { getAccessToken } = useStorage();
   const token = getAccessToken();
+  const handleGetProfile = useGetSelf();
 
-  console.log(BrandLogo)
+  useEffect(() => {
+    handleGetProfile();
+  }, []);
 
   const {
     isOpen: isOpenModal,
