@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Text, useToast, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Text,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import CalendarIcon from "../../../../assets/icon/Calendar.svg";
 import GPSIcon from "../../../../assets/icon/Gps.svg";
 import LightingIcon from "../../../../assets/icon/LightingIcon.svg";
@@ -7,8 +15,9 @@ import { formatDateAndTime } from "../../../../utils/utils";
 import DetailCard from "../DetailCard";
 import EventBadge from "../EventBadge";
 import useStorage from "../../../../utils/storage";
+import { BellRing, Copy, Link } from "lucide-react";
 
-const LeftSideDetails = ({ event, location, user }) => {
+const LeftSideDetails = ({ event, user }) => {
   const startDate = formatDateAndTime(event.start_date, "long");
   const endDate = formatDateAndTime(event.end_date, "long");
   const toast = useToast();
@@ -37,7 +46,7 @@ const LeftSideDetails = ({ event, location, user }) => {
             <EventBadge
               eventBadgeInfo={{
                 badgeTitle: `${event.status?.split("_").join(" ")}`,
-                state: event.status === 'past_event' ? "past" : "trending",
+                state: event.status === "past_event" ? "past" : "trending",
                 icon: LightingIcon,
               }}
             />
@@ -54,7 +63,6 @@ const LeftSideDetails = ({ event, location, user }) => {
         </Box>
         <Flex flexDirection="column" gap="6" marginTop="6">
           <Flex
-            flexDirection={{ base: "column", sm: "row" }}
             gap="2"
             justifyContent="space-between"
             alignItems={{ base: "flex-start", sm: "center" }}
@@ -64,17 +72,27 @@ const LeftSideDetails = ({ event, location, user }) => {
               title={`${startDate.date.day}, ${startDate.date.dayNumber} ${startDate.date.month}`}
               subTitle={`${startDate.time} - ${endDate.time}`}
             />
-            {
-              event.status !== 'past_event' &&
-              <Button variant="secondary" size="sm">
-                Remind me
-              </Button>
-            }
-
+            {event.status !== "past_event" && (
+              <>
+                <Button
+                  variant="secondary"
+                  display={{ base: "none", sm: "block" }}
+                  size="sm"
+                >
+                  Remind me
+                </Button>
+                <Button
+                  variant="secondary"
+                  display={{ base: "block", sm: "none" }}
+                  size="sm"
+                >
+                  <BellRing size={18} />
+                </Button>
+              </>
+            )}
           </Flex>
           {event?.hosting_site === "physical" ? (
             <Flex
-              flexDirection={{ base: "column", sm: "row" }}
               gap="2"
               justifyContent="space-between"
               alignItems={{ base: "flex-start", sm: "center" }}
@@ -84,13 +102,29 @@ const LeftSideDetails = ({ event, location, user }) => {
                 title="Event Address"
                 subTitle={event.event_location}
               />
-              <Button variant="secondary" size="auto" padding={1} onClick={()=>handleCopy(event.event_location)}>
-                Copy Address
-              </Button>
+              <>
+                <Button
+                  variant="secondary"
+                  display={{ base: "none", sm: "block" }}
+                  size="auto"
+                  padding={1}
+                  onClick={() => handleCopy(event.event_location)}
+                >
+                  Copy Address
+                </Button>
+                <Button
+                  variant="secondary"
+                  display={{ base: "block", sm: "none" }}
+                  size="auto"
+                  padding={1}
+                  onClick={() => handleCopy(event.event_location)}
+                >
+                  <Copy size={18} />
+                </Button>
+              </>
             </Flex>
           ) : (
             <Flex
-              flexDirection={{ base: "column", sm: "row" }}
               gap="2"
               justifyContent="space-between"
               alignItems={{ base: "flex-start", sm: "center" }}
@@ -100,9 +134,26 @@ const LeftSideDetails = ({ event, location, user }) => {
                 title="Event Link"
                 subTitle={event.event_link}
               />
-              <Button variant="secondary" size="sm" padding={2} onClick={()=>handleCopy(event.event_link)}>
-                Copy Link
-              </Button>
+              <>
+                <Button
+                  variant="secondary"
+                  display={{ base: "none", sm: "block" }}
+                  size="sm"
+                  padding={2}
+                  onClick={() => handleCopy(event.event_link)}
+                >
+                  Copy Link
+                </Button>
+                <Button
+                  variant="secondary"
+                  display={{ base: "block", sm: "none" }}
+                  size="sm"
+                  padding={2}
+                  onClick={() => handleCopy(event.event_link)}
+                >
+                  <Link size={18} />
+                </Button>
+              </>
             </Flex>
           )}
         </Flex>
