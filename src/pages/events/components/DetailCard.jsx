@@ -4,7 +4,7 @@ import EventBadge from "./EventBadge";
 
 const DetailCard = ({ icon, title, subTitle }) => {
   return (
-    <Flex flexDirection="row" alignItems="center" gap="10px">
+    <Flex flexDirection="row" gap="10px">
       <EventBadge
         eventBadgeInfo={{
           state: "defaultIcon",
