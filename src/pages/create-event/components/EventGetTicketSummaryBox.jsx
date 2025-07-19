@@ -36,7 +36,6 @@ export const EventGetTicketSummaryBox = ({}) => {
     isBookedTicket,
   } = useSelector((state) => state.event);
 
-
   const { subTotalPrice, transactionFee, totalPrice } =
     useSelector(selectPriceDetails);
 

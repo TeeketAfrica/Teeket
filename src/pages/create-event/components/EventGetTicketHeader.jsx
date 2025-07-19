@@ -69,11 +69,11 @@ export const EventGetTicketHeader = ({ paid, profile }) => {
       <Stack
         direction="row"
         justifyContent="space-between"
-        alignItems="center"
+        // alignItems={{ base: "end", sm: "center" }}
         w="full"
       >
         <Link to="/">
-          <Image w="full" src={BrandLogo} alt="logo" />
+          <Image w={120} src={BrandLogo} alt="logo" />
         </Link>
 
         <HStack spacing="2">
@@ -101,7 +101,7 @@ export const EventGetTicketHeader = ({ paid, profile }) => {
               fontSize={{ base: 12, md: 16 }}
               fontWeight={600}
               color={ticketStep == 1 ? "gray.800" : "gray.500"}
-              display={{ base: "none", sm: "initial", md: "initial" }}
+              display={{ base: "none", md: "initial" }}
             >
               Ticket type
             </Text>
@@ -138,7 +138,7 @@ export const EventGetTicketHeader = ({ paid, profile }) => {
               fontSize={{ base: 12, md: 16 }}
               fontWeight={600}
               color={ticketStep == 2 ? "gray.800" : "gray.500"}
-              display={{ base: "none", sm: "initial", md: "initial" }}
+              display={{ base: "none", md: "initial" }}
             >
               Your details
             </Text>
@@ -173,7 +173,7 @@ export const EventGetTicketHeader = ({ paid, profile }) => {
               fontSize={{ base: 12, md: 16 }}
               fontWeight={600}
               color="gray.500"
-              display={{ base: "none", sm: "initial", md: "initial" }}
+              display={{ base: "none", sm: "initial" }}
             >
               Payment
             </Text>
@@ -196,8 +196,6 @@ export const EventGetTicketHeader = ({ paid, profile }) => {
               color="gray.800"
               name={profile?.name || profile?.email}
               src={profile?.profile_image}
-              opacity={profile?.is_creator === null || !token ? 0 : 100}
-              bgColor="transparent"
             />
           </MenuButton>
           {(profile || token) && (

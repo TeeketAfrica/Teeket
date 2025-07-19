@@ -82,11 +82,11 @@ const LeftSideDetails = ({ event, user }) => {
                   Remind me
                 </Button>
                 <Button
-                  variant="secondary"
+                  variant="outline"
                   display={{ base: "block", sm: "none" }}
                   size="sm"
                 >
-                  <BellRing size={18} />
+                  <BellRing color="gray" size={15} />
                 </Button>
               </>
             )}
@@ -145,13 +145,13 @@ const LeftSideDetails = ({ event, user }) => {
                   Copy Link
                 </Button>
                 <Button
-                  variant="secondary"
+                  variant="outline"
                   display={{ base: "block", sm: "none" }}
                   size="sm"
                   padding={2}
                   onClick={() => handleCopy(event.event_link)}
                 >
-                  <Link size={18} />
+                  <Link color="gray" size={15} />
                 </Button>
               </>
             </Flex>

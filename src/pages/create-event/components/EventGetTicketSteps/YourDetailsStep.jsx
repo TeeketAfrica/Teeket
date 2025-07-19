@@ -61,14 +61,16 @@ export const YourDetailsStep = () => {
   const [email, setEmail] = useState("");
   const [showEmailBox, setShowEmailBox] = useState(false);
   const { isSetDetails, ticketUserDetails } = useSelector(selectEventDetails);
-  
+
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(isAuthenticated ? userFormSchema : visitorsFormSchema),
+    resolver: zodResolver(
+      isAuthenticated ? userFormSchema : visitorsFormSchema
+    ),
   });
 
   useEffect(() => {
@@ -117,13 +119,13 @@ export const YourDetailsStep = () => {
 
   return (
     <>
-      <VStack justifyContent="start" alignItems="start" spacing={4}>
-        <Text color="gray.800" fontWeight={700} fontSize={36} maxW="700px">
+      <VStack w="100%" alignItems="start" spacing={4}>
+        <Text color="gray.800" fontWeight={700} fontSize={36}>
           Your details
         </Text>
 
         {isAuthenticated ? (
-          <HStack>
+          <HStack flexWrap="wrap">
             <Text fontSize={14} color="gray.600">
               You are logged in as {activeUser?.email}
             </Text>
@@ -151,6 +153,10 @@ export const YourDetailsStep = () => {
       </VStack>
 
       <Box as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
+        <Text fontSize={16} color="gray.600">
+          These name below will appear on your ticket. You can customize it if
+          you want so.
+        </Text>
         <Grid templateColumns="repeat(6, 1fr)" gap={6} mt={4}>
           {isAuthenticated && showEmailBox && (
             <GridItem colSpan={6}>
@@ -205,7 +211,7 @@ export const YourDetailsStep = () => {
                   isInvalid={!!errors.confirmEmail}
                   errorBorderColor="red.300"
                   onChange={(e) => {
-                    setValue("confirmEmail", e.target.value)
+                    setValue("confirmEmail", e.target.value);
                     dispatch(setIsSetDetails(false));
                   }}
                 />
