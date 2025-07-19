@@ -15,7 +15,12 @@ const DetailCard = ({ icon, title, subTitle }) => {
         <Text fontSize="md" fontWeight="semibold" lineHeight="23px">
           {title}
         </Text>
-        <Text fontSize="sm" lineHeight="5" color="gray.600">
+        <Text
+          fontSize="sm"
+          wordBreak="break-word"
+          lineHeight="5"
+          color="gray.600"
+        >
           {subTitle}
         </Text>
       </Flex>

@@ -44,7 +44,6 @@ const EventBookingDetail = () => {
           user={isActiveUser}
           location={event?.location_metadata?.address}
         />
-
         <RightSideDetails
           event={event}
           isRegistered={isActiveUser}
