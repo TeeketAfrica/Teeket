@@ -462,7 +462,7 @@ const EventTable = ({ setData, loading, setIsLoading }) => {
                                                                     color="gray.600"
                                                                     fontWeight={500}
                                                                 >
-                                                                    Free
+                                                                    {td.is_free === true? "Free": "₦0"}
                                                                 </Td> :
                                                                 <Td
                                                                     color="gray.600"

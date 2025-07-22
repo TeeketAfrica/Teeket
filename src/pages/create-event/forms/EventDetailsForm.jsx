@@ -122,10 +122,9 @@ const EventDetailsForm = () => {
       <FormField
         name="eventAbout"
         label="About the event"
-        type={FormFieldType.TextArea}
+        type={FormFieldType.Markdown}
         placeholder="Tell us about the event and include the event address in the description"
-        helperText="Give a detailed description of what this event is about and include the event address in the description"
-        rows={7}
+        helperText="Provide a detailed description of the event using markdown to enhance formatting and readability"
       />
 
       {/* Event Hosting */}

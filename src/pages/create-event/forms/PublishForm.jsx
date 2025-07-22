@@ -15,12 +15,16 @@ import Clock from "../../../assets/icon/clock.svg";
 import Calendar from "../../../assets/icon/calendar-alt.svg";
 import TicketNumber from "../../../assets/icon/TicketNumber.svg";
 import TicketPrice from "../../../assets/icon/TicketPrice.svg";
+import markdownit from 'markdown-it';
+
+
+const md = markdownit();
 
 const PublishForm = () => {
   const { values } = useFormikContext();
   const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
 
-  console.log(values)
+  const parsedContent = md.render(values.eventAbout || "");
 
   const publishOptions = [
     {
@@ -62,11 +66,10 @@ const PublishForm = () => {
             w={{ base: "100%", lg: "397px" }}
             h={{ base: "320px", lg: "auto" }}
             flexShrink="0"
-            backgroundImage={`url(${
-              values.eventBannerImage
-                ? values.eventBannerImage.secure_url || values.eventBannerImage
-                : DEFAULTBANNERIMAGE
-            })`}
+            backgroundImage={`url(${values.eventBannerImage
+              ? values.eventBannerImage.secure_url || values.eventBannerImage
+              : DEFAULTBANNERIMAGE
+              })`}
             backgroundSize="cover"
             backgroundPosition="top"
             borderRadius={{
@@ -84,9 +87,21 @@ const PublishForm = () => {
                   {values.eventTitle}
                 </Heading>
               </Box>
-              <Text color="gray.600" fontSize="sm">
-                {values.eventAbout}
-              </Text>
+              {
+                parsedContent ? (
+                  <Box
+                    as="article"
+                    wordBreak="break-word"
+                    dangerouslySetInnerHTML={{ __html: parsedContent }}
+                    className="prose"
+                  />
+                ) :
+                  (
+                    <Text color="gray.600" fontSize="sm">
+                      {values.eventAbout}
+                    </Text>
+                  )
+              }
               {values.eventHosting === "physical" ? (
                 <Text display="flex" color="gray.800" gap={2} fontSize="sm">
                   <Map /> {values.eventLocation}
@@ -166,15 +181,25 @@ const PublishForm = () => {
                     borderRadius="8px"
                   >
                     <TicketPrice width="14px" height="14px" />
-                    <Text display="inline-flex" gap="2">
-                      <Text as="span">
-                        ₦{calculateMinAndMaxPrices(tickets).minPrice}
-                      </Text>
-                      -
-                      <Text as="span">
-                        ₦{calculateMinAndMaxPrices(tickets).maxPrice}
-                      </Text>
-                    </Text>
+                    {
+                      calculateMinAndMaxPrices(tickets).minPrice === calculateMinAndMaxPrices(tickets).maxPrice ? (
+                        <Text display="inline-flex" gap="2">
+                          <Text as="span">
+                            ₦{calculateMinAndMaxPrices(tickets).minPrice}
+                          </Text>
+                        </Text>
+                      ) : (
+                        <Text display="inline-flex" gap="2">
+                          <Text as="span">
+                            ₦{calculateMinAndMaxPrices(tickets).minPrice}
+                          </Text>
+                          -
+                          <Text as="span">
+                            ₦{calculateMinAndMaxPrices(tickets).maxPrice}
+                          </Text>
+                        </Text>
+                      )
+                    }
                   </Box>
                   <Box
                     display="flex"

@@ -63,10 +63,10 @@ const Layout = ({
   const { values } = useFormikContext();
 
   useEffect(()=>{
-    if(values && totalTicketQuantities){
+    if(activeStep === 2 && values && totalTicketQuantities){
       totalTicketQuantities > values.eventEstimatedSoldTicket? setDisable(true): setDisable(false);
     }
-  },[values, totalTicketQuantities])
+  },[values, totalTicketQuantities, activeStep])
 
   const steps = [
     {
