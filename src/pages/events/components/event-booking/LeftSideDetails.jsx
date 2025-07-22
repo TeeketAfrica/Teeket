@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Collapse,
   Flex,
   HStack,
   Text,
@@ -16,6 +17,10 @@ import DetailCard from "../DetailCard";
 import EventBadge from "../EventBadge";
 import useStorage from "../../../../utils/storage";
 import { BellRing, Copy, Link } from "lucide-react";
+import markdownit from 'markdown-it';
+import { useState } from "react";
+
+const md = markdownit();
 
 const LeftSideDetails = ({ event, user }) => {
   const startDate = formatDateAndTime(event.start_date, "long");
@@ -24,6 +29,8 @@ const LeftSideDetails = ({ event, user }) => {
   const { getAccessToken } = useStorage();
   const token = getAccessToken();
   user = user.is_creator === null || !token ? false : true;
+  const parsedContent = md.render(event.description || "");
+  const [showMore, setShowMore] = useState(false);
 
   const handleCopy = (text) => {
     if (!text) return;
@@ -159,7 +166,7 @@ const LeftSideDetails = ({ event, user }) => {
         </Flex>
       </BoxFrame>
       <BoxFrame paddingX="24px" paddingY="24px">
-        <VStack gap="4" alignItems="flex-start">
+        <VStack gap="4" alignItems="flex-start" overflowX={"auto"}>
           <Text as="h4" fontSize="xl" lineHeight="6" fontWeight="semibold">
             About this event
           </Text>
@@ -170,7 +177,27 @@ const LeftSideDetails = ({ event, user }) => {
             lineHeight="5"
             color="gray.500"
           >
-            <Text>{event?.description}</Text>
+            {
+              parsedContent ? (
+                <Box>
+                  <Collapse startingHeight={350} in={showMore}>
+                    <Box
+                      as="article"
+                      wordBreak="break-word"
+                      className="prose"
+                      dangerouslySetInnerHTML={{ __html: parsedContent }}
+                    />
+                  </Collapse>
+
+                  <Button size="sm" variant={"secondary"} mt={2} onClick={() => setShowMore(!showMore)}>
+                    {showMore ? "Show Less" : "Read More"}
+                  </Button>
+                </Box>
+              ) :
+                (
+                  <Text>{event?.description}</Text>
+                )
+            }
           </VStack>
         </VStack>
       </BoxFrame>

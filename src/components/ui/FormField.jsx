@@ -111,10 +111,11 @@ const FormField = memo(
               placeholder={placeholder}
               height={350}
               highlightEnable={false}
-              style={{ whiteSpace: 'pre-wrap', backgroundColor: "#FFFFFF", borderColor: "#E7ECE7 !important" }}
+              style={{ whiteSpace: 'wrap', backgroundColor: "#FFFFFF", borderColor: "#E7ECE7 !important", fontFamily: "inherit !important" }}
               previewOptions={{
                 rehypePlugins: [[rehypeSanitize]],
               }}
+              // className="prose"
             />
           )
 
