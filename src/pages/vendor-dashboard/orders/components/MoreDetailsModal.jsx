@@ -13,16 +13,33 @@ import {
   Container,
   Avatar,
   Tag,
+  Collapse,
 } from "@chakra-ui/react";
 import Calendar from "../../../../assets/icon/calendar-alt-dark.svg";
 import Clock from "../../../../assets/icon/clock-dark.svg";
 import Ticket from "../../../../assets/icon/ticket-icon.svg";
 import { filterPolicy, formatEventDateRange } from "../../../../utils/constants";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import markdownit from 'markdown-it';
+import { Button } from "@chakra-ui/button";
+
+const md = markdownit();
 
 const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
 
   const [result, setResult] = useState({ date: '', time: '' });
+  const parsedContent = md.render(selectedItem?.event.description || "");
+  const [showMore, setShowMore] = useState(false);
+  const contentRef = useRef(null);
+  // const [isOverflowing, setIsOverflowing] = useState(false);
+
+  // useEffect(() => {
+  //   if (contentRef.current) {
+  //     const el = contentRef.current;
+  //     console.log("Scroll height:", el.scrollHeight);
+  //     setIsOverflowing(el.scrollHeight > 150);
+  //   }
+  // }, [parsedContent]);
 
   console.log(selectedItem)
 
@@ -94,7 +111,7 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                 zIndex={-1}
               />
               <HStack
-                px={6}
+                px={2}
                 justifyContent="space-between"
                 borderBottom="1px solid"
                 borderColor="utilityLight100"
@@ -103,7 +120,6 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                 <Box
                   borderRight="1px solid"
                   borderColor="utilityLight100"
-                  pr={6}
                   pt={6}
                   pb={4}
                   w="100%"
@@ -115,10 +131,38 @@ const MoreDetailsModal = ({ isOpen, onClose, selectedItem }) => {
                   <Text fontWeight={700} color="white" fontSize={20}>
                     {selectedItem.eventTitle || selectedItem.event.title}
                   </Text>
-                  <Container maxW="300px" px={0} mx={0}>
-                    <Text fontSize={14} color="utilityLight200">
-                      {selectedItem.event.description}
-                    </Text>
+                  <Container minW={"full"} px={0} mx={0}>
+                    {
+                      parsedContent ? (
+                        <Box
+                          style={{ background: "#FFFF", borderRadius: "6px", maxHeight: "300px", overflowX: "auto" }}
+                        >
+                            <Box
+                              as="article"
+                              wordBreak="break-word"
+                              className="prose"
+                              ref={contentRef}
+                              dangerouslySetInnerHTML={{ __html: parsedContent }}
+                            />
+
+                          {/* {isOverflowing && (
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              mt={2}
+                              onClick={() => setShowMore(!showMore)}
+                            >
+                              {showMore ? "Show Less" : "Read More"}
+                            </Button>
+                          )} */}
+                        </Box>
+                      ) :
+                        (
+                          <Text fontSize={14} color="utilityLight200">
+                            {selectedItem?.event.description}
+                          </Text>
+                        )
+                    }
                   </Container>
                 </Box>
                 <Box w={149}>

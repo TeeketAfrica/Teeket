@@ -16,7 +16,7 @@ import Calendar from "../../../assets/icon/calendar-alt.svg";
 import TicketNumber from "../../../assets/icon/TicketNumber.svg";
 import TicketPrice from "../../../assets/icon/TicketPrice.svg";
 import markdownit from 'markdown-it';
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
 const md = markdownit();
@@ -26,6 +26,15 @@ const PublishForm = () => {
   const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
   const [showMore, setShowMore] = useState(false);
   const parsedContent = md.render(values.eventAbout || "");
+  const contentRef = useRef(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const el = contentRef.current;
+      setIsOverflowing(el.scrollHeight > 250);
+    }
+  }, [parsedContent]);
 
   const publishOptions = [
     {
@@ -96,13 +105,22 @@ const PublishForm = () => {
                         as="article"
                         wordBreak="break-word"
                         className="prose"
+                        ref={contentRef}
                         dangerouslySetInnerHTML={{ __html: parsedContent }}
                       />
                     </Collapse>
 
-                    <Button size="sm" variant={"secondary"} mt={2} onClick={() => setShowMore(!showMore)}>
-                      {showMore ? "Show Less" : "Read More"}
-                    </Button>
+                    {isOverflowing && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        mt={2}
+                        onClick={() => setShowMore(!showMore)}
+                      >
+                        {showMore ? "Show Less" : "Read More"}
+                      </Button>
+                    )}
+
                   </Box>
                 ) :
                   (
@@ -144,7 +162,7 @@ const PublishForm = () => {
                         border="1px solid"
                         borderColor="gray.300"
                         borderRadius="8px"
-                        
+
                       >
                         <Calendar width="14px" height="14px" />
                         {formatDate(values.eventStartDate)}

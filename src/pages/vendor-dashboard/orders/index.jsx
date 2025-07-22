@@ -62,7 +62,7 @@ const OrdersDashboardPage = () => {
           pageTitle="Orders"
           subTitle="Explore Your Event Ticket Orders"
         />
-        <Button width={{base:"100%",md: '100px'}} onClick={exportToExcel} variant="secondary" p={2}>
+        <Button width={{base:"100%",md: '100px'}} onClick={exportToExcel} variant="secondary" p={2} gap={1}>
           <Export />
           Export
         </Button>

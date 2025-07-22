@@ -107,8 +107,7 @@ const ScanToAttend = () => {
       navigate(`/app/preview-scanned/${id}`);
     } catch (error) {
       navigate(
-        `/app/preview-scanned/${error.response?.data?.message || "An error occurred"
-        }`
+        `/app/preview-scanned/${error.response?.data?.message} || "An error occurred"`
       );
     }
   };

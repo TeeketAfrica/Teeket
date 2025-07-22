@@ -18,7 +18,7 @@ import EventBadge from "../EventBadge";
 import useStorage from "../../../../utils/storage";
 import { BellRing, Copy, Link } from "lucide-react";
 import markdownit from 'markdown-it';
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const md = markdownit();
 
@@ -31,6 +31,15 @@ const LeftSideDetails = ({ event, user }) => {
   user = user.is_creator === null || !token ? false : true;
   const parsedContent = md.render(event.description || "");
   const [showMore, setShowMore] = useState(false);
+  const contentRef = useRef(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const el = contentRef.current;
+      setIsOverflowing(el.scrollHeight > 350);
+    }
+  }, [parsedContent]);
 
   const handleCopy = (text) => {
     if (!text) return;
@@ -46,7 +55,7 @@ const LeftSideDetails = ({ event, user }) => {
   };
 
   return (
-    <VStack width={{ base: "100%", lg: "60%" }} gap="6" alignItems="flex-start">
+    <VStack width={{ base: "100%", lg: "60%" }} gap="6" alignItems="flex-start" >
       <BoxFrame paddingX="24px" paddingY="24px">
         <Box>
           {event.status && (
@@ -185,13 +194,21 @@ const LeftSideDetails = ({ event, user }) => {
                       as="article"
                       wordBreak="break-word"
                       className="prose"
+                      ref={contentRef}
                       dangerouslySetInnerHTML={{ __html: parsedContent }}
                     />
                   </Collapse>
 
-                  <Button size="sm" variant={"secondary"} mt={2} onClick={() => setShowMore(!showMore)}>
-                    {showMore ? "Show Less" : "Read More"}
-                  </Button>
+                  {isOverflowing && (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      mt={2}
+                      onClick={() => setShowMore(!showMore)}
+                    >
+                      {showMore ? "Show Less" : "Read More"}
+                    </Button>
+                  )}
                 </Box>
               ) :
                 (

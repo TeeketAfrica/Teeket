@@ -13,37 +13,40 @@ const TicketsSection = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(false);
   const { getAccessToken } = useStorage();
-  const token = getAccessToken(); 
+  const token = getAccessToken();
 
-    console.log(tickets)
+  console.log(tickets)
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(true);
-      const fetchTickets = async ()=> {
-        try {
-          const response = await teeketApi.get(`orders/me`,
-            {
-              headers: {
-                  Authorization: `Bearer ${token}`
-              }
-            } 
-          );
-          setTickets(response?.data.data)
-          setLoading(false);
-        }
-        catch(err){
-          console.log("Error fetching tickets:", err);
-          setTickets([]);
-          setAvailableTickets(false);
-          setLoading(false);
-        }
+    const fetchTickets = async () => {
+      try {
+        const response = await teeketApi.get(`orders/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        setTickets(response?.data.data)
+        setLoading(false);
       }
+      catch (err) {
+        console.log("Error fetching tickets:", err);
+        setTickets([]);
+        setAvailableTickets(false);
+        setLoading(false);
+      }
+    }
 
-      fetchTickets();
+    fetchTickets();
   }, []);
 
-  if(loading){
-      return (
+  if (loading) {
+    return (
+      <Box
+        px={5}
+      >
         <Grid
           style={{ width: "100%" }}
           gridTemplateColumns={[
@@ -56,7 +59,7 @@ const TicketsSection = () => {
           gap={6}
         >
           {[0, 1, 2, 3].map((digit, i) => (
-            <Stack gap="6" maxW="xs" key={digit}>
+            <Stack gap="3" maxW="xs" key={digit}>
               <HStack width="full">
                 <SkeletonText noOfLines={2} />
               </HStack>
@@ -64,15 +67,19 @@ const TicketsSection = () => {
             </Stack>
           ))}
         </Grid>
-      )
-    }
+      </Box>
+    )
+  }
 
   return (
     <Box
       borderTop="1px solid"
       borderBottom="1px solid"
       borderColor="gray.300"
+      overflowX={"hidden"}
+      width={"full"}
       py={9}
+      px={3}
     >
       {tickets.length > 0 ? (
         <Grid
@@ -84,15 +91,15 @@ const TicketsSection = () => {
             "repeat(3, 1fr)",
           ]}
           gap={6}
-          paddingX={5}
+          // paddingX={5}
         >
-         {
-            tickets.map((ticket, i)=>(
-              <GridItem justifySelf="center" width={"100%"}>
+          {
+            tickets.map((ticket, i) => (
+              <GridItem justifySelf="center" width={"100%"} key={i}>
                 <SingleTicket
                   eventTitle={ticket?.event?.title}
                   eventTime={`${formatDate(ticket?.event.start_date)}`}
-                  eventLocation={ticket?.event.hosting_site === "physical"? `${ticket?.event.event_location}`: `Event Link:${ticket?.event.event_link}`}
+                  eventLocation={ticket?.event.hosting_site === "physical" ? `${ticket?.event.event_location}` : `Event Link:${ticket?.event.event_link}`}
                   ticketQuantity={ticket?.quantity}
                   ticketType={ticket?.ticket.name}
                   ticketPrice={ticket?.ticket.price}
@@ -103,8 +110,8 @@ const TicketsSection = () => {
                 />
               </GridItem>
             ))
-         } 
-         
+          }
+
         </Grid>
       ) : (
         <Container maxW="400px">
