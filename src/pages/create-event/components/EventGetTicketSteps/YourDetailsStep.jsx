@@ -61,7 +61,7 @@ export const YourDetailsStep = () => {
   const [email, setEmail] = useState("");
   const [showEmailBox, setShowEmailBox] = useState(false);
   const { isSetDetails, ticketUserDetails } = useSelector(selectEventDetails);
-  
+
   const {
     register,
     handleSubmit,
@@ -125,26 +125,27 @@ export const YourDetailsStep = () => {
         {isAuthenticated ? (
           <HStack>
             <Text fontSize={14} color="gray.600">
-              You are logged in as {activeUser?.email}
-            </Text>
-            <Text
-              fontWeight={600}
-              color="textSuccess"
-              cursor="pointer"
-              onClick={() => setShowEmailBox(true)}
-            >
-              Not you?
+              You are logged in as {activeUser?.email}. {" "}
+              <span
+                onClick={() => setShowEmailBox(true)}
+                style={{ fontWeight: 600, color: "#1BD01B", cursor: "pointer" }}
+              >
+                Not you?
+              </span>
             </Text>
           </HStack>
         ) : (
           <HStack>
-            <Link to="/login">
-              <Text fontWeight={600} color="textSuccess">
-                Log in
-              </Text>
-            </Link>
             <Text fontSize={14} color="gray.600">
-              for a better experience. Save your ticket to your profile
+              <Link to="/login">
+                <span
+                  onClick={() => setShowEmailBox(true)}
+                  style={{ fontWeight: 600, color: "#1BD01B", cursor: "pointer" }}
+                >
+                  Login {" "}
+                </span>
+              </Link>
+              to save your ticket and manage it easily from your profile.
             </Text>
           </HStack>
         )}

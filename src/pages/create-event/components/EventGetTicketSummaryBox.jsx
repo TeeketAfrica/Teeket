@@ -49,6 +49,7 @@ export const EventGetTicketSummaryBox = ({}) => {
 
   const moveToCheckout = async () => {
     dispatch(changeTicketStep(2));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleOrderCheckout = async () => {
