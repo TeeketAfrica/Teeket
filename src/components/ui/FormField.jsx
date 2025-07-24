@@ -27,6 +27,9 @@ import MultiSelect from "./MultiSelect";
 import DownIcon from "../../assets/icon/DownIcon.svg";
 import UpArrowIcon from "../../assets/icon/UpArrow.svg";
 import DownArrowIcon from "../../assets/icon/DownArrow.svg";
+import MDEditor from '@uiw/react-md-editor';
+import rehypeSanitize from "rehype-sanitize";
+
 
 const FormField = memo(
   ({
@@ -98,6 +101,23 @@ const FormField = memo(
               {...field}
             />
           );
+
+        case FormFieldType.Markdown:
+          return (
+            <MDEditor
+              value={field.value}
+              onChange={(val) => helpers.setValue(val)}
+              onBlur={field.onBlur}
+              placeholder={placeholder}
+              height={350}
+              highlightEnable={false}
+              style={{ whiteSpace: 'wrap', backgroundColor: "#FFFFFF", borderColor: "#E7ECE7 !important", fontFamily: "inherit !important" }}
+              previewOptions={{
+                rehypePlugins: [[rehypeSanitize]],
+              }}
+              // className="prose"
+            />
+          )
 
         case FormFieldType.Password:
           return (

@@ -6,6 +6,7 @@ import {
   Text,
   VStack,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/image";
 import { useSelector } from "react-redux";
@@ -44,6 +45,7 @@ const DownloadableTicket = ({
   const [hero, setHero] = useState("");
   const [qrCode, setQrCode] = useState("");
   const [loadingImages, setLoadingImages] = useState(true);
+  const toast = useToast();
 
   const getQRSignature = async () => {
     try {
@@ -62,22 +64,34 @@ const DownloadableTicket = ({
   useEffect(() => {
     console.log('it got here', encodeURIComponent(`${signature}`))
     const loadImages = async () => {
-      const logoBase64 = await toBase64Image(
-        "https://res.cloudinary.com/doztcdg5v/image/upload/v1727911001/logo_q4sjwi.svg"
-      );
-      const heroBase64 = await toBase64Image(eventImageUrl);
-      const qrBase64 = await toBase64Image(
-        `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
-          `${signature}`
-        )}&size=150x150`
-      );
+      if (signature) {
+        const logoBase64 = await toBase64Image(
+          "https://res.cloudinary.com/doztcdg5v/image/upload/v1727911001/logo_q4sjwi.svg"
+        );
+        const heroBase64 = await toBase64Image(eventImageUrl);
+        const qrBase64 = await toBase64Image(
+          `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
+            `${signature}`
+          )}&size=150x150`
+        );
 
-      console.log(qrBase64)
+        console.log(qrBase64)
 
-      setLogo(logoBase64);
-      setHero(heroBase64);
-      setQrCode(qrBase64);
-      setLoadingImages(false);
+        setLogo(logoBase64);
+        setHero(heroBase64);
+        setQrCode(qrBase64);
+        setLoadingImages(false);
+      }
+      // else {
+      //   toast({
+      //     title: "Error getting signature for some tickets",
+      //     // description: `${err.response.data.message}`,
+      //     status: "error",
+      //     duration: 5000,
+      //     position: "top-right",
+      //     isClosable: true,
+      //   })
+      // }
     };
 
     loadImages();

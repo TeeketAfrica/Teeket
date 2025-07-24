@@ -250,7 +250,7 @@ const Header = () => {
                     <DrawerCloseButton />
                     <Box w={119} h={32}>
                       <Link to="/">
-                        <Image w="full" src={BrandLogo} alt="logo" />
+                        <BrandLogo style={{ width: "100%" }} />
                       </Link>
                     </Box>
 

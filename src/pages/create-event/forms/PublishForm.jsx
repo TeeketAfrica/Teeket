@@ -1,4 +1,4 @@
-import { Stack, Box, Divider, Heading, Text } from "@chakra-ui/react";
+import { Stack, Box, Divider, Heading, Text, Collapse, Button } from "@chakra-ui/react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import FormField from "../../../components/ui/FormField";
@@ -15,12 +15,26 @@ import Clock from "../../../assets/icon/clock.svg";
 import Calendar from "../../../assets/icon/calendar-alt.svg";
 import TicketNumber from "../../../assets/icon/TicketNumber.svg";
 import TicketPrice from "../../../assets/icon/TicketPrice.svg";
+import markdownit from 'markdown-it';
+import { useEffect, useRef, useState } from "react";
+
+
+const md = markdownit();
 
 const PublishForm = () => {
   const { values } = useFormikContext();
   const { tickets, totalTicketQuantities } = useSelector(selectEventDetails);
+  const [showMore, setShowMore] = useState(false);
+  const parsedContent = md.render(values.eventAbout || "");
+  const contentRef = useRef(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
 
-  console.log(values)
+  useEffect(() => {
+    if (contentRef.current) {
+      const el = contentRef.current;
+      setIsOverflowing(el.scrollHeight > 250);
+    }
+  }, [parsedContent]);
 
   const publishOptions = [
     {
@@ -62,11 +76,10 @@ const PublishForm = () => {
             w={{ base: "100%", lg: "397px" }}
             h={{ base: "320px", lg: "auto" }}
             flexShrink="0"
-            backgroundImage={`url(${
-              values.eventBannerImage
-                ? values.eventBannerImage.secure_url || values.eventBannerImage
-                : DEFAULTBANNERIMAGE
-            })`}
+            backgroundImage={`url(${values.eventBannerImage
+              ? values.eventBannerImage.secure_url || values.eventBannerImage
+              : DEFAULTBANNERIMAGE
+              })`}
             backgroundSize="cover"
             backgroundPosition="top"
             borderRadius={{
@@ -74,7 +87,7 @@ const PublishForm = () => {
               lg: "16px 0 0 16px",
             }}
           />
-          <Box p={6}>
+          <Box p={6} overflowX={"hidden"}>
             <Stack direction="column" spacing={2}>
               <Box>
                 <Text color="textSuccess" fontSize="xs" fontWeight="semibold">
@@ -84,15 +97,44 @@ const PublishForm = () => {
                   {values.eventTitle}
                 </Heading>
               </Box>
-              <Text color="gray.600" fontSize="sm">
-                {values.eventAbout}
-              </Text>
+              {
+                parsedContent ? (
+                  <Box>
+                    <Collapse startingHeight={250} in={showMore}>
+                      <Box
+                        as="article"
+                        wordBreak="break-word"
+                        className="prose"
+                        ref={contentRef}
+                        dangerouslySetInnerHTML={{ __html: parsedContent }}
+                      />
+                    </Collapse>
+
+                    {isOverflowing && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        mt={2}
+                        onClick={() => setShowMore(!showMore)}
+                      >
+                        {showMore ? "Show Less" : "Read More"}
+                      </Button>
+                    )}
+
+                  </Box>
+                ) :
+                  (
+                    <Text color="gray.600" fontSize="sm">
+                      {values.eventAbout}
+                    </Text>
+                  )
+              }
               {values.eventHosting === "physical" ? (
-                <Text display="flex" color="gray.800" gap={2} fontSize="sm">
+                <Text display="flex" color="gray.800" gap={2} fontSize="sm" marginTop={10}>
                   <Map /> {values.eventLocation}
                 </Text>
               ) : (
-                <Text display="flex" color="gray.800" gap={2} fontSize="sm">
+                <Text display="flex" color="gray.800" gap={2} fontSize="sm" marginTop={10}>
                   {values.eventLocation}
                 </Text>
               )}
@@ -108,7 +150,7 @@ const PublishForm = () => {
                     >
                       Date and time
                     </Heading>
-                    <Stack direction="row" gap={2}>
+                    <Stack direction={["column", "column", "row"]} gap={2}>
                       <Text
                         display="flex"
                         alignItems="center"
@@ -120,9 +162,12 @@ const PublishForm = () => {
                         border="1px solid"
                         borderColor="gray.300"
                         borderRadius="8px"
+
                       >
                         <Calendar width="14px" height="14px" />
                         {formatDate(values.eventStartDate)}
+                        <Clock />
+                        {convertTimeFormat(values.eventStartTime)}
                       </Text>
                       <Text
                         display="flex"
@@ -136,8 +181,9 @@ const PublishForm = () => {
                         borderColor="gray.300"
                         borderRadius="8px"
                       >
+                        <Calendar width="14px" height="14px" />
+                        {formatDate(values.eventEndDate)}
                         <Clock />
-                        {convertTimeFormat(values.eventStartTime)} -{" "}
                         {convertTimeFormat(values.eventEndTime)}
                       </Text>
                     </Stack>
@@ -166,15 +212,25 @@ const PublishForm = () => {
                     borderRadius="8px"
                   >
                     <TicketPrice width="14px" height="14px" />
-                    <Text display="inline-flex" gap="2">
-                      <Text as="span">
-                        ₦{calculateMinAndMaxPrices(tickets).minPrice}
-                      </Text>
-                      -
-                      <Text as="span">
-                        ₦{calculateMinAndMaxPrices(tickets).maxPrice}
-                      </Text>
-                    </Text>
+                    {
+                      calculateMinAndMaxPrices(tickets).minPrice === calculateMinAndMaxPrices(tickets).maxPrice ? (
+                        <Text display="inline-flex" gap="2">
+                          <Text as="span">
+                            ₦{calculateMinAndMaxPrices(tickets).minPrice}
+                          </Text>
+                        </Text>
+                      ) : (
+                        <Text display="inline-flex" gap="2">
+                          <Text as="span">
+                            ₦{calculateMinAndMaxPrices(tickets).minPrice}
+                          </Text>
+                          -
+                          <Text as="span">
+                            ₦{calculateMinAndMaxPrices(tickets).maxPrice}
+                          </Text>
+                        </Text>
+                      )
+                    }
                   </Box>
                   <Box
                     display="flex"
