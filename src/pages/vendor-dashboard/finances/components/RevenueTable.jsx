@@ -403,8 +403,8 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
                                 (paginatedData.length === 0 && search !== "")
                                 ? "No events"
                                 : search !== ""
-                                    ? `${paginatedData.length} events`
-                                    : `${revenueTableData.length} events`}
+                                    ? `${totalItems} events`
+                                    : `${totalItems} events`}
                         </Tag>
                     </HStack>
                 ) : (
@@ -438,8 +438,8 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
                                 (paginatedData.length === 0 && search !== "")
                                 ? "No requests"
                                 : search !== ""
-                                    ? `${paginatedData.length} requests`
-                                    : `${historyTableData.length} requests`}
+                                    ? `${historyTotal} requests`
+                                    : `${historyTotal} requests`}
                         </Tag>
                     </HStack>
                 )}
