@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
     Box,
     Center,
@@ -46,6 +46,7 @@ import { teeketApi } from "../../../../utils/api";
 import { formatDate } from "../../../../utils/formatDate";
 import { formatAmount } from "../../../../utils/utils";
 import { Spinner } from '@chakra-ui/react';
+import { debounce } from "lodash";
 
 const RevenueTable = ({ viewHistory, setViewHistory }) => {
     const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
@@ -118,7 +119,7 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
         viewHistory ? setHistCurrentPage(1) : setCurrentPage(1);
     };
 
-    const getFilteredData = (data, statusFilter, searchTerm) => {
+    const getFilteredData = (data, statusFilter) => {
         let filtered = [...data];
 
         if (statusFilter && statusFilter !== "All events") {
@@ -142,7 +143,7 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
 
     const applyFilters = () => {
         const data = viewHistory ? historyTableData : revenueTableData;
-        const filtered = getFilteredData(data, selectedStatusFilter, search);
+        const filtered = getFilteredData(data, selectedStatusFilter);
         const startIndex = viewHistory ? (histCurrentPage - 1) * itemsPerPage : (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         const paginated = filtered.slice(startIndex, endIndex);
@@ -160,8 +161,18 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
 
     useEffect(() => {
         applyFilters();
-    }, [revenueTableData, historyTableData, selectedStatusFilter, search, currentPage, histCurrentPage, viewHistory]);
+    }, [revenueTableData, historyTableData, selectedStatusFilter, currentPage, histCurrentPage, viewHistory]);
 
+
+    const debouncedFetch = useMemo(() => {
+        return debounce((searchTerm, viewHistory, fetchEvents, fetchHistory) => {
+            if (viewHistory) {
+                fetchHistory(searchTerm);
+            } else {
+                fetchEvents(searchTerm);
+            }
+        }, 800);
+    }, []);
 
     //   const handleFilterByStatus = () => {}
 
@@ -172,14 +183,14 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
     }, [viewHistory])
 
     useEffect(() => {
-        const handleFetchEvents = async () => {
+        const handleFetchEvents = async (searchTerm) => {
             setLoading(true);
             try {
                 let url = `/revenue?page_index=${currentPage}`;
                 const queryParams = [];
 
-                if (search && !viewHistory) {
-                    queryParams.push(`search=${encodeURIComponent(search)}`);
+                if (searchTerm && !viewHistory) {
+                    queryParams.push(`search=${encodeURIComponent(searchTerm)}`);
                 }
                 if (queryParams.length > 0) {
                     url += `&${queryParams.join("&")}`;
@@ -209,14 +220,14 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
             }
         };
 
-        const handleFetchPaymentHistory = async () => {
+        const handleFetchPaymentHistory = async (searchTerm) => {
             setLoading(true);
             try {
                 let url = `/payment-requests`;
                 const queryParams = [];
 
-                if (search && viewHistory) {
-                    queryParams.push(`search=${encodeURIComponent(search)}`);
+                if (searchTerm && viewHistory) {
+                    queryParams.push(`search=${encodeURIComponent(searchTerm)}`);
                 }
                 if (queryParams.length > 0) {
                     url += `?${queryParams.join("&")}`;
@@ -246,24 +257,19 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
             }
         }
 
-        handleFetchEvents();
-        handleFetchPaymentHistory();
-    }, [toast, currentPage, search]);
+        if (search) {
+            debouncedFetch(search, viewHistory, handleFetchEvents, handleFetchPaymentHistory);
+        } else {
+            handleFetchEvents("")
+            handleFetchPaymentHistory("")
+        }
 
-    // useEffect(() => {
-    //     setHistoryPaginatedData(
-    //         historyTableData.slice(
-    //             hStartIndex, hEndIndex
-    //         )
-    //     )
-    // }, [histCurrentPage])
+        // Cleanup debounce on unmount or param change
+        return () => {
+            debouncedFetch.cancel();
+        };
+    }, [toast, currentPage, histCurrentPage, search]);
 
-    // if (loading) return (
-    //     <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem" }}>
-    //         <Spinner />
-    //         Fetching Revenue data Hang on
-    //     </div>
-    // )
     return (
         <Box px={[4, 8]}>
             <Stack
