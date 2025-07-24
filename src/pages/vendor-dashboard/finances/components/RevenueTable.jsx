@@ -127,15 +127,15 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
             );
         }
 
-        if (searchTerm) {
-            filtered = filtered.filter((item) => {
-                const event = item.event || item.revenue?.event;
-                return (
-                    event?.title?.toLowerCase().includes(searchTerm) ||
-                    event?.organizer?.toLowerCase().includes(searchTerm)
-                );
-            });
-        }
+        // if (searchTerm && viewHistory) {
+        //     filtered = filtered.filter((item) => {
+        //         const event = item.event || item.revenue?.event;
+        //         return (
+        //             event?.title?.toLowerCase().includes(searchTerm) ||
+        //             event?.organizer?.toLowerCase().includes(searchTerm)
+        //         );
+        //     });
+        // }
 
         return filtered;
     };
@@ -178,11 +178,11 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
                 let url = `/revenue?page_index=${currentPage}`;
                 const queryParams = [];
 
-                if (search) {
-                    queryParams.push(`search=${search}`);
+                if (search && !viewHistory) {
+                    queryParams.push(`search=${encodeURIComponent(search)}`);
                 }
                 if (queryParams.length > 0) {
-                    url += `?${queryParams.join("&")}`;
+                    url += `&${queryParams.join("&")}`;
                 }
                 const response = await teeketApi.get(url);
                 const res = response.data;
@@ -215,8 +215,8 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
                 let url = `/payment-requests`;
                 const queryParams = [];
 
-                if (search) {
-                    queryParams.push(`search=${search}`);
+                if (search && viewHistory) {
+                    queryParams.push(`search=${encodeURIComponent(search)}`);
                 }
                 if (queryParams.length > 0) {
                     url += `?${queryParams.join("&")}`;
@@ -226,7 +226,7 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
                 setHistoryTableData(res.data);
                 setHistoryPaginatedData(res.data.slice(0, itemsPerPage))
                 setHistoryTotal(res.data.length);
-                setHistoryTotalPage(Math.ceil(res.data.length / itemsPerPage));
+                setHistoryTotalPage(Math.ceil(res.total / itemsPerPage));
                 setLoading(false);
             }
             catch (error) {
@@ -248,7 +248,7 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
 
         handleFetchEvents();
         handleFetchPaymentHistory();
-    }, [toast, currentPage]);
+    }, [toast, currentPage, search]);
 
     // useEffect(() => {
     //     setHistoryPaginatedData(
@@ -258,12 +258,12 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
     //     )
     // }, [histCurrentPage])
 
-    if (loading) return (
-        <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem" }}>
-            <Spinner />
-            Fetching Revenue data Hang on
-        </div>
-    )
+    // if (loading) return (
+    //     <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem" }}>
+    //         <Spinner />
+    //         Fetching Revenue data Hang on
+    //     </div>
+    // )
     return (
         <Box px={[4, 8]}>
             <Stack
@@ -439,309 +439,316 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
                 )}
                 {request ? (
                     <>
-                        {paginatedData.length !== 0 ? (
-                            <>
-                                {!viewHistory ? (
-                                    <TableContainer>
-                                        <Table variant="simple">
-                                            <Thead>
-                                                <Tr bgColor="gray.200">
-                                                    {eventTableHead.map(
-                                                        (th, i) => (
-                                                            <Th
-                                                                textTransform="capitalize"
-                                                                fontSize={12}
-                                                                fontWeight={500}
-                                                                color="gray.600"
-                                                                borderBottom="1px solid"
-                                                                borderColor="gray.300"
-                                                                key={i}
-                                                            >
-                                                                {th.head}
-                                                            </Th>
-                                                        )
-                                                    )}
-                                                </Tr>
-                                            </Thead>
-                                            <Tbody fontSize={14}>
-                                                {paginatedData.map((td, i) => (
-                                                    <Tr key={i}>
-                                                        <Td>
-                                                            <HStack spacing={3}>
-                                                                <Image
-                                                                    src={td?.event?.banner_image}
-                                                                    alt={
-                                                                        td?.iitle
-                                                                    }
-                                                                    objectFit={"cover"}
-                                                                    borderRadius={"6px"}
-                                                                    w={10}
-                                                                    h={10}
-                                                                />
-                                                                <Box>
-                                                                    <Text
-                                                                        fontWeight={
-                                                                            500
-                                                                        }
-                                                                        color="gray.800"
+                        {
+                            loading ? (
+                                <div style={{ width: "100%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem" }}>
+                                    <Spinner />
+                                    Fetching Revenue data Hang on
+                                </div>
+                            ) :
+                                paginatedData.length !== 0 ? (
+                                    <>
+                                        {!viewHistory ? (
+                                            <TableContainer>
+                                                <Table variant="simple">
+                                                    <Thead>
+                                                        <Tr bgColor="gray.200">
+                                                            {eventTableHead.map(
+                                                                (th, i) => (
+                                                                    <Th
+                                                                        textTransform="capitalize"
+                                                                        fontSize={12}
+                                                                        fontWeight={500}
+                                                                        color="gray.600"
+                                                                        borderBottom="1px solid"
+                                                                        borderColor="gray.300"
+                                                                        key={i}
                                                                     >
-                                                                        {
-                                                                            td?.event.title
-                                                                        }
-                                                                    </Text>
-                                                                    <Text color="gray.600">
-                                                                        {
-                                                                            td?.event?.organizer
-                                                                        }
-                                                                    </Text>
-                                                                </Box>
-                                                            </HStack>
-                                                        </Td>
-                                                        <Td
-                                                            color="gray.600"
-                                                            fontWeight={500}
-                                                        >
-                                                            {td?.total_tickets_sold}/
-                                                            {td?.total_tickets}
-                                                        </Td>
-                                                        <Td
-                                                            color="gray.600"
-                                                            fontWeight={500}
-                                                        >
-                                                            {td?.amount === null ? "₦0" : `₦${formatAmount(Number(td.amount))}`}
-                                                        </Td>
-                                                        <Td
-                                                            color="gray.600"
-                                                            fontWeight={500}
-                                                        >
-                                                            {formatDate(td?.date_created)}
-                                                        </Td>
-                                                        <Td>
-                                                            <Tag
-                                                                bg={
-                                                                    td?.status ===
-                                                                        "ongoing_event"
-                                                                        ? "gray.200"
-                                                                        : td?.status ===
-                                                                            "remitted"
-                                                                            ? "green.100"
-                                                                            : td?.status ===
-                                                                                "due"
-                                                                                ? "blue.100"
-                                                                                : "red.100"
-                                                                }
-                                                                color={
-                                                                    td?.status ===
-                                                                        "ongoing_event"
-                                                                        ? "gray.700"
-                                                                        : td?.status ===
-                                                                            "remitted"
-                                                                            ? "green.500"
-                                                                            : td?.status ===
-                                                                                "due"
-                                                                                ? "blue.400"
-                                                                                : "red.400"
-                                                                }
-                                                                borderRadius={
-                                                                    16
-                                                                }
-                                                                py="2px"
-                                                                px={2}
-                                                                fontWeight={500}
-                                                                fontSize={12}
-                                                            >
-                                                                {td?.status === "ongoing_event" ? "On Going" : td?.status === "remitted" ? "Remitted" : td.status === "due" ? "Due" : "Unavailable"}
-                                                            </Tag>
-                                                        </Td>
-                                                    </Tr>
-                                                ))}
-                                            </Tbody>
-                                        </Table>
-                                    </TableContainer>
-                                ) : (
-                                    <TableContainer>
-                                        <Table variant="simple">
-                                            <Thead>
-                                                <Tr bgColor="gray.200">
-                                                    {financeTableHistoryHead.map(
-                                                        (th, i) => (
-                                                            <Th
-                                                                textTransform="capitalize"
-                                                                fontSize={12}
-                                                                fontWeight={500}
-                                                                color="gray.600"
-                                                                borderBottom="1px solid"
-                                                                borderColor="gray.300"
-                                                                key={i}
-                                                            >
-                                                                {th.head}
-                                                            </Th>
-                                                        )
-                                                    )}
-                                                </Tr>
-                                            </Thead>
-                                            <Tbody fontSize={14}>
-                                                {historyPaginatedData.map(
-                                                    (td, i) => (
-                                                        <Tr key={i}>
-                                                            <Td
-                                                                color="gray.600"
-                                                                fontWeight={500}
-                                                            >
-                                                                {td?.request_id}
-                                                            </Td>
-                                                            <Td>
-                                                                <HStack
-                                                                    spacing={3}
+                                                                        {th.head}
+                                                                    </Th>
+                                                                )
+                                                            )}
+                                                        </Tr>
+                                                    </Thead>
+                                                    <Tbody fontSize={14}>
+                                                        {paginatedData.map((td, i) => (
+                                                            <Tr key={i}>
+                                                                <Td>
+                                                                    <HStack spacing={3}>
+                                                                        <Image
+                                                                            src={td?.event?.banner_image}
+                                                                            alt={
+                                                                                td?.iitle
+                                                                            }
+                                                                            objectFit={"cover"}
+                                                                            borderRadius={"6px"}
+                                                                            w={10}
+                                                                            h={10}
+                                                                        />
+                                                                        <Box>
+                                                                            <Text
+                                                                                fontWeight={
+                                                                                    500
+                                                                                }
+                                                                                color="gray.800"
+                                                                            >
+                                                                                {
+                                                                                    td?.event.title
+                                                                                }
+                                                                            </Text>
+                                                                            <Text color="gray.600">
+                                                                                {
+                                                                                    td?.event?.organizer
+                                                                                }
+                                                                            </Text>
+                                                                        </Box>
+                                                                    </HStack>
+                                                                </Td>
+                                                                <Td
+                                                                    color="gray.600"
+                                                                    fontWeight={500}
                                                                 >
-                                                                    <Image
-                                                                        src={
-                                                                            td?.revenue?.event?.banner_image
-                                                                        }
-                                                                        alt={
-                                                                            td?.revenue?.event?.title
-                                                                        }
-                                                                        objectFit={"cover"}
-                                                                        borderRadius={"6px"}
-                                                                        w={10}
-                                                                        h={10}
-                                                                    />
-                                                                    <Box>
-                                                                        <Text
-                                                                            fontWeight={
-                                                                                500
-                                                                            }
-                                                                            color="gray.800"
-                                                                        >
-                                                                            {
-                                                                                td?.revenue?.event?.title
-                                                                            }
-                                                                        </Text>
-                                                                        <Text color="gray.600">
-                                                                            {
-                                                                                td?.revenue?.event?.organizer
-                                                                            }
-                                                                        </Text>
-                                                                    </Box>
-                                                                </HStack>
-                                                            </Td>
-                                                            <Td
-                                                                color="gray.600"
-                                                                fontWeight={500}
-                                                            >
-                                                                {td?.revenue?.amount === null ? "0" : td?.revenue?.amount}
-                                                            </Td>
-                                                            <Td
-                                                                color="gray.600"
-                                                                fontWeight={500}
-                                                            >
-                                                                {formatDate(td.date_created)}
-                                                            </Td>
-                                                            <Td
-                                                                color="gray.600"
-                                                                fontWeight={500}
-                                                                textAlign={"center"}
-                                                            >
-                                                                {
-                                                                    td?.date_remitted === null ? "-" : formatDate(td.date_remitted)
-                                                                }
-                                                            </Td>
-                                                            <Td>
-                                                                <Tag
-                                                                    bg={
-                                                                        td?.status ===
-                                                                            "created"
-                                                                            ? "gray.200" :
-                                                                            td?.status === "processing" ? "blue.100"
+                                                                    {td?.total_tickets_sold}/
+                                                                    {td?.total_tickets}
+                                                                </Td>
+                                                                <Td
+                                                                    color="gray.600"
+                                                                    fontWeight={500}
+                                                                >
+                                                                    {td?.amount === null ? "₦0" : `₦${formatAmount(Number(td.amount))}`}
+                                                                </Td>
+                                                                <Td
+                                                                    color="gray.600"
+                                                                    fontWeight={500}
+                                                                >
+                                                                    {formatDate(td?.date_created)}
+                                                                </Td>
+                                                                <Td>
+                                                                    <Tag
+                                                                        bg={
+                                                                            td?.status ===
+                                                                                "ongoing_event"
+                                                                                ? "gray.200"
                                                                                 : td?.status ===
                                                                                     "remitted"
                                                                                     ? "green.100"
-                                                                                    : "red.100"
-                                                                    }
-                                                                    color={
-                                                                        td?.status ===
-                                                                            "created"
-                                                                            ? "gray.700"
-                                                                            :
-                                                                            td?.status === "processing" ? "blue.700" :
-                                                                                td?.status ===
+                                                                                    : td?.status ===
+                                                                                        "due"
+                                                                                        ? "blue.100"
+                                                                                        : "red.100"
+                                                                        }
+                                                                        color={
+                                                                            td?.status ===
+                                                                                "ongoing_event"
+                                                                                ? "gray.700"
+                                                                                : td?.status ===
                                                                                     "remitted"
                                                                                     ? "green.500"
-                                                                                    : "red.400"
-                                                                    }
-                                                                    borderRadius={
-                                                                        16
-                                                                    }
-                                                                    py="2px"
-                                                                    px={2}
-                                                                    fontWeight={
-                                                                        500
-                                                                    }
-                                                                    fontSize={
-                                                                        12
-                                                                    }
-                                                                >
-                                                                    {td?.status}
-                                                                </Tag>
-                                                            </Td>
-                                                            <Td>
-                                                                <HStack>
-                                                                    <SupportIcon />
-                                                                    <Text>
-                                                                        support
-                                                                    </Text>
-                                                                </HStack>
-                                                            </Td>
+                                                                                    : td?.status ===
+                                                                                        "due"
+                                                                                        ? "blue.400"
+                                                                                        : "red.400"
+                                                                        }
+                                                                        borderRadius={
+                                                                            16
+                                                                        }
+                                                                        py="2px"
+                                                                        px={2}
+                                                                        fontWeight={500}
+                                                                        fontSize={12}
+                                                                    >
+                                                                        {td?.status === "ongoing_event" ? "On Going" : td?.status === "remitted" ? "Remitted" : td.status === "due" ? "Due" : "Unavailable"}
+                                                                    </Tag>
+                                                                </Td>
+                                                            </Tr>
+                                                        ))}
+                                                    </Tbody>
+                                                </Table>
+                                            </TableContainer>
+                                        ) : (
+                                            <TableContainer>
+                                                <Table variant="simple">
+                                                    <Thead>
+                                                        <Tr bgColor="gray.200">
+                                                            {financeTableHistoryHead.map(
+                                                                (th, i) => (
+                                                                    <Th
+                                                                        textTransform="capitalize"
+                                                                        fontSize={12}
+                                                                        fontWeight={500}
+                                                                        color="gray.600"
+                                                                        borderBottom="1px solid"
+                                                                        borderColor="gray.300"
+                                                                        key={i}
+                                                                    >
+                                                                        {th.head}
+                                                                    </Th>
+                                                                )
+                                                            )}
                                                         </Tr>
-                                                    )
-                                                )}
-                                            </Tbody>
-                                        </Table>
-                                    </TableContainer>
+                                                    </Thead>
+                                                    <Tbody fontSize={14}>
+                                                        {historyPaginatedData.map(
+                                                            (td, i) => (
+                                                                <Tr key={i}>
+                                                                    <Td
+                                                                        color="gray.600"
+                                                                        fontWeight={500}
+                                                                    >
+                                                                        {td?.request_id}
+                                                                    </Td>
+                                                                    <Td>
+                                                                        <HStack
+                                                                            spacing={3}
+                                                                        >
+                                                                            <Image
+                                                                                src={
+                                                                                    td?.revenue?.event?.banner_image
+                                                                                }
+                                                                                alt={
+                                                                                    td?.revenue?.event?.title
+                                                                                }
+                                                                                objectFit={"cover"}
+                                                                                borderRadius={"6px"}
+                                                                                w={10}
+                                                                                h={10}
+                                                                            />
+                                                                            <Box>
+                                                                                <Text
+                                                                                    fontWeight={
+                                                                                        500
+                                                                                    }
+                                                                                    color="gray.800"
+                                                                                >
+                                                                                    {
+                                                                                        td?.revenue?.event?.title
+                                                                                    }
+                                                                                </Text>
+                                                                                <Text color="gray.600">
+                                                                                    {
+                                                                                        td?.revenue?.event?.organizer
+                                                                                    }
+                                                                                </Text>
+                                                                            </Box>
+                                                                        </HStack>
+                                                                    </Td>
+                                                                    <Td
+                                                                        color="gray.600"
+                                                                        fontWeight={500}
+                                                                    >
+                                                                        {td?.revenue?.amount === null ? "0" : td?.revenue?.amount}
+                                                                    </Td>
+                                                                    <Td
+                                                                        color="gray.600"
+                                                                        fontWeight={500}
+                                                                    >
+                                                                        {formatDate(td.date_created)}
+                                                                    </Td>
+                                                                    <Td
+                                                                        color="gray.600"
+                                                                        fontWeight={500}
+                                                                        textAlign={"center"}
+                                                                    >
+                                                                        {
+                                                                            td?.date_remitted === null ? "-" : formatDate(td.date_remitted)
+                                                                        }
+                                                                    </Td>
+                                                                    <Td>
+                                                                        <Tag
+                                                                            bg={
+                                                                                td?.status ===
+                                                                                    "created"
+                                                                                    ? "gray.200" :
+                                                                                    td?.status === "processing" ? "blue.100"
+                                                                                        : td?.status ===
+                                                                                            "remitted"
+                                                                                            ? "green.100"
+                                                                                            : "red.100"
+                                                                            }
+                                                                            color={
+                                                                                td?.status ===
+                                                                                    "created"
+                                                                                    ? "gray.700"
+                                                                                    :
+                                                                                    td?.status === "processing" ? "blue.700" :
+                                                                                        td?.status ===
+                                                                                            "remitted"
+                                                                                            ? "green.500"
+                                                                                            : "red.400"
+                                                                            }
+                                                                            borderRadius={
+                                                                                16
+                                                                            }
+                                                                            py="2px"
+                                                                            px={2}
+                                                                            fontWeight={
+                                                                                500
+                                                                            }
+                                                                            fontSize={
+                                                                                12
+                                                                            }
+                                                                        >
+                                                                            {td?.status}
+                                                                        </Tag>
+                                                                    </Td>
+                                                                    <Td>
+                                                                        <HStack>
+                                                                            <SupportIcon />
+                                                                            <Text>
+                                                                                support
+                                                                            </Text>
+                                                                        </HStack>
+                                                                    </Td>
+                                                                </Tr>
+                                                            )
+                                                        )}
+                                                    </Tbody>
+                                                </Table>
+                                            </TableContainer>
+                                        )}
+                                    </>
+                                ) : search !== "" && paginatedData.length === 0 ? (
+                                    <EmptyState
+                                        maxW="350px"
+                                        icon={SearchIconEmpty}
+                                        title="No result"
+                                        desc={
+                                            <Text
+                                                fontSize={14}
+                                                color="gray.600"
+                                                textAlign="center"
+                                            >
+                                                Your search “{search}” did not match any
+                                                events. Please try again or create add a
+                                                new event.
+                                            </Text>
+                                        }
+                                        outlineBtn="Clear search"
+                                        primaryBtn="Create event"
+                                        outlineOnClick={handleClearSearch}
+                                        primaryOnClick={() => navigate("/create-event")}
+                                    />
+                                ) : (
+                                    <EmptyState
+                                        maxW="350px"
+                                        icon={FinanceEmptyState}
+                                        title="You have gotten no revenue yet"
+                                        desc={
+                                            <Text
+                                                fontSize={14}
+                                                color="gray.600"
+                                                textAlign="center"
+                                            >
+                                                All revenue that comes from your event
+                                                will be shown here.
+                                            </Text>
+                                        }
+                                        outlineBtn="Need help?"
+                                        primaryBtn="Create event"
+                                        outlineOnClick={() => navigate("/need-help")}
+                                        primaryOnClick={() => navigate("/create-event")}
+                                    />
                                 )}
-                            </>
-                        ) : search !== "" && paginatedData.length === 0 ? (
-                            <EmptyState
-                                maxW="350px"
-                                icon={SearchIconEmpty}
-                                title="No result"
-                                desc={
-                                    <Text
-                                        fontSize={14}
-                                        color="gray.600"
-                                        textAlign="center"
-                                    >
-                                        Your search “{search}” did not match any
-                                        events. Please try again or create add a
-                                        new event.
-                                    </Text>
-                                }
-                                outlineBtn="Clear search"
-                                primaryBtn="Create event"
-                                outlineOnClick={handleClearSearch}
-                                primaryOnClick={() => navigate("/create-event")}
-                            />
-                        ) : (
-                            <EmptyState
-                                maxW="350px"
-                                icon={FinanceEmptyState}
-                                title="You have gotten no revenue yet"
-                                desc={
-                                    <Text
-                                        fontSize={14}
-                                        color="gray.600"
-                                        textAlign="center"
-                                    >
-                                        All revenue that comes from your event
-                                        will be shown here.
-                                    </Text>
-                                }
-                                outlineBtn="Need help?"
-                                primaryBtn="Create event"
-                                outlineOnClick={() => navigate("/need-help")}
-                                primaryOnClick={() => navigate("/create-event")}
-                            />
-                        )}
                     </>
                 ) : (
                     <EmptyState

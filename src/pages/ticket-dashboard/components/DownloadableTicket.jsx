@@ -82,16 +82,16 @@ const DownloadableTicket = ({
         setQrCode(qrBase64);
         setLoadingImages(false);
       }
-      else {
-        toast({
-          title: "Error getting signature for some tickets",
-          // description: `${err.response.data.message}`,
-          status: "error",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        })
-      }
+      // else {
+      //   toast({
+      //     title: "Error getting signature for some tickets",
+      //     // description: `${err.response.data.message}`,
+      //     status: "error",
+      //     duration: 5000,
+      //     position: "top-right",
+      //     isClosable: true,
+      //   })
+      // }
     };
 
     loadImages();
