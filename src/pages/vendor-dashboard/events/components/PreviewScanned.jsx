@@ -14,42 +14,58 @@ import {
     Avatar,
     Tag,
     Spinner,
+    Collapse,
 } from "@chakra-ui/react";
 import SearchIconEmpty from "../../../../assets/icon/SearchIconEmpty.svg";
 import { filterPolicy, formatEventDateRange } from "../../../../utils/constants";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { teeketApi } from "../../../../utils/api";
 import { Button } from "@chakra-ui/button";
 import EmptyState from "../../../../components/ui/EmptyState";
+import markdownit from 'markdown-it';
+
+const md = markdownit();
 
 const PreviewScanned = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [order, setOrder] = useState()
     const [loading, setLoading] = useState(false);
+    const parsedContent = md.render(order?.event.description || "");
+    const [showMore, setShowMore] = useState(false);
+    const contentRef = useRef(null);
+    const [isOverflowing, setIsOverflowing] = useState(false);
+
+    useEffect(() => {
+        if (contentRef.current) {
+            const el = contentRef.current;
+            setIsOverflowing(el.scrollHeight > 150);
+        }
+    }, [parsedContent]);
 
     const fetchOrder = async () => {
-        setLoading(true);
-        if (id !== ('All tickets have been scanned' | 'This QR code is invalid')) {
-            try {
-                const response = await teeketApi.get(`/orders/${id}`)
-                setOrder(response.data)
-                setLoading(false)
-            } catch (error) {
-                console.log("err previewing scanned", error)
-                setLoading(false)
-            }
+        try {
+            setLoading(true);
+            const response = await teeketApi.get(`/orders/${id}`)
+            setOrder(response.data)
+        } catch (error) {
+            console.log("err previewing scanned", error)
+        }
+        finally {
+            setLoading(false);
         }
     }
 
     useEffect(() => {
-        fetchOrder()
-    }, [])
+        if (id !== 'All tickets have been scanned' | 'This QR code is invalid') {
+            fetchOrder()
+        }
+    }, [id])
 
     console.log(order)
 
-    if (loading) return (
+    if (loading || !id) return (
         <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "1rem" }}>
             <Spinner />
             Fetching Order Hang on
@@ -114,9 +130,6 @@ const PreviewScanned = () => {
                         </Box> :
                         order ?
                             <Box width={{ base: '100%', md: '80%', lg: '60%' }}>
-
-
-
                                 <Box
                                     position="relative"
                                     borderRadius={16}
@@ -143,7 +156,7 @@ const PreviewScanned = () => {
                                         zIndex={-1}
                                     />
                                     <HStack
-                                        px={6}
+                                        px={3}
                                         justifyContent="space-between"
                                         borderBottom="1px solid"
                                         borderColor="utilityLight100"
@@ -152,7 +165,7 @@ const PreviewScanned = () => {
                                         <Box
                                             borderRight="1px solid"
                                             borderColor="utilityLight100"
-                                            pr={6}
+                                            // pr={6}
                                             pt={6}
                                             pb={4}
                                             w="100%"
@@ -164,10 +177,40 @@ const PreviewScanned = () => {
                                             <Text fontWeight={700} color="white" fontSize={20}>
                                                 {order?.eventTitle || order?.event.title}
                                             </Text>
-                                            <Container maxW="300px" px={0} mx={0}>
-                                                <Text fontSize={14} color="utilityLight200">
-                                                    {order?.event.description}
-                                                </Text>
+                                            <Container px={0} mx={0}>
+                                                {
+                                                    parsedContent ? (
+                                                        <Box
+                                                            style={{ background: "#FFFF", borderRadius: "6px", maxHeight: "500px", overflowY: "auto" }}
+                                                        >
+                                                            <Collapse startingHeight={150} in={showMore}>
+                                                                <Box
+                                                                    as="article"
+                                                                    wordBreak="break-word"
+                                                                    className="prose"
+                                                                    ref={contentRef}
+                                                                    dangerouslySetInnerHTML={{ __html: parsedContent }}
+                                                                />
+                                                            </Collapse>
+
+                                                            {isOverflowing && (
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="secondary"
+                                                                    mt={2}
+                                                                    onClick={() => setShowMore(!showMore)}
+                                                                >
+                                                                    {showMore ? "Show Less" : "Read More"}
+                                                                </Button>
+                                                            )}
+                                                        </Box>
+                                                    ) :
+                                                        (
+                                                            <Text fontSize={14} color="utilityLight200">
+                                                                {order?.event.description}
+                                                            </Text>
+                                                        )
+                                                }
                                             </Container>
                                         </Box>
                                         <Box w={149}>

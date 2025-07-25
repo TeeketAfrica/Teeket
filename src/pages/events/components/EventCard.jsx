@@ -39,7 +39,12 @@ const EventCard = ({
   let formatedDate = "";
 
   if (startDate.date.month === endDate.date.month) {
-    formatedDate = `${startDate.date.dayNumber} - ${endDate.date.dayNumber} ${startDate.date.month}`;
+    if (startDate.date.dayNumber === endDate.date.dayNumber) {
+      formatedDate = `${startDate.date.dayNumber} ${startDate.date.month}`
+    }
+    else {
+      formatedDate = `${startDate.date.dayNumber} - ${endDate.date.dayNumber} ${startDate.date.month}`;
+    }
   } else {
     formatedDate = `${startDate.date.dayNumber} ${startDate.date.month} - ${endDate.date.dayNumber} ${endDate.date.month}`;
   }
@@ -76,7 +81,7 @@ const EventCard = ({
         <VStack justifyContent="space-between" alignItems="normal">
           <Box mt={4}>
             <HStack
-              bgColor={eventTag === "on_going"? "green.200": eventTag === "coming_soon"? "gray.200": eventTag === "past_event"? "red.200": "gray.200"}
+              bgColor={eventTag === "on_going" ? "green.200" : eventTag === "coming_soon" ? "gray.200" : eventTag === "past_event" ? "red.200" : "gray.200"}
               py="2px"
               px={2}
               w="fit-content"
@@ -86,10 +91,10 @@ const EventCard = ({
               <Text
                 fontSize={12}
                 fontWeight={500}
-                color={eventTag === "on_going"? "green.500": eventTag === "coming_soon"? "gray.700": eventTag === "past_event"? "red.400": "gray.500"}
+                color={eventTag === "on_going" ? "green.500" : eventTag === "coming_soon" ? "gray.700" : eventTag === "past_event" ? "red.400" : "gray.500"}
                 textTransform="capitalize"
               >
-                {eventTag === "on_going"? "On Going": eventTag === "coming_soon"? "Coming Soon": eventTag === "past_event"? "Past Event": ""}
+                {eventTag === "on_going" ? "On Going" : eventTag === "coming_soon" ? "Coming Soon" : eventTag === "past_event" ? "Past Event" : ""}
               </Text>
             </HStack>
             <Text fontWeight={500} color="gray.800">

@@ -33,7 +33,7 @@ const Footer = ({ border = true }) => {
 
           </Stack>
           <Stack
-            direction={["column", "row"]}
+            direction={["column", "column", "row"]}
             bgColor="gray.200"
             borderRadius="10px"
             justifyContent="space-between"

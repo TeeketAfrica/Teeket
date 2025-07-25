@@ -296,7 +296,7 @@ const OverviewDashboardPage = () => {
                       size="sm"
                       variant="secondary"
                       marginTop={6}
-                      isDisabled={true}
+                      onClick={()=> navigate("/app/order")}
                     >
                       Open Order
                     </Button>

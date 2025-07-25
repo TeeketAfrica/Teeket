@@ -115,26 +115,32 @@ const RightSIdeDetails = ({ event, isRegistered, location }) => {
             />
           )}
 
-          <HStack gap="10px" alignItems="center">
-            {eventAttendees && (
-              <AvatarGroup size="sm" max={3}>
-                {eventAttendees.slice(0, 3).map((attendees, i) => (
-                  <Avatar
-                    key={i}
-                    border="1px solid"
-                    borderColor="gray.800"
-                    color="gray.800"
-                    name={attendees?.name || attendees?.email}
-                    src={attendees?.profile_image}
-                    bgColor="transparent"
-                  />
-                ))}
-              </AvatarGroup>
-            )}
-            <Text fontSize="sm" lineHeight="5" color="gray.600">
-              {attendeesQuantity}
-            </Text>
-          </HStack>
+          {
+            event.status !== "past_event" && (
+              <HStack gap="10px" alignItems="center">
+                {eventAttendees && (
+                  <>
+                    <AvatarGroup size="sm" max={3}>
+                      {eventAttendees.slice(0, 3).map((attendees, i) => (
+                        <Avatar
+                          key={i}
+                          border="1px solid"
+                          borderColor="gray.800"
+                          color="gray.800"
+                          name={attendees?.name || attendees?.email}
+                          src={attendees?.profile_image}
+                          bgColor="transparent"
+                        />
+                      ))}
+                    </AvatarGroup>
+                  </>
+                )}
+                <Text fontSize="sm" lineHeight="5" color="gray.600">
+                  {attendeesQuantity}
+                </Text>
+              </HStack>
+            )
+          }
 
           {active && (
             <DetailCard

@@ -103,7 +103,7 @@ const SingleTicket = ({
                 {eventTitle}
               </Heading>
               <Text color="gray.600">{eventTime}</Text>
-              <Text color="gray.600" noOfLines={3}>{eventLocation}</Text>
+              <Text color="gray.600" noOfLines={3} wordBreak={"break-word"}>{eventLocation}</Text>
             </Box>
             <Divider border="1px dashed" borderColor="gray.400" />
             <Box>

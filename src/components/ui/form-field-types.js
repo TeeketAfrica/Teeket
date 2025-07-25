@@ -12,4 +12,5 @@ export const FormFieldType = {
   Checkbox: "checkbox",
   Tel: "tel",
   Url: "url",
+  Markdown: "markdown"
 };

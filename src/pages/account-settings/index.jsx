@@ -46,9 +46,9 @@ const AccountSettingsPage = () => {
         fetchSignedUrl();
     }, [selectedImage]);
 
-    useEffect(()=>{
-        if(signedUrl) handleUploadImage()
-    },[signedUrl])
+    useEffect(() => {
+        if (signedUrl) handleUploadImage()
+    }, [signedUrl])
 
     const handleUploadImage = async () => {
         setUploading(true)
@@ -71,12 +71,15 @@ const AccountSettingsPage = () => {
                 toast({
                     title: "Profile Updated",
                     description:
-                        "You have successfully updated your profile image. Please refresh the page to see your changes",
+                        "You have successfully updated your profile image. The page would automatically refresh to view your changes",
                     status: "success",
                     duration: 4000,
                     isClosable: true,
                     position: "top",
                 });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
 
             } catch (error) {
                 console.error("Error updating profile image:", error);
@@ -120,15 +123,15 @@ const AccountSettingsPage = () => {
                             />
                             <VStack>
                                 {/* {selectedImage ? ( */}
-                                    <Button
-                                        variant="primary"
-                                        as="label"
-                                        htmlFor="imageInput"
-                                        disabled = {uploading}
-                                        // onClick={handleUploadImage}
-                                    >
-                                       <span style={{marginRight:'8px'}}>Upload photo</span>  {uploading && <Spinner/>}
-                                    </Button>
+                                <Button
+                                    variant={`${uploading? "secondary": "primary"}`}
+                                    as="label"
+                                    htmlFor="imageInput"
+                                    disabled={uploading}
+                                // onClick={handleUploadImage}
+                                >
+                                    <span style={{ marginRight: '8px' }}>Upload photo</span>  {uploading && <Spinner />}
+                                </Button>
                                 {/* // ) : (
                                 //     <Button */}
                                 {/* //         onClick={()=>{setProfileImage(null); setSelectedImage(null)}}
