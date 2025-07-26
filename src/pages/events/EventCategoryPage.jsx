@@ -8,6 +8,7 @@ import EventCategoryHeroSection from "./components/EventCategoryHeroSection";
 import SingleEventCategory from "./components/SingleEventCategory";
 import ScrollToTop from "../../utils/ScrollToTop";
 import { teeketApi } from "../../utils/api";
+import ContactFooter from "../../components/layouts/ContactFooter";
 
 const EventCategoryPage = () => {
   const { type } = useParams();
@@ -56,6 +57,7 @@ const EventCategoryPage = () => {
           <SingleEventCategory allEvents={events} loading={loading} />
         </Box>
       </Container>
+      <ContactFooter />
       <Footer />
     </main>
   );

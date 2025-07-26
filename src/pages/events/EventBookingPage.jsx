@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { teeketApi } from "../../utils/api";
 import EventCard from "./components/EventCard";
 import EventTagIcon from "@/assets/icon/EventTagIcon.svg";
+import ContactFooter from "../../components/layouts/ContactFooter";
 
 const EventBooking = () => {
   const { id } = useParams();
@@ -124,8 +125,6 @@ const EventBooking = () => {
                   "repeat(4, 1fr)",
                 ]}
                 gap={6}
-                borderBottom="1px solid"
-                borderColor="gray.300"
                 pt={6}
                 pb={9}
               >
@@ -156,6 +155,8 @@ const EventBooking = () => {
           )}
         </VStack>
       </Container>
+
+      <ContactFooter />
       <Footer />
     </main>
   );

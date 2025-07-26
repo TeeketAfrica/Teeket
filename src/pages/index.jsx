@@ -12,7 +12,7 @@ import OrdersDashboardPage from "./vendor-dashboard/orders";
 import OrganizationSettingsDashboardPage from "./vendor-dashboard/organization-settings";
 import HelpAndSupportPage from "./help-and-support";
 import AboutPage from "./about";
-import ContactUsPage from "./contact-us";
+import ContactPage from "./contact";
 import EventsPage from "./events";
 import EventCategoryPage from "./events/EventCategoryPage";
 import TicketDashboardPage from "./ticket-dashboard/index";
@@ -21,7 +21,6 @@ import CounterDownPage from "./count-down";
 import NotFoundPage from "./not-found";
 import AccountSettingsPage from "./account-settings";
 import EventGetTicket from "./events/EventGetTicket";
-import ContactPage from "./contact";
 
 export {
   HomePage,
@@ -34,7 +33,6 @@ export {
   AboutPage,
   ContactPage,
   HelpAndSupportPage,
-  ContactUsPage,
 
   // DASHBOARD PAGES
   EventsDashboardPage,

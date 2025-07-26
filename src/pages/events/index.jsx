@@ -14,32 +14,33 @@ import { useStorage } from "../../utils/storage";
 import { teeketApi } from "../../utils/api";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/activeUserSlice";
+import ContactFooter from "../../components/layouts/ContactFooter";
 
 const EventsPage = () => {
-    const navigate = useNavigate();
-    const { getAccessToken } = useStorage();
-    const activeUser = useSelector(selectActiveUser);
-    const token = getAccessToken();
-    const { onOpen, isOpen, onClose } = useDisclosure();
-    const { searchTerm, category, clearSearch } = useContext(SearchContext);
-    const [events, setEvents] = useState([]);
-    const [curatedEvents, setCuratedEvents] = useState([]);
-    const [displayEventPreference, setDisplayEventPreference] = useState(false);
-    const [preloader, setPreLoader] = useState(true);
-    const [fetchError, setFetchError] = useState(false);
-    const [showUI, setShowUI] = useState(false);
+  const navigate = useNavigate();
+  const { getAccessToken } = useStorage();
+  const activeUser = useSelector(selectActiveUser);
+  const token = getAccessToken();
+  const { onOpen, isOpen, onClose } = useDisclosure();
+  const { searchTerm, category, clearSearch } = useContext(SearchContext);
+  const [events, setEvents] = useState([]);
+  const [curatedEvents, setCuratedEvents] = useState([]);
+  const [displayEventPreference, setDisplayEventPreference] = useState(false);
+  const [preloader, setPreLoader] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
+  const [showUI, setShowUI] = useState(false);
 
-    useEffect(() => {
-      const hasSeenUI = sessionStorage.getItem('hasSeenUI');
-      if (!hasSeenUI && token) {
-        setShowUI(true);
-        sessionStorage.setItem('hasSeenUI', 'true');
-      }
-    }, []);
+  useEffect(() => {
+    const hasSeenUI = sessionStorage.getItem("hasSeenUI");
+    if (!hasSeenUI && token) {
+      setShowUI(true);
+      sessionStorage.setItem("hasSeenUI", "true");
+    }
+  }, []);
 
   useEffect(() => {
     fetchEvents(searchTerm, category);
-    fetchCuratedEvents()
+    fetchCuratedEvents();
   }, [searchTerm, category]);
 
   useEffect(() => {
@@ -50,25 +51,23 @@ const EventsPage = () => {
     // }, [token, displayEventPreference, onOpen]);
   }, [onOpen]);
 
+  // useEffect(() => {
+  //     if (activeUser) {
+  //       if (events.length > 0) {
+  //         dispatch(setIsCreator(true));
+  //       } else {
+  //         dispatch(setIsCreator(false));
+  //       }
+  //     }
+  //     console.log("events", events.length)
+  //   }, [events, dispatch, activeUser]);
 
-
-    // useEffect(() => {
-    //     if (activeUser) {
-    //       if (events.length > 0) {
-    //         dispatch(setIsCreator(true));
-    //       } else {
-    //         dispatch(setIsCreator(false));
-    //       }
-    //     }
-    //     console.log("events", events.length)
-    //   }, [events, dispatch, activeUser]);
-
-    const fetchCuratedEvents = async () => {
-        try {
-            const response = await teeketApi.get(`/events/curated`, {
-                nullAuth: true,
-            });
-            const eventList = response.data.data;
+  const fetchCuratedEvents = async () => {
+    try {
+      const response = await teeketApi.get(`/events/curated`, {
+        nullAuth: true,
+      });
+      const eventList = response.data.data;
 
       setCuratedEvents(eventList);
 
@@ -81,13 +80,12 @@ const EventsPage = () => {
     }
   };
 
-
   const fetchEvents = async (title) => {
-        try {
-            const response = await teeketApi.get(`/events?title=${title}`, {
-                nullAuth: true,
-            });
-            const eventList = response.data.data;
+    try {
+      const response = await teeketApi.get(`/events?title=${title}`, {
+        nullAuth: true,
+      });
+      const eventList = response.data.data;
 
       setEvents(eventList);
 
@@ -100,21 +98,23 @@ const EventsPage = () => {
     }
   };
 
-    return (
-        <main>
-            <ScrollToTop />
-            {displayEventPreference && showUI && token && (
-                <EventPreference isOpen={isOpen} onClose={onClose} />
-            )}
-            <HeroSection />
-            {preloader ? (
-                <Text padding="40px 0" textAlign="center" fontSize="20px">
-                    {" "}
-                    Loading ...{" "}
-                </Text>
-            ) : (
-                <>
-                    {events?.length > 0 && <EventTabs curated={curatedEvents} allEvents={events} />}
+  return (
+    <main>
+      <ScrollToTop />
+      {displayEventPreference && showUI && token && (
+        <EventPreference isOpen={isOpen} onClose={onClose} />
+      )}
+      <HeroSection />
+      {preloader ? (
+        <Text padding="40px 0" textAlign="center" fontSize="20px">
+          {" "}
+          Loading ...{" "}
+        </Text>
+      ) : (
+        <>
+          {events?.length > 0 && (
+            <EventTabs curated={curatedEvents} allEvents={events} />
+          )}
 
           {events?.length == 0 && fetchError && (
             <Container maxW="385px" px={0}>
@@ -155,6 +155,7 @@ const EventsPage = () => {
           )}
         </>
       )}
+      <ContactFooter />
       <Footer />
     </main>
   );

@@ -29,6 +29,7 @@ import { useState } from "react";
 import SuccessModal from "./SuccessModal";
 import { authApi } from "../../utils/api";
 import { SOCIAL_LINKS } from "../../utils/constants";
+import Footer from "../../components/layouts/Footer";
 
 export const Index = () => {
   // const targetDate = new Date("2024-04-31T23:59:59");
@@ -257,31 +258,7 @@ export const Index = () => {
               </Box>
             </Center>
           </main>
-          <footer>
-            <Stack
-              direction={["column", "row"]}
-              bgColor="gray.200"
-              borderRadius="10px"
-              justifyContent="space-between"
-              alignItems="center"
-              gap="32px"
-              py="28px"
-              px="32px"
-              my={10}
-            >
-              <HStack spacing={6}>
-                {SOCIAL_LINKS.map(({ link, icon: Icon }, i) => (
-                  <Link key={i} href={link} target="_blank">
-                    <Icon />
-                  </Link>
-                ))}
-              </HStack>
-              <Text fontSize="sm">
-                © {new Date().getFullYear()} Teeket Africa. All rights reserved.
-              </Text>
-              <LogoBlack />
-            </Stack>
-          </footer>
+          <Footer />
         </Stack>
       </Container>
     </>

@@ -1,3 +1,4 @@
+import ContactFooter from "../../components/layouts/ContactFooter";
 import Footer from "../../components/layouts/Footer";
 import Header from "../../components/layouts/Header";
 import Container from "../../components/ui/Container";
@@ -9,11 +10,12 @@ const TicketDashboardPage = () => {
   return (
     <main>
       <Container>
-        <Header/>
+        <Header />
         <TicketsHeroSection />
         <TicketsSection />
         <EventList />
       </Container>
+      <ContactFooter border={false} />
       <Footer />
     </main>
   );

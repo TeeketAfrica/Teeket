@@ -8,11 +8,8 @@ import { useSelector } from "react-redux";
 import { TicketTypeStep } from "../create-event/components/EventGetTicketSteps/TicketTypeStep";
 import { YourDetailsStep } from "../create-event/components/EventGetTicketSteps/YourDetailsStep";
 import Payment from "../create-event/components/EventGetTicketSteps/Payment";
-import Footer from "../../components/layouts/Footer";
 import { selectActiveUser } from "../../features/activeUserSlice";
-import { SOCIAL_LINKS } from "../../utils/constants";
-import Policies from "../../components/shared/Policies";
-import LogoBlack from "@/assets/icon/LogoBlack.svg";
+import Footer from "../../components/layouts/Footer";
 
 const EventGetTicket = () => {
   const { ticketStep, eventData, paid } = useSelector((state) => state.event);
@@ -125,40 +122,7 @@ const EventGetTicket = () => {
           </Flex>
         </VStack>
       )}
-      <footer>
-        <Container>
-          <Box py="64px" borderTop={"1px solid"} borderColor="gray.300">
-            <Stack
-              direction={{ base: "column", md: "row" }}
-              bgColor="gray.200"
-              borderRadius="10px"
-              justifyContent="space-between"
-              alignItems="center"
-              gap="32px"
-              py="28px"
-              px="32px"
-            >
-              <HStack spacing={6}>
-                {SOCIAL_LINKS.map(({ link, icon: Icon }, i) => (
-                  <Link key={i} href={link} target="_blank">
-                    <Icon />
-                  </Link>
-                ))}
-              </HStack>
-              <VStack>
-                <Text fontSize="sm">
-                  © {new Date().getFullYear()} Teeket Africa. All rights
-                  reserved.
-                </Text>
-                <Policies />
-              </VStack>
-              <Link href="/">
-                <LogoBlack />
-              </Link>
-            </Stack>
-          </Box>
-        </Container>
-      </footer>
+      <Footer />
     </Container>
   );
 };
