@@ -9,7 +9,7 @@ const Footer = () => {
     <Container padding="16px">
       <Box py="64px">
         <Stack
-          direction={["column", "row"]}
+          direction={{ md: "row", base: "column" }}
           bgColor="gray.200"
           borderRadius="10px"
           justifyContent="space-between"
