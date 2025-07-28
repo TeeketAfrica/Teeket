@@ -84,7 +84,10 @@ const Header = () => {
               <BrandLogo style={{ width: "100%" }} />
             </Link>
             <Box maxW="860px" w="full" display={["none", null, "block"]}>
-              <HStack spacing={6} justifyContent="end">
+              <HStack
+                spacing={4}
+                justifyContent={{ base: "end", lg: "space-between" }}
+              >
                 <Box
                   maxW="400px"
                   w="100%"
