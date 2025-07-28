@@ -191,8 +191,6 @@ const HomePage = () => {
             </Container>
           </Box>
         </Center>
-        {/* </main>
-      <main> */}
         {/* Browse Events */}
         <Box
           paddingBottom={{ base: "11", md: "14" }}

@@ -5,9 +5,7 @@ import {
   AccordionPanel,
   VStack,
   Box,
-  Button,
   Text,
-  Link,
 } from "@chakra-ui/react";
 import Container from "@/components/ui/Container";
 import MinusCircle from "@/assets/icon/MinusCircle.svg";
