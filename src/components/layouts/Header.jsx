@@ -306,13 +306,17 @@ const Header = () => {
                           ) : (
                             <>
                               {menu.map((link, i) => (
-                                <Link key={i} to={`/${link.url}`}>
+                                <Link
+                                  key={i}
+                                  to={`/${link.url}`}
+                                  onClick={onClose}
+                                >
                                   <Text fontWeight={600} fontSize={14}>
                                     {link.link}
                                   </Text>
                                 </Link>
                               ))}
-                              <Link to="/auth/login">
+                              <Link to="/auth/login" onClick={onClose}>
                                 <Text
                                   fontWeight={600}
                                   fontSize={14}
