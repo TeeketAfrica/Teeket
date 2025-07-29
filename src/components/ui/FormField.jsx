@@ -111,7 +111,7 @@ const FormField = memo(
               placeholder={placeholder}
               height={350}
               highlightEnable={false}
-              style={{ whiteSpace: 'wrap', backgroundColor: "#FFFFFF", borderColor: "#E7ECE7 !important", fontFamily: "inherit !important" }}
+              style={{ backgroundColor: "#FFFFFF", borderColor: "#E7ECE7 !important", fontFamily: "inherit !important" }}
               previewOptions={{
                 rehypePlugins: [[rehypeSanitize]],
               }}
