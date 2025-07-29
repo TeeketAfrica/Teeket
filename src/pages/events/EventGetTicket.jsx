@@ -105,6 +105,7 @@ const EventGetTicket = () => {
     }
     else {
       dispatch(setIsSetDetails(false));
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return { success: false };
     }
   }, [getValuesSelf, dispatch]);
@@ -122,6 +123,7 @@ const EventGetTicket = () => {
     else {
       setErrors(true);
       dispatch(setIsSetDetails(false));
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return { success: false };
     }
   }, [getValuesOthers, dispatch]);

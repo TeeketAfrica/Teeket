@@ -149,11 +149,8 @@ export const EventGetTicketSummaryBox = ({ selectedOption, onSubmitSelf,
     if (selectedOption === "self") {
       res = await onSubmitSelf();
     } else {
-      console.log("got here sir")
       res = await onSubmitOthers();
     }
-
-    console.log(res)
 
     if (res?.success) {
       const subTotal = Math.floor(Number(ticketSummaryDetails.sub_total));
