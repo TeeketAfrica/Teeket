@@ -141,7 +141,9 @@ export const TicketTypeStep = () => {
 
   return (
     <>
-      <Box>
+      <Box
+        w="100%"
+      >
         <Text
           color="gray.800"
           fontWeight={700}
@@ -178,6 +180,7 @@ export const TicketTypeStep = () => {
         padding={4}
         fontWeight={600}
         w="max"
+        alignSelf={"start"}
         variant="primary"
         onClick={handleBookingTickets}
         isDisabled={isLoading || isBookedTicket}

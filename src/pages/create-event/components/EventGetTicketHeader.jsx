@@ -29,7 +29,7 @@ import { selectActiveUser } from "../../../features/activeUserSlice";
 import LogoutModal from "../../../components/auth/LogoutModal";
 import useStorage from "../../../utils/storage";
 
-export const EventGetTicketHeader = ({ paid, profile }) => {
+export const EventGetTicketHeader = ({ paid, profile, selectedOption }) => {
   const { ticketStep, isBookedTicket, isSetDetails } = useSelector(
     (state) => state.event
   );
@@ -142,7 +142,7 @@ export const EventGetTicketHeader = ({ paid, profile }) => {
             >
               Your details
             </Text>
-            {isSetDetails && isBookedTicket && (
+            {isSetDetails && isBookedTicket && (!selectedOption === "" || paid) && (
               <TickCircle
                 variant="Bold"
                 color="#06CC06"
