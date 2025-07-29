@@ -74,10 +74,6 @@ export const YourDetailsStep = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(setIsSetDetails(false))
-  }, [selectedOption])
-
   return (
     <>
       <VStack w="100%" alignItems="start" spacing={4}>

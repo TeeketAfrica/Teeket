@@ -142,7 +142,7 @@ export const EventGetTicketHeader = ({ paid, profile, selectedOption }) => {
             >
               Your details
             </Text>
-            {isBookedTicket && (!selectedOption === "" || paid) && (
+            {isSetDetails && isBookedTicket && (!selectedOption === "" || paid) && (
               <TickCircle
                 variant="Bold"
                 color="#06CC06"
@@ -177,7 +177,7 @@ export const EventGetTicketHeader = ({ paid, profile, selectedOption }) => {
             >
               Payment
             </Text>
-            {isBookedTicket && ticketStep === 3 && paid && (
+            {isSetDetails && isBookedTicket && ticketStep === 3 && paid && (
               <TickCircle
                 variant="Bold"
                 color="#06CC06"

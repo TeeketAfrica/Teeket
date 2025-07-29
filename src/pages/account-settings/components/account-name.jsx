@@ -13,9 +13,10 @@ import {
   VStack,
   useDisclosure,
   useMediaQuery,
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as z from "zod";
@@ -35,42 +36,46 @@ const formSchema = z.object({
 
 export const AccountName = () => {
   const user = useSelector((state) => state.activeUser);
-  console.log(user);
 
   const [md] = useMediaQuery("(min-width: 768px)");
   const dispatch = useDispatch();
-
-  const defaultVaules = user
-    ? {
-        firstName: user?.first_name ?? "",
-        lastName: user?.last_name ?? "",
-      }
-    : {
-        firstName: "",
-        lastName: "",
-      };
+  const toast = useToast();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
+    reset,
+    setValue
   } = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: defaultVaules,
+    // defaultValues: defaultVaules,
   });
+
+  useEffect(() => {
+    setValue("firstName", user?.first_name)
+    setValue("lastName", user?.last_name)
+  }, [user, setValue])
 
   const { isDirty } = useFormState({ control: control });
 
   const onSubmit = async (values) => {
+    setLoading(true);
     try {
       const response = await teeketApi.patch("/user/profile", {
         first_name: values.firstName,
         last_name: values.lastName,
       });
-
-      dispatch(setActiveUser(response));
-      reset();
+      dispatch(
+        setActiveUser({
+          ...user,
+          first_name: response.data.first_name,
+          last_name: response.data.last_name,
+        })
+      )
+      reset(values);
       toast({
         title: "Account Updated.",
         description: "You have successfully updated your account.",
@@ -84,6 +89,9 @@ export const AccountName = () => {
       }
     } catch (error) {
       console.error("Error updating account:", error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -151,7 +159,9 @@ export const AccountName = () => {
           color="#fff"
           fontWeight={600}
           lineHeight={0}
-          disabled={!isDirty}
+          disabled={!isDirty || loading }
+          opacity={!isDirty ? 0.6 : 1}
+          _hover={!isDirty ? { cursor: "not-allowed" } : {}}
         >
           Save Change
         </Button>

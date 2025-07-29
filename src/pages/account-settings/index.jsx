@@ -43,6 +43,12 @@ const AccountSettingsPage = () => {
     };
 
     useEffect(() => {
+        if (!uploading) {
+            setProfileImage(user?.profile_image)
+        }
+    }, [user, uploading])
+
+    useEffect(() => {
         fetchSignedUrl();
     }, [selectedImage]);
 
@@ -73,13 +79,13 @@ const AccountSettingsPage = () => {
                     description:
                         "You have successfully updated your profile image. The page would automatically refresh to view your changes",
                     status: "success",
-                    duration: 4000,
+                    duration: 6000,
                     isClosable: true,
                     position: "top",
                 });
                 setTimeout(() => {
                     window.location.reload();
-                }, 1500);
+                }, 3000);
 
             } catch (error) {
                 console.error("Error updating profile image:", error);
@@ -124,7 +130,7 @@ const AccountSettingsPage = () => {
                             <VStack>
                                 {/* {selectedImage ? ( */}
                                 <Button
-                                    variant={`${uploading? "secondary": "primary"}`}
+                                    variant={`${uploading ? "secondary" : "primary"}`}
                                     as="label"
                                     htmlFor="imageInput"
                                     disabled={uploading}
