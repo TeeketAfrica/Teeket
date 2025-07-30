@@ -12,7 +12,7 @@ const DashboardLayout = ({ children }) => {
         <Box h="100%" w="100%" pb={12}>
           <DashboardHeader onOpen={onOpen} />
           <Box h="100%" pt={6} pb={10} overflowY="auto">
-            <Container minW={"full"}>
+            <Container minW={"full"} paddingX={0}>
               {children} 
             </Container>
           </Box>

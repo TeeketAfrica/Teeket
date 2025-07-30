@@ -186,7 +186,7 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
         const handleFetchEvents = async (searchTerm) => {
             setLoading(true);
             try {
-                let url = `/revenue?page_index=${currentPage}`;
+                let url = `/revenue?page_index=${currentPage}&ordering=-date_created`;
                 const queryParams = [];
 
                 if (searchTerm && !viewHistory) {
@@ -223,14 +223,14 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
         const handleFetchPaymentHistory = async (searchTerm) => {
             setLoading(true);
             try {
-                let url = `/payment-requests`;
+                let url = `/payment-requests?page_index=${histCurrentPage}&ordering=-date_created`;
                 const queryParams = [];
 
                 if (searchTerm && viewHistory) {
                     queryParams.push(`search=${encodeURIComponent(searchTerm)}`);
                 }
                 if (queryParams.length > 0) {
-                    url += `?${queryParams.join("&")}`;
+                    url += `&${queryParams.join("&")}`;
                 }
                 const response = await teeketApi.get(url);
                 const res = response.data;
@@ -268,7 +268,7 @@ const RevenueTable = ({ viewHistory, setViewHistory }) => {
         return () => {
             debouncedFetch.cancel();
         };
-    }, [toast, currentPage, histCurrentPage, search]);
+    }, [toast, currentPage, histCurrentPage, search, viewHistory]);
 
     return (
         <Box px={[4, 8]}>
