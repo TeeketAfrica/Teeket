@@ -147,9 +147,13 @@ export const EventGetTicketSummaryBox = ({ selectedOption, onSubmitSelf,
     let res;
 
     if (selectedOption === "self") {
+      setIsLoading(true);
       res = await onSubmitSelf();
+      setIsLoading(false);
     } else {
+      setIsLoading(true);
       res = await onSubmitOthers();
+      setIsLoading(false);
     }
 
     if (res?.success) {
