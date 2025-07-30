@@ -71,6 +71,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
             position: "top-right",
         })
       }
+      onClose();
     }
     catch(error){
       console.log(error)
@@ -126,7 +127,7 @@ const RequestPaymentModal = ({ isOpen, onClose, requestPayment }) => {
       blockScrollOnMount={false}
       isOpen={isOpen}
       onClose={onClose}
-      size="md"
+      size={{ base: "sm", md : "md"}}
       borderRadius={12}
     >
       <ModalOverlay />

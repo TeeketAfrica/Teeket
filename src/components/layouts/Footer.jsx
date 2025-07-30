@@ -8,7 +8,7 @@ const Footer = ({ border = true }) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer>
+    <footer style={{width: "100%"}}>
       <Container padding="16px">
         <Box py="64px" borderTop={border && "1px solid"} borderColor="gray.300">
           <Stack

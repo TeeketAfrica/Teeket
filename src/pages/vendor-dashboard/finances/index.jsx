@@ -130,6 +130,7 @@ const FinancesDashboardPage = () => {
                     <Button
                         variant="primary"
                         p={2}
+                        size={"fit"}
                         onClick={onOpen}
                         isDisabled={!revenueData?.total_revenue}
                     >

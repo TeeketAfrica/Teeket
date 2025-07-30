@@ -81,7 +81,7 @@ const OrdersTable = () => {
         const handleFetchOrders = async () => {
             setLoading(true)
             try {
-                let url = `/orders?page_index=${currentPage}`;
+                let url = `/orders?page_index=${currentPage}&ordering=-date_created`;
                 // let url = `/orders?page_index=${currentPage}&ordering=-date_created`;
                 const queryParams = [];
 
