@@ -79,19 +79,19 @@ const AboutPage = () => {
   const teamMembers = [
     {
       name: "Precious Lawrenson",
-      role: "Branding & Marketing",
+      role: "CEO & Founder",
       image: PreciousImg,
     },
-    { name: "Hussein", role: "Backend Developer", image: HuzzyImg },
-    { name: "Edara", role: "Project Manager", image: EdaraImg },
+    { name: "Hussein Ibrahim", role: "CTO", image: HuzzyImg },
     { name: "Solomon Rotimi", role: "Product Designer", image: SololinksImg },
-    { name: "Ogbonnaya Peter", role: "Frontend Developer", image: PeterImg },
+    { name: "Ogbonnaya Peter", role: "Frontend Engineer", image: PeterImg },
     {
       name: "Oluwole Daniel Oluwatimileyin",
-      role: "Frontend Developer",
+      role: "Frontend Engineer",
       image: TimmyImg,
     },
-    { name: "Michael", role: "Frontend Developer", image: MichaelImg },
+    { name: "Michael", role: "Frontend Engineer", image: MichaelImg },
+    { name: "Edara", role: "Project Manager", image: EdaraImg },
     // { name: "Precious Lawrenson", role: "Developer", image: "" },
   ];
 
