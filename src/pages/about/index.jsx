@@ -374,7 +374,7 @@ const AboutPage = () => {
               <VStack spacing="4">
                 <Heading
                   as="h2"
-                  fontSize={{ base: "3xl", md: "4xl" }}
+                  fontSize={{ base: "4xl", md: "5xl" }}
                   fontWeight="bold"
                   color="gray.800"
                 >
@@ -383,7 +383,7 @@ const AboutPage = () => {
                     as="span"
                     bgGradient="linear(to-r, #06CC06, #C2F2C2)"
                     bgClip="text"
-                    fontSize={{ base: "5xl", md: "6xl" }}
+                    fontSize={{ base: "6xl", md: "7xl" }}
                   >
                     Team
                   </Text>
