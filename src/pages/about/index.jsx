@@ -30,7 +30,7 @@ import PreciousImg from "@/assets/img/Precious.jpg";
 import PeterImg from "@/assets/img/Peter.jpg";
 import MichaelImg from "@/assets/img/Michael.png";
 import TimmyImg from "@/assets/img/Timmy.jpg";
-import SololinksImg from "@/assets/img/designerAvatar.png";
+import SololinksImg from "@/assets/img/Solinks.jpg";
 
 import ContactFooter from "../../components/layouts/ContactFooter";
 import { Faq } from "../../components/shared/Faq";
@@ -84,7 +84,7 @@ const AboutPage = () => {
     },
     { name: "Hussein", role: "Backend Developer", image: HuzzyImg },
     { name: "Edara", role: "Project Manager", image: EdaraImg },
-    { name: "Solomon", role: "Product Designer", image: SololinksImg },
+    { name: "Solomon Rotimi", role: "Product Designer", image: SololinksImg },
     { name: "Ogbonnaya Peter", role: "Frontend Developer", image: PeterImg },
     {
       name: "Oluwole Daniel Oluwatimileyin",
