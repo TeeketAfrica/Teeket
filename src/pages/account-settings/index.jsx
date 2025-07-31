@@ -122,7 +122,6 @@ const AccountSettingsPage = () => {
                 src={selectedImage || profileImage}
               />
               <VStack>
-                {/* {selectedImage ? ( */}
                 <Button
                   variant={`${uploading ? "secondary" : "primary"}`}
                   as="label"
@@ -133,17 +132,7 @@ const AccountSettingsPage = () => {
                   <span style={{ marginRight: "8px" }}>Upload photo</span>{" "}
                   {uploading && <Spinner />}
                 </Button>
-                {/* // ) : (
-                                //     <Button */}
-                {/* //         onClick={()=>{setProfileImage(null); setSelectedImage(null)}}
-                                //         as="label"
-                                //         htmlFor="imageInput"
-                                //         variant="primary"
-                                //     >
-                                //         Change photo */}
-                {/* //     </Button>
-                                // )} */}
-                <input
+                 <input
                   id="imageInput"
                   type="file"
                   accept="image/*"
