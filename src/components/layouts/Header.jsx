@@ -26,23 +26,15 @@ import Container from "../ui/Container";
 import BrandLogo from "../../assets/img/brand.svg";
 import Hamburger from "../../assets/icon/Hamburger.svg";
 import Search from "../../assets/icon/Search.svg";
-import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/activeUserSlice";
-import {
-  CirclePlus,
-  GridIcon,
-  PlusIcon,
-  SettingsIcon,
-  TicketIcon,
-} from "lucide-react";
+import { CirclePlus, GridIcon, SettingsIcon, TicketIcon } from "lucide-react";
 import SignOutIcon from "../../assets/icon/sign-out-2.svg";
 import LogoutModal from "../auth/LogoutModal";
 import useStorage from "../../utils/storage";
 import useGetSelf from "../../hooks/useGetSelf";
-
-// import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu";
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -51,6 +43,7 @@ const Header = () => {
   const { getAccessToken } = useStorage();
   const token = getAccessToken();
   const handleGetProfile = useGetSelf();
+  const location = useLocation();
 
   useEffect(() => {
     handleGetProfile();
@@ -71,10 +64,10 @@ const Header = () => {
       link: "Contact us",
       url: "contact",
     },
-    // {
-    //   link: "About",
-    //   url: "about",
-    // },
+    {
+      link: "About",
+      url: "about",
+    },
   ];
   return (
     <header>
@@ -91,13 +84,16 @@ const Header = () => {
               <BrandLogo style={{ width: "100%" }} />
             </Link>
             <Box maxW="860px" w="full" display={["none", null, "block"]}>
-              <HStack spacing={6} justifyContent="end">
+              <HStack
+                spacing={4}
+                justifyContent={{ base: "end", lg: "space-between" }}
+              >
                 <Box
                   maxW="400px"
                   w="100%"
                   display={["none", "none", "none", "block"]}
                 >
-                  {/* <InputGroup w="full">
+                  <InputGroup w="full">
                     <InputLeftElement pointerEvents="none">
                       <Search />
                     </InputLeftElement>
@@ -106,37 +102,24 @@ const Header = () => {
                       type="text"
                       placeholder="Search for an event"
                     />
-                  </InputGroup> */}
+                  </InputGroup>
                 </Box>
                 {menu.map((link, i) => (
                   <Link key={i} to={`/${link.url}`}>
-                    <Text fontWeight={600} fontSize={14}>
+                    <Text
+                      fontWeight={600}
+                      fontSize={14}
+                      color={
+                        location.pathname === `/${link.url}`
+                          ? "textSuccess"
+                          : "black"
+                      }
+                    >
                       {link.link}
                     </Text>
                   </Link>
                 ))}
                 {token && user && user.is_creator !== null ? (
-                  // <MenuRoot>
-                  //   <MenuTrigger asChild>
-                  //     {/* <Box cursor="pointer"> */}
-                  // <Avatar
-                  //   border="1px solid"
-                  //   borderColor="gray.800"
-                  //   color="gray.800"
-                  //   name={activeUser?.name || activeUser?.email}
-                  //   src={activeUser?.imageURL}
-                  //   bgColor="transparent"
-                  // />
-                  //     {/* </Box> */}
-                  //   </MenuTrigger>
-                  //   <MenuContent>
-                  //     <MenuItem value="new-txt">New Text File</MenuItem>
-                  //     <MenuItem value="new-file">New File...</MenuItem>
-                  //     <MenuItem value="new-win">New Window</MenuItem>
-                  //     <MenuItem value="open-file">Open File...</MenuItem>
-                  //     <MenuItem value="export">Export</MenuItem>
-                  //   </MenuContent>
-                  // </MenuRoot>
                   <Menu>
                     <MenuButton>
                       <Avatar
@@ -210,7 +193,15 @@ const Header = () => {
                 ) : (
                   <>
                     <Link to="/auth/login">
-                      <Text fontWeight={600} fontSize={14} color="textSuccess">
+                      <Text
+                        fontWeight={600}
+                        fontSize={14}
+                        color={
+                          location.pathname === "/auth/login"
+                            ? "textSuccess"
+                            : "black"
+                        }
+                      >
                         Login
                       </Text>
                     </Link>
@@ -256,7 +247,9 @@ const Header = () => {
 
                     <DrawerBody>
                       <VStack
-                        spacing={token && user && user.is_creator !== null ? 2 : 6}
+                        spacing={
+                          token && user && user.is_creator !== null ? 2 : 6
+                        }
                       >
                         <>
                           {token && user && user.is_creator !== null ? (
@@ -316,13 +309,17 @@ const Header = () => {
                           ) : (
                             <>
                               {menu.map((link, i) => (
-                                <Link key={i} to={`/${link.url}`}>
+                                <Link
+                                  key={i}
+                                  to={`/${link.url}`}
+                                  onClick={onClose}
+                                >
                                   <Text fontWeight={600} fontSize={14}>
                                     {link.link}
                                   </Text>
                                 </Link>
                               ))}
-                              <Link to="/auth/login">
+                              <Link to="/auth/login" onClick={onClose}>
                                 <Text
                                   fontWeight={600}
                                   fontSize={14}

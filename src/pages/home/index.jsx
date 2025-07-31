@@ -11,7 +11,6 @@ import {
   Text,
   Link,
   Center,
-  ButtonGroup,
 } from "@chakra-ui/react";
 import Footer from "@/components/layouts/Footer";
 import Masonry from "./components/Masonry";
@@ -33,10 +32,11 @@ import Faq1Image from "@/assets/img/faqs_1.webp";
 import Faq2Image from "@/assets/img/faqs_2.webp";
 import Faq3Image from "@/assets/img/faqs_3.webp";
 
-import { useStorage } from "../../utils/storage";
+import { useStorage } from "@/utils/storage";
 import { Faq } from "@/components/shared/Faq";
 import GetInTouch from "@/components/shared/GetInTouch";
 import { useNavigate } from "react-router-dom";
+import ContactFooter from "@/components/layouts/ContactFooter";
 
 const HomePage = () => {
   const { getAccessToken } = useStorage();
@@ -47,7 +47,7 @@ const HomePage = () => {
   return (
     <>
       <main style={{ overflowX: "hidden" }}>
-        <Center >
+        <Center>
           <Box
             bgImage={`url(${EventBg})`}
             bgSize="cover"
@@ -86,7 +86,9 @@ const HomePage = () => {
                   maxWidth="54ch"
                   marginX="auto"
                 >
-                  Expand your world, connect with others. Browse countless options, create events with ease, and manage everything in one place. {" "}
+                  Expand your world, connect with others. Browse countless
+                  options, create events with ease, and manage everything in one
+                  place.{" "}
                 </Text>
               </VStack>
               <HStack justifyContent="center" marginBottom="8" width="100%">
@@ -189,8 +191,6 @@ const HomePage = () => {
             </Container>
           </Box>
         </Center>
-        {/* </main>
-      <main> */}
         {/* Browse Events */}
         <Box
           paddingBottom={{ base: "11", md: "14" }}
@@ -257,14 +257,14 @@ const HomePage = () => {
                       bottom="-27px"
                       transform="rotate3d(1, 0, 1, -5deg)"
                       height="194px"
-                      border={`${data.imageName === "2" || data.imageName === "4"? "0" : "1px solid"}`}
+                      border={`${data.imageName === "2" || data.imageName === "4" ? "0" : "1px solid"}`}
                       borderColor="rgba(20, 23, 20, 0.75)"
                       width="313px"
                       borderRadius="8px"
                       overflow="hidden"
                     >
                       <Image
-                        src={`/images/${data.imageName}.${data.imageName == "2" || data.imageName == "4" ? "svg": "png"}`}
+                        src={`/images/${data.imageName}.${data.imageName == "2" || data.imageName == "4" ? "svg" : "png"}`}
                         alt="image"
                         objectFit={"cover"}
                       />
@@ -333,7 +333,13 @@ const HomePage = () => {
                       Discover new passions, network & create memories.
                     </Text>
                   </VStack>
-                  <Button variant={"secondary"} size={"lg"} paddingX={"3rem"} marginY={5} onClick={() => navigate("/app/overview")}>
+                  <Button
+                    variant={"secondary"}
+                    size={"lg"}
+                    paddingX={"3rem"}
+                    marginY={5}
+                    onClick={() => navigate("/app/overview")}
+                  >
                     Get Started
                   </Button>
                 </VStack>
@@ -598,8 +604,9 @@ const HomePage = () => {
 
         {/* Contact us */}
         <GetInTouch />
+        <ContactFooter border={false} />
       </main>
-      <Footer border={false} />
+      <Footer />
     </>
   );
 };

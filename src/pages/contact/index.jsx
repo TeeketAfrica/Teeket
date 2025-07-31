@@ -5,8 +5,8 @@ import GetInTouch from "@/components/shared/GetInTouch";
 import EventBg from "@/assets/img/eventsBg.png";
 
 import { Container, VStack, Text, Center, Box, Flex } from "@chakra-ui/react";
-import React from "react";
 import ContactForm from "./components/ContactForm";
+import ContactFooter from "../../components/layouts/ContactFooter";
 
 const ContactPage = () => {
   return (
@@ -66,8 +66,9 @@ const ContactPage = () => {
         </Flex>
         <Faq />
         <GetInTouch />
+        <ContactFooter border={false} />
       </main>
-      <Footer border={false} />
+      <Footer />
     </>
   );
 };

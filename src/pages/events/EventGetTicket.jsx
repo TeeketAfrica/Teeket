@@ -1,26 +1,42 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Container from "../../components/ui/Container";
-import { Box, Flex, HStack, Link, Stack, Text, useToast, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  HStack,
+  Link,
+  Stack,
+  Text,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import WarningIcon from "../../assets/icon/Warning.svg";
 import { EventGetTicketHeader } from "../create-event/components/EventGetTicketHeader";
 import { EventGetTicketSummaryBox } from "../create-event/components/EventGetTicketSummaryBox";
 import { useDispatch, useSelector } from "react-redux";
 import { TicketTypeStep } from "../create-event/components/EventGetTicketSteps/TicketTypeStep";
-import { userFormSchema, visitorsFormSchema, YourDetailsStep } from "../create-event/components/EventGetTicketSteps/YourDetailsStep";
+import {
+  userFormSchema,
+  visitorsFormSchema,
+  YourDetailsStep,
+} from "../create-event/components/EventGetTicketSteps/YourDetailsStep";
 import Payment from "../create-event/components/EventGetTicketSteps/Payment";
-import Footer from "../../components/layouts/Footer";
 import { selectActiveUser } from "../../features/activeUserSlice";
-import { SOCIAL_LINKS } from "../../utils/constants";
-import Policies from "../../components/shared/Policies";
-import LogoBlack from "@/assets/icon/LogoBlack.svg";
+import Footer from "../../components/layouts/Footer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import useStorage from "../../utils/storage";
-import { selectEventDetails, setIsSetDetails, setTicketUserDetails } from "../../features/eventSlice";
+import {
+  selectEventDetails,
+  setIsSetDetails,
+  setTicketUserDetails,
+} from "../../features/eventSlice";
 import { teeketApi } from "../../utils/api";
 
 const EventGetTicket = () => {
-  const { ticketStep, eventData, paid, eventDetails } = useSelector((state) => state.event);
+  const { ticketStep, eventData, paid, eventDetails } = useSelector(
+    (state) => state.event
+  );
   const activeUser = useSelector(selectActiveUser);
 
   const [timeLeft, setTimeLeft] = useState("");
@@ -43,7 +59,7 @@ const EventGetTicket = () => {
     setValue: setValueSelf,
     getValues: getValuesSelf,
     formState: { errors: errorsSelf },
-    trigger: triggerSelf
+    trigger: triggerSelf,
   } = useForm({
     resolver: zodResolver(
       isAuthenticated ? userFormSchema : visitorsFormSchema
@@ -56,7 +72,7 @@ const EventGetTicket = () => {
     setValue: setValueOthers,
     formState: { errors: errorsOthers },
     getValues: getValuesOthers,
-    trigger: triggerOthers
+    trigger: triggerOthers,
   } = useForm({ resolver: zodResolver(userFormSchema) });
 
   useEffect(() => {
@@ -85,42 +101,56 @@ const EventGetTicket = () => {
     if (valid) {
       try {
         if (firstName !== fName || lastName !== lName) {
-          await teeketApi.patch("/user/profile", {
-            first_name: firstName,
-            last_name: lastName,
-          }, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          await teeketApi.patch(
+            "/user/profile",
+            {
+              first_name: firstName,
+              last_name: lastName,
+            },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
         }
 
         dispatch(setTicketUserDetails({ firstName, lastName, email }));
         dispatch(setIsSetDetails(true));
         setErrors(false);
-        toast({ title: "Details saved, redirecting ...", status: "success", position: "top-right" });
+        toast({
+          title: "Details saved, redirecting ...",
+          status: "success",
+          position: "top-right",
+        });
         return { success: true };
       } catch (err) {
-        toast({ title: "Error updating", status: "error", position: "top-right" });
+        toast({
+          title: "Error updating",
+          status: "error",
+          position: "top-right",
+        });
         return { success: false };
       }
-    }
-    else {
+    } else {
       dispatch(setIsSetDetails(false));
       window.scrollTo({ top: 0, behavior: "smooth" });
       return { success: false };
     }
   }, [getValuesSelf, dispatch]);
 
-  const onSubmitOthers = useCallback( async () => {
+  const onSubmitOthers = useCallback(async () => {
     const { firstName, lastName, email } = getValuesOthers();
     const valid = await triggerOthers();
     if (valid) {
       dispatch(setTicketUserDetails({ firstName, lastName, email }));
       dispatch(setIsSetDetails(true));
-      toast({ title: "Guest details saved, Redirecting ...", status: "success", position: "top-right" });
+      toast({
+        title: "Guest details saved, Redirecting ...",
+        status: "success",
+        position: "top-right",
+      });
       setErrors(false);
       return { success: true };
-    }
-    else {
+    } else {
       setErrors(true);
       dispatch(setIsSetDetails(false));
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -202,7 +232,11 @@ const EventGetTicket = () => {
   }, [eventData?.end_date]);
   return (
     <Container padding="16px">
-      <EventGetTicketHeader paid={paid} profile={activeUser} selectedOption={selectedOption} />
+      <EventGetTicketHeader
+        paid={paid}
+        profile={activeUser}
+        selectedOption={selectedOption}
+      />
       {ticketStep === 3 ? (
         <Payment />
       ) : (
@@ -222,7 +256,7 @@ const EventGetTicket = () => {
           >
             <VStack w="100%" maxW={700} gap={8}>
               {ticketStep === 1 && <TicketTypeStep />}
-              {ticketStep === 2 &&
+              {ticketStep === 2 && (
                 <YourDetailsStep
                   selectedOption={selectedOption}
                   setSelectedOption={setSelectedOption}
@@ -237,7 +271,8 @@ const EventGetTicket = () => {
                   errorsSelf={errorsSelf}
                   errorsOthers={errorsOthers}
                   errors={errors}
-                />}
+                />
+              )}
             </VStack>
             <Box w="100%" maxW={400}>
               <EventGetTicketSummaryBox
@@ -246,45 +281,12 @@ const EventGetTicket = () => {
                 onSubmitOthers={onSubmitOthers}
                 getValuesSelf={getValuesSelf}
                 getValuesOthers={getValuesOthers}
-                />
+              />
             </Box>
           </Flex>
         </VStack>
       )}
-      <footer>
-        <Container>
-          <Box py="64px" borderTop={"1px solid"} borderColor="gray.300">
-            <Stack
-              direction={{ base: "column", md: "row" }}
-              bgColor="gray.200"
-              borderRadius="10px"
-              justifyContent="space-between"
-              alignItems="center"
-              gap="32px"
-              py="28px"
-              px="32px"
-            >
-              <HStack spacing={6}>
-                {SOCIAL_LINKS.map(({ link, icon: Icon }, i) => (
-                  <Link key={i} href={link} target="_blank">
-                    <Icon />
-                  </Link>
-                ))}
-              </HStack>
-              <VStack>
-                <Text fontSize="sm">
-                  © {new Date().getFullYear()} Teeket Africa. All rights
-                  reserved.
-                </Text>
-                <Policies />
-              </VStack>
-              <Link href="/">
-                <LogoBlack />
-              </Link>
-            </Stack>
-          </Box>
-        </Container>
-      </footer>
+      <Footer />
     </Container>
   );
 };
