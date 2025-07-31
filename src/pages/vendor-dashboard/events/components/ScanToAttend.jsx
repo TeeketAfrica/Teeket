@@ -85,6 +85,7 @@ const ScanToAttend = () => {
   };
 
   const stopScanner = () => {
+    if (!html5QrCodeRef.current || !isScanning) return;
     html5QrCodeRef.current
       .stop()
       .then(() => {

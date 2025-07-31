@@ -7,7 +7,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
@@ -21,8 +21,8 @@ import { teeketApi } from "../../../utils/api";
 import { selectActiveUser } from "../../../features/activeUserSlice";
 import useStorage from "../../../utils/storage";
 
-export const EventGetTicketSummaryBox = ({}) => {
-  const dispatch = useDispatch();
+export const EventGetTicketSummaryBox = ({ selectedOption, onSubmitSelf,
+  onSubmitOthers, getValuesSelf, getValuesOthers }) => {
   const toast = useToast();
 
   const {
@@ -40,6 +40,7 @@ export const EventGetTicketSummaryBox = ({}) => {
     useSelector(selectPriceDetails);
 
   const [isLoading, setIsLoading] = useState();
+  const dispatch = useDispatch();
   const { getAccessToken } = useStorage();
   const token = getAccessToken();
 
@@ -52,28 +53,35 @@ export const EventGetTicketSummaryBox = ({}) => {
   };
 
   const handleOrderCheckout = async () => {
+    let firstName, lastName, email;
+    if (selectedOption === "self") {
+      ({ firstName, lastName } = getValuesSelf());
+    }
+    else {
+      ({ firstName, lastName, email } = getValuesOthers());
+    }
     try {
       setIsLoading(true);
       let paymentUrl = `/make-payment`;
-      if (isAuthenticated) paymentUrl += "/auth";
-      const payload = isAuthenticated
+      if (isAuthenticated && selectedOption === "self") paymentUrl += "/auth";
+      const payload = isAuthenticated && selectedOption === "self"
         ? {
-            payment_gateway: "paystack",
-            callback_url: `http://${location.host}${location.pathname}?step=payment`,
-            reference_id: referenceId,
-            email: activeUser.email,
-          }
+          payment_gateway: "paystack",
+          callback_url: `http://${location.host}${location.pathname}?step=payment`,
+          reference_id: referenceId,
+          email: activeUser.email,
+        }
         : {
-            payment_gateway: "paystack",
-            callback_url: `http://${location.host}${location.pathname}?step=payment`,
-            reference_id: referenceId,
-            email: ticketUserDetails?.email,
-            user: {
-              first_name: ticketUserDetails?.firstName,
-              last_name: ticketUserDetails?.lastName,
-              email: ticketUserDetails?.email,
-            },
-          };
+          payment_gateway: "paystack",
+          callback_url: `http://${location.host}${location.pathname}?step=payment`,
+          reference_id: referenceId,
+          email: email,
+          user: {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+          },
+        };
 
       const response = await teeketApi.post(paymentUrl, payload);
 
@@ -88,29 +96,36 @@ export const EventGetTicketSummaryBox = ({}) => {
     }
   };
   const handleFreeTicketOrder = async () => {
+    let firstName, lastName, email;
+    if (selectedOption === "self") {
+      ({ firstName, lastName } = getValuesSelf());
+    }
+    else {
+      ({ firstName, lastName, email } = getValuesOthers());
+    }
     try {
       setIsLoading(true);
       let url = `/events/tickets/complete/free-booking`;
 
-      const payload = isAuthenticated
+      const payload = isAuthenticated && selectedOption === "self"
         ? {
-            reference_id: referenceId,
+          reference_id: referenceId,
 
-            user_data: {
-              first_name: ticketUserDetails.firstName,
-              last_name: ticketUserDetails.lastName,
-              email: ticketUserDetails.email || activeUser.email,
-            },
-          }
+          user_data: {
+            first_name: firstName,
+            last_name: lastName,
+            email: activeUser.email,
+          },
+        }
         : {
-            reference_id: referenceId,
+          reference_id: referenceId,
 
-            user_data: {
-              first_name: ticketUserDetails.firstName,
-              last_name: ticketUserDetails.lastName,
-              email: ticketUserDetails.email,
-            },
-          };
+          user_data: {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+          },
+        };
 
       const response = await teeketApi.post(url, payload);
 
@@ -125,14 +140,35 @@ export const EventGetTicketSummaryBox = ({}) => {
     }
   };
 
-  const completeOrder = () => {
-    if (ticketSummaryDetails) {
-      if (Math.floor(Number(ticketSummaryDetails.sub_total)) === 0)
-        // use subtotal to determine free and paid order
+
+  const completeOrder = async () => {
+    if (!ticketSummaryDetails) return;
+
+    let res;
+
+    if (selectedOption === "self") {
+      setIsLoading(true);
+      res = await onSubmitSelf();
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+      res = await onSubmitOthers();
+      setIsLoading(false);
+    }
+
+    if (res?.success) {
+      const subTotal = Math.floor(Number(ticketSummaryDetails.sub_total));
+
+      if (subTotal === 0) {
+        // Free ticket order
         handleFreeTicketOrder();
-      else handleOrderCheckout();
+      } else {
+        // Paid ticket order
+        handleOrderCheckout();
+      }
     }
   };
+
   return (
     <VStack
       bg="gray.200"
@@ -247,7 +283,7 @@ export const EventGetTicketSummaryBox = ({}) => {
             <Button
               // Implement logic for checkout here
               // onClick={() => {}}
-              isDisabled={isLoading || !isSetDetails}
+              isDisabled={isLoading || (selectedOption === "" && isAuthenticated)}
               variant="primary"
               w="100%"
               padding={4}

@@ -14,9 +14,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Rectangle from "../../assets/icon/rectangle.svg";
 import Footer from "../../components/layouts/Footer";
-import Header from "../../components/layouts/Header";
 import Container from "../../components/ui/Container";
-import { mediaApi, teeketApi } from "../../utils/api";
+import { teeketApi } from "../../utils/api";
 import { AccountName } from "./components/account-name";
 import { DeleteAccount } from "./components/delete-account";
 import { Password } from "./components/password";
@@ -42,6 +41,12 @@ const AccountSettingsPage = () => {
       setImageFile(file);
     }
   };
+
+  useEffect(() => {
+    if (!uploading) {
+      setProfileImage(user?.profile_image);
+    }
+  }, [user, uploading]);
 
   useEffect(() => {
     fetchSignedUrl();
@@ -74,13 +79,13 @@ const AccountSettingsPage = () => {
           description:
             "You have successfully updated your profile image. The page would automatically refresh to view your changes",
           status: "success",
-          duration: 4000,
+          duration: 6000,
           isClosable: true,
           position: "top",
         });
         setTimeout(() => {
           window.location.reload();
-        }, 1500);
+        }, 3000);
       } catch (error) {
         console.error("Error updating profile image:", error);
         toast({
@@ -122,7 +127,6 @@ const AccountSettingsPage = () => {
                 src={selectedImage || profileImage}
               />
               <VStack>
-                {/* {selectedImage ? ( */}
                 <Button
                   variant={`${uploading ? "secondary" : "primary"}`}
                   as="label"
@@ -133,16 +137,15 @@ const AccountSettingsPage = () => {
                   <span style={{ marginRight: "8px" }}>Upload photo</span>{" "}
                   {uploading && <Spinner />}
                 </Button>
-                {/* // ) : (
-                                //     <Button */}
-                {/* //         onClick={()=>{setProfileImage(null); setSelectedImage(null)}}
-                                //         as="label"
-                                //         htmlFor="imageInput"
-                                //         variant="primary"
-                                //     >
-                                //         Change photo */}
-                {/* //     </Button>
-                                // )} */}
+                <Button
+                  variant={`${uploading ? "secondary" : "primary"}`}
+                  as="label"
+                  htmlFor="imageInput"
+                  disabled={uploading}
+                >
+                  <span style={{ marginRight: "8px" }}>Upload photo</span>{" "}
+                  {uploading && <Spinner />}
+                </Button>
                 <input
                   id="imageInput"
                   type="file"
