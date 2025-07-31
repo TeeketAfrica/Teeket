@@ -84,14 +84,18 @@ const AboutPage = () => {
     },
     { name: "Hussein Ibrahim", role: "CTO", image: HuzzyImg },
     { name: "Solomon Rotimi", role: "Product Designer", image: SololinksImg },
-    { name: "Ogbonnaya Peter", role: "Frontend Engineer", image: PeterImg },
+    {
+      name: "Ogbonnaya Peter Chibueze",
+      role: "Frontend Engineer",
+      image: PeterImg,
+    },
     {
       name: "Oluwole Daniel Oluwatimileyin",
       role: "Frontend Engineer",
       image: TimmyImg,
     },
     { name: "Michael", role: "Frontend Engineer", image: MichaelImg },
-    { name: "Edara", role: "Project Manager", image: EdaraImg },
+    { name: " EDara Princess David", role: "Product Manager", image: EdaraImg },
     // { name: "Precious Lawrenson", role: "Developer", image: "" },
   ];
 
