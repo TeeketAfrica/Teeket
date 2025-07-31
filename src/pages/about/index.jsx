@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   HStack,
   Flex,
+  Grid,
 } from "@chakra-ui/react";
 import Footer from "@/components/layouts/Footer";
 import GetInTouch from "@/components/shared/GetInTouch";
@@ -90,7 +91,7 @@ const AboutPage = () => {
       image: TimmyImg,
     },
     { name: "Michael", role: "Frontend Developer", image: MichaelImg },
-    { name: "Precious Lawrenson", role: "Developer", image: "" },
+    // { name: "Precious Lawrenson", role: "Developer", image: "" },
   ];
 
   return (
@@ -186,7 +187,7 @@ const AboutPage = () => {
               >
                 We stand for
               </Text>
-              <SimpleGrid columns={{ base: 1, sm: 3, lg: 4 }} gap="8" w="full">
+              <SimpleGrid columns={{ base: 2, sm: 3, lg: 4 }} gap="8" w="full">
                 {features.map((feature, index) => (
                   <Card
                     key={index}
@@ -208,7 +209,7 @@ const AboutPage = () => {
                         </Box>
                         <Text
                           fontWeight="semibold"
-                          fontSize="sm"
+                          fontSize="md"
                           color="gray.800"
                           lineHeight="1.4"
                         >
@@ -391,10 +392,14 @@ const AboutPage = () => {
                 </Text>
               </VStack>
 
-              <Flex
-                flexWrap={"wrap"}
-                justifyContent={{ base: "center", md: "space-between" }}
-                gap="6"
+              <Grid
+                gridTemplateColumns={{
+                  base: "1fr",
+                  sm: "repeat(auto-fit, minmax(230px, 1fr))",
+                }}
+                justifyItems={"center"}
+                alignItems={"center"}
+                gap={8}
                 w="full"
               >
                 {teamMembers.map((member, index) => (
@@ -427,7 +432,7 @@ const AboutPage = () => {
                     </Box>
                   </VStack>
                 ))}
-              </Flex>
+              </Grid>
             </VStack>
           </Container>
         </Box>
