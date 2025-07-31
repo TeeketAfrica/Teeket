@@ -3,7 +3,11 @@ name: Preview Deployment
 on:
   push:
     branches:
-      - test
+      - test  
+  pull_request:
+    types: [closed]
+    branches:
+      - test 
 
 jobs:
   build_and_preview:
