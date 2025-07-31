@@ -14,7 +14,6 @@ jobs:
     permissions: write-all
     name: Web Build & Staging Deploy
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.merged == true }}
     steps:
       - uses: actions/checkout@v4
 
