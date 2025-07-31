@@ -3,17 +3,11 @@ import {
   VStack,
   Text,
   Heading,
-  Grid,
   Image,
   Card,
   CardBody,
   Center,
   SimpleGrid,
-  Avatar,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
   HStack,
   Flex,
 } from "@chakra-ui/react";
@@ -29,9 +23,13 @@ import aboutFindus1 from "@/assets/img/about-findus1.png";
 import aboutFindus2 from "@/assets/img/about-findus2.png";
 import aboutFindus3 from "@/assets/img/about-findus3.png";
 import EventBg from "@/assets/img/eventsBg.png";
-import MinusCircle from "@/assets/icon/MinusCircle.svg";
-import PlusCircle from "@/assets/icon/PlusCircle.svg";
-import Curves from "@/assets/icon/curves.svg";
+import EdaraImg from "@/assets/img/Edara.jpg";
+import HuzzyImg from "@/assets/img/Huzzy.jpg";
+import PreciousImg from "@/assets/img/Precious.jpg";
+import PeterImg from "@/assets/img/Peter.jpg";
+import MichaelImg from "@/assets/img/Michael.png";
+import TimmyImg from "@/assets/img/Timmy.jpg";
+import SololinksImg from "@/assets/img/designerAvatar.png";
 
 import ContactFooter from "../../components/layouts/ContactFooter";
 import { Faq } from "../../components/shared/Faq";
@@ -77,14 +75,22 @@ const AboutPage = () => {
   ];
 
   const teamMembers = [
-    { name: "Precious Lawrenson", role: "Founder", image: "" },
-    { name: "Precious Lawrenson", role: "Founder", image: "" },
-    { name: "Precious Lawrenson", role: "Founder", image: "" },
-    { name: "Precious Lawrenson", role: "Founder", image: "" },
-    { name: "Precious Lawrenson", role: "Founder", image: "" },
-    { name: "Precious Lawrenson", role: "Founder", image: "" },
-    { name: "Precious Lawrenson", role: "Founder", image: "" },
-    { name: "Precious Lawrenson", role: "Founder", image: "" },
+    {
+      name: "Precious Lawrenson",
+      role: "Branding & Marketing",
+      image: PreciousImg,
+    },
+    { name: "Hussein", role: "Backend Developer", image: HuzzyImg },
+    { name: "Edara", role: "Project Manager", image: EdaraImg },
+    { name: "Solomon", role: "Product Designer", image: SololinksImg },
+    { name: "Ogbonnaya Peter", role: "Frontend Developer", image: PeterImg },
+    {
+      name: "Oluwole Daniel Oluwatimileyin",
+      role: "Frontend Developer",
+      image: TimmyImg,
+    },
+    { name: "Michael", role: "Frontend Developer", image: MichaelImg },
+    { name: "Precious Lawrenson", role: "Developer", image: "" },
   ];
 
   return (
@@ -287,7 +293,12 @@ const AboutPage = () => {
                     alignItems={"start"}
                   >
                     <CardBody p="4" w="100%" alignItems={"start"}>
-                      {index % 2 !== 0 ? (
+                      <Flex
+                        flexDirection={
+                          index % 2 === 0 ? "column-reverse" : "column"
+                        }
+                        w="100%"
+                      >
                         <Box textAlign={"left"}>
                           <Text
                             fontWeight="semibold"
@@ -300,56 +311,45 @@ const AboutPage = () => {
                             {type.description}
                           </Text>
                         </Box>
-                      ) : (
-                        <Box w="150px" h="150px" p={4} overflow="hidden">
-                          <Image
-                            src={EventBg}
-                            w="100%"
-                            h="100%"
-                            objectFit="cover"
-                          />
-                        </Box>
-                      )}
-                      <VStack>
-                        <Box
-                          w="200px"
-                          overflow="hidden"
-                          ml={index % 2 === 0 ? "auto" : ""}
-                          my={4}
+                        <VStack
+                          flex={1}
+                          pos={"relative"}
+                          minH={"400px"}
+                          justify="center"
                         >
-                          <Image
-                            src={type.image}
-                            alt={type.title}
-                            w="100%"
-                            h="100%"
-                            objectFit="cover"
-                          />
-                        </Box>
-                        {index % 2 === 0 ? (
-                          <Box mr={"auto"} textAlign={"left"}>
-                            <Text
-                              fontWeight="semibold"
-                              fontSize="lg"
-                              color="gray.800"
-                            >
-                              {type.title}
-                            </Text>
-                            <Text fontSize="sm" color="gray.600">
-                              {type.description}
-                            </Text>
+                          <Box
+                            w="200px"
+                            zIndex={10}
+                            overflow="hidden"
+                            ml={index % 2 === 0 ? "auto" : ""}
+                            my={4}
+                          >
+                            <Image
+                              src={type.image}
+                              alt={type.title}
+                              w="100%"
+                              h="100%"
+                              objectFit="cover"
+                            />
                           </Box>
-                        ) : (
-                          <Box w="150px" h="150px" p={4} overflow="hidden">
+                          <Box
+                            pos={"absolute"}
+                            top={index % 2 === 0 ? 0 : "70%"}
+                            left={0}
+                            w="150px"
+                            h="150px"
+                            p={4}
+                            overflow="hidden"
+                          >
                             <Image
                               src={EventBg}
                               w="100%"
                               h="100%"
-                              mr="auto"
                               objectFit="cover"
                             />
                           </Box>
-                        )}
-                      </VStack>
+                        </VStack>
+                      </Flex>
                     </CardBody>
                   </Card>
                 ))}
@@ -404,6 +404,7 @@ const AboutPage = () => {
                       bg="gray.300"
                       aspectRatio={1}
                       overflow="hidden"
+                      borderRadius="16px"
                     >
                       <Image
                         src={member.image}
