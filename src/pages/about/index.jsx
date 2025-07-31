@@ -59,18 +59,19 @@ const AboutPage = () => {
   const userTypes = [
     {
       title: "Event creators",
-      description: "Build, grow, and engage your community",
+      description: "Host, grow, and engage your community like never before",
       image: aboutFindus1,
     },
     {
       title: "Brands & Companies",
-      description: "Connect with your audience through memorable experiences",
+      description:
+        "Long-term experiences for internal teams and external communities",
       image: aboutFindus2,
     },
     {
-      title: "Everyone welcome",
+      title: "Everyday explorers",
       description:
-        "Discover events that match your interests and connect with like-minded people",
+        "Show up, even if it’s just you. Especially if it’s just you.",
       image: aboutFindus3,
     },
   ];
@@ -168,12 +169,13 @@ const AboutPage = () => {
                 Where Technology Meets Humanity
               </Heading>
               <Text fontSize="md" color="gray.600" maxW="xl" lineHeight="1.6">
-                Teeket is a live tech platform that helps people find
-                experiences that match who they are and who they'd like to
-                become. We create opportunities to grow, learn, laugh, and live
-                well. From concerts to conferences, and parties to dance
-                classes, we empower creators, businesses, and communities to
-                bring people together.
+                Teeket is a tribe tech platform that helps people find
+                experiences that match who they are and who they’re becoming.
+                Whether you show up solo or come with your crew, we turn events
+                into opportunities to grow, heal, laugh, and be seen. From
+                concerts to wellness circles, tech panels to dance classes, we
+                empower creators, corporates, and communities to curate moments
+                that matter.
               </Text>
             </HStack>
 
@@ -258,7 +260,7 @@ const AboutPage = () => {
               <VStack spacing="4">
                 <Heading
                   as="h2"
-                  fontSize={{ base: "3xl", md: "4xl" }}
+                  fontSize={{ base: "4xl", md: "5xl" }}
                   fontWeight="bold"
                   color="gray.800"
                 >
@@ -267,20 +269,20 @@ const AboutPage = () => {
                     as="span"
                     bgGradient="linear(to-r, #06CC06, #C2F2C2)"
                     bgClip="text"
-                    fontSize={{ base: "5xl", md: "6xl" }}
+                    fontSize={{ base: "6xl", md: "7xl" }}
                     fontStyle="italic"
                   >
                     Build With Us.
                   </Text>
                 </Heading>
                 <Text fontSize="lg" color="gray.600" lineHeight="1.6">
-                  Teeket is a live tech platform that helps people find
-                  experiences that match who they are and who they'd like to
-                  become. Whether you're an event creator looking to build
-                  community, a business wanting to connect with your audience,
-                  or someone seeking events, we'll connect by diverse interests,
-                  we empower creators, businesses, and communities to create
-                  moments that matter.
+                  Teeket is a tribe tech platform that helps people find
+                  experiences that match who they are and who they’re becoming.
+                  Whether you show up solo or come with your crew, we turn
+                  events into opportunities to grow, heal, laugh, and be seen.
+                  From concerts to wellness circles, tech panels to dance
+                  classes, we empower creators, corporates, and communities to
+                  curate moments that matter.
                 </Text>
               </VStack>
 
